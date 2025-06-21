@@ -1,0 +1,53 @@
+# File: pricing.html
+Generate `pricing.html` and matching `styles.css` for LocalAI Builder, using plain HTML5 and vanilla CSS (no frameworks). The page must be fully responsive (mobile-first, breakpoints at 640px & 1024px) and follow these specs:
+
+1. **Header & Nav**  
+   - Reuse existing sticky top nav: logo + links (Home, Pricing, Industries, FAQ, Login).  
+   - The “Pricing” link should be visually highlighted.
+
+2. **Billing Toggle**  
+   - At top of the pricing section, include a toggle switch labeled “Billing:” with options **Monthly** and **Annually (10% off)**.  
+   - Toggling updates the displayed prices via simple JS (no frameworks) — you can stub the JS with comments.
+
+3. **Plan Cards**  
+   - **Free Trial** (15 AI prompts; subdomain only; “Try it for Free” button → signup.html)  
+   - **Starter** – $10/mo or $108/yr (at annual rate)  
+   - **Pro** – $20/mo or $216/yr  
+   - **Agency** – $40/mo or $432/yr  
+   - Each card shows: plan name, price (dynamic based on toggle), tagline, feature list, and a primary button:
+     - Free Trial: “Try it for Free” → signup.html  
+     - Paid plans: “Select Plan” → cart.html?plan=starter|pro|agency
+
+4. **Features List** (same for all paid plans)  
+   - Prompt-driven site generation  
+   - Custom domain & HTTPS hosting  
+   - Membership & Login areas  
+   - 24/7 AI Chat support  
+   - Industry SEO landing pages  
+   - Stripe & PayPal payments  
+   - Team seats: Starter (1), Pro (3), Agency (10)  
+
+5. **Styling** (`styles.css`)  
+   - Use CSS variables:
+     ```css
+     :root {
+       --primary: #2e8b57;
+       --accent: #f4b400;
+       --dark: #222;
+       --light: #f9fafb;
+     }
+     ```
+   - Cards: white background, border-radius, subtle shadow, padding.  
+   - Buttons: `var(--primary)` background, white text.  
+   - Toggle: styled as pill switch, `var(--accent)` highlight for active.  
+   - Grid: 1 column ≤ 640px, 2 columns 641–1023px, 4 columns ≥ 1024px.  
+   - Typography: system-ui, fluid `clamp(1rem,2vw,1.25rem)` for headings.
+
+6. **Accessibility & i18n**  
+   - All user-facing text in `data-lang` attributes with Serbian comments.  
+   - Toggle switch and buttons should have `aria-label`.
+
+7. **Footer**  
+   - Include © 2025 LocalAI Builder • ToS • Privacy • Contact
+
+**Generate** the two files (`pricing.html`, `styles.css`) in one response or separate code blocks. Ensure the toggle JS stub is clear for future implementation.  

@@ -669,6 +669,242 @@ label {
   }
 }
 
+/* Billing Toggle */
+.billing-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-3xl);
+  padding: var(--spacing-xl);
+  background-color: var(--light-color);
+  border-radius: var(--radius-lg);
+}
+
+.billing-label {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 0;
+}
+
+.billing-toggle {
+  position: relative;
+  display: flex;
+  background-color: var(--white);
+  border-radius: 50px;
+  padding: 4px;
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--gray-200);
+}
+
+.billing-toggle input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.billing-toggle label {
+  position: relative;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  z-index: 2;
+  border-radius: 50px;
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.billing-toggle input[type="radio"]:checked + label {
+  color: var(--white);
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  bottom: 4px;
+  width: calc(50% - 4px);
+  background-color: var(--accent-color);
+  border-radius: 50px;
+  transition: transform var(--transition-normal);
+  z-index: 1;
+}
+
+.billing-toggle input[type="radio"]:nth-child(3):checked ~ .toggle-slider {
+  transform: translateX(100%);
+}
+
+@media (max-width: 640px) {
+  .billing-toggle-container {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+  
+  .billing-toggle label {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* Signup Page */
+.signup-section {
+  padding: var(--spacing-4xl) 0;
+  background: linear-gradient(135deg, var(--light-color) 0%, var(--white) 100%);
+  min-height: calc(100vh - 200px);
+}
+
+.signup-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.signup-header {
+  text-align: center;
+  margin-bottom: var(--spacing-3xl);
+}
+
+.signup-header h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: var(--spacing-lg);
+  color: var(--dark-color);
+}
+
+.signup-header p {
+  font-size: var(--font-size-lg);
+  color: var(--gray-600);
+}
+
+.signup-form-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3xl);
+  background-color: var(--white);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-3xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-group {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkmark {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background-color: var(--white);
+  border: 2px solid var(--gray-300);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.signup-btn {
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.trial-benefits {
+  background-color: var(--light-color);
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--primary-color);
+}
+
+.trial-benefits h3 {
+  margin-bottom: var(--spacing-lg);
+  color: var(--dark-color);
+  font-size: var(--font-size-lg);
+}
+
+.trial-benefits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.trial-benefits li {
+  padding: var(--spacing-sm) 0;
+  color: var(--gray-700);
+  font-size: var(--font-size-base);
+}
+
+.login-link {
+  text-align: center;
+  margin-top: var(--spacing-2xl);
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid var(--gray-200);
+}
+
+.login-link a {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .signup-form-container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2xl);
+    padding: var(--spacing-2xl);
+  }
+  
+  .signup-header {
+    margin-bottom: var(--spacing-2xl);
+  }
+}
+
 .plan-card {
   background-color: var(--white);
   border-radius: var(--radius-lg);
