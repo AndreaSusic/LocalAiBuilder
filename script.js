@@ -218,29 +218,47 @@ function initCart() {
     
     // Plan details
     const plans = {
+        free: {
+            name: 'Free',
+            price: 0,
+            features: [
+                '1 website',
+                'HTTPS hosting',
+                '1 prompt-generated site',
+                'Industry SEO pages (view only)'
+            ]
+        },
         starter: {
             name: 'Starter',
             price: 29,
             features: [
-                '1 AI-generated website',
-                'Basic customization',
-                'Mobile-responsive design',
-                'Free hosting included',
-                'SSL certificate',
-                'Email support'
+                '3 websites',
+                'Custom domain support',
+                'HTTPS hosting',
+                '10 prompt-generated sites',
+                'Membership/Login areas',
+                '24/7 AI Chat Support',
+                'Industry SEO pages',
+                'Stripe & PayPal checkout',
+                '3 team seats',
+                '10% annual billing discount'
             ]
         },
         pro: {
             name: 'Pro',
             price: 50,
             features: [
-                '5 AI-generated websites',
-                'Advanced customization',
-                'Custom domain included',
-                'SEO optimization tools',
-                'Analytics dashboard',
-                'Priority email support',
-                'Phone support'
+                '10 websites',
+                'Custom domain support',
+                'HTTPS hosting',
+                '50 prompt-generated sites',
+                'Membership/Login areas',
+                '24/7 AI Chat Support',
+                'Industry SEO pages',
+                'Stripe & PayPal checkout',
+                'White-label export',
+                '10 team seats',
+                '10% annual billing discount'
             ]
         },
         agency: {
@@ -248,12 +266,16 @@ function initCart() {
             price: 99,
             features: [
                 'Unlimited websites',
-                'White-label solution',
-                'Client management dashboard',
-                'Advanced integrations',
-                'Custom branding',
-                'Dedicated account manager',
-                '24/7 phone support'
+                'Custom domain support',
+                'HTTPS hosting',
+                'Unlimited prompt-generated sites',
+                'Membership/Login areas',
+                '24/7 AI Chat Support',
+                'Industry SEO pages',
+                'Stripe & PayPal checkout',
+                'White-label export',
+                'Unlimited team seats',
+                '15% annual billing discount'
             ]
         }
     };
@@ -289,9 +311,19 @@ function initCart() {
         const monthlyPrice = selectedPlan.price;
         let subtotal, discount = 0, total;
         
-        if (isAnnual) {
+        // Free plan is always $0
+        if (plan === 'free') {
+            subtotal = 0;
+            total = 0;
+            discountLine.style.display = 'none';
+        } else if (isAnnual) {
             subtotal = monthlyPrice * 12;
-            discount = Math.round(subtotal * 0.15);
+            // Different discount rates for different plans
+            let discountRate = 0.10; // Default 10% for starter and pro
+            if (plan === 'agency') {
+                discountRate = 0.15; // 15% for agency
+            }
+            discount = Math.round(subtotal * discountRate);
             total = subtotal - discount;
             discountLine.style.display = 'flex';
         } else {
@@ -339,6 +371,7 @@ function initCheckout() {
     
     // Plan details (same as cart)
     const plans = {
+        free: { name: 'Free', price: 0 },
         starter: { name: 'Starter', price: 29 },
         pro: { name: 'Pro', price: 50 },
         agency: { name: 'Agency', price: 99 }
@@ -355,9 +388,17 @@ function initCheckout() {
     const monthlyPrice = selectedPlan.price;
     let total;
     
-    if (isAnnual) {
+    // Free plan is always $0
+    if (plan === 'free') {
+        total = 0;
+    } else if (isAnnual) {
         const subtotal = monthlyPrice * 12;
-        const discount = Math.round(subtotal * 0.15);
+        // Different discount rates for different plans
+        let discountRate = 0.10; // Default 10% for starter and pro
+        if (plan === 'agency') {
+            discountRate = 0.15; // 15% for agency
+        }
+        const discount = Math.round(subtotal * discountRate);
         total = subtotal - discount;
     } else {
         total = monthlyPrice;
