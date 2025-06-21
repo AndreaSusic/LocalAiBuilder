@@ -1,0 +1,97 @@
+# Project Title
+LocalAI-Builder Landing Platform (HTML + vanilla CSS, mobile-first)
+
+# Global Requirements
+* Pure HTML5 & a single styles.css (no frameworks, keep ≤ 120 KB un-minified)  
+* Fully responsive: flex/grid, clamp() font sizes, CSS media queries at 640 px & 1024 px breakpoints  
+* Use CSS variables for palette 👉 primary:#2e8b57, accent:#f4b400, dark:#222, light:#f9fafb  
+* Semantic markup, accessible (alt text, ARIA labels)  
+* Sticky top nav with logo (SVG placeholder) + links: Home, Pricing, Industries, FAQ, Login  
+* Footer on every page: © 2025 LocalAI Builder • ToS • Privacy • Contact
+
+# Multilingual Support
+* Put all user-facing strings in a data-lang="" attribute (default “en”).  
+* Mirror a second set with lang="sr" (Serbian) in HTML comments so we can swap later via JS.  
+* Example: <h1 data-lang="heroHead">Create Your Website in Minutes</h1>  <!-- sr: Kreirajte sajt za nekoliko minuta -->
+
+# PAGES & SECTIONS
+
+## 1. index.html  (Home / Ordering)
+### Hero
+* Left column: H1 + 1-line USP
+* Right: “Prompt box” (textarea rows=4, id="aiPrompt")
+* Below: CTA button id="btnStart" → pricing.html
+### Benefits grid (4 cards)
+### “How It Works” (3 steps, icons)
+### Dynamic FAQ accordion (5 questions)
+### Customer review carousel (3 fake quotes)
+### Script
+* On textarea blur: count words → if <15 show hidden div id="followUp" with 3 additional inputs (company name, brand color, contact email)
+
+## 2. pricing.html
+* Three plan cards (Starter $29/mo, Pro $50/mo, Agency $99/mo)  
+* Each card: features list, “Choose plan” button → cart.html?plan=pro  
+* Note explaining Stripe + PayPal & Apple/Google Pay availability
+
+## 3. industries/
+Create 4 identical template files inside /industries/  
+* lawn-care.html, dentists.html, landscaping.html, lawyers.html  
+* Each: 600-word SEO copy (H1, H2, bullets), testimonial, CTA → pricing.html?plan=pro&industry=lawn-care  
+* Breadcrumb nav back to /industries/index.html (stub page listing all sectors)
+
+## 4. cart.html
+* Read ?plan= param → show plan card summary  
+* Billing frequency selector (monthly / annual -15%)  
+* “Proceed to Checkout” button triggers dummy JS alert(“Stripe/PayPal coming soon”)
+
+## 5. checkout.html  (placeholder)
+* Note: “Sandbox checkout disabled in demo.”  
+* Buttons: “Pay with Card / Google Pay” (Stripe link placeholder), “PayPal” (PayPal JS SDK link placeholder)
+
+## 6. account.html
+* Tabs: Orders, Sites, Profile  
+* Minimal static table with one test order
+
+## 7. tos.html  (Terms of Service)
+{% insert the ToS text below %}
+
+## 8. privacy.html  (Privacy Policy)
+{% insert the Privacy text below %}
+
+### --- ToS TEXT (concise, generic SaaS) ---
+<h1>Terms of Service</h1>
+<p>Last updated: 21 June 2025</p>
+<ol>
+<li><strong>Acceptance.</strong> By creating an account or purchasing any subscription you agree to these terms.</li>
+<li><strong>Service.</strong> LocalAI Builder (“LAB”) provides automated website generation. We do not guarantee search-engine rankings or earnings.</li>
+<li><strong>Subscriptions & Refunds.</strong> Plans renew monthly. You may cancel anytime; partial-month refunds are not issued.</li>
+<li><strong>Intellectual Property.</strong> You own the generated site content. LAB retains rights to underlying code and templates.</li>
+<li><strong>Prohibited Use.</strong> No illegal, hateful, or infringing content. We may suspend violators without refund.</li>
+<li><strong>Limitation of Liability.</strong> LAB is not liable for indirect or consequential damages exceeding one month of fees.</li>
+<li><strong>Governing Law.</strong> These terms follow the laws of Serbia and the United States where applicable.</li>
+</ol>
+
+### --- PRIVACY TEXT (GDPR-ready short form) ---
+<h1>Privacy Policy</h1>
+<p>Effective: 21 June 2025</p>
+<p>This notice explains how LocalAI Builder (“LAB”) collects and uses your data.</p>
+<h2>Data We Collect</h2>
+<ul>
+<li>Account info: name, email, payment tokens (Stripe/PayPal).</li>
+<li>Prompt inputs you submit to generate websites.</li>
+<li>Usage analytics (IP address, browser) via Plausible Analytics.</li>
+</ul>
+<h2>How We Use Data</h2>
+<ul>
+<li>Provide and improve the service.</li>
+<li>Process payments and prevent fraud.</li>
+<li>Email transactional notices.</li>
+</ul>
+<h2>Your Rights</h2>
+<p>You may access, correct, or delete personal data by emailing privacy@localai-builder.com. EU/EEA users can lodge complaints with their DPA.</p>
+<h2>Cookies</h2>
+<p>LAB uses essential cookies for login sessions and Stripe Checkout only.</p>
+<h2>Contact</h2>
+<p>privacy@localai-builder.com • +381 11 000 0000</p>
+
+# --- END PROMPT ---
