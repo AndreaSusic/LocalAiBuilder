@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="pricingPageTitle">Pricing Plans - LocalAI Builder</title>
+    <!-- sr: Cenovni planovi - LocalAI Builder -->
+    <meta name="description" content="Choose the perfect plan for your business. Start from $29/month with full website generation and hosting included.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="40" rx="8" fill="var(--primary-color)"/>
+                        <path d="M12 28L20 12L28 28H12Z" fill="white"/>
+                        <circle cx="20" cy="20" r="3" fill="var(--accent-color)"/>
+                    </svg>
+                    <span data-lang="brandName">LocalAI Builder</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-lang="navHome">Home</a></li>
+                    <li><a href="pricing.html" data-lang="navPricing" class="active">Pricing</a></li>
+                    <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li>
+                    <li><a href="index.html#faq" data-lang="navFAQ">FAQ</a></li>
+                    <li><a href="account.html" class="btn-secondary" data-lang="navLogin">Login</a></li>
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="pricing-hero">
+            <div class="container">
+                <h1 data-lang="pricingTitle">Choose Your Plan</h1>
+                <!-- sr: Izaberite vaš plan -->
+                <p data-lang="pricingSubtitle">Start building professional websites today with our AI-powered platform</p>
+                <!-- sr: Počnite gradnju profesionalnih sajtova danas sa našom AI platformom -->
+            </div>
+        </section>
+
+        <section class="pricing-plans">
+            <div class="container">
+                <div class="plans-grid">
+                    <!-- Starter Plan -->
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h3 data-lang="starterPlanName">Starter</h3>
+                            <!-- sr: Početni -->
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="amount">29</span>
+                                <span class="period" data-lang="perMonth">/month</span>
+                                <!-- sr: /mesečno -->
+                            </div>
+                            <p data-lang="starterPlanDesc">Perfect for small businesses and personal websites</p>
+                            <!-- sr: Savršeno za mala preduzeća i lične sajtove -->
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li data-lang="starter1">✓ 1 AI-generated website</li>
+                                <!-- sr: ✓ 1 AI-generisan sajt -->
+                                <li data-lang="starter2">✓ Basic customization</li>
+                                <!-- sr: ✓ Osnovno prilagođavanje -->
+                                <li data-lang="starter3">✓ Mobile-responsive design</li>
+                                <!-- sr: ✓ Mobilno-responzivan dizajn -->
+                                <li data-lang="starter4">✓ Free hosting included</li>
+                                <!-- sr: ✓ Besplatan hosting uključen -->
+                                <li data-lang="starter5">✓ SSL certificate</li>
+                                <!-- sr: ✓ SSL sertifikat -->
+                                <li data-lang="starter6">✓ Email support</li>
+                                <!-- sr: ✓ Email podrška -->
+                            </ul>
+                        </div>
+                        <button class="btn-primary plan-btn" onclick="selectPlan('starter')">
+                            <span data-lang="choosePlan">Choose Plan</span>
+                            <!-- sr: Izaberi plan -->
+                        </button>
+                    </div>
+
+                    <!-- Pro Plan -->
+                    <div class="plan-card featured">
+                        <div class="plan-badge" data-lang="mostPopular">Most Popular</div>
+                        <!-- sr: Najpopularniji -->
+                        <div class="plan-header">
+                            <h3 data-lang="proPlanName">Pro</h3>
+                            <!-- sr: Pro -->
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="amount">50</span>
+                                <span class="period" data-lang="perMonth">/month</span>
+                            </div>
+                            <p data-lang="proPlanDesc">Ideal for growing businesses and agencies</p>
+                            <!-- sr: Idealno za rastuća preduzeća i agencije -->
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li data-lang="pro1">✓ 5 AI-generated websites</li>
+                                <!-- sr: ✓ 5 AI-generisanih sajtova -->
+                                <li data-lang="pro2">✓ Advanced customization</li>
+                                <!-- sr: ✓ Napredno prilagođavanje -->
+                                <li data-lang="pro3">✓ Custom domain included</li>
+                                <!-- sr: ✓ Prilagođeni domen uključen -->
+                                <li data-lang="pro4">✓ SEO optimization tools</li>
+                                <!-- sr: ✓ SEO optimizacioni alati -->
+                                <li data-lang="pro5">✓ Analytics dashboard</li>
+                                <!-- sr: ✓ Analitički dashboard -->
+                                <li data-lang="pro6">✓ Priority email support</li>
+                                <!-- sr: ✓ Prioritetna email podrška -->
+                                <li data-lang="pro7">✓ Phone support</li>
+                                <!-- sr: ✓ Telefonska podrška -->
+                            </ul>
+                        </div>
+                        <button class="btn-primary plan-btn" onclick="selectPlan('pro')">
+                            <span data-lang="choosePlan">Choose Plan</span>
+                        </button>
+                    </div>
+
+                    <!-- Agency Plan -->
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h3 data-lang="agencyPlanName">Agency</h3>
+                            <!-- sr: Agencija -->
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="amount">99</span>
+                                <span class="period" data-lang="perMonth">/month</span>
+                            </div>
+                            <p data-lang="agencyPlanDesc">For agencies and large businesses</p>
+                            <!-- sr: Za agencije i velika preduzeća -->
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li data-lang="agency1">✓ Unlimited websites</li>
+                                <!-- sr: ✓ Neograničeno sajtova -->
+                                <li data-lang="agency2">✓ White-label solution</li>
+                                <!-- sr: ✓ White-label rešenje -->
+                                <li data-lang="agency3">✓ Client management dashboard</li>
+                                <!-- sr: ✓ Dashboard za upravljanje klijentima -->
+                                <li data-lang="agency4">✓ Advanced integrations</li>
+                                <!-- sr: ✓ Napredne integracije -->
+                                <li data-lang="agency5">✓ Custom branding</li>
+                                <!-- sr: ✓ Prilagođen brending -->
+                                <li data-lang="agency6">✓ Dedicated account manager</li>
+                                <!-- sr: ✓ Posvećeni account manager -->
+                                <li data-lang="agency7">✓ 24/7 phone support</li>
+                                <!-- sr: ✓ 24/7 telefonska podrška -->
+                            </ul>
+                        </div>
+                        <button class="btn-primary plan-btn" onclick="selectPlan('agency')">
+                            <span data-lang="choosePlan">Choose Plan</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="payment-info">
+                    <div class="payment-methods">
+                        <h3 data-lang="paymentMethodsTitle">Secure Payment Options</h3>
+                        <!-- sr: Sigurne opcije plaćanja -->
+                        <p data-lang="paymentMethodsDesc">We accept all major payment methods for your convenience:</p>
+                        <!-- sr: Prihvatamo sve glavne načine plaćanja za vašu pogodnost: -->
+                        <div class="payment-icons">
+                            <span>💳 Stripe</span>
+                            <span>💰 PayPal</span>
+                            <span>📱 Apple Pay</span>
+                            <span>🤖 Google Pay</span>
+                        </div>
+                    </div>
+                    <div class="money-back">
+                        <h4 data-lang="moneyBackTitle">30-Day Money-Back Guarantee</h4>
+                        <!-- sr: 30-dnevna garancija povraćaja novca -->
+                        <p data-lang="moneyBackDesc">Not satisfied? Get a full refund within 30 days, no questions asked.</p>
+                        <!-- sr: Niste zadovoljni? Dobijte pun povraćaj novca u roku od 30 dana, bez pitanja. -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 LocalAI Builder • <a href="tos.html">ToS</a> • <a href="privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
