@@ -48,48 +48,55 @@
 
         <section class="pricing-plans">
             <div class="container">
+                <!-- Billing Toggle -->
+                <div class="billing-toggle-container">
+                    <label class="billing-label" data-lang="billingLabel">Billing:</label>
+                    <!-- sr: Naplate: -->
+                    <div class="billing-toggle">
+                        <input type="radio" id="monthly" name="billing" value="monthly" checked>
+                        <label for="monthly" data-lang="monthlyBilling">Monthly</label>
+                        <!-- sr: Mesečno -->
+                        
+                        <input type="radio" id="annually" name="billing" value="annually">
+                        <label for="annually" data-lang="annualBilling">Annually (10% off)</label>
+                        <!-- sr: Godišnje (10% popust) -->
+                        
+                        <div class="toggle-slider" aria-label="Billing frequency toggle"></div>
+                    </div>
+                </div>
+
                 <div class="plans-grid">
-                    <!-- Free Plan -->
+                    <!-- Free Trial -->
                     <div class="plan-card">
                         <div class="plan-header">
-                            <h3 data-lang="freePlanName">Free</h3>
-                            <!-- sr: Besplatan -->
+                            <h3 data-lang="freeTrialName">Free Trial</h3>
+                            <!-- sr: Besplatno probno -->
                             <div class="plan-price">
                                 <span class="currency">$</span>
                                 <span class="amount">0</span>
                                 <span class="period" data-lang="perMonth">/month</span>
                                 <!-- sr: /mesečno -->
                             </div>
-                            <p data-lang="freePlanDesc">Try it free forever</p>
-                            <!-- sr: Probajte besplatno zauvek -->
+                            <p data-lang="freeTrialDesc">15 AI prompts, subdomain only</p>
+                            <!-- sr: 15 AI prompt-ova, samo poddomen -->
                         </div>
                         <div class="plan-features">
                             <ul>
-                                <li data-lang="free1">✓ 1 website</li>
-                                <!-- sr: ✓ 1 sajt -->
-                                <li data-lang="free2">❌ Custom domain support</li>
-                                <!-- sr: ❌ Podrška za prilagođeni domen -->
-                                <li data-lang="free3">✓ HTTPS hosting</li>
-                                <!-- sr: ✓ HTTPS hosting -->
-                                <li data-lang="free4">✓ 1 prompt-generated site</li>
-                                <!-- sr: ✓ 1 sajt generisan kroz prompt -->
-                                <li data-lang="free5">❌ Membership/Login areas</li>
-                                <!-- sr: ❌ Oblasti za članstvo/prijavu -->
-                                <li data-lang="free6">❌ 24/7 AI Chat Support</li>
-                                <!-- sr: ❌ 24/7 AI Chat podrška -->
-                                <li data-lang="free7">✓ Industry SEO pages (view only)</li>
-                                <!-- sr: ✓ Industrijske SEO stranice (samo pregled) -->
-                                <li data-lang="free8">❌ Stripe & PayPal checkout</li>
-                                <!-- sr: ❌ Stripe i PayPal plaćanje -->
-                                <li data-lang="free9">❌ White-label export</li>
-                                <!-- sr: ❌ White-label izvoz -->
-                                <li data-lang="free10">1 team seat</li>
-                                <!-- sr: 1 mesto u timu -->
+                                <li data-lang="trial1">✓ 15 AI prompts</li>
+                                <!-- sr: ✓ 15 AI prompt-ova -->
+                                <li data-lang="trial2">✓ Subdomain hosting</li>
+                                <!-- sr: ✓ Poddomen hosting -->
+                                <li data-lang="trial3">✓ Basic templates</li>
+                                <!-- sr: ✓ Osnovni template-i -->
+                                <li data-lang="trial4">❌ Custom domain</li>
+                                <!-- sr: ❌ Prilagođeni domen -->
+                                <li data-lang="trial5">❌ Advanced features</li>
+                                <!-- sr: ❌ Napredne funkcije -->
                             </ul>
                         </div>
-                        <a href="cart.html?plan=free" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Free Plan">
-                            Select Plan
-                            <!-- sr: Izaberi plan -->
+                        <a href="signup.html" class="btn-primary plan-btn" data-lang="tryForFree" aria-label="Try it for Free">
+                            Try it for Free
+                            <!-- sr: Probaj besplatno -->
                         </a>
                     </div>
 
@@ -100,37 +107,29 @@
                             <!-- sr: Početni -->
                             <div class="plan-price">
                                 <span class="currency">$</span>
-                                <span class="amount">29</span>
+                                <span class="amount" data-monthly="10" data-annual="108">10</span>
                                 <span class="period" data-lang="perMonth">/month</span>
                                 <!-- sr: /mesečno -->
                             </div>
-                            <p data-lang="starterPlanDesc">Great for small teams</p>
-                            <!-- sr: Odlično za male timove -->
+                            <p data-lang="starterPlanDesc">Perfect for individuals</p>
+                            <!-- sr: Savršeno za pojedince -->
                         </div>
                         <div class="plan-features">
                             <ul>
-                                <li data-lang="starter1">✓ 3 websites</li>
-                                <!-- sr: ✓ 3 sajta -->
-                                <li data-lang="starter2">✓ Custom domain support</li>
-                                <!-- sr: ✓ Podrška za prilagođeni domen -->
-                                <li data-lang="starter3">✓ HTTPS hosting</li>
-                                <!-- sr: ✓ HTTPS hosting -->
-                                <li data-lang="starter4">✓ 10 prompt-generated sites</li>
-                                <!-- sr: ✓ 10 sajtova generisanih kroz prompt -->
-                                <li data-lang="starter5">✓ Membership/Login areas</li>
-                                <!-- sr: ✓ Oblasti za članstvo/prijavu -->
-                                <li data-lang="starter6">✓ 24/7 AI Chat Support</li>
+                                <li data-lang="feature1">✓ Prompt-driven site generation</li>
+                                <!-- sr: ✓ Generisanje sajtova preko prompt-a -->
+                                <li data-lang="feature2">✓ Custom domain & HTTPS hosting</li>
+                                <!-- sr: ✓ Prilagođeni domen i HTTPS hosting -->
+                                <li data-lang="feature3">✓ Membership & Login areas</li>
+                                <!-- sr: ✓ Oblasti za članstvo i prijavu -->
+                                <li data-lang="feature4">✓ 24/7 AI Chat support</li>
                                 <!-- sr: ✓ 24/7 AI Chat podrška -->
-                                <li data-lang="starter7">✓ Industry SEO pages</li>
-                                <!-- sr: ✓ Industrijske SEO stranice -->
-                                <li data-lang="starter8">✓ Stripe & PayPal checkout</li>
-                                <!-- sr: ✓ Stripe i PayPal plaćanje -->
-                                <li data-lang="starter9">❌ White-label export</li>
-                                <!-- sr: ❌ White-label izvoz -->
-                                <li data-lang="starter10">3 team seats</li>
-                                <!-- sr: 3 mesta u timu -->
-                                <li class="discount" data-lang="starter11">10% annual billing discount</li>
-                                <!-- sr: 10% popust za godišnje plaćanje -->
+                                <li data-lang="feature5">✓ Industry SEO landing pages</li>
+                                <!-- sr: ✓ Industrijske SEO landing stranice -->
+                                <li data-lang="feature6">✓ Stripe & PayPal payments</li>
+                                <!-- sr: ✓ Stripe i PayPal plaćanja -->
+                                <li data-lang="starter7">✓ 1 team seat</li>
+                                <!-- sr: ✓ 1 mesto u timu -->
                             </ul>
                         </div>
                         <a href="cart.html?plan=starter" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Starter Plan">
@@ -148,37 +147,29 @@
                             <!-- sr: Pro -->
                             <div class="plan-price">
                                 <span class="currency">$</span>
-                                <span class="amount">50</span>
+                                <span class="amount" data-monthly="20" data-annual="216">20</span>
                                 <span class="period" data-lang="perMonth">/month</span>
                                 <!-- sr: /mesečno -->
                             </div>
-                            <p data-lang="proPlanDesc">For growing agencies</p>
-                            <!-- sr: Za rastuće agencije -->
+                            <p data-lang="proPlanDesc">Great for small teams</p>
+                            <!-- sr: Odlično za male timove -->
                         </div>
                         <div class="plan-features">
                             <ul>
-                                <li data-lang="pro1">✓ 10 websites</li>
-                                <!-- sr: ✓ 10 sajtova -->
-                                <li data-lang="pro2">✓ Custom domain support</li>
-                                <!-- sr: ✓ Podrška za prilagođeni domen -->
-                                <li data-lang="pro3">✓ HTTPS hosting</li>
-                                <!-- sr: ✓ HTTPS hosting -->
-                                <li data-lang="pro4">✓ 50 prompt-generated sites</li>
-                                <!-- sr: ✓ 50 sajtova generisanih kroz prompt -->
-                                <li data-lang="pro5">✓ Membership/Login areas</li>
-                                <!-- sr: ✓ Oblasti za članstvo/prijavu -->
-                                <li data-lang="pro6">✓ 24/7 AI Chat Support</li>
+                                <li data-lang="feature1">✓ Prompt-driven site generation</li>
+                                <!-- sr: ✓ Generisanje sajtova preko prompt-a -->
+                                <li data-lang="feature2">✓ Custom domain & HTTPS hosting</li>
+                                <!-- sr: ✓ Prilagođeni domen i HTTPS hosting -->
+                                <li data-lang="feature3">✓ Membership & Login areas</li>
+                                <!-- sr: ✓ Oblasti za članstvo i prijavu -->
+                                <li data-lang="feature4">✓ 24/7 AI Chat support</li>
                                 <!-- sr: ✓ 24/7 AI Chat podrška -->
-                                <li data-lang="pro7">✓ Industry SEO pages</li>
-                                <!-- sr: ✓ Industrijske SEO stranice -->
-                                <li data-lang="pro8">✓ Stripe & PayPal checkout</li>
-                                <!-- sr: ✓ Stripe i PayPal plaćanje -->
-                                <li data-lang="pro9">✓ White-label export</li>
-                                <!-- sr: ✓ White-label izvoz -->
-                                <li data-lang="pro10">10 team seats</li>
-                                <!-- sr: 10 mesta u timu -->
-                                <li class="discount" data-lang="pro11">10% annual billing discount</li>
-                                <!-- sr: 10% popust za godišnje plaćanje -->
+                                <li data-lang="feature5">✓ Industry SEO landing pages</li>
+                                <!-- sr: ✓ Industrijske SEO landing stranice -->
+                                <li data-lang="feature6">✓ Stripe & PayPal payments</li>
+                                <!-- sr: ✓ Stripe i PayPal plaćanja -->
+                                <li data-lang="pro7">✓ 3 team seats</li>
+                                <!-- sr: ✓ 3 mesta u timu -->
                             </ul>
                         </div>
                         <a href="cart.html?plan=pro" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Pro Plan">
@@ -194,37 +185,29 @@
                             <!-- sr: Agencija -->
                             <div class="plan-price">
                                 <span class="currency">$</span>
-                                <span class="amount">99</span>
+                                <span class="amount" data-monthly="40" data-annual="432">40</span>
                                 <span class="period" data-lang="perMonth">/month</span>
                                 <!-- sr: /mesečno -->
                             </div>
-                            <p data-lang="agencyPlanDesc">Unlimited sites & seats</p>
-                            <!-- sr: Neograničeno sajtova i mesta -->
+                            <p data-lang="agencyPlanDesc">For growing agencies</p>
+                            <!-- sr: Za rastuće agencije -->
                         </div>
                         <div class="plan-features">
                             <ul>
-                                <li data-lang="agency1">✓ Unlimited websites</li>
-                                <!-- sr: ✓ Neograničeno sajtova -->
-                                <li data-lang="agency2">✓ Custom domain support</li>
-                                <!-- sr: ✓ Podrška za prilagođeni domen -->
-                                <li data-lang="agency3">✓ HTTPS hosting</li>
-                                <!-- sr: ✓ HTTPS hosting -->
-                                <li data-lang="agency4">✓ Unlimited prompt-generated sites</li>
-                                <!-- sr: ✓ Neograničeno sajtova generisanih kroz prompt -->
-                                <li data-lang="agency5">✓ Membership/Login areas</li>
-                                <!-- sr: ✓ Oblasti za članstvo/prijavu -->
-                                <li data-lang="agency6">✓ 24/7 AI Chat Support</li>
+                                <li data-lang="feature1">✓ Prompt-driven site generation</li>
+                                <!-- sr: ✓ Generisanje sajtova preko prompt-a -->
+                                <li data-lang="feature2">✓ Custom domain & HTTPS hosting</li>
+                                <!-- sr: ✓ Prilagođeni domen i HTTPS hosting -->
+                                <li data-lang="feature3">✓ Membership & Login areas</li>
+                                <!-- sr: ✓ Oblasti za članstvo i prijavu -->
+                                <li data-lang="feature4">✓ 24/7 AI Chat support</li>
                                 <!-- sr: ✓ 24/7 AI Chat podrška -->
-                                <li data-lang="agency7">✓ Industry SEO pages</li>
-                                <!-- sr: ✓ Industrijske SEO stranice -->
-                                <li data-lang="agency8">✓ Stripe & PayPal checkout</li>
-                                <!-- sr: ✓ Stripe i PayPal plaćanje -->
-                                <li data-lang="agency9">✓ White-label export</li>
-                                <!-- sr: ✓ White-label izvoz -->
-                                <li data-lang="agency10">Unlimited team seats</li>
-                                <!-- sr: Neograničeno mesta u timu -->
-                                <li class="discount" data-lang="agency11">15% annual billing discount</li>
-                                <!-- sr: 15% popust za godišnje plaćanje -->
+                                <li data-lang="feature5">✓ Industry SEO landing pages</li>
+                                <!-- sr: ✓ Industrijske SEO landing stranice -->
+                                <li data-lang="feature6">✓ Stripe & PayPal payments</li>
+                                <!-- sr: ✓ Stripe i PayPal plaćanja -->
+                                <li data-lang="agency7">✓ 10 team seats</li>
+                                <!-- sr: ✓ 10 mesta u timu -->
                             </ul>
                         </div>
                         <a href="cart.html?plan=agency" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Agency Plan">

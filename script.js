@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initCart();
     initCheckout();
     initAccount();
+    initSignup();
     
     // Handle URL parameters
     handleURLParams();
@@ -191,14 +192,58 @@ function initCarousel() {
 
 // Pricing page functionality
 function initPricing() {
+    if (!window.location.pathname.includes('pricing.html')) return;
+    
+    // Initialize billing toggle
+    const billingInputs = document.querySelectorAll('input[name="billing"]');
+    const priceAmounts = document.querySelectorAll('.amount[data-monthly]');
+    const periodLabels = document.querySelectorAll('.period[data-lang="perMonth"]');
+    
+    function updatePrices() {
+        const isAnnual = document.querySelector('input[name="billing"]:checked').value === 'annually';
+        
+        priceAmounts.forEach(amount => {
+            const monthlyPrice = amount.getAttribute('data-monthly');
+            const annualPrice = amount.getAttribute('data-annual');
+            
+            if (isAnnual) {
+                // Show annual price divided by 12 for monthly display
+                const monthlyFromAnnual = Math.round(annualPrice / 12);
+                amount.textContent = monthlyFromAnnual;
+            } else {
+                amount.textContent = monthlyPrice;
+            }
+        });
+        
+        // Update period text
+        periodLabels.forEach(period => {
+            if (isAnnual) {
+                period.textContent = '/month (billed annually)';
+            } else {
+                period.textContent = '/month';
+            }
+        });
+    }
+    
+    // Add event listeners to billing toggle
+    billingInputs.forEach(input => {
+        input.addEventListener('change', updatePrices);
+    });
+    
+    // Initialize prices
+    updatePrices();
+    
     // This function is called when a plan is selected
     window.selectPlan = function(planName) {
         // Get URL parameters to check for industry
         const urlParams = new URLSearchParams(window.location.search);
         const industry = urlParams.get('industry');
         
+        // Get current billing frequency
+        const billing = document.querySelector('input[name="billing"]:checked').value;
+        
         // Build cart URL
-        let cartUrl = `cart.html?plan=${planName}`;
+        let cartUrl = `cart.html?plan=${planName}&billing=${billing}`;
         if (industry) {
             cartUrl += `&industry=${industry}`;
         }
