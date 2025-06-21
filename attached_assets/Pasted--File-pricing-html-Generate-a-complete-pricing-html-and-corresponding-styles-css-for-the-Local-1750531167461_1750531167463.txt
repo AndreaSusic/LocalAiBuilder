@@ -1,0 +1,51 @@
+# File: pricing.html
+Generate a complete `pricing.html` and corresponding `styles.css` for the LocalAI Builder site, using plain HTML5 and vanilla CSS. Follow these requirements:
+
+1. **Structure & Content**  
+   - Use the existing site header/navigation (logo + links: Home, Pricing, Industries, FAQ, Login).  
+   - Page title: `<h1>` “Pricing Plans” (with `data-lang="pricingTitle"` and Serbian comment).  
+   - A 4-column responsive grid of plan cards: **Free**, **Starter ($29/mo)**, **Pro ($50/mo)**, **Agency ($99/mo)**.  
+   - Each card must include:  
+     - Plan name & price  
+     - Short tagline (e.g. “Try it free forever” / “Great for small teams” / “For growing agencies” / “Unlimited sites & seats”)  
+     - Feature list:  
+       - Sites included  
+       - Custom domain support  
+       - HTTPS hosting  
+       - Prompt-generated sites  
+       - Membership/Login areas  
+       - 24/7 AI Chat Support  
+       - Industry SEO pages (Free: view only)  
+       - Stripe & PayPal checkout (Free: ❌)  
+       - White-label export (Pro+: ✔)  
+       - Team seats  
+       - Annual billing discount (Starter & Pro: 10%, Agency: 15%)  
+     - A “Select Plan” button linking to `/cart.html?plan=PLAN_KEY` (`PLAN_KEY` = free|starter|pro|agency).  
+
+2. **Responsive CSS** (`styles.css`)  
+   - Mobile-first: single‐column cards on ≤ 640px, 2 columns on 641–1023px, 4 columns ≥ 1024px.  
+   - Use CSS variables:  
+     ```css
+     :root {
+       --primary: #2e8b57;
+       --accent: #f4b400;
+       --dark: #222;
+       --light: #f9fafb;
+     }
+     ```  
+   - Cards: white background, subtle border, box-shadow, padding, border‐radius.  
+   - Buttons: background `var(--primary)`, white text, padding, border‐radius.  
+   - Typography: system-ui font, use relative units (`rem`, `clamp`).  
+
+3. **Accessibility & i18n**  
+   - All user strings in elements must have `data-lang` attributes (default “en”), with Serbian versions in HTML comments.  
+   - Buttons and links should have `aria-label` where appropriate.  
+
+4. **Footer**  
+   - Include the site footer: © 2025 LocalAI Builder • ToS • Privacy • Contact  
+
+5. **Links & Placeholders**  
+   - ToS `/tos.html`, Privacy `/privacy.html`, Contact `mailto:contact@localai-builder.com`.  
+   - Make the “Select Plan” buttons `<a>` tags that point to the cart URL.  
+
+Generate the files in a single code block or as separate files: `pricing.html` and `styles.css`. Ensure the markup and styling are ready to drop into your project.  

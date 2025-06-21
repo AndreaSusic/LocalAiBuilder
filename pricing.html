@@ -39,8 +39,8 @@
     <main>
         <section class="pricing-hero">
             <div class="container">
-                <h1 data-lang="pricingTitle">Choose Your Plan</h1>
-                <!-- sr: Izaberite vaš plan -->
+                <h1 data-lang="pricingTitle">Pricing Plans</h1>
+                <!-- sr: Cenovni planovi -->
                 <p data-lang="pricingSubtitle">Start building professional websites today with our AI-powered platform</p>
                 <!-- sr: Počnite gradnju profesionalnih sajtova danas sa našom AI platformom -->
             </div>
@@ -49,6 +49,50 @@
         <section class="pricing-plans">
             <div class="container">
                 <div class="plans-grid">
+                    <!-- Free Plan -->
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h3 data-lang="freePlanName">Free</h3>
+                            <!-- sr: Besplatan -->
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="amount">0</span>
+                                <span class="period" data-lang="perMonth">/month</span>
+                                <!-- sr: /mesečno -->
+                            </div>
+                            <p data-lang="freePlanDesc">Try it free forever</p>
+                            <!-- sr: Probajte besplatno zauvek -->
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li data-lang="free1">✓ 1 website</li>
+                                <!-- sr: ✓ 1 sajt -->
+                                <li data-lang="free2">❌ Custom domain support</li>
+                                <!-- sr: ❌ Podrška za prilagođeni domen -->
+                                <li data-lang="free3">✓ HTTPS hosting</li>
+                                <!-- sr: ✓ HTTPS hosting -->
+                                <li data-lang="free4">✓ 1 prompt-generated site</li>
+                                <!-- sr: ✓ 1 sajt generisan kroz prompt -->
+                                <li data-lang="free5">❌ Membership/Login areas</li>
+                                <!-- sr: ❌ Oblasti za članstvo/prijavu -->
+                                <li data-lang="free6">❌ 24/7 AI Chat Support</li>
+                                <!-- sr: ❌ 24/7 AI Chat podrška -->
+                                <li data-lang="free7">✓ Industry SEO pages (view only)</li>
+                                <!-- sr: ✓ Industrijske SEO stranice (samo pregled) -->
+                                <li data-lang="free8">❌ Stripe & PayPal checkout</li>
+                                <!-- sr: ❌ Stripe i PayPal plaćanje -->
+                                <li data-lang="free9">❌ White-label export</li>
+                                <!-- sr: ❌ White-label izvoz -->
+                                <li data-lang="free10">1 team seat</li>
+                                <!-- sr: 1 mesto u timu -->
+                            </ul>
+                        </div>
+                        <a href="cart.html?plan=free" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Free Plan">
+                            Select Plan
+                            <!-- sr: Izaberi plan -->
+                        </a>
+                    </div>
+
                     <!-- Starter Plan -->
                     <div class="plan-card">
                         <div class="plan-header">
@@ -60,29 +104,39 @@
                                 <span class="period" data-lang="perMonth">/month</span>
                                 <!-- sr: /mesečno -->
                             </div>
-                            <p data-lang="starterPlanDesc">Perfect for small businesses and personal websites</p>
-                            <!-- sr: Savršeno za mala preduzeća i lične sajtove -->
+                            <p data-lang="starterPlanDesc">Great for small teams</p>
+                            <!-- sr: Odlično za male timove -->
                         </div>
                         <div class="plan-features">
                             <ul>
-                                <li data-lang="starter1">✓ 1 AI-generated website</li>
-                                <!-- sr: ✓ 1 AI-generisan sajt -->
-                                <li data-lang="starter2">✓ Basic customization</li>
-                                <!-- sr: ✓ Osnovno prilagođavanje -->
-                                <li data-lang="starter3">✓ Mobile-responsive design</li>
-                                <!-- sr: ✓ Mobilno-responzivan dizajn -->
-                                <li data-lang="starter4">✓ Free hosting included</li>
-                                <!-- sr: ✓ Besplatan hosting uključen -->
-                                <li data-lang="starter5">✓ SSL certificate</li>
-                                <!-- sr: ✓ SSL sertifikat -->
-                                <li data-lang="starter6">✓ Email support</li>
-                                <!-- sr: ✓ Email podrška -->
+                                <li data-lang="starter1">✓ 3 websites</li>
+                                <!-- sr: ✓ 3 sajta -->
+                                <li data-lang="starter2">✓ Custom domain support</li>
+                                <!-- sr: ✓ Podrška za prilagođeni domen -->
+                                <li data-lang="starter3">✓ HTTPS hosting</li>
+                                <!-- sr: ✓ HTTPS hosting -->
+                                <li data-lang="starter4">✓ 10 prompt-generated sites</li>
+                                <!-- sr: ✓ 10 sajtova generisanih kroz prompt -->
+                                <li data-lang="starter5">✓ Membership/Login areas</li>
+                                <!-- sr: ✓ Oblasti za članstvo/prijavu -->
+                                <li data-lang="starter6">✓ 24/7 AI Chat Support</li>
+                                <!-- sr: ✓ 24/7 AI Chat podrška -->
+                                <li data-lang="starter7">✓ Industry SEO pages</li>
+                                <!-- sr: ✓ Industrijske SEO stranice -->
+                                <li data-lang="starter8">✓ Stripe & PayPal checkout</li>
+                                <!-- sr: ✓ Stripe i PayPal plaćanje -->
+                                <li data-lang="starter9">❌ White-label export</li>
+                                <!-- sr: ❌ White-label izvoz -->
+                                <li data-lang="starter10">3 team seats</li>
+                                <!-- sr: 3 mesta u timu -->
+                                <li class="discount" data-lang="starter11">10% annual billing discount</li>
+                                <!-- sr: 10% popust za godišnje plaćanje -->
                             </ul>
                         </div>
-                        <button class="btn-primary plan-btn" onclick="selectPlan('starter')">
-                            <span data-lang="choosePlan">Choose Plan</span>
+                        <a href="cart.html?plan=starter" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Starter Plan">
+                            Select Plan
                             <!-- sr: Izaberi plan -->
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Pro Plan -->
@@ -96,31 +150,41 @@
                                 <span class="currency">$</span>
                                 <span class="amount">50</span>
                                 <span class="period" data-lang="perMonth">/month</span>
+                                <!-- sr: /mesečno -->
                             </div>
-                            <p data-lang="proPlanDesc">Ideal for growing businesses and agencies</p>
-                            <!-- sr: Idealno za rastuća preduzeća i agencije -->
+                            <p data-lang="proPlanDesc">For growing agencies</p>
+                            <!-- sr: Za rastuće agencije -->
                         </div>
                         <div class="plan-features">
                             <ul>
-                                <li data-lang="pro1">✓ 5 AI-generated websites</li>
-                                <!-- sr: ✓ 5 AI-generisanih sajtova -->
-                                <li data-lang="pro2">✓ Advanced customization</li>
-                                <!-- sr: ✓ Napredno prilagođavanje -->
-                                <li data-lang="pro3">✓ Custom domain included</li>
-                                <!-- sr: ✓ Prilagođeni domen uključen -->
-                                <li data-lang="pro4">✓ SEO optimization tools</li>
-                                <!-- sr: ✓ SEO optimizacioni alati -->
-                                <li data-lang="pro5">✓ Analytics dashboard</li>
-                                <!-- sr: ✓ Analitički dashboard -->
-                                <li data-lang="pro6">✓ Priority email support</li>
-                                <!-- sr: ✓ Prioritetna email podrška -->
-                                <li data-lang="pro7">✓ Phone support</li>
-                                <!-- sr: ✓ Telefonska podrška -->
+                                <li data-lang="pro1">✓ 10 websites</li>
+                                <!-- sr: ✓ 10 sajtova -->
+                                <li data-lang="pro2">✓ Custom domain support</li>
+                                <!-- sr: ✓ Podrška za prilagođeni domen -->
+                                <li data-lang="pro3">✓ HTTPS hosting</li>
+                                <!-- sr: ✓ HTTPS hosting -->
+                                <li data-lang="pro4">✓ 50 prompt-generated sites</li>
+                                <!-- sr: ✓ 50 sajtova generisanih kroz prompt -->
+                                <li data-lang="pro5">✓ Membership/Login areas</li>
+                                <!-- sr: ✓ Oblasti za članstvo/prijavu -->
+                                <li data-lang="pro6">✓ 24/7 AI Chat Support</li>
+                                <!-- sr: ✓ 24/7 AI Chat podrška -->
+                                <li data-lang="pro7">✓ Industry SEO pages</li>
+                                <!-- sr: ✓ Industrijske SEO stranice -->
+                                <li data-lang="pro8">✓ Stripe & PayPal checkout</li>
+                                <!-- sr: ✓ Stripe i PayPal plaćanje -->
+                                <li data-lang="pro9">✓ White-label export</li>
+                                <!-- sr: ✓ White-label izvoz -->
+                                <li data-lang="pro10">10 team seats</li>
+                                <!-- sr: 10 mesta u timu -->
+                                <li class="discount" data-lang="pro11">10% annual billing discount</li>
+                                <!-- sr: 10% popust za godišnje plaćanje -->
                             </ul>
                         </div>
-                        <button class="btn-primary plan-btn" onclick="selectPlan('pro')">
-                            <span data-lang="choosePlan">Choose Plan</span>
-                        </button>
+                        <a href="cart.html?plan=pro" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Pro Plan">
+                            Select Plan
+                            <!-- sr: Izaberi plan -->
+                        </a>
                     </div>
 
                     <!-- Agency Plan -->
@@ -132,31 +196,41 @@
                                 <span class="currency">$</span>
                                 <span class="amount">99</span>
                                 <span class="period" data-lang="perMonth">/month</span>
+                                <!-- sr: /mesečno -->
                             </div>
-                            <p data-lang="agencyPlanDesc">For agencies and large businesses</p>
-                            <!-- sr: Za agencije i velika preduzeća -->
+                            <p data-lang="agencyPlanDesc">Unlimited sites & seats</p>
+                            <!-- sr: Neograničeno sajtova i mesta -->
                         </div>
                         <div class="plan-features">
                             <ul>
                                 <li data-lang="agency1">✓ Unlimited websites</li>
                                 <!-- sr: ✓ Neograničeno sajtova -->
-                                <li data-lang="agency2">✓ White-label solution</li>
-                                <!-- sr: ✓ White-label rešenje -->
-                                <li data-lang="agency3">✓ Client management dashboard</li>
-                                <!-- sr: ✓ Dashboard za upravljanje klijentima -->
-                                <li data-lang="agency4">✓ Advanced integrations</li>
-                                <!-- sr: ✓ Napredne integracije -->
-                                <li data-lang="agency5">✓ Custom branding</li>
-                                <!-- sr: ✓ Prilagođen brending -->
-                                <li data-lang="agency6">✓ Dedicated account manager</li>
-                                <!-- sr: ✓ Posvećeni account manager -->
-                                <li data-lang="agency7">✓ 24/7 phone support</li>
-                                <!-- sr: ✓ 24/7 telefonska podrška -->
+                                <li data-lang="agency2">✓ Custom domain support</li>
+                                <!-- sr: ✓ Podrška za prilagođeni domen -->
+                                <li data-lang="agency3">✓ HTTPS hosting</li>
+                                <!-- sr: ✓ HTTPS hosting -->
+                                <li data-lang="agency4">✓ Unlimited prompt-generated sites</li>
+                                <!-- sr: ✓ Neograničeno sajtova generisanih kroz prompt -->
+                                <li data-lang="agency5">✓ Membership/Login areas</li>
+                                <!-- sr: ✓ Oblasti za članstvo/prijavu -->
+                                <li data-lang="agency6">✓ 24/7 AI Chat Support</li>
+                                <!-- sr: ✓ 24/7 AI Chat podrška -->
+                                <li data-lang="agency7">✓ Industry SEO pages</li>
+                                <!-- sr: ✓ Industrijske SEO stranice -->
+                                <li data-lang="agency8">✓ Stripe & PayPal checkout</li>
+                                <!-- sr: ✓ Stripe i PayPal plaćanje -->
+                                <li data-lang="agency9">✓ White-label export</li>
+                                <!-- sr: ✓ White-label izvoz -->
+                                <li data-lang="agency10">Unlimited team seats</li>
+                                <!-- sr: Neograničeno mesta u timu -->
+                                <li class="discount" data-lang="agency11">15% annual billing discount</li>
+                                <!-- sr: 15% popust za godišnje plaćanje -->
                             </ul>
                         </div>
-                        <button class="btn-primary plan-btn" onclick="selectPlan('agency')">
-                            <span data-lang="choosePlan">Choose Plan</span>
-                        </button>
+                        <a href="cart.html?plan=agency" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Agency Plan">
+                            Select Plan
+                            <!-- sr: Izaberi plan -->
+                        </a>
                     </div>
                 </div>
 
@@ -187,7 +261,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p>&copy; 2025 LocalAI Builder • <a href="tos.html">ToS</a> • <a href="privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
+                <p>&copy; 2025 LocalAI Builder • <a href="/tos.html">ToS</a> • <a href="/privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
             </div>
         </div>
     </footer>

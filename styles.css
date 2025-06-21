@@ -1,5 +1,9 @@
 /* LocalAI Builder - CSS Variables and Reset */
 :root {
+  --primary: #2e8b57;
+  --accent: #f4b400;
+  --dark: #222;
+  --light: #f9fafb;
   --primary-color: #2e8b57;
   --accent-color: #f4b400;
   --dark-color: #222;
@@ -648,9 +652,21 @@ label {
 
 .plans-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--spacing-2xl);
   margin-bottom: var(--spacing-4xl);
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .plans-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .plans-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .plan-card {
@@ -731,6 +747,15 @@ label {
 
 .plan-features li:last-child {
   border-bottom: none;
+}
+
+.plan-features li.discount {
+  color: var(--primary-color);
+  font-weight: 600;
+  background-color: var(--light-color);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  margin-top: var(--spacing-sm);
 }
 
 .plan-btn {
