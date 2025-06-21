@@ -629,6 +629,63 @@ function throttle(func, limit) {
     };
 }
 
+// Signup functionality
+function initSignup() {
+    if (!window.location.pathname.includes('signup.html')) return;
+    
+    const signupForm = document.getElementById('signupForm');
+    
+    if (signupForm) {
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = {
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                company: formData.get('company'),
+                terms: formData.get('terms'),
+                newsletter: formData.get('newsletter')
+            };
+            
+            // Basic validation
+            if (!data.firstName || !data.lastName || !data.email || !data.password) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            if (!data.terms) {
+                alert('You must agree to the Terms of Service to continue.');
+                return;
+            }
+            
+            if (data.password.length < 8) {
+                alert('Password must be at least 8 characters long.');
+                return;
+            }
+            
+            if (!validateEmail(data.email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            // Store signup data in localStorage (demo purposes)
+            saveToLocalStorage('signupData', data);
+            
+            // Show success message and redirect
+            alert('Account created successfully! Redirecting to your dashboard...');
+            
+            // Redirect to account page after signup
+            setTimeout(() => {
+                window.location.href = 'account.html?welcome=true';
+            }, 1000);
+        });
+    }
+}
+
 // Intersection Observer for animations
 const observerOptions = {
     threshold: 0.1,
