@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="accountPageTitle">My Account - LocalAI Builder</title>
+    <!-- sr: Moj nalog - LocalAI Builder -->
+    <meta name="description" content="Manage your LocalAI Builder account, orders, and websites">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="40" rx="8" fill="var(--primary-color)"/>
+                        <path d="M12 28L20 12L28 28H12Z" fill="white"/>
+                        <circle cx="20" cy="20" r="3" fill="var(--accent-color)"/>
+                    </svg>
+                    <span data-lang="brandName">LocalAI Builder</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-lang="navHome">Home</a></li>
+                    <li><a href="pricing.html" data-lang="navPricing">Pricing</a></li>
+                    <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li>
+                    <li><a href="index.html#faq" data-lang="navFAQ">FAQ</a></li>
+                    <li><a href="account.html" class="btn-secondary active" data-lang="navAccount">Account</a></li>
+                    <!-- sr: Nalog -->
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="account-section">
+            <div class="container">
+                <h1 data-lang="accountTitle">My Account</h1>
+                <!-- sr: Moj nalog -->
+                
+                <div class="account-tabs">
+                    <button class="tab-btn active" onclick="showTab('orders')" data-lang="ordersTab">Orders</button>
+                    <!-- sr: Porudžbine -->
+                    <button class="tab-btn" onclick="showTab('sites')" data-lang="sitesTab">Sites</button>
+                    <!-- sr: Sajtovi -->
+                    <button class="tab-btn" onclick="showTab('profile')" data-lang="profileTab">Profile</button>
+                    <!-- sr: Profil -->
+                </div>
+
+                <div id="orders" class="tab-content active">
+                    <div class="section-header">
+                        <h2 data-lang="ordersTitle">Your Orders</h2>
+                        <!-- sr: Vaše porudžbine -->
+                    </div>
+                    <div class="orders-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-lang="orderIdHeader">Order ID</th>
+                                    <!-- sr: ID porudžbine -->
+                                    <th data-lang="planHeader">Plan</th>
+                                    <!-- sr: Plan -->
+                                    <th data-lang="dateHeader">Date</th>
+                                    <!-- sr: Datum -->
+                                    <th data-lang="amountHeader">Amount</th>
+                                    <!-- sr: Iznos -->
+                                    <th data-lang="statusHeader">Status</th>
+                                    <!-- sr: Status -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#LAB-2025-001</td>
+                                    <td data-lang="proPlanName">Pro Plan</td>
+                                    <!-- sr: Pro Plan -->
+                                    <td>June 15, 2025</td>
+                                    <!-- sr: 15. jun 2025. -->
+                                    <td>$50.00</td>
+                                    <td><span class="status-badge active" data-lang="activeStatus">Active</span></td>
+                                    <!-- sr: Aktivan -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="sites" class="tab-content">
+                    <div class="section-header">
+                        <h2 data-lang="sitesTitle">Your Websites</h2>
+                        <!-- sr: Vaši sajtovi -->
+                        <button class="btn-primary" onclick="createNewSite()" data-lang="createSiteBtn">+ Create New Site</button>
+                        <!-- sr: + Kreiraj novi sajt -->
+                    </div>
+                    <div class="sites-grid">
+                        <div class="site-card">
+                            <div class="site-preview">
+                                <div class="preview-placeholder">
+                                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                                        <rect width="60" height="60" rx="8" fill="var(--light-color)" stroke="var(--primary-color)" stroke-width="2"/>
+                                        <rect x="8" y="8" width="44" height="8" rx="2" fill="var(--primary-color)"/>
+                                        <rect x="8" y="20" width="32" height="4" rx="2" fill="var(--dark-color)" opacity="0.3"/>
+                                        <rect x="8" y="28" width="36" height="4" rx="2" fill="var(--dark-color)" opacity="0.3"/>
+                                        <rect x="8" y="36" width="28" height="4" rx="2" fill="var(--dark-color)" opacity="0.3"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="site-info">
+                                <h3 data-lang="sampleSiteName">My Business Website</h3>
+                                <!-- sr: Moj poslovni sajt -->
+                                <p class="site-url">mysite.localai-builder.com</p>
+                                <div class="site-actions">
+                                    <button class="btn-secondary" data-lang="editSiteBtn">Edit</button>
+                                    <!-- sr: Uredi -->
+                                    <button class="btn-primary" data-lang="viewSiteBtn">View</button>
+                                    <!-- sr: Pogledaj -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="profile" class="tab-content">
+                    <div class="section-header">
+                        <h2 data-lang="profileTitle">Profile Settings</h2>
+                        <!-- sr: Podešavanja profila -->
+                    </div>
+                    <div class="profile-form">
+                        <div class="form-group">
+                            <label for="firstName" data-lang="firstNameLabel">First Name</label>
+                            <!-- sr: Ime -->
+                            <input type="text" id="firstName" name="firstName" value="John">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" data-lang="lastNameLabel">Last Name</label>
+                            <!-- sr: Prezime -->
+                            <input type="text" id="lastName" name="lastName" value="Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="email" data-lang="emailLabel">Email Address</label>
+                            <!-- sr: Email adresa -->
+                            <input type="email" id="email" name="email" value="john.doe@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" data-lang="phoneLabel">Phone Number</label>
+                            <!-- sr: Broj telefona -->
+                            <input type="tel" id="phone" name="phone" value="+381 11 000 0000">
+                        </div>
+                        <div class="form-group">
+                            <label for="company" data-lang="companyLabel">Company (Optional)</label>
+                            <!-- sr: Kompanija (opciono) -->
+                            <input type="text" id="company" name="company" value="">
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn-primary" onclick="saveProfile()" data-lang="saveChangesBtn">Save Changes</button>
+                            <!-- sr: Sačuvaj izmene -->
+                        </div>
+                    </div>
+
+                    <div class="subscription-info">
+                        <h3 data-lang="subscriptionTitle">Subscription</h3>
+                        <!-- sr: Pretplata -->
+                        <div class="subscription-card">
+                            <div class="subscription-details">
+                                <h4 data-lang="currentPlan">Current Plan: Pro</h4>
+                                <!-- sr: Trenutni plan: Pro -->
+                                <p data-lang="nextBilling">Next billing: July 15, 2025</p>
+                                <!-- sr: Sledeća naplata: 15. jul 2025. -->
+                                <p data-lang="billingAmount">$50.00/month</p>
+                                <!-- sr: $50.00/mesečno -->
+                            </div>
+                            <div class="subscription-actions">
+                                <button class="btn-secondary" onclick="manageBilling()" data-lang="manageBillingBtn">Manage Billing</button>
+                                <!-- sr: Upravljaj naplatom -->
+                                <button class="btn-outline" onclick="cancelSubscription()" data-lang="cancelSubscriptionBtn">Cancel Subscription</button>
+                                <!-- sr: Otkaži pretplatu -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 LocalAI Builder • <a href="tos.html">ToS</a> • <a href="privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

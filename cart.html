@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="cartPageTitle">Shopping Cart - LocalAI Builder</title>
+    <!-- sr: Korpa - LocalAI Builder -->
+    <meta name="description" content="Review your selected plan and proceed to checkout">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="40" rx="8" fill="var(--primary-color)"/>
+                        <path d="M12 28L20 12L28 28H12Z" fill="white"/>
+                        <circle cx="20" cy="20" r="3" fill="var(--accent-color)"/>
+                    </svg>
+                    <span data-lang="brandName">LocalAI Builder</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-lang="navHome">Home</a></li>
+                    <li><a href="pricing.html" data-lang="navPricing">Pricing</a></li>
+                    <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li>
+                    <li><a href="index.html#faq" data-lang="navFAQ">FAQ</a></li>
+                    <li><a href="account.html" class="btn-secondary" data-lang="navLogin">Login</a></li>
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="cart-section">
+            <div class="container">
+                <h1 data-lang="cartTitle">Your Order</h1>
+                <!-- sr: Vaša porudžbina -->
+                
+                <div class="cart-content">
+                    <div class="cart-summary" id="cartSummary">
+                        <!-- Plan details will be populated by JavaScript -->
+                    </div>
+
+                    <div class="billing-options">
+                        <h3 data-lang="billingFrequencyTitle">Billing Frequency</h3>
+                        <!-- sr: Učestalost naplate -->
+                        <div class="billing-toggle">
+                            <label class="billing-option">
+                                <input type="radio" name="billing" value="monthly" checked>
+                                <span data-lang="monthlyBilling">Monthly</span>
+                                <!-- sr: Mesečno -->
+                            </label>
+                            <label class="billing-option">
+                                <input type="radio" name="billing" value="annual">
+                                <span data-lang="annualBilling">Annual</span>
+                                <!-- sr: Godišnje -->
+                                <span class="discount" data-lang="annualDiscount">(Save 15%)</span>
+                                <!-- sr: (Uštedite 15%) -->
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="order-total">
+                        <div class="total-line">
+                            <span data-lang="subtotal">Subtotal:</span>
+                            <!-- sr: Međuzir: -->
+                            <span id="subtotalAmount">$0</span>
+                        </div>
+                        <div class="total-line discount-line" id="discountLine" style="display: none;">
+                            <span data-lang="annualDiscountText">Annual Discount (15%):</span>
+                            <!-- sr: Godišnji popust (15%): -->
+                            <span id="discountAmount">-$0</span>
+                        </div>
+                        <div class="total-line total">
+                            <span data-lang="total">Total:</span>
+                            <!-- sr: Ukupno: -->
+                            <span id="totalAmount">$0</span>
+                        </div>
+                    </div>
+
+                    <div class="cart-actions">
+                        <button class="btn-secondary" onclick="goBack()" data-lang="backToPricing">← Back to Pricing</button>
+                        <!-- sr: ← Nazad na cene -->
+                        <button class="btn-primary" onclick="proceedToCheckout()" data-lang="proceedToCheckout">Proceed to Checkout</button>
+                        <!-- sr: Nastavi na plaćanje -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 LocalAI Builder • <a href="tos.html">ToS</a> • <a href="privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

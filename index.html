@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="pageTitle">LocalAI Builder - Create Your Website in Minutes</title>
+    <!-- sr: LocalAI Builder - Kreirajte sajt za nekoliko minuta -->
+    <meta name="description" content="AI-powered website builder that creates professional websites in minutes">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="40" rx="8" fill="var(--primary-color)"/>
+                        <path d="M12 28L20 12L28 28H12Z" fill="white"/>
+                        <circle cx="20" cy="20" r="3" fill="var(--accent-color)"/>
+                    </svg>
+                    <span data-lang="brandName">LocalAI Builder</span>
+                    <!-- sr: LocalAI Builder -->
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-lang="navHome">Home</a></li> <!-- sr: Početna -->
+                    <li><a href="pricing.html" data-lang="navPricing">Pricing</a></li> <!-- sr: Cene -->
+                    <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li> <!-- sr: Industrije -->
+                    <li><a href="#faq" data-lang="navFAQ">FAQ</a></li> <!-- sr: Česta pitanja -->
+                    <li><a href="account.html" class="btn-secondary" data-lang="navLogin">Login</a></li> <!-- sr: Prijava -->
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <h1 data-lang="heroHead">Create Your Website in Minutes</h1>
+                        <!-- sr: Kreirajte sajt za nekoliko minuta -->
+                        <p data-lang="heroUSP">AI-powered website builder that transforms your ideas into professional websites instantly</p>
+                        <!-- sr: AI graditelj sajtova koji trenutno pretvara vaše ideje u profesionalne sajtove -->
+                    </div>
+                    <div class="hero-form">
+                        <div class="prompt-container">
+                            <label for="aiPrompt" data-lang="promptLabel">Describe your business or website idea:</label>
+                            <!-- sr: Opišite vašu ideju za posao ili sajt: -->
+                            <textarea id="aiPrompt" rows="4" placeholder="E.g., A modern dental clinic in Belgrade that offers family dentistry and cosmetic treatments..." data-lang="promptPlaceholder"></textarea>
+                            <!-- sr placeholder: Npr., Moderna stomatološka ordinacija u Beogradu koja pruža porodičnu stomatologiju i kozmetičke tretmane... -->
+                            <div class="word-count">
+                                <span id="wordCount">0</span> <span data-lang="wordsLabel">words</span>
+                                <!-- sr: reči -->
+                            </div>
+                        </div>
+                        <div id="followUp" class="follow-up hidden">
+                            <input type="text" id="companyName" placeholder="Company Name" data-lang="companyPlaceholder">
+                            <!-- sr: Ime kompanije -->
+                            <input type="color" id="brandColor" value="#2e8b57">
+                            <input type="email" id="contactEmail" placeholder="Contact Email" data-lang="emailPlaceholder">
+                            <!-- sr: Kontakt email -->
+                        </div>
+                        <button id="btnStart" class="btn-primary" data-lang="ctaStart">Start Building →</button>
+                        <!-- sr: Počni gradnju → -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <div class="container">
+                <h2 data-lang="benefitsTitle">Why Choose LocalAI Builder?</h2>
+                <!-- sr: Zašto izabrati LocalAI Builder? -->
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                <circle cx="24" cy="24" r="20" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                                <path d="M16 24l6 6 12-12" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="benefit1Title">Lightning Fast</h3>
+                        <!-- sr: Munjevito brzo -->
+                        <p data-lang="benefit1Desc">Generate professional websites in under 5 minutes with AI-powered automation</p>
+                        <!-- sr: Generiši profesionalne sajtove za manje od 5 minuta sa AI automatizacijom -->
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                <rect x="8" y="12" width="32" height="24" rx="4" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                                <path d="M8 20h32M16 28h16" stroke="var(--primary-color)" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="benefit2Title">Mobile-First Design</h3>
+                        <!-- sr: Mobilni dizajn -->
+                        <p data-lang="benefit2Desc">Every website is optimized for mobile devices and loads instantly</p>
+                        <!-- sr: Svaki sajt je optimizovan za mobilne uređaje i učitava se trenutno -->
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                <circle cx="24" cy="24" r="20" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                                <path d="M18 24h12M24 18v12" stroke="var(--primary-color)" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="benefit3Title">SEO Optimized</h3>
+                        <!-- sr: SEO optimizovano -->
+                        <p data-lang="benefit3Desc">Built-in SEO best practices to help your business get found online</p>
+                        <!-- sr: Ugrađene SEO najbolje prakse da pomognu vašem poslu da bude pronađen online -->
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                <path d="M24 8v32M8 24h32" stroke="var(--primary-color)" stroke-width="2"/>
+                                <circle cx="24" cy="24" r="16" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="benefit4Title">Local Business Focus</h3>
+                        <!-- sr: Fokus na lokalni biznis -->
+                        <p data-lang="benefit4Desc">Specialized templates and features for local Serbian businesses</p>
+                        <!-- sr: Specijalizovani template-i i funkcije za lokalne srpske biznise -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2 data-lang="howItWorksTitle">How It Works</h2>
+                <!-- sr: Kako funkcioniše -->
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                <rect x="6" y="8" width="28" height="20" rx="2" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                                <path d="M10 14h6M10 18h8M10 22h4" stroke="var(--primary-color)" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="step1Title">Describe Your Vision</h3>
+                        <!-- sr: Opišite vašu viziju -->
+                        <p data-lang="step1Desc">Tell us about your business, services, and target audience in a few sentences</p>
+                        <!-- sr: Recite nam o vašem poslovanju, uslugama i ciljnoj publici u nekoliko rečenica -->
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                <circle cx="20" cy="20" r="14" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                                <path d="M20 12v8l6 6" stroke="var(--primary-color)" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="step2Title">AI Generates Your Site</h3>
+                        <!-- sr: AI generiše vaš sajt -->
+                        <p data-lang="step2Desc">Our AI creates a custom website with content, images, and styling in minutes</p>
+                        <!-- sr: Naš AI kreira prilagođeni sajt sa sadržajem, slikama i stilizovanjem za nekoliko minuta -->
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                <rect x="8" y="6" width="24" height="28" rx="2" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                                <path d="M14 12h10M14 16h8M14 20h12M14 24h6" stroke="var(--primary-color)" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="step3Title">Launch & Customize</h3>
+                        <!-- sr: Pokretanje i prilagođavanje -->
+                        <p data-lang="step3Desc">Review, make final adjustments, and launch your professional website</p>
+                        <!-- sr: Pregledajte, napravite finalna podešavanja i pokrenite vaš profesionalni sajt -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="faq">
+            <div class="container">
+                <h2 data-lang="faqTitle">Frequently Asked Questions</h2>
+                <!-- sr: Često postavljana pitanja -->
+                <div class="faq-accordion">
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span data-lang="faq1Q">How long does it take to create a website?</span>
+                            <!-- sr: Koliko vremena je potrebno da se kreira sajt? -->
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p data-lang="faq1A">Most websites are generated in under 5 minutes. Complex sites with multiple pages may take up to 15 minutes.</p>
+                            <!-- sr: Većina sajtova se generiše za manje od 5 minuta. Složeni sajtovi sa više stranica mogu potrajati do 15 minuta. -->
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span data-lang="faq2Q">Can I customize the generated website?</span>
+                            <!-- sr: Mogu li da prilagodim generisani sajt? -->
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p data-lang="faq2A">Yes! You can edit content, change colors, upload your own images, and modify layouts after generation.</p>
+                            <!-- sr: Da! Možete da editujete sadržaj, menjate boje, otpremate vaše slike i modifikujete raspored nakon generisanja. -->
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span data-lang="faq3Q">Do you offer hosting and domain services?</span>
+                            <!-- sr: Da li nudite hosting i domain usluge? -->
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p data-lang="faq3A">Yes, all plans include free hosting. Premium plans include a free custom domain for the first year.</p>
+                            <!-- sr: Da, svi planovi uključuju besplatan hosting. Premium planovi uključuju besplatan prilagođeni domen za prvu godinu. -->
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span data-lang="faq4Q">Is there customer support available?</span>
+                            <!-- sr: Da li je dostupna korisnička podrška? -->
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p data-lang="faq4A">We provide 24/7 email support for all users and priority phone support for Pro and Agency plan subscribers.</p>
+                            <!-- sr: Pružamo 24/7 email podršku za sve korisnike i prioritetnu telefonsku podršku za Pro i Agency plan pretplatnike. -->
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span data-lang="faq5Q">Can I cancel my subscription anytime?</span>
+                            <!-- sr: Mogu li da otkažem pretplatu bilo kada? -->
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p data-lang="faq5A">Yes, you can cancel your subscription at any time. Your websites will remain active until the end of your current billing period.</p>
+                            <!-- sr: Da, možete otkazati pretplatu bilo kada. Vaši sajtovi će ostati aktivni do kraja trenutnog perioda naplate. -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section class="reviews">
+            <div class="container">
+                <h2 data-lang="reviewsTitle">What Our Customers Say</h2>
+                <!-- sr: Šta kažu naši korisnici -->
+                <div class="reviews-carousel">
+                    <div class="review-track">
+                        <div class="review-card active">
+                            <div class="stars">★★★★★</div>
+                            <p data-lang="review1Text">"LocalAI Builder transformed my landscaping business online presence in just minutes. The generated website looks professional and already brings new customers!"</p>
+                            <!-- sr: "LocalAI Builder je transformisao online prisustvo moje pejzažne firme za nekoliko minuta. Generisani sajt izgleda profesionalno i već dovodi nove kupce!" -->
+                            <div class="review-author">
+                                <strong data-lang="review1Author">Marko Petrović</strong>
+                                <!-- sr: Marko Petrović -->
+                                <span data-lang="review1Business">Green Gardens Landscaping</span>
+                                <!-- sr: Green Gardens Landscaping -->
+                            </div>
+                        </div>
+                        <div class="review-card">
+                            <div class="stars">★★★★★</div>
+                            <p data-lang="review2Text">"As a dentist, I needed a website that looked trustworthy and professional. The AI understood exactly what I needed and delivered beyond expectations."</p>
+                            <!-- sr: "Kao stomatolog, trebao mi je sajt koji izgleda pouzdano i profesionalno. AI je razumeo tačno šta mi je potrebno i isporučio više od očekivanja." -->
+                            <div class="review-author">
+                                <strong data-lang="review2Author">Dr. Ana Nikolić</strong>
+                                <!-- sr: Dr Ana Nikolić -->
+                                <span data-lang="review2Business">Smile Dental Clinic</span>
+                                <!-- sr: Smile Dental Clinic -->
+                            </div>
+                        </div>
+                        <div class="review-card">
+                            <div class="stars">★★★★★</div>
+                            <p data-lang="review3Text">"Incredible value for money. The website generated for our law firm rivals sites that cost thousands. Highly recommend to any local business!"</p>
+                            <!-- sr: "Neverojatn odnos cene i vrednosti. Sajt generisan za našu advokatsku kancelariju parira sajtovima koji koštaju hiljade. Toplo preporučujem bilo kom lokalnom biznisu!" -->
+                            <div class="review-author">
+                                <strong data-lang="review3Author">Miloš Jovanović</strong>
+                                <!-- sr: Miloš Jovanović -->
+                                <span data-lang="review3Business">Jovanović Law Office</span>
+                                <!-- sr: Advokatska kancelarija Jovanović -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="carousel-btn prev" aria-label="Previous review">‹</button>
+                        <div class="carousel-indicators">
+                            <button class="indicator active" data-slide="0"></button>
+                            <button class="indicator" data-slide="1"></button>
+                            <button class="indicator" data-slide="2"></button>
+                        </div>
+                        <button class="carousel-btn next" aria-label="Next review">›</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 LocalAI Builder • <a href="tos.html">ToS</a> • <a href="privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
