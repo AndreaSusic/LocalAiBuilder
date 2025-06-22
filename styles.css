@@ -1069,7 +1069,6 @@ label {
 
 /* Follow-up Panel Styles */
 .followup {
-  display: grid;
   gap: 1rem;
   margin-top: 1.5rem;
   border: 1px solid var(--light);
@@ -1077,6 +1076,10 @@ label {
   border-radius: 8px;
   background: #fffbe9;
 }
+
+/* Hide follow-up panel by default */
+#followUp        { display: none; }   /* always hidden at load */
+#followUp.show   { display: grid; }   /* only visible when JS adds .show */
 
 .followup label,
 .colorset {

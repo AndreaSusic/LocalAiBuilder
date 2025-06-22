@@ -52,35 +52,41 @@ function initPromptForm() {
     const followUp = document.getElementById('followUp');
     const btnStart = document.getElementById('btnStart');
     
-    // Helper to (un)hide a wrapper
-    function show(id, showIt) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.hidden = !showIt;
-        }
+    const wraps = {
+        company:  document.getElementById('wrapCompany'),
+        city:     document.getElementById('wrapCity'),
+        industry: document.getElementById('wrapIndustry'),
+        lang:     document.getElementById('wrapLang'),
+        colors:   document.getElementById('wrapColors')
+    };
+
+    // start fully hidden (no .show class)
+    function needs(text){
+        if(!text) return {any:false};
+        return {
+            company:  !/clinic|inc|ltd|corp|agency|company/i.test(text),
+            city:     !/\b(austin|belgrade|london|new york)\b/i.test(text),
+            industry: !/(dental|plumbing|lawn|roof|law|marketing|design)/i.test(text),
+            lang:     !/(english|spanish|german|serbian)/i.test(text)
+        };
     }
 
-    function scan(text) {
-        text = text.toLowerCase();
-        const needCompany = !/(clinic|studio|agency|inc|ltd|corp|company|\sllc\b|\sd\.o\.o\.)/.test(text);
-        const needCity    = !/(austin|belgrade|london|new york|paris|[a-z]+\s(city|town))/.test(text);
-        const needIndustry= !/(dental|plumbing|lawn|roof|law|marketing|design)/.test(text);
-        const needLang    = !/(english|spanish|german|serbian)/.test(text);
+    function refresh(){
+        const t = aiPrompt.value.trim().toLowerCase();
+        const n = needs(t);
 
-        // If ANY field missing → show wrapper panel
-        const anyMissing = needCompany || needCity || needIndustry || needLang;
-        if (followUp) {
-            followUp.hidden = !anyMissing;
-        }
+        // show/hide individual wrappers
+        if (wraps.company) wraps.company.hidden = !n.company;
+        if (wraps.city) wraps.city.hidden = !n.city;
+        if (wraps.industry) wraps.industry.hidden = !n.industry;
+        if (wraps.lang) wraps.lang.hidden = !n.lang;
 
-        // Toggle individual fields
-        show('wrapCompany', needCompany);
-        show('wrapCity', needCity);
-        show('wrapIndustry', needIndustry);
-        show('wrapLang', needLang);
+        // colours only if any field missing
+        const any = n.company || n.city || n.industry || n.lang;
+        if (wraps.colors) wraps.colors.hidden = !any;
 
-        // Colours are always shown once panel is visible
-        show('wrapColors', anyMissing);
+        // flip master .show class
+        if (followUp) followUp.classList.toggle('show', any);
     }
     
     if (aiPrompt && wordCount) {
@@ -90,12 +96,12 @@ function initPromptForm() {
             const count = words.length;
             wordCount.textContent = count;
             
-            // Run scan after each keystroke
-            scan(this.value.trim());
+            // Run refresh after each keystroke
+            refresh();
         });
         
-        // Hide everything at page-load
-        scan('');
+        // Initialize on page load
+        refresh();
     }
     
     // Handle start button click
