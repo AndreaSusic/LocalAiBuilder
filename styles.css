@@ -752,6 +752,11 @@ label {
   transform: translateX(100%);
 }
 
+/* Initial state - thumb on left for annual */
+.billing-pill-toggle[aria-checked="false"] .toggle-thumb {
+  transform: translateX(0);
+}
+
 @media (max-width: 640px) {
   .billing-pill-toggle {
     width: 240px;
