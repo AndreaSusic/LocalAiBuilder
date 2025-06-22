@@ -12,22 +12,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize state
   function updateMode() {
     if (checkbox.checked) {
-      // Annual mode (checkbox checked)
-      toggleBtn.classList.add('annual-mode');
-      toggleBtn.classList.remove('monthly-mode');
-      switchElement.setAttribute('aria-checked', 'true');
-    } else {
-      // Monthly mode (checkbox unchecked) 
+      // Monthly mode (checkbox checked - slider on right)
       toggleBtn.classList.add('monthly-mode');
       toggleBtn.classList.remove('annual-mode');
+      switchElement.setAttribute('aria-checked', 'true');
+    } else {
+      // Annual mode (checkbox unchecked - slider on left) 
+      toggleBtn.classList.add('annual-mode');
+      toggleBtn.classList.remove('monthly-mode');
       switchElement.setAttribute('aria-checked', 'false');
     }
     
     // Dispatch custom event for external listeners
     const event = new CustomEvent('billingToggleChange', {
       detail: {
-        isAnnual: checkbox.checked,
-        mode: checkbox.checked ? 'annual' : 'monthly'
+        isAnnual: !checkbox.checked,
+        mode: !checkbox.checked ? 'annual' : 'monthly'
       }
     });
     document.dispatchEvent(event);
@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Public API
   window.BillingToggle = {
-    isAnnual: () => checkbox.checked,
+    isAnnual: () => !checkbox.checked,
     setAnnual: (annual) => {
-      checkbox.checked = annual;
+      checkbox.checked = !annual;
       updateMode();
     },
     toggle: () => {
