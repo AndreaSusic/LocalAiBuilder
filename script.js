@@ -52,30 +52,39 @@ function initPromptForm() {
     const followUp = document.getElementById('followUp');
     const btnStart = document.getElementById('btnStart');
     
+    // Smart detection for missing essential data
+    function needsMoreInfo(text) {
+        if (!text || text.trim().length === 0) return false;
+        
+        // Check for company name (proper noun pattern)
+        const hasName = /[A-Z][a-z]+\s[A-Z]?[a-z]+/.test(text);
+        
+        // Check for city/location
+        const hasCity = /(Belgrade|Novi Sad|Niš|Subotica|Zagreb|Ljubljana|Sarajevo|Podgorica|Skopje|[A-Z][a-z]+ City|[A-Z][a-z]+,?\s*[A-Z][a-z]+)/i.test(text);
+        
+        // Check for industry keywords
+        const hasIndustry = /(dental|clinic|roofing|lawn|legal|restaurant|shop|store|clinic|office|agency|consulting|construction|medical|health|fitness|beauty|salon|garage|repair|automotive|real estate|finance|insurance|education|school|university|hotel|tourism|photography|design|marketing|accounting|veterinary|pharmacy|bakery|cafe|bar|restaurant)/i.test(text);
+        
+        return !(hasName && hasCity && hasIndustry);
+    }
+    
     if (aiPrompt && wordCount) {
         // Word count functionality
         aiPrompt.addEventListener('input', function() {
             const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
             const count = words.length;
             wordCount.textContent = count;
-            
-            // Show follow-up fields if less than 15 words
-            if (followUp) {
-                if (count > 0 && count < 15) {
-                    followUp.classList.remove('hidden');
-                } else {
-                    followUp.classList.add('hidden');
-                }
-            }
         });
         
-        // Handle blur event for word count check
+        // Smart detection on blur
         aiPrompt.addEventListener('blur', function() {
-            const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
-            const count = words.length;
-            
-            if (followUp && count > 0 && count < 15) {
-                followUp.classList.remove('hidden');
+            const text = this.value.trim();
+            if (followUp && text.length > 0) {
+                if (needsMoreInfo(text)) {
+                    followUp.hidden = false;
+                } else {
+                    followUp.hidden = true;
+                }
             }
         });
     }
@@ -88,8 +97,11 @@ function initPromptForm() {
                 const formData = {
                     prompt: aiPrompt.value,
                     companyName: document.getElementById('companyName')?.value || '',
-                    brandColor: document.getElementById('brandColor')?.value || '#2e8b57',
-                    contactEmail: document.getElementById('contactEmail')?.value || ''
+                    companyCity: document.getElementById('companyCity')?.value || '',
+                    industry: document.getElementById('industry')?.value || '',
+                    siteLang: document.getElementById('siteLang')?.value || '',
+                    primaryColor: document.getElementById('primaryColor')?.value || '#ffc000',
+                    secondaryColor: document.getElementById('secondaryColor')?.value || '#000000'
                 };
                 localStorage.setItem('aiBuilderFormData', JSON.stringify(formData));
             }
