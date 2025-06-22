@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initCheckout();
     initAccount();
     initSignup();
+    initLoginModal();
     
     // Handle URL parameters
     handleURLParams();
