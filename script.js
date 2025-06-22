@@ -60,6 +60,9 @@ function initPromptForm() {
         colors:   document.getElementById('wrapColors')
     };
 
+    // force panel closed on initial load
+    followUp.classList.remove('show');
+
     // Debounce helper
     function debounce(fn, delay = 600) {
         let t; 
