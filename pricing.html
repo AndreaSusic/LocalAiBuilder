@@ -50,55 +50,18 @@
             <div class="container">
                 <!-- Billing Toggle -->
                 <div class="billing-toggle-container">
-                    <label class="billing-label" data-lang="billingLabel">Billing:</label>
-                    <!-- sr: Naplate: -->
-                    <div class="billing-toggle">
-                        <input type="radio" id="monthly" name="billing" value="monthly" checked>
-                        <label for="monthly" data-lang="monthlyBilling">Monthly</label>
-                        <!-- sr: Mesečno -->
-                        
-                        <input type="radio" id="annually" name="billing" value="annually">
-                        <label for="annually" data-lang="annualBilling">Annually (10% off)</label>
-                        <!-- sr: Godišnje (10% popust) -->
-                        
-                        <div class="toggle-slider" aria-label="Billing frequency toggle"></div>
+                    <div class="billing-pill-toggle" role="switch" aria-checked="false" tabindex="0" id="billingToggle">
+                        <div class="toggle-track">
+                            <span class="toggle-label left active" data-lang="monthly">Monthly</span>
+                            <!-- sr: Mesečno -->
+                            <span class="toggle-label right" data-lang="annually">Annually (10% off)</span>
+                            <!-- sr: Godišnje (10% popusta) -->
+                            <div class="toggle-thumb"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="plans-grid">
-                    <!-- Free Trial -->
-                    <div class="plan-card">
-                        <div class="plan-header">
-                            <h3 data-lang="freeTrialName">Free Trial</h3>
-                            <!-- sr: Besplatno probno -->
-                            <div class="plan-price">
-                                <span class="currency">$</span>
-                                <span class="amount">0</span>
-                                <span class="period" data-lang="perMonth">/month</span>
-                                <!-- sr: /mesečno -->
-                            </div>
-                            <p data-lang="freeTrialDesc">15 AI prompts, subdomain only</p>
-                            <!-- sr: 15 AI prompt-ova, samo poddomen -->
-                        </div>
-                        <div class="plan-features">
-                            <ul>
-                                <li data-lang="trial1">✓ 15 AI prompts</li>
-                                <!-- sr: ✓ 15 AI prompt-ova -->
-                                <li data-lang="trial2">✓ Subdomain hosting</li>
-                                <!-- sr: ✓ Poddomen hosting -->
-                                <li data-lang="trial3">✓ Basic templates</li>
-                                <!-- sr: ✓ Osnovni template-i -->
-                                <li data-lang="trial4">❌ Custom domain</li>
-                                <!-- sr: ❌ Prilagođeni domen -->
-                                <li data-lang="trial5">❌ Advanced features</li>
-                                <!-- sr: ❌ Napredne funkcije -->
-                            </ul>
-                        </div>
-                        <a href="signup.html" class="btn-primary plan-btn" data-lang="tryForFree" aria-label="Try it for Free">
-                            Try it for Free
-                            <!-- sr: Probaj besplatno -->
-                        </a>
-                    </div>
+                <div class="plans-grid" id="plansWrapper">
 
                     <!-- Starter Plan -->
                     <div class="plan-card">
@@ -132,9 +95,9 @@
                                 <!-- sr: ✓ 1 mesto u timu -->
                             </ul>
                         </div>
-                        <a href="cart.html?plan=starter" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Starter Plan">
-                            Select Plan
-                            <!-- sr: Izaberi plan -->
+                        <a href="signup.html?plan=starter" class="btn-primary plan-btn" data-lang="tryForFree" aria-label="Try Starter for Free">
+                            Try for Free
+                            <!-- sr: Probaj besplatno -->
                         </a>
                     </div>
 
@@ -155,6 +118,8 @@
                             <!-- sr: Odlično za male timove -->
                         </div>
                         <div class="plan-features">
+                            <p class="plan-extra" data-lang="proExtra">Everything in Starter, plus:</p>
+                            <!-- sr: Sve iz Starter paketa, plus: -->
                             <ul>
                                 <li data-lang="feature1">✓ Prompt-driven site generation</li>
                                 <!-- sr: ✓ Generisanje sajtova preko prompt-a -->
@@ -172,9 +137,9 @@
                                 <!-- sr: ✓ 3 mesta u timu -->
                             </ul>
                         </div>
-                        <a href="cart.html?plan=pro" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Pro Plan">
-                            Select Plan
-                            <!-- sr: Izaberi plan -->
+                        <a href="signup.html?plan=pro" class="btn-primary plan-btn" data-lang="tryForFree" aria-label="Try Pro for Free">
+                            Try for Free
+                            <!-- sr: Probaj besplatno -->
                         </a>
                     </div>
 
@@ -193,6 +158,8 @@
                             <!-- sr: Za rastuće agencije -->
                         </div>
                         <div class="plan-features">
+                            <p class="plan-extra" data-lang="agencyExtra">Everything in Pro, plus:</p>
+                            <!-- sr: Sve iz Pro paketa, plus: -->
                             <ul>
                                 <li data-lang="feature1">✓ Prompt-driven site generation</li>
                                 <!-- sr: ✓ Generisanje sajtova preko prompt-a -->
@@ -210,9 +177,9 @@
                                 <!-- sr: ✓ 10 mesta u timu -->
                             </ul>
                         </div>
-                        <a href="cart.html?plan=agency" class="btn-primary plan-btn" data-lang="selectPlan" aria-label="Select Agency Plan">
-                            Select Plan
-                            <!-- sr: Izaberi plan -->
+                        <a href="signup.html?plan=agency" class="btn-primary plan-btn" data-lang="tryForFree" aria-label="Try Agency for Free">
+                            Try for Free
+                            <!-- sr: Probaj besplatno -->
                         </a>
                     </div>
                 </div>

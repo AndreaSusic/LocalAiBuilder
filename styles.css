@@ -672,83 +672,89 @@ label {
 /* Billing Toggle */
 .billing-toggle-container {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: var(--spacing-lg);
   margin-bottom: var(--spacing-3xl);
-  padding: var(--spacing-xl);
-  background-color: var(--light-color);
-  border-radius: var(--radius-lg);
 }
 
-.billing-label {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--dark-color);
-  margin-bottom: 0;
-}
-
-.billing-toggle {
+.billing-pill-toggle {
   position: relative;
+  width: 280px;
+  height: 40px;
+  cursor: pointer;
+  outline: none;
+}
+
+.toggle-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--light-color);
+  border-radius: 20px;
   display: flex;
-  background-color: var(--white);
-  border-radius: 50px;
-  padding: 4px;
-  box-shadow: var(--shadow-sm);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
   border: 2px solid var(--gray-200);
 }
 
-.billing-toggle input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.billing-toggle label {
+.toggle-label {
   position: relative;
-  padding: var(--spacing-sm) var(--spacing-lg);
+  z-index: 2;
   font-size: var(--font-size-sm);
   font-weight: 600;
-  color: var(--gray-600);
-  cursor: pointer;
+  color: var(--dark-color);
   transition: color var(--transition-fast);
-  z-index: 2;
-  border-radius: 50px;
-  margin-bottom: 0;
+  padding: 8px 16px;
+  text-align: center;
   white-space: nowrap;
 }
 
-.billing-toggle input[type="radio"]:checked + label {
+.toggle-label.left {
+  flex: 1;
+}
+
+.toggle-label.right {
+  flex: 1;
+}
+
+.toggle-label.active {
   color: var(--white);
 }
 
-.toggle-slider {
+.toggle-thumb {
   position: absolute;
   top: 4px;
   left: 4px;
-  bottom: 4px;
   width: calc(50% - 4px);
-  background-color: var(--accent-color);
-  border-radius: 50px;
+  height: 32px;
+  background-color: var(--primary-color);
+  border-radius: 16px;
   transition: transform var(--transition-normal);
   z-index: 1;
 }
 
-.billing-toggle input[type="radio"]:nth-child(3):checked ~ .toggle-slider {
+.billing-pill-toggle[aria-checked="true"] .toggle-thumb {
   transform: translateX(100%);
 }
 
 @media (max-width: 640px) {
-  .billing-toggle-container {
-    flex-direction: column;
-    gap: var(--spacing-md);
-    text-align: center;
+  .billing-pill-toggle {
+    width: 240px;
+    height: 36px;
   }
   
-  .billing-toggle label {
-    padding: var(--spacing-sm) var(--spacing-md);
+  .toggle-track {
+    border-radius: 18px;
+  }
+  
+  .toggle-thumb {
+    height: 28px;
+    border-radius: 14px;
+  }
+  
+  .toggle-label {
     font-size: var(--font-size-xs);
+    padding: 6px 12px;
   }
 }
 
