@@ -741,23 +741,25 @@ function initSignup() {
 }
 
 // Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+if (typeof window !== 'undefined' && !window.goaisite_observer) {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-        }
+    window.goaisite_observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements for animation
+    document.querySelectorAll('.benefit-card, .step, .industry-card').forEach(el => {
+        window.goaisite_observer.observe(el);
     });
-}, observerOptions);
-
-// Observe elements for animation
-document.querySelectorAll('.benefit-card, .step, .industry-card').forEach(el => {
-    observer.observe(el);
-});
+}
 
 // Add animation styles dynamically
 const style = document.createElement('style');
