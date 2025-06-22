@@ -68,31 +68,49 @@ function initPromptForm() {
     }
 
     function evaluate(text){
-        // Wait until user has typed ≥10 chars
+        // 1) If the user hasn't typed ≥10 characters, stay hidden.
         if (text.length < 10){
-            if (followUp) followUp.classList.remove('show');
-            Object.values(wraps).forEach(el => {
-                if (el) el.hidden = true;
-            });
+            followUp.classList.remove('show');
+            Object.values(wraps).forEach(el => el.hidden = true);
             return;
         }
 
         const t = text.toLowerCase();
 
-        const needCompany  = !/(clinic|studio|agency|inc|ltd|corp|company|d\.o\.o|dental)/i.test(t);
-        const needCity     = !/\b(austin|belgrade|london|new york|novi sad|paris|[a-z]+ city)\b/i.test(t);
-        const needIndustry = !/(dental|plumbing|lawn|roof|law|marketing|design)/i.test(t);
-        const needLang     = !/(english|spanish|german|serbian)/i.test(t);
+        // 2) Detection: look for ANY word ending in typical business/industry nouns.
+        const hasCompanyWord =
+              /\b(clinic|studio|agency|inc|ltd|corp|company|d\.o\.o|llc|firm)\b/.test(t);
 
-        const anyMissing = needCompany || needCity || needIndustry || needLang;
+        // City: require a capitalised word followed by a space + known suffix, OR a known whitelist
+        const hasCity =
+              /\b(austin|belgrade|london|paris|berlin|novi sad|new york)\b/i.test(t) ||
+              /\b[A-Z][a-z]+\s(city|town)\b/.test(text);
 
-        if (followUp) followUp.classList.toggle('show', anyMissing);
+        // Industry: any of these keywords
+        const hasIndustry =
+              /\b(dental|plumb|lawn|roof|legal|law|marketing|design|clean|auto|food)\b/.test(t);
 
+        // Language recognised if the word appears anywhere
+        const hasLang =
+              /\b(english|german|spanish|serbian|french|italian)\b/.test(t);
+
+        // 3) Decide what's missing
+        const needCompany  = !hasCompanyWord;
+        const needCity     = !hasCity;
+        const needIndustry = !hasIndustry;
+        const needLang     = !hasLang;
+        const anyMissing   = needCompany || needCity || needIndustry || needLang;
+
+        // 4) Toggle master panel & individual wrappers
+        followUp.classList.toggle('show', anyMissing);
         show('company',  needCompany);
         show('city',     needCity);
         show('industry', needIndustry);
         show('lang',     needLang);
         show('colors',   anyMissing);
+
+        // 5) (Optional) console debug
+        console.log({needCompany, needCity, needIndustry, needLang});
     }
     
     if (prompt && wordCount) {
