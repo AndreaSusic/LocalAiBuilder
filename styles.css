@@ -1067,6 +1067,85 @@ label {
   }
 }
 
+/* Follow-up Panel Styles */
+.followup {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  border: 1px solid var(--light);
+  padding: 1rem;
+  border-radius: 8px;
+  background: #fffbe9;
+}
+
+.followup label,
+.colorset {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--dark-color);
+}
+
+.followup input,
+.followup select {
+  margin-top: 0.5rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition-fast);
+}
+
+.followup input:focus,
+.followup select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.colorset {
+  gap: 0.5rem;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.colorset legend {
+  padding: 0 var(--spacing-sm);
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.colorset input[type="color"] {
+  width: 48%;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  margin-top: 0;
+}
+
+.colorset input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.colorset input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: var(--radius-sm);
+}
+
+@media (max-width: 640px) {
+  .followup {
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+  
+  .colorset input[type="color"] {
+    width: 100%;
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
 /* Signup Page */
 .signup-section {
   padding: var(--spacing-4xl) 0;

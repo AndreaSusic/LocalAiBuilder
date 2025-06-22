@@ -100,7 +100,8 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
-- June 22, 2025: Complete branding refresh to GoAISite - updated logo, Cooper Hewitt wordmark font, changed primary color from green (#2e8b57) to yellow (#ffc000), updated all HTML pages with new branding and font imports
+- June 22, 2025: Enhanced homepage with smart follow-up panel - added dual color picker, industry/location/language inputs, intelligent detection for missing business data (company name, city, industry), improved form data collection for personalized website generation
+- June 22, 2025: Complete branding refresh to GoAISite - updated logo to 92px with AI-themed design, Cooper Hewitt wordmark font, changed primary color from green (#2e8b57) to yellow (#ffc000), updated menu tab colors to #545454
 - June 22, 2025: Implemented dual authentication system - Google OAuth and email/password login with user registration, in-memory user store, and unified profile page
 - June 22, 2025: Added Chatislav 24/7 chat widget to all pages (index, pricing, cart, checkout, account, signup, privacy, tos) for customer support
 - June 22, 2025: Major pricing page redesign - removed Free Trial card, implemented pill-style billing toggle, updated all plan buttons to "Try for Free", added "Everything in X, plus:" headings to Pro/Agency plans, updated responsive layout for 3 plans

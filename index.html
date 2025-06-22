@@ -55,12 +55,40 @@
                                 <!-- sr: reči -->
                             </div>
                         </div>
-                        <div id="followUp" class="follow-up hidden">
-                            <input type="text" id="companyName" placeholder="Company Name" data-lang="companyPlaceholder">
-                            <!-- sr: Ime kompanije -->
-                            <input type="color" id="brandColor" value="#2e8b57">
-                            <input type="email" id="contactEmail" placeholder="Contact Email" data-lang="emailPlaceholder">
-                            <!-- sr: Kontakt email -->
+                        <!-- Follow-up inputs (hidden by default) -->
+                        <div id="followUp" class="followup" hidden>
+                            <label>
+                                Company Name
+                                <input type="text" id="companyName" placeholder="e.g. Susić Dental Clinic">
+                            </label>
+
+                            <label>
+                                City / Location
+                                <input type="text" id="companyCity" placeholder="e.g. Novi Sad">
+                            </label>
+
+                            <label>
+                                Industry
+                                <select id="industry">
+                                    <option value="" selected disabled>Select industry</option>
+                                    <option>Dental</option>
+                                    <option>Roofing</option>
+                                    <option>Lawn Care</option>
+                                    <option>Legal</option>
+                                    <option>Other</option>
+                                </select>
+                            </label>
+
+                            <label>
+                                Website Language
+                                <input type="text" id="siteLang" placeholder="e.g. English">
+                            </label>
+
+                            <fieldset class="colorset">
+                                <legend>Choose your website colors</legend>
+                                <input type="color" id="primaryColor" value="#ffc000">
+                                <input type="color" id="secondaryColor" value="#000000">
+                            </fieldset>
                         </div>
                         <button id="btnStart" class="btn-primary" data-lang="ctaStart">Start Building →</button>
                         <!-- sr: Počni gradnju → -->
