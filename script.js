@@ -194,17 +194,39 @@ function initCarousel() {
 function initPricing() {
     if (!window.location.pathname.includes('pricing.html')) return;
     
-    // Initialize pill toggle
-    const toggle = document.getElementById('billingToggle');
-    const leftLabel = document.querySelector('.toggle-label.left');
-    const rightLabel = document.querySelector('.toggle-label.right');
+    // Initialize toggle elements
+    const toggleBtn = document.querySelector('.toggle-btn');
+    const checkbox = document.getElementById('billingToggle');
+    const switchElement = document.querySelector('.switch');
     const plansWrapper = document.getElementById('plansWrapper');
     const priceAmounts = document.querySelectorAll('.amount[data-monthly]');
     const periodLabels = document.querySelectorAll('.period[data-lang="perMonth"]');
-    
-    let isAnnual = true; // Start with annual (left position)
+
+    if (!toggleBtn || !checkbox || !switchElement) {
+        console.warn('Toggle component elements not found');
+        return;
+    }
+
+    // Initialize state
+    function updateMode() {
+        if (checkbox.checked) {
+            // Monthly mode (checkbox checked - slider on right)
+            toggleBtn.classList.add('monthly-mode');
+            toggleBtn.classList.remove('annual-mode');
+            switchElement.setAttribute('aria-checked', 'true');
+        } else {
+            // Annual mode (checkbox unchecked - slider on left) 
+            toggleBtn.classList.add('annual-mode');
+            toggleBtn.classList.remove('monthly-mode');
+            switchElement.setAttribute('aria-checked', 'false');
+        }
+        
+        updatePrices();
+    }
     
     function updatePrices() {
+        const isAnnual = !checkbox.checked; // Annual when unchecked (left position)
+        
         priceAmounts.forEach(amount => {
             const monthlyPrice = amount.getAttribute('data-monthly');
             const annualPrice = amount.getAttribute('data-annual');
@@ -234,44 +256,28 @@ function initPricing() {
             plansWrapper.classList.remove('annual');
         }
     }
+
+    // Handle checkbox change
+    checkbox.addEventListener('change', updateMode);
     
-    function toggleBilling() {
-        isAnnual = !isAnnual;
-        
-        // Update aria-checked (true when monthly/right, false when annual/left)
-        toggle.setAttribute('aria-checked', (!isAnnual).toString());
-        
-        // Update label classes
-        if (isAnnual) {
-            leftLabel.classList.add('active');
-            rightLabel.classList.remove('active');
-        } else {
-            leftLabel.classList.remove('active');
-            rightLabel.classList.add('active');
+    // Handle keyboard navigation
+    switchElement.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            checkbox.checked = !checkbox.checked;
+            updateMode();
         }
-        
-        updatePrices();
-    }
-    
-    // Add event listeners to toggle
-    if (toggle) {
-        toggle.addEventListener('click', toggleBilling);
-        toggle.addEventListener('keydown', function(e) {
-            if (e.key === ' ' || e.key === 'Enter') {
-                e.preventDefault();
-                toggleBilling();
-            }
-        });
-    }
-    
-    // Initialize prices
-    updatePrices();
+    });
+
+    // Initial mode setup
+    updateMode();
     
     // This function is called when a plan is selected
     window.selectPlan = function(planName) {
         // Get URL parameters to check for industry
         const urlParams = new URLSearchParams(window.location.search);
         const industry = urlParams.get('industry');
+        const isAnnual = !checkbox.checked;
         
         // Build signup URL with plan
         let signupUrl = `signup.html?plan=${planName}`;
