@@ -56,7 +56,7 @@ function initPromptForm() {
         company:  document.getElementById('wrapCompany'),
         city:     document.getElementById('wrapCity'),
         industry: document.getElementById('wrapIndustry'),
-        lang:     document.getElementById('wrapLang'),
+        language: document.getElementById('wrapLanguage'),
         colors:   document.getElementById('wrapColors')
     };
 
