@@ -1,0 +1,100 @@
+# === GOAL ==============================================================
+Replace brittle front-end regex with a back-end GPT call.
+After the user types ≥10 characters, the browser POSTs to /api/analyse.
+The route returns JSON {company_name, industry, city, language, missing_fields[]}.
+
+# === 1. Install package ===============================================
+npm install openai
+
+# === 2. server.js additions ==========================================
+
+## Top of file
+const { OpenAI } = require("openai");
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
+## New route
+app.post("/api/analyse", express.json(), async (req, res) => {
+  try {
+    const userPrompt = (req.body.prompt || "").slice(0, 500);
+    const systemMsg = `
+You are a data-extractor JSON-only bot.
+Return: {
+  "company_name": string|null,
+  "industry": string|null,
+  "city": string|null,
+  "language": string|null,
+  "missing_fields": [ "company", "industry", "city", "language" ]
+}`;
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      temperature: 0,
+      messages: [
+        { role: "system", content: systemMsg.trim() },
+        { role: "user",   content: userPrompt }
+      ]
+    });
+    const json = JSON.parse(completion.choices[0].message.content);
+    res.json(json);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "analysis_failed" });
+  }
+});
+
+# === 3. main.js (front-end) ===========================================
+
+/* debounce helper */
+function debounce(fn, delay = 600) {
+  let t; return (...a) => { clearTimeout(t); t = setTimeout(()=>fn(...a), delay); };
+}
+
+const promptBox = document.getElementById("aiPrompt");
+const followUp  = document.getElementById("followUp");
+const wraps = {
+  company:  document.getElementById("wrapCompany"),
+  city:     document.getElementById("wrapCity"),
+  industry: document.getElementById("wrapIndustry"),
+  lang:     document.getElementById("wrapLang"),
+  colors:   document.getElementById("wrapColors")
+};
+const toggle = (el, show)=>{ el.hidden = !show; };
+
+async function analyse(text){
+  const r = await fetch("/api/analyse", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ prompt: text })
+  });
+  return r.json();
+}
+
+const handleInput = debounce(async () => {
+  const val = promptBox.value.trim();
+  if (val.length < 10) {  // hide everything for short text
+    followUp.classList.remove("show");
+    Object.values(wraps).forEach(w=>w.hidden=true);
+    return;
+  }
+  const data = await analyse(val);
+  const { missing_fields } = data;
+  const showPanel = missing_fields.length > 0;
+  followUp.classList.toggle("show", showPanel);
+
+  toggle(wraps.company,  missing_fields.includes("company"));
+  toggle(wraps.city,     missing_fields.includes("city"));
+  toggle(wraps.industry, missing_fields.includes("industry"));
+  toggle(wraps.lang,     missing_fields.includes("language"));
+  toggle(wraps.colors,   showPanel);
+}, 700);
+
+promptBox.addEventListener("input", handleInput);
+
+# === 4. secrets ========================================================
+Add OPENAI_API_KEY in Replit Secrets.
+
+# === OUTPUT ============================================================
+• Full server.js patch (imports + /api/analyse)
+• Full main.js with debounce fetch
+• Note to run: npm install openai
