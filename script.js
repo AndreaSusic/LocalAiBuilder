@@ -47,11 +47,11 @@ function initNavigation() {
 
 // Prompt form functionality
 function initPromptForm() {
-    const aiPrompt = document.getElementById('aiPrompt');
+    const prompt   = document.getElementById('aiPrompt');
     const wordCount = document.getElementById('wordCount');
     const followUp = document.getElementById('followUp');
     const btnStart = document.getElementById('btnStart');
-    
+
     const wraps = {
         company:  document.getElementById('wrapCompany'),
         city:     document.getElementById('wrapCity'),
@@ -60,57 +60,63 @@ function initPromptForm() {
         colors:   document.getElementById('wrapColors')
     };
 
-    // start fully hidden (no .show class)
-    function needs(text){
-        if(!text) return {any:false};
-        return {
-            company:  !/clinic|inc|ltd|corp|agency|company/i.test(text),
-            city:     !/\b(austin|belgrade|london|new york)\b/i.test(text),
-            industry: !/(dental|plumbing|lawn|roof|law|marketing|design)/i.test(text),
-            lang:     !/(english|spanish|german|serbian)/i.test(text)
-        };
+    // Helper
+    function show(id, yes){ 
+        if (wraps[id]) {
+            wraps[id].hidden = !yes; 
+        }
     }
 
-    function refresh(){
-        const t = aiPrompt.value.trim().toLowerCase();
-        const n = needs(t);
+    function evaluate(text){
+        // Wait until user has typed ≥10 chars
+        if (text.length < 10){
+            if (followUp) followUp.classList.remove('show');
+            Object.values(wraps).forEach(el => {
+                if (el) el.hidden = true;
+            });
+            return;
+        }
 
-        // show/hide individual wrappers
-        if (wraps.company) wraps.company.hidden = !n.company;
-        if (wraps.city) wraps.city.hidden = !n.city;
-        if (wraps.industry) wraps.industry.hidden = !n.industry;
-        if (wraps.lang) wraps.lang.hidden = !n.lang;
+        const t = text.toLowerCase();
 
-        // colours only if any field missing
-        const any = n.company || n.city || n.industry || n.lang;
-        if (wraps.colors) wraps.colors.hidden = !any;
+        const needCompany  = !/(clinic|studio|agency|inc|ltd|corp|company|d\.o\.o|dental)/i.test(t);
+        const needCity     = !/\b(austin|belgrade|london|new york|novi sad|paris|[a-z]+ city)\b/i.test(t);
+        const needIndustry = !/(dental|plumbing|lawn|roof|law|marketing|design)/i.test(t);
+        const needLang     = !/(english|spanish|german|serbian)/i.test(t);
 
-        // flip master .show class
-        if (followUp) followUp.classList.toggle('show', any);
+        const anyMissing = needCompany || needCity || needIndustry || needLang;
+
+        if (followUp) followUp.classList.toggle('show', anyMissing);
+
+        show('company',  needCompany);
+        show('city',     needCity);
+        show('industry', needIndustry);
+        show('lang',     needLang);
+        show('colors',   anyMissing);
     }
     
-    if (aiPrompt && wordCount) {
-        // Word count functionality
-        aiPrompt.addEventListener('input', function() {
+    if (prompt && wordCount) {
+        // Word count functionality and evaluation
+        prompt.addEventListener('input', function() {
             const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
             const count = words.length;
             wordCount.textContent = count;
             
-            // Run refresh after each keystroke
-            refresh();
+            // Run evaluate on every keystroke
+            evaluate(this.value.trim());
         });
         
-        // Initialize on page load
-        refresh();
+        // Start hidden
+        evaluate('');
     }
     
     // Handle start button click
     if (btnStart) {
         btnStart.addEventListener('click', function() {
             // Store form data in localStorage
-            if (aiPrompt) {
+            if (prompt) {
                 const formData = {
-                    prompt: aiPrompt.value,
+                    prompt: prompt.value,
                     companyName: document.getElementById('companyName')?.value || '',
                     companyCity: document.getElementById('companyCity')?.value || '',
                     industry: document.getElementById('industry')?.value || '',
