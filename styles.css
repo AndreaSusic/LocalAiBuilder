@@ -246,7 +246,6 @@ label {
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
   text-decoration: none;
   transition: opacity var(--transition-fast);
 }
@@ -256,8 +255,8 @@ label {
 }
 
 .logo {
-  width: 32px;
-  height: 32px;
+  width: 92px;
+  height: 92px;
 }
 
 .wordmark {
