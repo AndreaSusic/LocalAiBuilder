@@ -61,7 +61,7 @@ function initPromptForm() {
     };
 
     // force panel closed on initial load
-    followUp.classList.remove('show');
+    followUp.classList.add('hidden');
 
     // Debounce helper
     function debounce(fn, delay = 600) {
@@ -88,8 +88,8 @@ function initPromptForm() {
     const handleInput = debounce(async () => {
         const val = prompt.value.trim();
         if (val.length < 10) {  // hide everything for short text
-            followUp.classList.remove("show");
-            Object.values(wraps).forEach(w => w.hidden = true);
+            followUp.classList.add("hidden");
+            Object.values(wraps).forEach(w => w.classList.add('hidden'));
             return;
         }
         
@@ -97,26 +97,26 @@ function initPromptForm() {
             const data = await analyse(val);
             const { missing_fields } = data;
 
-            // 1) reset everything to hidden
-            Object.values(wraps).forEach(el => el.hidden = true);
+            // reset all to hidden
+            Object.values(wraps).forEach(el => el.classList.add('hidden'));
 
-            // 2) show only the ones GPT says are missing
+            // show wrappers whose key is missing
             ['company','city','industry','language'].forEach(key => {
-              toggle(wraps[key], missing_fields.includes(key));
+              if (missing_fields.includes(key)) wraps[key].classList.remove('hidden');
             });
 
-            // 3) colours always visible
-            wraps.colors.hidden = false;
+            // colour pickers always visible
+            wraps.colors.classList.remove('hidden');
 
-            // 4) panel shows if at least one missing
-            followUp.classList.toggle('show', missing_fields.length > 0);
+            // master panel visibility
+            followUp.classList.toggle('hidden', missing_fields.length === 0);
             
             console.log('GPT Analysis:', data);
         } catch (error) {
             console.error('Analysis failed:', error);
             // Fallback to hiding panel on error
-            followUp.classList.remove("show");
-            Object.values(wraps).forEach(w => w.hidden = true);
+            followUp.classList.add("hidden");
+            Object.values(wraps).forEach(w => w.classList.add('hidden'));
         }
     }, 700);
     
