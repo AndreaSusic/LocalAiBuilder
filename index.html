@@ -69,6 +69,22 @@
                         <button id="btnStart" class="btn-primary" data-lang="ctaStart">Start Building →</button>
                         <!-- sr: Počni gradnju → -->
                     </div>
+                    <div class="auth-section">
+                        <div class="auth-divider">
+                            <span data-lang="orLogin">Or login to your account</span>
+                            <!-- sr: Ili se prijavite na vaš nalog -->
+                        </div>
+                        <form action="/login" method="POST" class="login-form">
+                            <input type="email" name="email" placeholder="Email" required />
+                            <input type="password" name="password" placeholder="Password" required />
+                            <button type="submit" class="btn-secondary">Log In</button>
+                        </form>
+                        <p class="signup-hint">
+                            <span data-lang="noAccount">No account?</span> 
+                            <a href="/signup-local.html" data-lang="signupLink">Sign up here</a>
+                            <!-- sr: Nemate nalog? Registrujte se ovde -->
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
