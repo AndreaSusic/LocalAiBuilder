@@ -52,24 +52,35 @@ function initPromptForm() {
     const followUp = document.getElementById('followUp');
     const btnStart = document.getElementById('btnStart');
     
-    // Smart detection for missing essential data
-    function missingFields(text) {
-        const fields = [];
+    // Helper to (un)hide a wrapper
+    function show(id, showIt) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.hidden = !showIt;
+        }
+    }
 
-        if (!/clinic|inc|llc|ltd|company|corp|agency|studio|dent|law|plumb|roof/i.test(text)) {
-            fields.push('company');
+    function scan(text) {
+        text = text.toLowerCase();
+        const needCompany = !/(clinic|studio|agency|inc|ltd|corp|company|\sllc\b|\sd\.o\.o\.)/.test(text);
+        const needCity    = !/(austin|belgrade|london|new york|paris|[a-z]+\s(city|town))/.test(text);
+        const needIndustry= !/(dental|plumbing|lawn|roof|law|marketing|design)/.test(text);
+        const needLang    = !/(english|spanish|german|serbian)/.test(text);
+
+        // If ANY field missing → show wrapper panel
+        const anyMissing = needCompany || needCity || needIndustry || needLang;
+        if (followUp) {
+            followUp.hidden = !anyMissing;
         }
-        if (!/\b(austin|belgrade|novi sad|london|new york|[A-Z][a-z]+\s(City|Town))\b/i.test(text)) {
-            fields.push('city');
-        }
-        if (!/(dental|lawn|lawyer|plumb|roof|clean|marketing|design)/i.test(text)) {
-            fields.push('industry');
-        }
-        // Language: only require if user specifies a non-english language
-        if (/serbian|spanish|german/i.test(text) === false) {
-            fields.push('language');
-        }
-        return fields;
+
+        // Toggle individual fields
+        show('wrapCompany', needCompany);
+        show('wrapCity', needCity);
+        show('wrapIndustry', needIndustry);
+        show('wrapLang', needLang);
+
+        // Colours are always shown once panel is visible
+        show('wrapColors', anyMissing);
     }
     
     if (aiPrompt && wordCount) {
@@ -78,27 +89,13 @@ function initPromptForm() {
             const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
             const count = words.length;
             wordCount.textContent = count;
+            
+            // Run scan after each keystroke
+            scan(this.value.trim());
         });
         
-        // Smart detection on blur
-        aiPrompt.addEventListener('blur', function() {
-            const text = this.value.trim();
-            if (followUp && text.length > 0) {
-                const need = missingFields(text);
-                followUp.hidden = need.length === 0;
-
-                // Toggle specific inputs
-                const companyField = document.getElementById('companyName');
-                const cityField = document.getElementById('companyCity');
-                const industryField = document.getElementById('industry');
-                const languageField = document.getElementById('siteLang');
-
-                if (companyField) companyField.parentElement.hidden = !need.includes('company');
-                if (cityField) cityField.parentElement.hidden = !need.includes('city');
-                if (industryField) industryField.parentElement.hidden = !need.includes('industry');
-                if (languageField) languageField.parentElement.hidden = !need.includes('language');
-            }
-        });
+        // Hide everything at page-load
+        scan('');
     }
     
     // Handle start button click
