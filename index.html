@@ -26,7 +26,7 @@
                     <li><a href="pricing.html" data-lang="navPricing">Pricing</a></li> <!-- sr: Cene -->
                     <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li> <!-- sr: Industrije -->
                     <li><a href="#faq" data-lang="navFAQ">FAQ</a></li> <!-- sr: Česta pitanja -->
-                    <li><a href="/auth/google" class="btn-secondary" data-lang="navLogin">Sign in with Google</a></li> <!-- sr: Prijavite se pomoću Google-a -->
+                    <li><button id="loginBtn" class="btn-secondary" data-lang="navLogin">Login</button></li> <!-- sr: Prijavite se -->
                 </ul>
                 <button class="nav-toggle" aria-label="Toggle navigation">
                     <span></span>
@@ -70,6 +70,15 @@
                         <!-- sr: Počni gradnju → -->
                     </div>
                     <div class="auth-section">
+                        <a href="/auth/google" class="btn-google">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Sign in with Google
+                        </a>
                         <div class="auth-divider">
                             <span data-lang="orLogin">Or login to your account</span>
                             <!-- sr: Ili se prijavite na vaš nalog -->
@@ -368,5 +377,46 @@
         token: "92072c32-e8e4-4e76-9aca-a4f3c635c64e"
       });
     </script>
+
+    <!-- Login Popup Modal -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-lang="loginTitle">Login to Your Account</h3>
+                <!-- sr: Prijavite se na vaš nalog -->
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <a href="/auth/google" class="btn-google">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Sign in with Google
+                </a>
+                
+                <div class="auth-divider">
+                    <span data-lang="orLogin">Or login with email</span>
+                    <!-- sr: Ili se prijavite emailom -->
+                </div>
+                
+                <form action="/login" method="POST" class="login-form">
+                    <input type="email" name="email" placeholder="Email" required />
+                    <input type="password" name="password" placeholder="Password" required />
+                    <button type="submit" class="btn-primary">Log In</button>
+                </form>
+                
+                <p class="signup-hint">
+                    <span data-lang="noAccount">No account?</span> 
+                    <a href="/signup-local.html" data-lang="signupLink">Sign up here</a>
+                    <!-- sr: Nemate nalog? Registrujte se ovde -->
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
