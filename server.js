@@ -2,10 +2,20 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser');
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// In-memory user store
+const users = []; // { id, email, passwordHash, displayName, provider }
+
+// Body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Configure session middleware
 app.use(session({
@@ -35,13 +45,32 @@ passport.use(new GoogleStrategy(
   }
 ));
 
+// Configure Local Strategy
+passport.use(new LocalStrategy(
+  { usernameField: 'email' },
+  async (email, password, done) => {
+    const user = users.find(u => u.email === email);
+    if (!user) return done(null, false, { message: 'Wrong email.' });
+    const ok = await bcrypt.compare(password, user.passwordHash);
+    return ok ? done(null, user) : done(null, false, { message: 'Wrong password.' });
+  }
+));
+
 // Serialize and deserialize user
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  // For Google users, use the Google ID; for local users, use our generated ID
+  const id = user.id || user.emails?.[0]?.value;
+  done(null, { id, provider: user.provider || 'google' });
 });
 
-passport.deserializeUser(function(user, done) {
-  done(null, user);
+passport.deserializeUser(function(obj, done) {
+  if (obj.provider === 'local') {
+    const user = users.find(u => u.id === obj.id);
+    done(null, user);
+  } else {
+    // For Google users, we'd typically fetch from database, but for demo we'll store in session
+    done(null, obj);
+  }
 });
 
 // Serve static files
@@ -62,6 +91,12 @@ app.get('/auth/google/callback',
 
 app.get('/profile', function(req, res) {
   if (req.isAuthenticated()) {
+    const user = req.user;
+    const displayName = user.displayName || user.emails?.[0]?.value || 'User';
+    const email = user.email || (user.emails ? user.emails[0].value : 'Not provided');
+    const photo = user.photos ? user.photos[0].value : '';
+    const provider = user.provider || 'google';
+    
     res.send(`
       <!DOCTYPE html>
       <html lang="en">
@@ -73,9 +108,10 @@ app.get('/profile', function(req, res) {
       </head>
       <body>
         <div class="container" style="padding: 2rem; text-align: center;">
-          <h1>Welcome, ${req.user.displayName}!</h1>
-          <p>Email: ${req.user.emails ? req.user.emails[0].value : 'Not provided'}</p>
-          <img src="${req.user.photos ? req.user.photos[0].value : ''}" alt="Profile" style="border-radius: 50%; width: 100px; height: 100px;">
+          <h1>Welcome, ${displayName}!</h1>
+          <p>Email: ${email}</p>
+          <p>Login method: ${provider === 'local' ? 'Email & Password' : 'Google OAuth'}</p>
+          ${photo ? `<img src="${photo}" alt="Profile" style="border-radius: 50%; width: 100px; height: 100px;">` : ''}
           <br><br>
           <a href="/logout" class="btn-primary" style="margin-right: 1rem;">Logout</a>
           <a href="/" class="btn-secondary">Back to Home</a>
@@ -95,6 +131,47 @@ app.get('/logout', function(req, res) {
     }
     res.redirect('/');
   });
+});
+
+// Local authentication routes
+app.post('/login', 
+  passport.authenticate('local', { 
+    successRedirect: '/profile', 
+    failureRedirect: '/' 
+  })
+);
+
+app.post('/signup', async function(req, res) {
+  const { email, password } = req.body;
+  
+  // Check if user already exists
+  if (users.find(u => u.email === email)) {
+    return res.redirect('/?error=email-exists');
+  }
+  
+  // Hash password and create user
+  try {
+    const passwordHash = await bcrypt.hash(password, 10);
+    const newUser = {
+      id: Date.now().toString(), // Simple ID generation
+      email,
+      passwordHash,
+      displayName: email.split('@')[0], // Use email prefix as display name
+      provider: 'local'
+    };
+    
+    users.push(newUser);
+    
+    // Log in the new user
+    req.login(newUser, function(err) {
+      if (err) {
+        return res.redirect('/?error=login-failed');
+      }
+      return res.redirect('/profile');
+    });
+  } catch (error) {
+    res.redirect('/?error=signup-failed');
+  }
 });
 
 // Handle SPA routing - serve index.html for unknown routes
