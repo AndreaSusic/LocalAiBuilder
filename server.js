@@ -6,6 +6,11 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const path = require('path');
+const { OpenAI } = require("openai");
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -171,6 +176,35 @@ app.post('/signup', async function(req, res) {
     });
   } catch (error) {
     res.redirect('/?error=signup-failed');
+  }
+});
+
+// GPT-powered business analysis API
+app.post("/api/analyse", express.json(), async (req, res) => {
+  try {
+    const userPrompt = (req.body.prompt || "").slice(0, 500);
+    const systemMsg = `
+You are a data-extractor JSON-only bot.
+Return: {
+  "company_name": string|null,
+  "industry": string|null,
+  "city": string|null,
+  "language": string|null,
+  "missing_fields": [ "company", "industry", "city", "language" ]
+}`;
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      temperature: 0,
+      messages: [
+        { role: "system", content: systemMsg.trim() },
+        { role: "user",   content: userPrompt }
+      ]
+    });
+    const json = JSON.parse(completion.choices[0].message.content);
+    res.json(json);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "analysis_failed" });
   }
 });
 

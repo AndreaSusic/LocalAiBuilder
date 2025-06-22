@@ -60,72 +60,73 @@ function initPromptForm() {
         colors:   document.getElementById('wrapColors')
     };
 
-    // Helper
-    function show(id, yes){ 
-        if (wraps[id]) {
-            wraps[id].hidden = !yes; 
-        }
+    // Debounce helper
+    function debounce(fn, delay = 600) {
+        let t; 
+        return (...a) => { 
+            clearTimeout(t); 
+            t = setTimeout(() => fn(...a), delay); 
+        };
     }
 
-    function evaluate(text){
-        // 1) If the user hasn't typed ≥10 characters, stay hidden.
-        if (text.length < 10){
-            followUp.classList.remove('show');
-            Object.values(wraps).forEach(el => el.hidden = true);
+    const toggle = (el, show) => { 
+        if (el) el.hidden = !show; 
+    };
+
+    async function analyse(text) {
+        const r = await fetch("/api/analyse", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt: text })
+        });
+        return r.json();
+    }
+
+    const handleInput = debounce(async () => {
+        const val = prompt.value.trim();
+        if (val.length < 10) {  // hide everything for short text
+            followUp.classList.remove("show");
+            Object.values(wraps).forEach(w => w.hidden = true);
             return;
         }
+        
+        try {
+            const data = await analyse(val);
+            const { missing_fields } = data;
+            const showPanel = missing_fields.length > 0;
+            followUp.classList.toggle("show", showPanel);
 
-        const t = text.toLowerCase();
-
-        // 2) Detection: look for ANY word ending in typical business/industry nouns.
-        const hasCompanyWord =
-              /\b(clinic|studio|agency|inc|ltd|corp|company|d\.o\.o|llc|firm)\b/.test(t);
-
-        // City: require a capitalised word followed by a space + known suffix, OR a known whitelist
-        const hasCity =
-              /\b(austin|belgrade|london|paris|berlin|novi sad|new york)\b/i.test(t) ||
-              /\b[A-Z][a-z]+\s(city|town)\b/.test(text);
-
-        // Industry: any of these keywords
-        const hasIndustry =
-              /\b(dental|plumb|lawn|roof|legal|law|marketing|design|clean|auto|food)\b/.test(t);
-
-        // Language recognised if the word appears anywhere
-        const hasLang =
-              /\b(english|german|spanish|serbian|french|italian)\b/.test(t);
-
-        // 3) Decide what's missing
-        const needCompany  = !hasCompanyWord;
-        const needCity     = !hasCity;
-        const needIndustry = !hasIndustry;
-        const needLang     = !hasLang;
-        const anyMissing   = needCompany || needCity || needIndustry || needLang;
-
-        // 4) Toggle master panel & individual wrappers
-        followUp.classList.toggle('show', anyMissing);
-        show('company',  needCompany);
-        show('city',     needCity);
-        show('industry', needIndustry);
-        show('lang',     needLang);
-        show('colors',   anyMissing);
-
-        // 5) (Optional) console debug
-        console.log({needCompany, needCity, needIndustry, needLang});
-    }
+            toggle(wraps.company, missing_fields.includes("company"));
+            toggle(wraps.city, missing_fields.includes("city"));
+            toggle(wraps.industry, missing_fields.includes("industry"));
+            toggle(wraps.lang, missing_fields.includes("language"));
+            toggle(wraps.colors, showPanel);
+            
+            console.log('GPT Analysis:', data);
+        } catch (error) {
+            console.error('Analysis failed:', error);
+            // Fallback to hiding panel on error
+            followUp.classList.remove("show");
+            Object.values(wraps).forEach(w => w.hidden = true);
+        }
+    }, 700);
     
     if (prompt && wordCount) {
-        // Word count functionality and evaluation
+        // Word count functionality
         prompt.addEventListener('input', function() {
             const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
             const count = words.length;
             wordCount.textContent = count;
-            
-            // Run evaluate on every keystroke
-            evaluate(this.value.trim());
         });
         
-        // Start hidden
-        evaluate('');
+        // GPT-powered analysis with debounce
+        prompt.addEventListener("input", handleInput);
+        
+        // Start with everything hidden
+        followUp.classList.remove("show");
+        Object.values(wraps).forEach(w => {
+            if (w) w.hidden = true;
+        });
     }
     
     // Handle start button click
