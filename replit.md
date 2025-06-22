@@ -100,6 +100,7 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
+- June 22, 2025: Optimized follow-up panel visibility - panel now starts fully hidden and shows only when missing_fields is not empty, aligned wrapper IDs with GPT response keys (wrapLanguage), enhanced language inference rules for consistent city-based detection
 - June 22, 2025: Replaced regex detection with GPT-powered analysis - implemented OpenAI API backend route for intelligent business data extraction, added debounced frontend calls for accurate company/industry/city/language detection
 - June 22, 2025: Added beta banner and wait-list form to marketing site - implemented "Beta Preview – Launching Soon" banner across all 5 pages, added email capture form on homepage for early access sign-ups
 - June 22, 2025: Created lightweight marketing site in /marketing/ folder - independent 5-page site (index, pricing, contact, terms, privacy) with GoAISite branding, Cooper Hewitt fonts, and €10/20/40 pricing structure, designed for CDN deployment
