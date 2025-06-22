@@ -97,15 +97,18 @@ function initPromptForm() {
             const data = await analyse(val);
             const { missing_fields } = data;
 
-            // show/hide each wrapper purely by membership in missing_fields
+            // 1) reset everything to hidden
+            Object.values(wraps).forEach(el => el.hidden = true);
+
+            // 2) show only the ones GPT says are missing
             ['company','city','industry','language'].forEach(key => {
-                toggle(wraps[key], missing_fields.includes(key));
+              toggle(wraps[key], missing_fields.includes(key));
             });
 
-            // Colour pickers always visible
+            // 3) colours always visible
             wraps.colors.hidden = false;
 
-            // Master panel shows if ANY field missing
+            // 4) panel shows if at least one missing
             followUp.classList.toggle('show', missing_fields.length > 0);
             
             console.log('GPT Analysis:', data);
