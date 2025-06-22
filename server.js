@@ -6,11 +6,15 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const path = require('path');
-const { OpenAI } = require("openai");
 
+const { OpenAI } = require("openai");           // ← ONE import
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY            // ← ONE client
 });
+
+// 🔽 Temporary debug
+console.log("OPENAI_API_KEY length:",
+            (process.env.OPENAI_API_KEY || "").length);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -184,22 +188,33 @@ app.post("/api/analyse", express.json(), async (req, res) => {
   try {
     const userPrompt = (req.body.prompt || "").slice(0, 500);
     const systemMsg = `
-You are a data-extractor JSON-only bot.
-Return: {
-  "company_name": string|null,
-  "industry": string|null,
-  "city": string|null,
-  "language": string|null,
-  "missing_fields": [ "company", "industry", "city", "language" ]
-}`;
+You are a strict JSON extractor.
+Return ONLY one valid JSON object, never markdown or prose.
+
+Keys:
+  company_name   (string|null)
+  industry       (string|null)
+  city           (string|null)
+  language       (string|null)
+  missing_fields (array of strings chosen from
+                  ["company","industry","city","language"])
+
+If a value is absent in the user prompt, put null in that field and
+add the key name to missing_fields.  When all data are present,
+missing_fields must be an empty array.
+`;
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       temperature: 0,
+      response_format: { type: "json_object" },
       messages: [
         { role: "system", content: systemMsg.trim() },
         { role: "user",   content: userPrompt }
       ]
     });
+    
+    console.log("GPT raw ->", completion.choices[0].message.content);
+    
     const json = JSON.parse(completion.choices[0].message.content);
     res.json(json);
   } catch (err) {
