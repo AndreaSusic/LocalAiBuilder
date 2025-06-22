@@ -53,19 +53,23 @@ function initPromptForm() {
     const btnStart = document.getElementById('btnStart');
     
     // Smart detection for missing essential data
-    function needsMoreInfo(text) {
-        if (!text || text.trim().length === 0) return false;
-        
-        // Check for company name (proper noun pattern)
-        const hasName = /[A-Z][a-z]+\s[A-Z]?[a-z]+/.test(text);
-        
-        // Check for city/location
-        const hasCity = /(Belgrade|Novi Sad|Niš|Subotica|Zagreb|Ljubljana|Sarajevo|Podgorica|Skopje|[A-Z][a-z]+ City|[A-Z][a-z]+,?\s*[A-Z][a-z]+)/i.test(text);
-        
-        // Check for industry keywords
-        const hasIndustry = /(dental|clinic|roofing|lawn|legal|restaurant|shop|store|clinic|office|agency|consulting|construction|medical|health|fitness|beauty|salon|garage|repair|automotive|real estate|finance|insurance|education|school|university|hotel|tourism|photography|design|marketing|accounting|veterinary|pharmacy|bakery|cafe|bar|restaurant)/i.test(text);
-        
-        return !(hasName && hasCity && hasIndustry);
+    function missingFields(text) {
+        const fields = [];
+
+        if (!/clinic|inc|llc|ltd|company|corp|agency|studio|dent|law|plumb|roof/i.test(text)) {
+            fields.push('company');
+        }
+        if (!/\b(austin|belgrade|novi sad|london|new york|[A-Z][a-z]+\s(City|Town))\b/i.test(text)) {
+            fields.push('city');
+        }
+        if (!/(dental|lawn|lawyer|plumb|roof|clean|marketing|design)/i.test(text)) {
+            fields.push('industry');
+        }
+        // Language: only require if user specifies a non-english language
+        if (/serbian|spanish|german/i.test(text) === false) {
+            fields.push('language');
+        }
+        return fields;
     }
     
     if (aiPrompt && wordCount) {
@@ -80,11 +84,19 @@ function initPromptForm() {
         aiPrompt.addEventListener('blur', function() {
             const text = this.value.trim();
             if (followUp && text.length > 0) {
-                if (needsMoreInfo(text)) {
-                    followUp.hidden = false;
-                } else {
-                    followUp.hidden = true;
-                }
+                const need = missingFields(text);
+                followUp.hidden = need.length === 0;
+
+                // Toggle specific inputs
+                const companyField = document.getElementById('companyName');
+                const cityField = document.getElementById('companyCity');
+                const industryField = document.getElementById('industry');
+                const languageField = document.getElementById('siteLang');
+
+                if (companyField) companyField.parentElement.hidden = !need.includes('company');
+                if (cityField) cityField.parentElement.hidden = !need.includes('city');
+                if (industryField) industryField.parentElement.hidden = !need.includes('industry');
+                if (languageField) languageField.parentElement.hidden = !need.includes('language');
             }
         });
     }
@@ -99,7 +111,7 @@ function initPromptForm() {
                     companyName: document.getElementById('companyName')?.value || '',
                     companyCity: document.getElementById('companyCity')?.value || '',
                     industry: document.getElementById('industry')?.value || '',
-                    siteLang: document.getElementById('siteLang')?.value || '',
+                    siteLang: document.getElementById('siteLang')?.value || 'English',
                     primaryColor: document.getElementById('primaryColor')?.value || '#ffc000',
                     secondaryColor: document.getElementById('secondaryColor')?.value || '#000000'
                 };
@@ -762,20 +774,23 @@ if (typeof window !== 'undefined' && !window.goaisite_observer) {
 }
 
 // Add animation styles dynamically
-const style = document.createElement('style');
-style.textContent = `
-    .benefit-card, .step, .industry-card {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    
-    .animate-in {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
-document.head.appendChild(style);
+if (!document.getElementById('goaisite-animations')) {
+    const style = document.createElement('style');
+    style.id = 'goaisite-animations';
+    style.textContent = `
+        .benefit-card, .step, .industry-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    `;
+    document.head.appendChild(style);
+}
 
 // Error handling
 window.addEventListener('error', function(e) {
