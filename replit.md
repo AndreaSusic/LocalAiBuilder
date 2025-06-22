@@ -100,7 +100,8 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
-- June 21, 2025. Initial setup
+- June 22, 2025: Major pricing page redesign - removed Free Trial card, implemented pill-style billing toggle, updated all plan buttons to "Try for Free", added "Everything in X, plus:" headings to Pro/Agency plans, updated responsive layout for 3 plans
+- June 21, 2025: Initial setup
 
 ## User Preferences
 

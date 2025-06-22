@@ -194,14 +194,17 @@ function initCarousel() {
 function initPricing() {
     if (!window.location.pathname.includes('pricing.html')) return;
     
-    // Initialize billing toggle
-    const billingInputs = document.querySelectorAll('input[name="billing"]');
+    // Initialize pill toggle
+    const toggle = document.getElementById('billingToggle');
+    const leftLabel = document.querySelector('.toggle-label.left');
+    const rightLabel = document.querySelector('.toggle-label.right');
+    const plansWrapper = document.getElementById('plansWrapper');
     const priceAmounts = document.querySelectorAll('.amount[data-monthly]');
     const periodLabels = document.querySelectorAll('.period[data-lang="perMonth"]');
     
+    let isAnnual = false;
+    
     function updatePrices() {
-        const isAnnual = document.querySelector('input[name="billing"]:checked').value === 'annually';
-        
         priceAmounts.forEach(amount => {
             const monthlyPrice = amount.getAttribute('data-monthly');
             const annualPrice = amount.getAttribute('data-annual');
@@ -223,12 +226,43 @@ function initPricing() {
                 period.textContent = '/month';
             }
         });
+        
+        // Toggle annual class on wrapper
+        if (isAnnual) {
+            plansWrapper.classList.add('annual');
+        } else {
+            plansWrapper.classList.remove('annual');
+        }
     }
     
-    // Add event listeners to billing toggle
-    billingInputs.forEach(input => {
-        input.addEventListener('change', updatePrices);
-    });
+    function toggleBilling() {
+        isAnnual = !isAnnual;
+        
+        // Update aria-checked
+        toggle.setAttribute('aria-checked', isAnnual.toString());
+        
+        // Update label classes
+        if (isAnnual) {
+            leftLabel.classList.remove('active');
+            rightLabel.classList.add('active');
+        } else {
+            leftLabel.classList.add('active');
+            rightLabel.classList.remove('active');
+        }
+        
+        updatePrices();
+    }
+    
+    // Add event listeners to toggle
+    if (toggle) {
+        toggle.addEventListener('click', toggleBilling);
+        toggle.addEventListener('keydown', function(e) {
+            if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                toggleBilling();
+            }
+        });
+    }
     
     // Initialize prices
     updatePrices();
@@ -239,17 +273,17 @@ function initPricing() {
         const urlParams = new URLSearchParams(window.location.search);
         const industry = urlParams.get('industry');
         
-        // Get current billing frequency
-        const billing = document.querySelector('input[name="billing"]:checked').value;
-        
-        // Build cart URL
-        let cartUrl = `cart.html?plan=${planName}&billing=${billing}`;
+        // Build signup URL with plan
+        let signupUrl = `signup.html?plan=${planName}`;
         if (industry) {
-            cartUrl += `&industry=${industry}`;
+            signupUrl += `&industry=${industry}`;
+        }
+        if (isAnnual) {
+            signupUrl += `&billing=annually`;
         }
         
-        // Redirect to cart
-        window.location.href = cartUrl;
+        // Redirect to signup
+        window.location.href = signupUrl;
     };
 }
 
