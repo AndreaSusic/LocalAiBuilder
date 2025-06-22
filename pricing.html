@@ -50,14 +50,15 @@
             <div class="container">
                 <!-- Billing Toggle -->
                 <div class="billing-toggle-container">
-                    <div class="billing-pill-toggle" role="switch" aria-checked="false" tabindex="0" id="billingToggle">
-                        <div class="toggle-track">
-                            <span class="toggle-label left active" data-lang="annually">Annually (10% off)</span>
-                            <!-- sr: Godišnje (10% popusta) -->
-                            <span class="toggle-label right" data-lang="monthly">Monthly</span>
-                            <!-- sr: Mesečno -->
-                            <div class="toggle-thumb"></div>
-                        </div>
+                    <div class="toggle-btn" data-lang-container>
+                        <span data-lang="labelAnnually">Annually</span>
+                        <!-- sr: Godišnje -->
+                        <label class="switch" role="switch" aria-checked="false" for="billingToggle">
+                            <input type="checkbox" id="billingToggle" aria-label="Toggle billing frequency">
+                            <span class="slider round"></span>
+                        </label>
+                        <span data-lang="labelMonthly">Monthly</span>
+                        <!-- sr: Mesečno -->
                     </div>
                 </div>
 
