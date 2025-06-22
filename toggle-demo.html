@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Toggle Component Demo</title>
+    <link rel="stylesheet" href="toggle.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #fafafa;
+        }
+        .demo-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            background: #f0f9ff;
+            border-left: 4px solid #2e8b57;
+        }
+        .api-demo {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .api-demo button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #2e8b57;
+            background: white;
+            color: #2e8b57;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .api-demo button:hover {
+            background: #2e8b57;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Billing Toggle Component Demo</h1>
+    
+    <div class="demo-section">
+        <h2>Basic Toggle</h2>
+        <p>This is the standalone billing toggle component:</p>
+        
+        <!-- Include the toggle component -->
+        <div class="toggle-btn" data-lang-container>
+            <span data-lang="labelAnnually">Annually</span>
+            <label class="switch" role="switch" aria-checked="false" for="billingToggle">
+                <input type="checkbox" id="billingToggle" aria-label="Toggle billing frequency">
+                <span class="slider round"></span>
+            </label>
+            <span data-lang="labelMonthly">Monthly</span>
+        </div>
+        
+        <div class="status" id="status">
+            Current mode: <strong>Monthly</strong>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>API Demo</h2>
+        <p>Test the public API methods:</p>
+        
+        <div class="api-demo">
+            <button onclick="BillingToggle.setAnnual(true)">Set Annual</button>
+            <button onclick="BillingToggle.setAnnual(false)">Set Monthly</button>
+            <button onclick="BillingToggle.toggle()">Toggle</button>
+            <button onclick="alert('Is Annual: ' + BillingToggle.isAnnual())">Check State</button>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Event Listening</h2>
+        <p>The component dispatches custom events. Check the browser console for event details.</p>
+        <div id="eventLog" style="font-family: monospace; background: #f5f5f5; padding: 1rem; border-radius: 4px; max-height: 200px; overflow-y: auto;">
+            Event log will appear here...
+        </div>
+    </div>
+
+    <script src="toggle.js"></script>
+    <script>
+        // Demo script to show component integration
+        const statusEl = document.getElementById('status');
+        const eventLogEl = document.getElementById('eventLog');
+        
+        // Listen for toggle changes
+        document.addEventListener('billingToggleChange', (e) => {
+            const { isAnnual, mode } = e.detail;
+            statusEl.innerHTML = `Current mode: <strong>${mode.charAt(0).toUpperCase() + mode.slice(1)}</strong>`;
+            
+            // Log the event
+            const timestamp = new Date().toLocaleTimeString();
+            eventLogEl.innerHTML = `[${timestamp}] Toggle changed: ${mode} (isAnnual: ${isAnnual})\n` + eventLogEl.innerHTML;
+            
+            console.log('Billing toggle changed:', e.detail);
+        });
+    </script>
+</body>
+</html>

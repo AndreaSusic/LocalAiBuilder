@@ -386,7 +386,8 @@ function initCart() {
     const totalAmount = document.getElementById('totalAmount');
     
     function updateTotals() {
-        const isAnnual = document.querySelector('input[name="billing"]:checked').value === 'annual';
+        const billingRadio = document.querySelector('input[name="billing"]:checked');
+        const isAnnual = billingRadio ? billingRadio.value === 'annual' : false;
         const monthlyPrice = selectedPlan.price;
         let subtotal, discount = 0, total;
         
