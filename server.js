@@ -188,20 +188,29 @@ app.post("/api/analyse", express.json(), async (req, res) => {
   try {
     const userPrompt = (req.body.prompt || "").slice(0, 500);
     const systemMsg = `
-You are a strict JSON extractor.
-Return ONLY one valid JSON object, never markdown or prose.
+You MUST extract data and apply inference rules:
 
-Keys:
-  company_name   (string|null)
-  industry       (string|null)
-  city           (string|null)
-  language       (string|null)
-  missing_fields (array of strings chosen from
-                  ["company","industry","city","language"])
+JSON format:
+{
+  "company_name": string|null,
+  "industry": string|null,
+  "city": string|null,
+  "language": "English"|"Serbian"|"German"|"Spanish",
+  "missing_fields": []
+}
 
-If a value is absent in the user prompt, put null in that field and
-add the key name to missing_fields.  When all data are present,
-missing_fields must be an empty array.
+MANDATORY language inference (language is NEVER null):
+- Belgrade/Beograd/Novi Sad = "Serbian"
+- Berlin/Munich/Hamburg = "German"
+- Madrid/Barcelona = "Spanish"
+- Serbian text = "Serbian"
+- German text = "German"
+- Spanish text = "Spanish"
+- All other cases = "English"
+
+Company name: only proper nouns, not generic terms like "dental clinic"
+
+missing_fields: only add if data truly cannot be determined after inference
 `;
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
