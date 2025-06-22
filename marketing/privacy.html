@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="beta-banner">
+        Beta Preview – Launching Soon
+    </div>
     <nav class="nav">
         <a href="index.html" class="nav-brand">
             <img src="/assets/logo.svg" alt="GoAISite">
@@ -28,12 +31,20 @@
                 <p>This notice explains how GoAISite collects and uses your data.</p>
                 
                 <h2>Data We Collect</h2>
-                <ul style="line-height: 1.8; margin-bottom: 2rem;">
-                    <li>Account info: name, email, payment tokens (Stripe/PayPal).</li>
-                    <li>Prompt inputs you submit to generate websites.</li>
-                    <li>Usage analytics (IP address, browser) via Plausible Analytics.</li>
-                </ul>
-                
+<ul>
+  <li>Account info: name, email, encrypted password or Google OAuth ID.</li>
+  <li>Payment data: Paddle transaction ID, plan level, billing country (we never see full card details).</li>
+  <li>Prompt inputs: the text you submit to generate websites.</li>
+  <li>Usage analytics: IP address, device, and pages visited (via Plausible).</li>
+</ul>
+               <h2>Third-Party Processors</h2>
+<p>GoAiSite uses the following providers solely to deliver the service:</p>
+<ul>
+  <li><strong>Paddle.com</strong> – Merchant-of-Record for payments and invoicing.</li>
+  <li><strong>Chatislav.ai</strong> – Support chat widget.</li>
+  <li><strong>Google LLC</strong> – OAuth sign-in and font hosting.</li>
+</ul> 
+               
                 <h2>How We Use Data</h2>
                 <ul style="line-height: 1.8; margin-bottom: 2rem;">
                     <li>Provide and improve the service.</li>
