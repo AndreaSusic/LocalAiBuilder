@@ -1,0 +1,56 @@
+# Task
+Generate a lightweight marketing site in a new folder named **marketing/** so it never conflicts with current app pages.
+
+## Files & Paths
+marketing/
+├─ index.html
+├─ pricing.html
+├─ terms.html
+├─ privacy.html
+├─ contact.html
+└─ styles.css          ← shared stylesheet
+
+## Global Design Requirements
+• Brand color **#ffc000** (primary) and --dark: #222, --light: #f9fafb  
+• Font family: **Cooper Hewitt** (import via CDN)  
+• Responsive, mobile-first, max-width 960 px container  
+• Simple top nav: Logo (assume `/assets/logo.svg`) + links Home | Pricing | Contact  
+
+## Page-specific Content
+
+### 1️⃣ index.html  (Home)
+- H1: “AI Website Builder for Local Businesses”
+- Short value proposition paragraph.
+- Screenshot placeholder (`<img src="/assets/mockup.png">`)
+- CTA button links to `pricing.html`
+
+### 2️⃣ pricing.html
+- H1: “Plans & Pricing”
+- 3 plan cards (Starter €10/mo, Pro €20/mo, Agency €40/mo)  
+  • Show “Try for Free” button (links nowhere for now)  
+  • Bullet highlights  
+- Footnote: “All payments processed securely by Paddle.”
+
+### 3️⃣ terms.html  (use the Terms of Service we drafted earlier)
+
+### 4️⃣ privacy.html  (use the Privacy Policy we drafted)
+
+### 5️⃣ contact.html
+- H1 “Contact”
+- Email link **support@goaisite.com**
+- Simple form *action="#"* (placeholder): Name / Email / Message
+
+## styles.css essentials
+```css
+:root {
+  --primary:#ffc000;
+  --dark:#222;
+  --light:#f9fafb;
+}
+@import url('https://fonts.cdnfonts.com/css/cooper-hewitt');
+body{margin:0;font-family:'Cooper Hewitt',sans-serif;color:var(--dark);background:#fff;}
+.nav{display:flex;align-items:center;gap:1rem;padding:1rem 2rem;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.nav a{color:var(--dark);text-decoration:none;font-weight:600;}
+.btn{background:var(--primary);color:#fff;border:none;padding:.6rem 1.2rem;border-radius:4px;cursor:pointer;}
+.plan-card{border:1px solid #eee;border-radius:6px;padding:1.2rem;flex:1;min-width:240px;margin:0.5rem;}
+.container{max-width:960px;margin:auto;padding:1rem;}
