@@ -202,7 +202,7 @@ function initPricing() {
     const priceAmounts = document.querySelectorAll('.amount[data-monthly]');
     const periodLabels = document.querySelectorAll('.period[data-lang="perMonth"]');
     
-    let isAnnual = false;
+    let isAnnual = true; // Start with annual (left position)
     
     function updatePrices() {
         priceAmounts.forEach(amount => {
@@ -238,16 +238,16 @@ function initPricing() {
     function toggleBilling() {
         isAnnual = !isAnnual;
         
-        // Update aria-checked
-        toggle.setAttribute('aria-checked', isAnnual.toString());
+        // Update aria-checked (true when monthly/right, false when annual/left)
+        toggle.setAttribute('aria-checked', (!isAnnual).toString());
         
         // Update label classes
         if (isAnnual) {
-            leftLabel.classList.remove('active');
-            rightLabel.classList.add('active');
-        } else {
             leftLabel.classList.add('active');
             rightLabel.classList.remove('active');
+        } else {
+            leftLabel.classList.remove('active');
+            rightLabel.classList.add('active');
         }
         
         updatePrices();
