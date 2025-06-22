@@ -1077,9 +1077,7 @@ label {
   background: #fffbe9;
 }
 
-/* Hide follow-up panel by default */
-#followUp        { display: none; }   /* always hidden at load */
-#followUp.show   { display: grid; }   /* only visible when JS adds .show */
+
 
 .followup label,
 .colorset {

@@ -106,7 +106,7 @@ function initPromptForm() {
             });
 
             // colour pickers always visible
-            wraps.colors.classList.remove('hidden');
+            toggle(wraps.colors, missing_fields.length > 0);
 
             // master panel visibility
             followUp.classList.toggle('hidden', missing_fields.length === 0);
