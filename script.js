@@ -63,6 +63,38 @@ function initPromptForm() {
     // force panel closed on initial load
     followUp.classList.add('hidden');
 
+    // Image upload functionality
+    const dz      = document.getElementById('dropArea');
+    const input   = document.getElementById('promptImages');
+    const thumbs  = document.getElementById('thumbs');
+    let   images  = [];   // File[] array for later POST
+
+    function addFiles(files){
+      for(const f of files){
+        if(!f.type.startsWith('image/')) continue;
+        images.push(f);
+
+        // preview
+        const url = URL.createObjectURL(f);
+        const img = document.createElement('img');
+        img.src = url;
+        thumbs.appendChild(img);
+      }
+    }
+
+    dz.addEventListener('dragover', e=>{
+      e.preventDefault();
+      dz.classList.add('dragover');
+    });
+    dz.addEventListener('dragleave', ()=> dz.classList.remove('dragover'));
+    dz.addEventListener('drop', e=>{
+      e.preventDefault();
+      dz.classList.remove('dragover');
+      addFiles(e.dataTransfer.files);
+    });
+
+    input.addEventListener('change', ()=> addFiles(input.files));
+
     // Debounce helper
     function debounce(fn, delay = 600) {
         let t; 
