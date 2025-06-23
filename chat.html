@@ -58,8 +58,9 @@
 <script>
 // send current document height to parent
 function sendHeight() {
-  const h = document.documentElement.scrollHeight;
-  window.parent.postMessage({type:'chat-height', height: h}, '*');
+  // const h = document.documentElement.scrollHeight;
+  const h = document.getElementById('chatPane').offsetHeight;
+  window.parent.postMessage({ type: 'chat-height', height: h }, '*');
 }
 window.addEventListener('load', sendHeight);
 </script>
