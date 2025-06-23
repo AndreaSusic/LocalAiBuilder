@@ -1,7 +1,8 @@
 const $ = id => document.getElementById(id);
 const thread = $('chatThread'), input = $('chatInput'),
-      send = $('sendBtn'), selWrap = $('wrapIndustrySelect'), 
-      sel = $('industrySelect');
+      send = $('sendBtn'), files = $('fileInput'),
+      selWrap = $('wrapIndustrySelect'), sel = $('industrySelect'),
+      col1 = $('col1'), col2 = $('col2');
 
 const RX_INDS = /(dental|plumb|lawn|roof|legal|marketing|shoe|retail)/i;
 
@@ -94,11 +95,23 @@ function mergeState(obj) {
   }
 }
 
+// Create & insert colour picker and image drop area dynamically
+function insertAfter(node, html){
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  node.parentNode.insertBefore(div.firstElementChild, node.nextSibling);
+}
+
+// Remove all old pickers/drop areas if present
+function cleanupExtras(){
+  document.querySelectorAll('.wrapColours, .drop-zone').forEach(e=>e.remove());
+}
+
 function handleMissing(res){
   mergeState(res);
   cleanupExtras();
 
-  // Step 1: Ask for text Qs (company, city, industry, language, services)
+  // Step 1: Ask for text Qs
   const order = ['company_name','city','industry','language','services'];
   const next  = order.find(k=>state[k]===null);
 
@@ -112,6 +125,7 @@ function handleMissing(res){
     }[next];
     const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
     if(lastAI!==Q){
+      // Insert Q as plain <p> NOT .bubble.ai
       const p=document.createElement('p');
       p.className='prompt-label';
       p.textContent=Q;
@@ -123,16 +137,17 @@ function handleMissing(res){
     return;
   }
 
-  // Step 2: Colours (if missing)
+  // Step 2: Colours
   if(state.colours===null){
     const colourQ = 'Please pick two brand colours.';
     const lastAI = convo.filter(m=>m.role==='assistant').pop()?.content;
     if(lastAI!==colourQ){
+      // Insert as plain <p>
       const p=document.createElement('p');
       p.className='prompt-label';
       p.textContent=colourQ;
       thread.appendChild(p);
-      // Insert colour picker directly under label
+      // Insert colour picker below
       insertAfter(p, `
         <label class="wrapColours">
           Primary <input type="color" id="col1" value="#ffc000">
@@ -151,7 +166,7 @@ function handleMissing(res){
     return;
   }
 
-  // Step 3: Images (if missing)
+  // Step 3: Images
   if(images.length===0 && !document.querySelector('.drop-zone')){
     const imgQ = 'Can you upload images and a logo for me to use on your website?';
     const p=document.createElement('p');
@@ -167,28 +182,20 @@ function handleMissing(res){
     `);
     convo.push({role:'assistant',content:imgQ});
     
-    // Re-wire drag/drop/file logic
+    // Re-wire drag/drop and input logic
     const dropArea = $('dropArea');
-    const files = $('fileInput');
+    const fileInput = $('fileInput');
     
-    files.onchange = () => {
-      if (files.files.length) {
-        images.push(...files.files);
-        bubble('user', `📷 ${files.files.length} image(s) attached`);
-        askNextQuestion();
-      }
-    };
-
     dropArea.addEventListener('dragover', e => {
       e.preventDefault();
       dropArea.classList.add('dragover');
     });
-
+    
     dropArea.addEventListener('dragleave', e => {
       e.preventDefault();
       dropArea.classList.remove('dragover');
     });
-
+    
     dropArea.addEventListener('drop', e => {
       e.preventDefault();
       dropArea.classList.remove('dragover');
@@ -202,6 +209,14 @@ function handleMissing(res){
         askNextQuestion();
       }
     });
+    
+    fileInput.onchange = () => {
+      if (fileInput.files.length) {
+        images.push(...fileInput.files);
+        bubble('user', `📷 ${fileInput.files.length} image(s) attached`);
+        askNextQuestion();
+      }
+    };
     
     thread.scrollTop = thread.scrollHeight;
     return;
@@ -221,18 +236,6 @@ function handleMissing(res){
 
 function askNextQuestion(){ handleMissing({}); }
 
-// Helper: insertAfter()
-function insertAfter(node, html){
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  node.parentNode.insertBefore(div.firstElementChild, node.nextSibling);
-}
-
-// Helper: cleanupExtras()
-function cleanupExtras(){
-  document.querySelectorAll('.wrapColours, .drop-zone').forEach(e=>e.remove());
-}
-
 function paywall() {
   bubble('ai', 'Free limit reached - <a href="/pricing">upgrade to Pro</a>.');
   document.getElementById('chatFooter').style.display = 'none';
@@ -247,8 +250,36 @@ input.addEventListener('keydown', e => {
   }
 });
 
-// Initialize with greeting
-const initGreeting = document.createElement('p');
-initGreeting.className = 'prompt-label';
-initGreeting.textContent = 'Hi! Tell me about your business and I will help you create a website.';
-thread.appendChild(initGreeting);
+// File upload and drag-drop events
+files.onchange = () => {
+  if (files.files.length) bubble('user', '📷 image attached');
+};
+
+dropArea.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropArea.classList.add('dragover');
+});
+
+dropArea.addEventListener('dragleave', e => {
+  e.preventDefault();
+  dropArea.classList.remove('dragover');
+});
+
+dropArea.addEventListener('drop', e => {
+  e.preventDefault();
+  dropArea.classList.remove('dragover');
+  
+  const droppedFiles = Array.from(e.dataTransfer.files);
+  const imageFiles = droppedFiles.filter(f => f.type.startsWith('image/'));
+  
+  if (imageFiles.length > 0) {
+    images.push(...imageFiles);
+    bubble('user', `📷 ${imageFiles.length} image(s) attached`);
+  }
+});
+
+// Initialize with greeting as prompt label
+const greeting = document.createElement('p');
+greeting.className = 'prompt-label';
+greeting.textContent = 'Hi! Tell me about your business and I will help you create a website.';
+thread.appendChild(greeting);
