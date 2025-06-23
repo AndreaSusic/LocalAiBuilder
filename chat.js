@@ -1,7 +1,8 @@
 const $ = id => document.getElementById(id);
 const thread = $('chatThread'), input = $('chatInput'),
       send = $('sendBtn'), files = $('fileInput'),
-      dropArea = $('dropArea');
+      dropArea = $('dropArea'), selWrap = $('wrapIndustrySelect'),
+      sel = $('industrySelect');
 
 const RX_INDS = /(dental|plumb|lawn|roof|legal|marketing|shoe|retail)/i;
 
@@ -15,17 +16,9 @@ let awaitingKey = null;   // (company_name, city, industry, …)
 function bubble(role, txt) { 
   const d = document.createElement('div');
   d.className = `bubble ${role === 'user' ? 'user' : 'ai'}`;
-  d.textContent = txt;
+  d.innerHTML = txt;
   thread.appendChild(d);
   thread.scrollTop = thread.scrollHeight;
-}
-
-// local regex fallback for industry only
-function softFillIndustry(text) {
-  if (!state.industry) {
-    const m = text.match(RX_INDS);
-    if (m) state.industry = guessIndustry(m[1]);
-  }
 }
 
 function guessIndustry(word) {
@@ -50,7 +43,7 @@ async function sendUser() {
   const text = input.innerText.trim();
   if (!text && !files.files.length) return;
 
-  // If we just asked for a specific key, take today's reply verbatim
+  // If we just asked for a specific key, take reply verbatim
   if (awaitingKey && text) {
     state[awaitingKey] = text.trim();
     awaitingKey = null;     // reset
@@ -82,7 +75,6 @@ async function sendUser() {
 
     const res = await fetch('/api/analyse', {method: 'POST', body: fd});
     const j = await res.json();
-    mergeState(j);
     handleMissing(j);
   } catch (error) {
     console.error('Error:', error);
@@ -103,11 +95,29 @@ function mergeState(obj) {
   }
 }
 
-function handleMissing(r) {
-  let miss = r.missing_fields || [];
-  miss = miss.filter(k => state[k] === null);     // drop any we just filled
-  if (!miss.length) {
-    bubble('ai', 'Great! Generating your site...');
+function handleMissing(res){
+  mergeState(res);                    // keep existing merge
+
+  // 1) If GPT flagged low-confidence industry, show dropdown once
+  if(state.industry===null && (res.missing_fields||[]).includes('industry')){
+    selWrap.classList.remove('hidden');
+    sel.onchange = () =>{
+      state.industry = sel.value;
+      selWrap.classList.add('hidden');
+      askNextQuestion();
+    };
+    return;  // wait for user to pick
+  }
+
+  askNextQuestion();
+}
+
+function askNextQuestion(){
+  const order = ['company_name','city','industry','language','services'];
+  const next  = order.find(k => state[k] === null);
+
+  if(!next){
+    bubble('ai','Great! Generating your site...');
     
     // Save data to server
     fetch('/api/build-site', {
@@ -119,7 +129,6 @@ function handleMissing(r) {
     return;
   }
 
-  const key = miss[0];
   const questions = {
     company_name: 'What is the name of your business?',
     city: 'Which city do you mainly serve?',
@@ -127,13 +136,13 @@ function handleMissing(r) {
     language: 'What primary language should the website use?',
     services: 'List your most important services or products.'
   };
-  const Q = questions[key] || `Please provide your ${key}.`;
+  const Q = questions[next];
 
   const lastAI = convo.filter(m => m.role === 'assistant').pop()?.content;
-  if (lastAI !== Q) {
-    awaitingKey = key;
+  if (lastAI !== Q){
     bubble('ai', Q);
-    convo.push({role: 'assistant', content: Q});
+    convo.push({role:'assistant', content: Q});
+    awaitingKey = next;                 // remember what we just asked
   }
 }
 
@@ -178,3 +187,6 @@ dropArea.addEventListener('drop', e => {
     bubble('user', `📷 ${imageFiles.length} image(s) attached`);
   }
 });
+
+// Initialize with greeting
+bubble('ai', 'Hi! Tell me about your business and I will help you create a website.');
