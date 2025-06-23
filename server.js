@@ -195,6 +195,7 @@ Extract business data and return ONLY valid JSON:
   "industry": string|null,
   "city": string|null,
   "language": "English"|"Serbian"|"German"|"Spanish",
+  "services": string|null,
   "missing_fields": []
 }
 
@@ -205,10 +206,11 @@ RULES:
    - Madrid/Barcelona → "Spanish"
    - Otherwise → "English"
 
-2. Company name:
-   - Must be distinctive/branded (≥2 words, proper noun)
-   - "dental clinic" = null (generic)
-   - "Smith Dental" = "Smith Dental" (branded)
+2. A company_name must be distinctive or branded.  
+   Any phrase that ends with generic words such as  
+   "clinic, studio, agency, service, company, firm" is NOT valid.  
+   In that case set "company_name": null AND add "company_name" to
+   missing_fields.
 
 3. City detection (scan text for these patterns):
    - "in Austin" → city: "Austin"
@@ -219,7 +221,11 @@ RULES:
    - Known cities: Austin, Chicago, London, Berlin, Belgrade, Paris, New York, Los Angeles, Sydney, Toronto, Madrid, Barcelona, Munich, Hamburg, Novi Sad
    - "just restaurant" → city: null (no location)
 
-4. Missing fields:
+4. Services:
+   - Extract main services/products offered by the business
+   - If not mentioned, set services: null and add "services" to missing_fields
+
+5. Missing fields:
    - Add key to missing_fields only if truly cannot determine
    - Apply all inference rules first
 `;
