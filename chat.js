@@ -31,7 +31,7 @@ function createColorPicker() {
       Pick two brand colours:<br>
       Primary <input type="color" id="col1" value="#ffc000">
       Secondary <input type="color" id="col2" value="#000000">
-      <button id="colourDone">Done</button>
+      <button id="colourDone" style="padding:1rem 2rem;font-size:1.1rem;background:#0050c8;color:#fff;border:none;border-radius:6px;cursor:pointer;margin-top:1rem;">Confirm</button>
     </div>
   `;
   thread.appendChild(wrapper);
