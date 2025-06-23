@@ -2,12 +2,13 @@ const $ = id => document.getElementById(id);
 const thread = $('chatThread'), input = $('chatInput'),
       send = $('sendBtn'), files = $('fileInput');
 
-const RX_COMP = /([A-Z][\w-]+\s+[A-Z][\w-]+)/;   // "My Tooth"
 const RX_INDS = /(dental|plumb|lawn|roof|legal|marketing|shoe|retail)/i;
 
 let convo = [], state = {company_name: null, city: null, industry: null,
                          language: null, services: null}, images = [],
     turns = 0, MAX_FREE = 15;
+
+let awaitingKey = null;   // (company_name, city, industry, …)
 
 // bubble helper
 function bubble(role, txt) { 
@@ -18,12 +19,8 @@ function bubble(role, txt) {
   thread.scrollTop = thread.scrollHeight;
 }
 
-// local regex fallback
-function softFill(text) {
-  if (!state.company_name) {
-    const m = text.match(RX_COMP);
-    if (m) state.company_name = m[1];
-  }
+// local regex fallback for industry only
+function softFillIndustry(text) {
   if (!state.industry) {
     const m = text.match(RX_INDS);
     if (m) state.industry = guessIndustry(m[1]);
@@ -52,10 +49,21 @@ async function sendUser() {
   const text = input.innerText.trim();
   if (!text && !files.files.length) return;
 
+  // If we just asked for a specific key, take today's reply verbatim
+  if (awaitingKey && text) {
+    state[awaitingKey] = text.trim();
+    awaitingKey = null;     // reset
+  }
+
   if (text) bubble('user', text);        // preview
   if (files.files.length) bubble('user', '📷 image attached');
 
-  softFill(text);                        // local parse
+  // soft industry mapping only
+  if (!state.industry) { 
+    const m = text.match(RX_INDS);
+    if (m) state.industry = guessIndustry(m[1]); 
+  }
+
   convo.push({role: 'user', content: text});
   images.push(...files.files);
   files.value = '';
@@ -107,6 +115,7 @@ function handleMissing(r) {
 
   const lastAI = convo.filter(m => m.role === 'assistant').pop()?.content;
   if (lastAI !== Q) {
+    awaitingKey = key;
     bubble('ai', Q);
     convo.push({role: 'assistant', content: Q});
   }
