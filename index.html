@@ -80,6 +80,15 @@
             
             <iframe src="/chat" class="chatPane" title="Builder Chat"></iframe>
         </div>
+        
+        <script>
+        window.addEventListener('message', event => {
+            if (event.data?.type === 'chat-height') {
+                const iframe = document.querySelector('iframe.chatPane');
+                if (iframe) iframe.style.height = event.data.height + 'px';
+            }
+        });
+        </script>
 
         <!-- Benefits Section -->
         <section class="benefits">

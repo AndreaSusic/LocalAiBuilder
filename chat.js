@@ -61,6 +61,7 @@ function createDropZone() {
   `;
   thread.appendChild(wrapper);
   thread.scrollTop = thread.scrollHeight;
+  sendHeight();
   
   const dropZone = wrapper.querySelector('div');
   const fileInput = wrapper.querySelector('input[type="file"]');

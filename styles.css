@@ -2268,3 +2268,17 @@ select:focus {
 .bubble{max-width:80%;padding:.6rem .9rem;border-radius:8px;margin:.3rem 0;line-height:1.4;}
 .user{background:#ffc000;color:#222;margin-left:auto;}
 .ai{background:#fff;border:1px solid #ddd;}
+
+/* Auto-resize iframe containers */
+#chatPane {
+  height: auto !important;
+}
+#chatThread {
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: visible !important;
+}
+iframe.chatPane {
+  height: auto !important;
+  min-height: 300px;
+}
