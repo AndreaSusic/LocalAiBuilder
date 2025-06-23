@@ -10,13 +10,20 @@
     what you would like your site to include.
   </p>
 
-  <div id="dropArea" class="drop-zone always">
+  <div id="dropArea" class="drop-zone hidden">
     <p>Drag & drop images/logo here or <label class="file-label">browse
       <input type="file" id="fileInput" accept="image/*" multiple hidden>
     </label></p>
   </div>
 
   <div id="chatThread"></div>
+  
+  <label id="wrapColours" class="hidden">
+    Pick two brand colours:<br>
+    Primary <input type="color" id="col1" value="#ffc000">
+    Secondary <input type="color" id="col2" value="#000000">
+    <button id="colourDone">Done</button>
+  </label>
 
   <div id="chatFooter">
     <div id="chatInput" contenteditable="true"

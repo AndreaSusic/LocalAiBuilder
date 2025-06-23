@@ -34,7 +34,7 @@
     </header>
 
     <main>
-        <div class="layout">
+        <div id="chatContainer">
             <!-- Hero Section -->
             <section class="hero">
                 <div class="container">
@@ -70,39 +70,6 @@
                             
                             <div id="thumbs"></div>
                         </div>
-                        <!-- Follow-up inputs (hidden by default) -->
-                        <div id="followUp" class="followup hidden">
-                            <label id="wrapCompany" class="hidden">
-                                Company Name
-                                <input type="text" id="companyName" placeholder="Smith Dental Clinic">
-                            </label>
-
-                            <label id="wrapCity" class="hidden">
-                                City / Location
-                                <input type="text" id="companyCity" placeholder="Austin">
-                            </label>
-
-                            <label id="wrapIndustry" class="hidden">
-                                Industry
-                                <input type="text" id="industry" placeholder="e.g. Dental">
-                            </label>
-
-                            <label id="wrapLanguage" class="hidden">
-                                Website Language
-                                <select id="siteLang">
-                                    <option>English</option>
-                                    <option>Spanish</option>
-                                    <option>German</option>
-                                    <option>Serbian</option>
-                                </select>
-                            </label>
-
-                            <fieldset id="wrapColors" class="colorset">
-                                <legend>Choose your website colors</legend>
-                                <input type="color" id="primaryColor" value="#ffc000">
-                                <input type="color" id="secondaryColor" value="#000000">
-                            </fieldset>
-                        </div>
                         <button id="btnStart" class="btn-primary" data-lang="ctaStart">Start Building →</button>
                         <!-- sr: Počni gradnju → -->
                     </div>
@@ -111,7 +78,7 @@
             </div>
             </section>
             
-            <iframe src="/chat" class="chatPane"></iframe>
+            <iframe src="/chat" class="chatPane" title="Builder Chat"></iframe>
         </div>
 
         <!-- Benefits Section -->

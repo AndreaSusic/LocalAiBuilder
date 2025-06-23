@@ -2183,11 +2183,11 @@ select:focus {
 
 /* Chat layout */
 /* Layout system */
-.layout{display:flex;gap:2rem;align-items:flex-start;}
+#chatContainer{display:flex;gap:2rem;align-items:flex-start;}
 .hero{flex:1 0 55%;}
 .chatPane{flex:1 0 45%;height:90vh;border:1px solid #ddd;border-radius:8px;}
 @media(max-width:900px){
-  .layout{flex-direction:column;}
+  #chatContainer{flex-direction:column;}
   .chatPane{height:75vh;}
 }
 
@@ -2230,6 +2230,9 @@ select:focus {
 /* Industry dropdown styling */
 #wrapIndustrySelect{margin:1rem 0;display:block;}
 #industrySelect{width:100%;padding:.5rem;border:1px solid #ccc;border-radius:6px;}
+
+/* Color picker styling */
+#wrapColours{margin:1rem 0;padding:.8rem;border:1px dashed #bbb;border-radius:8px;}
 
 #chatContainer iframe.chatPane{height:90vh;border:1px solid #ddd;border-radius:8px;}
 
