@@ -226,8 +226,24 @@ RULES:
    - Extract main services/products offered by the business
    - If not mentioned, set services: null and add "services" to missing_fields
 
-Industry rules:
-   Once "industry" is set, do not ask again.
+4. "industry" must be one of these 25 categories  
+   ["Accounting & Finance","Advertising & Marketing","Automotive",
+    "Beauty & Wellness","Construction","Consulting","Dental",
+    "Education","Food & Beverage","Healthcare","Hospitality",
+    "IT & Software","Landscaping","Legal","Manufacturing",
+    "Pets","Plumbing","Real Estate","Retail","Roofing",
+    "Shoes & Apparel","Sports & Fitness","Transportation & Logistics",
+    "Travel","Other"]
+
+   • If user text clearly maps to one, set it and  
+     **industry_confidence** to 100.  
+   • If unsure, guess the best match and include  
+     industry_confidence (0-100).  
+   • If confidence < 60, set "industry":"Other" and  
+     add "industry" to missing_fields.
+
+   Do NOT ask about industry again once it is set by either the model
+   or the user.
 
 5. Missing fields:
    - Add key to missing_fields only if truly cannot determine

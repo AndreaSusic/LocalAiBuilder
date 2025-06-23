@@ -1,110 +1,90 @@
-const $ = id => document.getElementById(id);
-const th = $('chatThread');
-const inp = $('chatInput');
-const send = $('sendBtn');
-const fsel = $('fileInput');
+const $ = id=>document.getElementById(id);
+const th=$('chatThread'), inp=$('chatInput'), btn=$('sendBtn');
+const fsel=$('fileInput'), selWrap=$('wrapIndustrySelect'),
+      sel=$('industrySelect');
 
-let convo = [];          // {role,content}[]
-let images = [];         // File[]
-let turns = 0;
-const MAX_FREE = 15;
-let state = {            // persistent business data
-  company_name: null,
-  industry: null,
-  city: null,
-  language: "English",
-  services: null
-};
+let convo=[], images=[], turns=0, MAX_FREE=15;
+let state={ company_name:null, city:null, industry:null,
+            language:null, services:null };
 
-function bubble(role, txt) {
-  const d = document.createElement('div');
-  d.className = `bubble ${role === 'user' ? 'user' : 'ai'}`;
-  d.textContent = txt;
-  th.appendChild(d);
-  th.scrollTop = th.scrollHeight;
+const RX_COMP = /([A-Z][\w-]+\s+[A-Z][\w-]+)/;      // two capitalised words
+const RX_INDS = /(dental|plumb|lawn|roof|legal|lawyer|marketing|shoe|retail)/i;
+
+function bubble(role,text){ const d=document.createElement('div');
+  d.className=`bubble ${role==='user'?'user':'ai'}`; d.innerHTML=text;
+  th.appendChild(d); th.scrollTop=th.scrollHeight; }
+
+function addFiles(list){ for(const f of list)
+  (f.type.startsWith('image/'))&&(images.push(f),bubble('user','📷 image attached'));
+  fsel.value=''; }
+
+async function sendUser(){
+  const txt=inp.innerText.trim();
+  if(!txt&&!fsel.files.length) return;
+  if(txt) bubble('user',txt); addFiles(fsel.files);
+  convo.push({role:'user',content:txt}); inp.textContent='';
+  if(++turns>MAX_FREE){ paywall(); return; }
+
+  /* client-side soft fill */
+  if(!state.company_name){ const m=txt.match(RX_COMP); if(m) state.company_name=m[1]; }
+  if(!state.industry){ const m=txt.match(RX_INDS); if(m) state.industry=guessIndustry(m[1]); }
+
+  const fd=new FormData();
+  fd.append('prompt',JSON.stringify(convo));
+  images.forEach(f=>fd.append('images',f));
+  const j=await(await fetch('/api/analyse',{method:'POST',body:fd})).json();
+  mergeState(j); handleMissing(j);
 }
 
-function addFiles(list) {
-  for (const f of list) {
-    if (!f.type.startsWith('image/')) continue;
-    images.push(f);
-    bubble('user', '📷 image attached');
-  }
-  fsel.value = '';
+function guessIndustry(word){
+  const map={dental:'Dental',plumb:'Plumbing',lawn:'Landscaping',
+             roof:'Roofing',legal:'Legal',lawyer:'Legal',
+             marketing:'Advertising & Marketing',
+             shoe:'Shoes & Apparel',retail:'Retail'};
+  for(const k in map) if(word.toLowerCase().includes(k)) return map[k];
+  return null;
 }
 
-async function sendUser() {
-  const txt = inp.innerText.trim();
-  if (!txt && !fsel.files.length) return;
+function mergeState(r){
+  ['company_name','city','industry','language','services'].forEach(k=>{
+    if(r[k]) state[k]=r[k];
+  });
+}
 
-  if (txt) bubble('user', txt);
-  addFiles(fsel.files);
-  convo.push({ role: 'user', content: txt });
-  inp.textContent = '';
+function handleMissing(r){
+  let miss=r.missing_fields||[];
+  /* If GPT low-confidence industry, miss already has "industry" */
 
-  if (++turns > MAX_FREE) {
-    paywall();
+  if(miss.includes('industry')){
+    selWrap.classList.remove('hidden');
+    sel.onchange=()=>{
+      state.industry=sel.value; selWrap.classList.add('hidden');
+      askNext(); };
     return;
   }
-
-  try {
-    const response = await fetch('/api/analyse', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: txt })
-    });
-    const result = await response.json();
-    handleAI(result);
-  } catch (err) {
-    bubble('ai', 'Sorry, something went wrong. Please try again.');
-  }
+  askNext();
 }
 
-function handleAI(res) {
-  // merge new structured data into memory
-  state = { ...state, ...res };
-  
-  // build missing list by filtering keys that are still null
-  const miss = Object.entries(state)
-    .filter(([k, v]) => v === null && k !== 'missing_fields')
-    .map(([k]) => k);
-
-  if (!miss.length) {
-    bubble('ai', 'Great! Generating your site…');
-    return;
-  }
-
-  const next = miss[0];
-  const questions = {
-    company_name: 'What is the name of your business?',
-    city: 'Which city do you mainly serve?',
-    industry: 'What industry best describes your business?',
-    language: 'What primary language should the website use?',
-    services: 'List your most important services or products.',
-    colours: 'Any brand colours? Reply with two hex codes or say "no preference".',
-    images: 'Feel free to drag & drop your logo or photos right here.'
-  };
-
-  const question = questions[next] || `Please provide your ${next}.`;
-  bubble('ai', question);
-  convo.push({ role: 'assistant', content: question });
+function askNext(){
+  const miss=Object.keys(state).filter(k=>state[k]===null);
+  if(!miss.length){ bubble('ai','Great! Generating your site…'); return; }
+  const key=miss[0];
+  const Q={
+    company_name:'What's the name of your business?',
+    city:'Which city do you mainly serve?',
+    language:'What primary language should the website use?',
+    services:'List your most important services or products.'
+  }[key]||`Please provide your ${key}.`;
+  const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
+  if(lastAI!==Q){ bubble('ai',Q); convo.push({role:'assistant',content:Q}); }
 }
 
-function paywall() {
-  bubble('ai', 'Free limit reached – <a href="/pricing">upgrade to Pro</a> to continue.');
-  document.getElementById('chatFooter').style.display = 'none';
-}
+function paywall(){ bubble('ai','Free limit reached – <a href="/pricing">upgrade</a> to continue.');
+  $('chatFooter').style.display='none'; }
 
-// Event listeners
-send.onclick = sendUser;
-inp.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendUser();
-  }
-});
-fsel.onchange = () => addFiles(fsel.files);
-$('fileInput').addEventListener('click', e => e.stopPropagation());
+btn.onclick=sendUser;
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendUser();}});
+fsel.onchange=()=>addFiles(fsel.files);
 
-// Welcome message
-bubble('ai', 'Hi! I will help you create your website. Tell me about your business and what you would like your site to include.');
+// Initialize with greeting
+bubble('ai', 'Hi! Tell me about your business and I'll help you create a website.');
