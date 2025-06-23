@@ -2255,7 +2255,8 @@ select:focus {
 /* Color picker styling */
 #wrapColours{margin:1rem 0;padding:.8rem;border:1px dashed #bbb;border-radius:8px;}
 
-/* File button styling removed */
+/* File button styling */
+.file-btn{cursor:pointer;padding:0.5rem;margin-right:0.5rem;background:#f5f5f5;border-radius:4px;display:inline-block;}
 
 #chatContainer iframe.chatPane{height:90vh;border:1px solid #ddd;border-radius:8px;display:block;}
 

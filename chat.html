@@ -5,13 +5,19 @@
 
 <!--  A .chatPane now holds: label ▸ thread ▸ input  -->
 <div id="chatPane">
-
+  <p id="introLabel">
+    Hi! I will help you create your website. Tell me about your business and
+    what you would like your site to include.
+  </p>
 
 
 
   <div id="chatThread"></div>
 
   <div id="chatFooter">
+    <label class="file-btn">📎
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </label>
     <div id="chatInput" contenteditable="true"></div>
     <button id="sendBtn">➤</button>
   </div>
