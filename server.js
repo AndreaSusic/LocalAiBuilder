@@ -206,11 +206,12 @@ RULES:
    - Madrid/Barcelona → "Spanish"
    - Otherwise → "English"
 
-2. A company_name must be distinctive or branded.  
-   Any phrase that ends with generic words such as  
-   "clinic, studio, agency, service, company, firm" is NOT valid.  
-   In that case set "company_name": null AND add "company_name" to
-   missing_fields.
+2. A company_name is considered present when the user reply
+   contains **any capitalised word followed by another word**
+   (e.g. "My Tooth", "Green Lawn", "BlueSky").
+   As soon as you detect such a phrase, fill company_name
+   and REMOVE "company_name" from missing_fields.
+   Never ask for company_name again once it is filled.
 
 3. City detection (scan text for these patterns):
    - "in Austin" → city: "Austin"
@@ -224,6 +225,9 @@ RULES:
 4. Services:
    - Extract main services/products offered by the business
    - If not mentioned, set services: null and add "services" to missing_fields
+
+Industry rules:
+   Once "industry" is set, do not ask again.
 
 5. Missing fields:
    - Add key to missing_fields only if truly cannot determine
