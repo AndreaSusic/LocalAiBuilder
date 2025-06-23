@@ -2293,13 +2293,14 @@ iframe.chatPane {
 }
 .footer-top {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
-  padding: 2rem;
+  padding: 4rem;
 }
 .footer-col h3 {
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
+  color: white;
 }
 .footer-col ul {
   list-style: none;
@@ -2314,12 +2315,25 @@ iframe.chatPane {
   text-decoration: none;
 }
 .footer-logo {
-  max-width: 120px;
+  max-width: 100px;
   margin-bottom: 0.8rem;
+  background: none;
 }
 .site-title {
   margin: 0;
   font-size: 1.3rem;
+  color: white;
+}
+.footer-col:first-child {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.footer-col:first-child div {
+  flex: 1;
+}
+.footer-col:first-child p {
+  color: white;
 }
 .footer-bottom {
   text-align: center;
