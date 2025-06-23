@@ -2183,12 +2183,33 @@ select:focus {
 
 /* Chat layout */
 /* Layout system */
-#chatContainer{display:flex;gap:2rem;align-items:flex-start;}
-.hero{flex:1 0 55%;}
-.chatPane{flex:1 0 45%;height:90vh;border:1px solid #ddd;border-radius:8px;}
-@media(max-width:900px){
-  #chatContainer{flex-direction:column;}
-  .chatPane{height:75vh;}
+#chatContainer{display:flex;gap:2rem;align-items:flex-start;min-height:100vh;}
+.hero{flex:1 0 45%;max-width:45%;}
+.chatPane{flex:1 0 55%;height:90vh;border:1px solid #ddd;border-radius:8px;margin:30px;max-width:calc(55% - 60px);}
+
+/* Hide hero form */
+.hero-form{display:none !important;}
+
+/* Single column hero grid */
+.hero-grid{grid-template-columns:1fr !important;}
+
+/* Responsive design for tablets */
+@media(max-width:1024px){
+  #chatContainer{flex-direction:column;gap:1rem;}
+  .hero{flex:1 0 100%;max-width:100%;}
+  .chatPane{flex:1 0 100%;height:75vh;margin:15px;max-width:calc(100% - 30px);}
+}
+
+/* Responsive design for mobile */
+@media(max-width:768px){
+  #chatContainer{gap:0.5rem;}
+  .chatPane{margin:10px;height:70vh;max-width:calc(100% - 20px);}
+}
+
+/* Responsive design for small mobile */
+@media(max-width:480px){
+  .chatPane{margin:5px;height:65vh;max-width:calc(100% - 10px);}
+  .hero{padding:1rem;}
 }
 
 /* right-column pane on HP */
