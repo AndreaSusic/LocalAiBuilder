@@ -5,13 +5,28 @@
 
 <!--  A .chatPane now holds: label ▸ thread ▸ input  -->
 <div id="chatPane">
+  <p id="introLabel">
+    Hi! I will help you create your website. Tell me about your business and
+    what you would like your site to include.
+  </p>
 
+  <label id="wrapColours" class="hidden">
+    Pick two brand colours:<br>
+    Primary <input type="color" id="col1" value="#ffc000">
+    Secondary <input type="color" id="col2" value="#000000">
+    <button id="colourDone">Done</button>
+  </label>
 
-
+  <div id="dropArea" class="drop-zone hidden">
+    <p>Drag & drop images/logo here or <label class="file-label">browse files</label></p>
+  </div>
 
   <div id="chatThread"></div>
 
   <div id="chatFooter">
+    <label class="file-btn">📎
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </label>
     <div id="chatInput" contenteditable="true"></div>
     <button id="sendBtn">➤</button>
   </div>
