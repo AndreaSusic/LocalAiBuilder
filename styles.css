@@ -2227,6 +2227,10 @@ select:focus {
 .drop-zone.dragover{border-color:#ffc000;background:#fffbe9;}
 .file-label{color:#0050c8;cursor:pointer;text-decoration:underline;}
 
+/* Industry dropdown styling */
+#wrapIndustrySelect{margin:1rem 0;display:block;}
+#industrySelect{width:100%;padding:.5rem;border:1px solid #ccc;border-radius:6px;}
+
 #chatContainer iframe.chatPane{height:90vh;border:1px solid #ddd;border-radius:8px;}
 
 #chatContainer{display:flex;gap:2rem;align-items:flex-start;}
