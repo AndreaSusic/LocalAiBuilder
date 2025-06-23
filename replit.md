@@ -100,6 +100,7 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
+- June 23, 2025: Implemented clean homepage with docked chat interface - removed old RegEx form elements, created responsive layout with hero at 45% width and chat pane with 30px margins, added color picker integration and enhanced conversation flow (company → city → industry → language → services → colors → images), fully responsive across all devices
 - June 23, 2025: Enhanced chat interface with direct answer capture - removed regex-based company name detection, implemented verbatim response capture, added prominent drag-and-drop zone, enabled multiple cities support, and created data persistence endpoint for site generation
 - June 22, 2025: Enhanced city detection and company name validation - implemented comprehensive location patterns (standalone cities, "in/based in" phrases), refined company name rules to reject generic endings (clinic, studio, agency), always-visible image uploader and color pickers for improved UX
 - June 22, 2025: Added image upload capability with deduplication - implemented drag-and-drop image zone with file browser fallback, enhanced system prompt for distinctive company names, aligned JavaScript key names with GPT response structure (company_name), added conditional drop zone visibility
