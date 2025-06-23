@@ -208,7 +208,9 @@ MANDATORY language inference (language is NEVER null):
 - Spanish text = "Spanish"
 - All other cases = "English"
 
-Company name: only proper nouns, not generic terms like "dental clinic"
+2. A company_name must be a distinctive or branded phrase
+   (≥ 2 words, at least one capitalised non-generic word).
+   "dental clinic" or "law firm" do NOT count.
 
 missing_fields: only add if data truly cannot be determined after inference
 `;

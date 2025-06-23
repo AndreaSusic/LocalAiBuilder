@@ -2160,3 +2160,23 @@ select:focus {
 
 /* hide helper */
 .hidden { display:none !important; }
+
+/* Image upload zone */
+.drop-zone{
+  border:2px dashed #ccc;
+  border-radius:6px;
+  padding:1rem;
+  text-align:center;
+  color:#777;
+  margin:1rem 0;
+}
+.drop-zone.dragover{ border-color:#ffc000; background:#fffbe9; }
+.file-label{ color:#0050c8; cursor:pointer; text-decoration:underline; }
+#thumbs img{ width:60px; height:60px; object-fit:cover; margin:4px; border-radius:4px; }
+
+.prompt-help {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
