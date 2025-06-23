@@ -95,19 +95,23 @@ function mergeState(obj) {
   }
 }
 
-// Get elements for color picker and drop area
-const colourWrap = $('wrapColours');
-const dropArea = $('dropArea');
-$('colourDone').onclick = ()=>{
-  state.colours = [col1.value, col2.value];
-  colourWrap.classList.add('hidden');
-  askNextQuestion();
-};
+// Create & insert colour picker and image drop area dynamically
+function insertAfter(node, html){
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  node.parentNode.insertBefore(div.firstElementChild, node.nextSibling);
+}
+
+// Remove all old pickers/drop areas if present
+function cleanupExtras(){
+  document.querySelectorAll('.wrapColours, .drop-zone').forEach(e=>e.remove());
+}
 
 function handleMissing(res){
   mergeState(res);
+  cleanupExtras();
 
-  // Step 1: Ask for text Qs (company, city, industry, language, services)
+  // Step 1: Ask for text Qs
   const order = ['company_name','city','industry','language','services'];
   const next  = order.find(k=>state[k]===null);
 
@@ -121,42 +125,116 @@ function handleMissing(res){
     }[next];
     const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
     if(lastAI!==Q){
-      bubble('ai',Q); convo.push({role:'assistant',content:Q});
+      // Insert Q as plain <p> NOT .bubble.ai
+      const p=document.createElement('p');
+      p.className='prompt-label';
+      p.textContent=Q;
+      thread.appendChild(p);
+      convo.push({role:'assistant',content:Q});
       awaitingKey=next;
+      thread.scrollTop = thread.scrollHeight;
     }
     return;
   }
 
-  // Step 2: If colours missing, show picker and wait
+  // Step 2: Colours
   if(state.colours===null){
-    const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
-    if(lastAI!=='Please pick two brand colours.'){
-      bubble('ai','Please pick two brand colours.');
-      convo.push({role:'assistant',content:'Please pick two brand colours.'});
-      colourWrap.classList.remove('hidden');
+    const colourQ = 'Please pick two brand colours.';
+    const lastAI = convo.filter(m=>m.role==='assistant').pop()?.content;
+    if(lastAI!==colourQ){
+      // Insert as plain <p>
+      const p=document.createElement('p');
+      p.className='prompt-label';
+      p.textContent=colourQ;
+      thread.appendChild(p);
+      // Insert colour picker below
+      insertAfter(p, `
+        <label class="wrapColours">
+          Primary <input type="color" id="col1" value="#ffc000">
+          Secondary <input type="color" id="col2" value="#000000">
+          <button id="colourDone">Done</button>
+        </label>
+      `);
+      convo.push({role:'assistant',content:colourQ});
+      $('colourDone').onclick = ()=>{
+        state.colours = [$('col1').value, $('col2').value];
+        cleanupExtras();
+        askNextQuestion();
+      };
+      thread.scrollTop = thread.scrollHeight;
     }
-    return;  // wait for Done
-  }
-
-  // Step 3: If images missing, show drop-zone and wait for file
-  if(images.length===0 && dropArea.classList.contains('hidden')){
-    bubble('ai','Can you upload images and a logo for me to use on your website?');
-    convo.push({role:'assistant',content:'Please upload images or logo.'});
-    dropArea.classList.remove('hidden');
     return;
   }
 
-  // Step 4: If everything is ready, generate
-  bubble('ai','Great! Generating your site…');
+  // Step 3: Images
+  if(images.length===0 && !document.querySelector('.drop-zone')){
+    const imgQ = 'Can you upload images and a logo for me to use on your website?';
+    const p=document.createElement('p');
+    p.className='prompt-label';
+    p.textContent=imgQ;
+    thread.appendChild(p);
+    insertAfter(p, `
+      <div id="dropArea" class="drop-zone">
+        <p>Drag & drop images/logo here or <label class="file-label">browse
+          <input type="file" id="fileInput" accept="image/*" multiple hidden>
+        </label></p>
+      </div>
+    `);
+    convo.push({role:'assistant',content:imgQ});
+    
+    // Re-wire drag/drop and input logic
+    const dropArea = $('dropArea');
+    const fileInput = $('fileInput');
+    
+    dropArea.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropArea.classList.add('dragover');
+    });
+    
+    dropArea.addEventListener('dragleave', e => {
+      e.preventDefault();
+      dropArea.classList.remove('dragover');
+    });
+    
+    dropArea.addEventListener('drop', e => {
+      e.preventDefault();
+      dropArea.classList.remove('dragover');
+      
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      const imageFiles = droppedFiles.filter(f => f.type.startsWith('image/'));
+      
+      if (imageFiles.length > 0) {
+        images.push(...imageFiles);
+        bubble('user', `📷 ${imageFiles.length} image(s) attached`);
+        askNextQuestion();
+      }
+    });
+    
+    fileInput.onchange = () => {
+      if (fileInput.files.length) {
+        images.push(...fileInput.files);
+        bubble('user', `📷 ${fileInput.files.length} image(s) attached`);
+        askNextQuestion();
+      }
+    };
+    
+    thread.scrollTop = thread.scrollHeight;
+    return;
+  }
+
+  // Step 4: Done
+  const p=document.createElement('p');
+  p.className='prompt-label';
+  p.textContent='Great! Generating your site…';
+  thread.appendChild(p);
   fetch('/api/build-site',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({state, convo})
   });
+  thread.scrollTop = thread.scrollHeight;
 }
 
-function askNextQuestion() {
-  handleMissing({});
-}
+function askNextQuestion(){ handleMissing({}); }
 
 function paywall() {
   bubble('ai', 'Free limit reached - <a href="/pricing">upgrade to Pro</a>.');
@@ -200,5 +278,8 @@ dropArea.addEventListener('drop', e => {
   }
 });
 
-// Initialize with greeting
-bubble('ai', 'Hi! Tell me about your business and I will help you create a website.');
+// Initialize with greeting as prompt label
+const greeting = document.createElement('p');
+greeting.className = 'prompt-label';
+greeting.textContent = 'Hi! Tell me about your business and I will help you create a website.';
+thread.appendChild(greeting);
