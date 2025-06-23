@@ -1,0 +1,113 @@
+# ───────────────────────────────────────────────────────────────
+# 1 ▸  public/index.html  – clean homepage & dock chat
+# ───────────────────────────────────────────────────────────────
+• Delete the old <div id="followUp"> … </div> block (the RegEx form).
+• Wrap hero + iframe in flex:
+
+<div id="chatContainer">
+  <section class="hero"> … existing hero content … </section>
+
+  <iframe src="/chat" class="chatPane" title="Builder Chat"></iframe>
+</div>
+
+# ───────────────────────────────────────────────────────────────
+# 2 ▸  public/chat.html  – hide upload zone & colour pickers
+# ───────────────────────────────────────────────────────────────
+A. Add a hidden colour picker wrapper *below* chatThread:
+
+<label id="wrapColours" class="hidden">
+  Pick two brand colours:<br>
+  Primary <input type="color" id="col1" value="#ffc000">
+  Secondary <input type="color" id="col2" value="#000000">
+  <button id="colourDone">Done</button>
+</label>
+
+B. Make dropArea hidden by default:
+
+<div id="dropArea" class="drop-zone hidden"> … </div>
+
+# ───────────────────────────────────────────────────────────────
+# 3 ▸  public/styles.css  – minor tweaks
+# ───────────────────────────────────────────────────────────────
+.hidden{display:none!important;}
+#wrapColours{margin:1rem 0;padding:.8rem;border:1px dashed #bbb;border-radius:8px;}
+
+# ───────────────────────────────────────────────────────────────
+# 4 ▸  public/chat.js  – new flow logic
+# ───────────────────────────────────────────────────────────────
+### Replace ONLY the handleMissing() + askNextQuestion() section ###
+
+const colourWrap = $('wrapColours');
+$('colourDone').onclick = ()=>{
+  state.colours = [col1.value, col2.value];
+  colourWrap.classList.add('hidden');
+  askNextQuestion();
+};
+
+function handleMissing(res){
+  mergeState(res);
+
+  // step 1: if colours missing & not yet asked, ask now
+  if(state.colours===null){
+    const lastAI = convo.filter(m=>m.role==='assistant').pop()?.content;
+    if(lastAI!=='Please pick two brand colours.'){
+      bubble('ai','Please pick two brand colours.');
+      convo.push({role:'assistant',content:'Please pick two brand colours.'});
+      colourWrap.classList.remove('hidden');
+    }
+    return;        // wait for user to click Done
+  }
+
+  // step 2: if images missing & dropArea still hidden, ask once
+  if(!images.length && dropArea.classList.contains('hidden')){
+    bubble('ai','Can you upload images and a logo for me to use on your website?');
+    convo.push({role:'assistant',content:'Please upload images or logo.'});
+    dropArea.classList.remove('hidden');
+    return;
+  }
+
+  // step 3: if any other key missing, ask in order
+  askNextQuestion();
+}
+
+function askNextQuestion(){
+  const order=['company_name','city','industry','language','services'];
+  const next = order.find(k=>state[k]===null);
+
+  if(!next){
+    bubble('ai','Great! Generating your site…');
+    fetch('/api/build-site',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({state, convo})
+    });
+    return;
+  }
+
+  const Q={
+    company_name:'What’s the name of your business?',
+    city:'Which city do you mainly serve?',
+    industry:'What industry best describes your business?',
+    language:'What primary language should the website use?',
+    services:'List your most important services or products.'
+  }[next];
+
+  const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
+  if(lastAI!==Q){
+    bubble('ai',Q); convo.push({role:'assistant',content:Q});
+    awaitingKey=next;
+  }
+}
+
+# ───────────────────────────────────────────────────────────────
+# 5 ▸  public/chat.js  – remember to add colours to state init
+# ───────────────────────────────────────────────────────────────
+let state={ company_name:null, city:null, industry:null, language:null,
+            services:null, colours:null };
+
+# ───────────────────────────────────────────────────────────────
+# RESULT
+# ───────────────────────────────────────────────────────────────
+• Old RegEx form is gone; chat pane sits on RHS of homepage.  
+• AI now asks: company → city → industry → language → services → **colours**.  
+• After colour pickers are confirmed, if no images yet, AI asks for uploads and shows the drag-drop zone.  
+• “Generating your site…” only appears after company, city, industry, language, services, colours, **and** (optionally) images are done.
