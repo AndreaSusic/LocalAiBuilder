@@ -2215,8 +2215,7 @@ select:focus {
 /* right-column pane on HP */
 .chatPane, #chatPane{display:flex;flex-direction:column;height:100%;}
 
-/* intro label */
-#introLabel{font-weight:600;margin:0 0 .8rem .2rem;}
+/* intro label - removed, using bubbles instead */
 
 /* chat thread grows but never pushes footer below fold */
 #chatThread{flex:1;overflow-y:auto;padding:1rem;background:#f9f9f9;}
