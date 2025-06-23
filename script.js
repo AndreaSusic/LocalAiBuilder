@@ -57,11 +57,11 @@ function initPromptForm() {
 
     /* — Elements — */
     const wraps = {
-      company   : $('wrapCompany'),
-      city      : $('wrapCity'),
-      industry  : $('wrapIndustry'),
-      language  : $('wrapLanguage'),
-      colors    : $('wrapColors')
+      company_name : $('wrapCompany'),
+      city         : $('wrapCity'),
+      industry     : $('wrapIndustry'),
+      language     : $('wrapLanguage'),
+      colors       : $('wrapColors')
     };
     const followUp = $('followUp');
 
@@ -153,18 +153,16 @@ function initPromptForm() {
             Object.values(wraps).forEach(el => el.classList.add('hidden'));
 
             // 2) show wrappers that GPT wants
-            ['company','city','industry','language'].forEach(key => {
+            ['company_name','city','industry','language'].forEach(key => {
               toggleShow(wraps[key], missing_fields.includes(key));
             });
 
-            // 3) colours always visible when panel is open
-            toggleShow(wraps.colors, missing_fields.length > 0);
+            // colours & uploader always visible
+            wraps.colors.classList.remove('hidden');
+            dz.classList.remove('hidden');
 
-            // 4) show/hide master panel
+            // master panel shows if any wrapper (except colors/images) is visible
             followUp.classList.toggle('hidden', missing_fields.length === 0);
-
-            // 5) show or hide the drop zone when panel is open/closed
-            dz.classList.toggle('hidden', missing_fields.length === 0);
             
             console.log('GPT Analysis:', data);
         } catch (error) {
