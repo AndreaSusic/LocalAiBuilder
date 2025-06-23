@@ -8,6 +8,13 @@ let convo = [];          // {role,content}[]
 let images = [];         // File[]
 let turns = 0;
 const MAX_FREE = 15;
+let state = {            // persistent business data
+  company_name: null,
+  industry: null,
+  city: null,
+  language: "English",
+  services: null
+};
 
 function bubble(role, txt) {
   const d = document.createElement('div');
@@ -54,7 +61,14 @@ async function sendUser() {
 }
 
 function handleAI(res) {
-  const miss = res.missing_fields || [];
+  // merge new structured data into memory
+  state = { ...state, ...res };
+  
+  // build missing list by filtering keys that are still null
+  const miss = Object.entries(state)
+    .filter(([k, v]) => v === null && k !== 'missing_fields')
+    .map(([k]) => k);
+
   if (!miss.length) {
     bubble('ai', 'Great! Generating your site…');
     return;
@@ -77,8 +91,8 @@ function handleAI(res) {
 }
 
 function paywall() {
-  bubble('ai', 'Free limit reached – Upgrade to Pro to continue.');
-  $('chatFooter').remove();
+  bubble('ai', 'Free limit reached – <a href="/pricing">upgrade to Pro</a> to continue.');
+  document.getElementById('chatFooter').style.display = 'none';
 }
 
 // Event listeners
