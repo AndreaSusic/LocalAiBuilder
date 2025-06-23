@@ -1,7 +1,9 @@
 const $ = id => document.getElementById(id);
 const thread = $('chatThread'), input = $('chatInput'),
-      send = $('sendBtn'), selWrap = $('wrapIndustrySelect'),
-      sel = $('industrySelect');
+      send = $('sendBtn'), files = $('fileInput'),
+      dropArea = $('dropArea'), selWrap = $('wrapIndustrySelect'),
+      sel = $('industrySelect'), colourWrap = $('wrapColours'),
+      col1 = $('col1'), col2 = $('col2');
 
 const RX_INDS = /(dental|plumb|lawn|roof|legal|marketing|shoe|retail)/i;
 
@@ -29,7 +31,7 @@ function createColorPicker() {
       Pick two brand colours:<br>
       Primary <input type="color" id="col1" value="#ffc000">
       Secondary <input type="color" id="col2" value="#000000">
-      <button id="colourDone" style="padding:12px 24px;font-size:16px;background:#ffc000;border:none;border-radius:6px;cursor:pointer;margin-top:8px;">Confirm</button>
+      <button id="colourDone">Done</button>
     </div>
   `;
   thread.appendChild(wrapper);
@@ -237,6 +239,15 @@ input.addEventListener('keydown', e => {
   }
 });
 
-// File input removed from footer
+// File upload from footer file button
+if (files) {
+  files.onchange = () => {
+    if (files.files.length) {
+      images.push(...files.files);
+      bubble('user', `📷 ${files.files.length} image(s) attached`);
+    }
+  };
+}
 
-// Initialize chat without greeting - starts clean
+// Initialize with greeting
+bubble('ai', 'Hi! Tell me about your business and I will help you create a website.');
