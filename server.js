@@ -188,9 +188,8 @@ app.post("/api/analyse", express.json(), async (req, res) => {
   try {
     const userPrompt = (req.body.prompt || "").slice(0, 500);
     const systemMsg = `
-You MUST extract data and apply inference rules:
+Extract business data and return ONLY valid JSON:
 
-JSON format:
 {
   "company_name": string|null,
   "industry": string|null,
@@ -199,24 +198,30 @@ JSON format:
   "missing_fields": []
 }
 
-MANDATORY language inference (language is NEVER null):
-- Belgrade/Beograd/Novi Sad = "Serbian"
-- Berlin/Munich/Hamburg = "German"
-- Madrid/Barcelona = "Spanish"
-- Serbian text = "Serbian"
-- German text = "German"
-- Spanish text = "Spanish"
-- All other cases = "English"
+RULES:
+1. Language (NEVER null):
+   - Belgrade/Beograd/Novi Sad → "Serbian"
+   - Berlin/Munich/Hamburg → "German"
+   - Madrid/Barcelona → "Spanish"
+   - Otherwise → "English"
 
-2. A company_name must be a distinctive or branded phrase
-   (≥ 2 words, at least one capitalised non-generic word).
-   "dental clinic" or "law firm" do NOT count.
+2. Company name:
+   - Must be distinctive/branded (≥2 words, proper noun)
+   - "dental clinic" = null (generic)
+   - "Smith Dental" = "Smith Dental" (branded)
 
-3. "city" must be filled only if the user explicitly
-   mentions a location (e.g. "in Austin", "Belgrade", "Los Angeles").
-   Otherwise set "city":null and list "city" in missing_fields.
+3. City detection (scan text for these patterns):
+   - "in Austin" → city: "Austin"
+   - "based in Chicago" → city: "Chicago"  
+   - "dental clinic Austin" → city: "Austin" (standalone city name)
+   - "law firm Berlin" → city: "Berlin"
+   - "restaurant Belgrade" → city: "Belgrade"
+   - Known cities: Austin, Chicago, London, Berlin, Belgrade, Paris, New York, Los Angeles, Sydney, Toronto, Madrid, Barcelona, Munich, Hamburg, Novi Sad
+   - "just restaurant" → city: null (no location)
 
-missing_fields: only add if data truly cannot be determined after inference
+4. Missing fields:
+   - Add key to missing_fields only if truly cannot determine
+   - Apply all inference rules first
 `;
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
