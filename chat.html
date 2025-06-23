@@ -55,5 +55,13 @@
   </label>
 </div>
 
+<script>
+// send current document height to parent
+function sendHeight() {
+  const h = document.documentElement.scrollHeight;
+  window.parent.postMessage({type:'chat-height', height: h}, '*');
+}
+window.addEventListener('load', sendHeight);
+</script>
 <script src="/chat.js"></script>  <!-- keep at end, no defer -->
 </body></html>

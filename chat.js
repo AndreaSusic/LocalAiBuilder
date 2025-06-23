@@ -20,6 +20,7 @@ function bubble(role, txt) {
   d.innerHTML = txt;
   thread.appendChild(d);
   thread.scrollTop = thread.scrollHeight;
+  sendHeight();
 }
 
 // Create color picker inline
@@ -36,11 +37,13 @@ function createColorPicker() {
   `;
   thread.appendChild(wrapper);
   thread.scrollTop = thread.scrollHeight;
+  sendHeight();
   
   // Bind event handler
   wrapper.querySelector('#colourDone').onclick = () => {
     state.colours = [wrapper.querySelector('#col1').value, wrapper.querySelector('#col2').value];
     wrapper.remove();
+    sendHeight();
     handleMissing({});
   };
 }
@@ -68,6 +71,7 @@ function createDropZone() {
       images.push(...fileInput.files);
       bubble('user', `📷 ${fileInput.files.length} image(s) attached`);
       wrapper.remove();
+      sendHeight();
       handleMissing({});
     }
   };
@@ -96,6 +100,7 @@ function createDropZone() {
       images.push(...imageFiles);
       bubble('user', `📷 ${imageFiles.length} image(s) attached`);
       wrapper.remove();
+      sendHeight();
       handleMissing({});
     }
   });
