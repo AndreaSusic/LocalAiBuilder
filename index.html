@@ -48,7 +48,7 @@
                         <div class="prompt-container">
                             <label for="aiPrompt" data-lang="promptLabel">Describe your business or website idea:</label>
                             <!-- sr: Opišite vašu ideju za posao ili sajt: -->
-                            <textarea id="aiPrompt" rows="4" placeholder="Be as specific as possible: &quot;A modern dental clinic, My Dents, in Chicago offering ceramic veneers, Invisalign, whitening, Botox, full-mouth rehabilitation…&quot;" data-lang="promptPlaceholder"></textarea>
+                            <textarea id="aiPrompt" rows="4" placeholder="Be as specific as possible: &quot;A modern dental clinic, My Dents, in Chicago offering ceramic veneers, Invisalign, whitening, Botox…&quot;" data-lang="promptPlaceholder"></textarea>
                             <!-- sr placeholder: Npr., Moderna stomatološka ordinacija u Beogradu koja pruža porodičnu stomatologiju i kozmetičke tretmane... -->
                             <div class="word-count">
                                 <span id="wordCount">0</span> <span data-lang="wordsLabel">words</span>
@@ -56,18 +56,17 @@
                             </div>
                             
                             <p class="prompt-help">
-                                Describe your business or website idea.<br>
-                                <strong>Optional:</strong> add company images (logo, team photos).
+                                Optional: add company images (logo, team photos).
                             </p>
                             
-                            <!-- Drag-&-drop / file picker -->
-                            <div id="dropArea" class="drop-zone">
-                                <p>📷 Drop images here or <label class="file-label">browse
-                                    <input type="file" id="promptImages" accept="image/*" multiple hidden>
-                                </label></p>
+                            <div id="dropArea" class="drop-zone hidden">
+                                <p>📷 Drop images here or
+                                   <label class="file-label">browse
+                                     <input type="file" id="promptImages" accept="image/*" multiple hidden>
+                                   </label>
+                                </p>
                             </div>
                             
-                            <!-- Preview thumbnails -->
                             <div id="thumbs"></div>
                         </div>
                         <!-- Follow-up inputs (hidden by default) -->
