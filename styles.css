@@ -2281,4 +2281,6 @@ select:focus {
 iframe.chatPane {
   height: auto !important;
   min-height: 300px;
+  display: block;
+  width: 100%;
 }
