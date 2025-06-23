@@ -10,12 +10,15 @@
     what you would like your site to include.
   </p>
 
+  <div id="dropArea" class="drop-zone always">
+    <p>Drag & drop images/logo here or <label class="file-label">browse
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </label></p>
+  </div>
+
   <div id="chatThread"></div>
 
   <div id="chatFooter">
-    <label class="file-btn">📎
-      <input type="file" id="fileInput" accept="image/*" multiple hidden>
-    </label>
     <div id="chatInput" contenteditable="true"
          data-placeholder="Describe your business…"></div>
     <button id="sendBtn">➤</button>

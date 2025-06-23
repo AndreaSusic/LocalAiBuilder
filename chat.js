@@ -1,6 +1,7 @@
 const $ = id => document.getElementById(id);
 const thread = $('chatThread'), input = $('chatInput'),
-      send = $('sendBtn'), files = $('fileInput');
+      send = $('sendBtn'), files = $('fileInput'),
+      dropArea = $('dropArea');
 
 const RX_INDS = /(dental|plumb|lawn|roof|legal|marketing|shoe|retail)/i;
 
@@ -90,9 +91,16 @@ async function sendUser() {
 }
 
 function mergeState(obj) {
-  ['company_name', 'city', 'industry', 'language', 'services'].forEach(k => {
+  ['company_name', 'industry', 'language', 'services'].forEach(k => {
     if (obj[k]) state[k] = obj[k];
   });
+  
+  // Handle city as array or string
+  if (Array.isArray(obj.city)) {
+    state.city = obj.city;
+  } else if (obj.city) {
+    state.city = [obj.city];
+  }
 }
 
 function handleMissing(r) {
@@ -100,6 +108,14 @@ function handleMissing(r) {
   miss = miss.filter(k => state[k] === null);     // drop any we just filled
   if (!miss.length) {
     bubble('ai', 'Great! Generating your site...');
+    
+    // Save data to server
+    fetch('/api/build-site', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ convo, state })
+    });
+    
     return;
   }
 
@@ -134,6 +150,31 @@ input.addEventListener('keydown', e => {
     sendUser();
   }
 });
+
+// File upload and drag-drop events
 files.onchange = () => {
   if (files.files.length) bubble('user', '📷 image attached');
 };
+
+dropArea.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropArea.classList.add('dragover');
+});
+
+dropArea.addEventListener('dragleave', e => {
+  e.preventDefault();
+  dropArea.classList.remove('dragover');
+});
+
+dropArea.addEventListener('drop', e => {
+  e.preventDefault();
+  dropArea.classList.remove('dragover');
+  
+  const droppedFiles = Array.from(e.dataTransfer.files);
+  const imageFiles = droppedFiles.filter(f => f.type.startsWith('image/'));
+  
+  if (imageFiles.length > 0) {
+    images.push(...imageFiles);
+    bubble('user', `📷 ${imageFiles.length} image(s) attached`);
+  }
+});

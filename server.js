@@ -183,10 +183,12 @@ app.post('/signup', async function(req, res) {
   }
 });
 
-// GPT-powered business analysis API
-app.post("/api/analyse", express.json(), express.urlencoded({ extended: true }), async (req, res) => {
+// GPT-powered business analysis API  
+app.use('/api/analyse', express.json(), express.urlencoded({ extended: true }));
+app.post("/api/analyse", async (req, res) => {
   try {
-    console.log("Request body:", req.body);
+    console.log("Full request body:", req.body);
+    console.log("Request body type:", typeof req.body);
     
     // Handle both JSON and FormData requests
     let userPrompt = "";
@@ -206,6 +208,9 @@ app.post("/api/analyse", express.json(), express.urlencoded({ extended: true }),
       } else {
         userPrompt = req.body.prompt;
       }
+    } else {
+      console.log("No prompt found in request body");
+      userPrompt = "No business description provided";
     }
     userPrompt = (userPrompt || "No prompt provided").slice(0, 500);
     const systemMsg = `
@@ -242,6 +247,9 @@ RULES:
    - "restaurant Belgrade" → city: "Belgrade"
    - Known cities: Austin, Chicago, London, Berlin, Belgrade, Paris, New York, Los Angeles, Sydney, Toronto, Madrid, Barcelona, Munich, Hamburg, Novi Sad
    - "just restaurant" → city: null (no location)
+   
+   If the user lists more than one city, return "city" as an array of strings.
+   Example: "Austin, New York" → "city":["Austin","New York"]
 
 4. Services:
    - Extract main services/products offered by the business
@@ -293,6 +301,24 @@ RULES:
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "analysis_failed" });
+  }
+});
+
+// Build site endpoint to save collected data
+app.post('/api/build-site', express.json(), async (req, res) => {
+  try {
+    const { convo, state } = req.body;
+    console.log('Building site with data:', { convo, state });
+    
+    // Here you would typically save to database
+    // For now, just log the collected data
+    console.log('Conversation:', convo);
+    console.log('Final state:', state);
+    
+    res.json({ success: true, message: 'Site data saved successfully' });
+  } catch (error) {
+    console.error('Error saving site data:', error);
+    res.status(500).json({ error: 'Failed to save site data' });
   }
 });
 
