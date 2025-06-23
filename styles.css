@@ -2254,6 +2254,10 @@ select:focus {
 
 /* Color picker styling */
 #wrapColours{margin:1rem 0;padding:.8rem;border:1px dashed #bbb;border-radius:8px;}
+.drop-zone{border:2px dashed #bbb;border-radius:8px;padding:1rem;
+           text-align:center;color:#666;margin-bottom:1rem;}
+.drop-zone.dragover{border-color:#ffc000;background:#fffbe9;}
+.file-label{color:#0050c8;cursor:pointer;text-decoration:underline;}
 
 #chatContainer iframe.chatPane{height:90vh;border:1px solid #ddd;border-radius:8px;}
 
