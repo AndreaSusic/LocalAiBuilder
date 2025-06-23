@@ -22,6 +22,85 @@ function bubble(role, txt) {
   thread.scrollTop = thread.scrollHeight;
 }
 
+// Create color picker inline
+function createColorPicker() {
+  const wrapper = document.createElement('div');
+  wrapper.id = 'inlineColorPicker';
+  wrapper.innerHTML = `
+    <div style="margin:1rem 0;padding:.8rem;border:1px dashed #bbb;border-radius:8px;">
+      Pick two brand colours:<br>
+      Primary <input type="color" id="col1" value="#ffc000">
+      Secondary <input type="color" id="col2" value="#000000">
+      <button id="colourDone">Done</button>
+    </div>
+  `;
+  thread.appendChild(wrapper);
+  thread.scrollTop = thread.scrollHeight;
+  
+  // Bind event handler
+  wrapper.querySelector('#colourDone').onclick = () => {
+    state.colours = [wrapper.querySelector('#col1').value, wrapper.querySelector('#col2').value];
+    wrapper.remove();
+    handleMissing({});
+  };
+}
+
+// Create drop zone inline
+function createDropZone() {
+  const wrapper = document.createElement('div');
+  wrapper.id = 'inlineDropZone';
+  wrapper.innerHTML = `
+    <div style="border:2px dashed #bbb;border-radius:8px;padding:1rem;text-align:center;color:#666;margin:1rem 0;">
+      <p>Drag & drop images/logo here or <label class="file-label" style="color:#0050c8;cursor:pointer;text-decoration:underline;">browse files
+        <input type="file" accept="image/*" multiple hidden>
+      </label></p>
+    </div>
+  `;
+  thread.appendChild(wrapper);
+  thread.scrollTop = thread.scrollHeight;
+  
+  const dropZone = wrapper.querySelector('div');
+  const fileInput = wrapper.querySelector('input[type="file"]');
+  
+  // File input handler
+  fileInput.onchange = () => {
+    if (fileInput.files.length) {
+      images.push(...fileInput.files);
+      bubble('user', `📷 ${fileInput.files.length} image(s) attached`);
+      wrapper.remove();
+      handleMissing({});
+    }
+  };
+  
+  // Drag and drop handlers
+  dropZone.addEventListener('dragover', e => {
+    e.preventDefault();
+    dropZone.style.borderColor = '#ffc000';
+    dropZone.style.background = '#fffbe9';
+  });
+  
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.style.borderColor = '#bbb';
+    dropZone.style.background = 'transparent';
+  });
+  
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.style.borderColor = '#bbb';
+    dropZone.style.background = 'transparent';
+    
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    const imageFiles = droppedFiles.filter(f => f.type.startsWith('image/'));
+    
+    if (imageFiles.length > 0) {
+      images.push(...imageFiles);
+      bubble('user', `📷 ${imageFiles.length} image(s) attached`);
+      wrapper.remove();
+      handleMissing({});
+    }
+  });
+}
+
 function guessIndustry(word) {
   const map = {
     dental: 'Dental',
@@ -96,12 +175,6 @@ function mergeState(obj) {
   }
 }
 
-$('colourDone').onclick = ()=>{
-  state.colours = [col1.value, col2.value];
-  colourWrap.classList.add('hidden');
-  handleMissing({});
-};
-
 function handleMissing(res){
   mergeState(res);
 
@@ -125,22 +198,22 @@ function handleMissing(res){
     return;
   }
 
-  // Step 2: If colours missing, show picker and wait
+  // Step 2: If colours missing, show picker inline and wait
   if(state.colours===null){
     const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
-    if(lastAI!=='Please pick two brand colours.'){
+    if(lastAI!=='Please pick two brand colours.' && !document.getElementById('inlineColorPicker')){
       bubble('ai','Please pick two brand colours.');
       convo.push({role:'assistant',content:'Please pick two brand colours.'});
-      colourWrap.classList.remove('hidden');
+      createColorPicker();
     }
     return;  // wait for Done
   }
 
-  // Step 3: If images missing, show drop-zone and wait for file
-  if(images.length===0 && dropArea.classList.contains('hidden')){
+  // Step 3: If images missing, show drop-zone inline and wait for file
+  if(images.length===0 && !document.getElementById('inlineDropZone')){
     bubble('ai','Can you upload images and a logo for me to use on your website?');
     convo.push({role:'assistant',content:'Please upload images or logo.'});
-    dropArea.classList.remove('hidden');
+    createDropZone();
     return;
   }
 
@@ -166,7 +239,7 @@ input.addEventListener('keydown', e => {
   }
 });
 
-// File upload and drag-drop events
+// File upload from footer file button
 if (files) {
   files.onchange = () => {
     if (files.files.length) {
@@ -175,29 +248,6 @@ if (files) {
     }
   };
 }
-
-dropArea.addEventListener('dragover', e => {
-  e.preventDefault();
-  dropArea.classList.add('dragover');
-});
-
-dropArea.addEventListener('dragleave', e => {
-  e.preventDefault();
-  dropArea.classList.remove('dragover');
-});
-
-dropArea.addEventListener('drop', e => {
-  e.preventDefault();
-  dropArea.classList.remove('dragover');
-  
-  const droppedFiles = Array.from(e.dataTransfer.files);
-  const imageFiles = droppedFiles.filter(f => f.type.startsWith('image/'));
-  
-  if (imageFiles.length > 0) {
-    images.push(...imageFiles);
-    bubble('user', `📷 ${imageFiles.length} image(s) attached`);
-  }
-});
 
 // Initialize with greeting
 bubble('ai', 'Hi! Tell me about your business and I will help you create a website.');
