@@ -100,6 +100,7 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
+- June 22, 2025: Enhanced city detection and company name validation - implemented comprehensive location patterns (standalone cities, "in/based in" phrases), refined company name rules to reject generic endings (clinic, studio, agency), always-visible image uploader and color pickers for improved UX
 - June 22, 2025: Added image upload capability with deduplication - implemented drag-and-drop image zone with file browser fallback, enhanced system prompt for distinctive company names, aligned JavaScript key names with GPT response structure (company_name), added conditional drop zone visibility
 - June 22, 2025: Migrated to CSS class-based visibility system - replaced HTML hidden attributes with .hidden CSS class for better performance, removed legacy CSS rules that conflicted with new system, color pickers now toggle with panel visibility for cleaner UX
 - June 22, 2025: Optimized follow-up panel visibility - panel now starts fully hidden and shows only when missing_fields is not empty, aligned wrapper IDs with GPT response keys (wrapLanguage), enhanced language inference rules for consistent city-based detection

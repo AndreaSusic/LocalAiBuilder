@@ -1,0 +1,118 @@
+# ————————————————————————————————————————————————————————————
+#  CREATE CHAT-STYLE BUILDER  (adds new /chat page & JS)
+# ————————————————————————————————————————————————————————————
+
+# 1 ▸  NEW FILE  public/chat.html
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><title>GoAiSite Chat Builder</title>
+<link rel="stylesheet" href="/styles.css">
+</head><body>
+<div id="chatContainer">
+  <div id="chatThread"></div>
+
+  <div id="chatFooter">
+    <label class="file-btn">📎
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </label>
+    <div id="chatInput" contenteditable placeholder="Describe your business…"></div>
+    <button id="sendBtn">➤</button>
+  </div>
+</div>
+<script src="/chat.js" defer></script>
+</body></html>
+
+# 2 ▸  APPEND to public/styles.css  (chat UI + uploader)
+# chat layout
+#chatContainer{display:flex;flex-direction:column;height:100vh;font-family:system-ui;}
+#chatThread{flex:1;overflow-y:auto;padding:1rem;background:#f9f9f9;}
+.bubble{max-width:80%;padding:.6rem .9rem;border-radius:8px;margin:.3rem 0;line-height:1.4;}
+.user{background:#ffc000;color:#222;margin-left:auto;}
+.ai{background:#fff;border:1px solid #ddd;}
+#chatFooter{display:flex;align-items:center;padding:.6rem;border-top:1px solid #eee;}
+#chatInput{flex:1;min-height:36px;max-height:120px;overflow-y:auto;padding:.4rem .6rem;
+           border:1px solid #ccc;border-radius:6px;}
+#sendBtn{background:#0050c8;color:#fff;border:none;padding:.6rem 1rem;border-radius:6px;cursor:pointer;}
+.file-btn{margin-right:.5rem;cursor:pointer;}
+#thumbs img{width:60px;height:60px;object-fit:cover;margin:4px;border-radius:4px;}
+
+# 3 ▸  NEW FILE  public/chat.js
+const $     = id=>document.getElementById(id);
+const th    = $('chatThread');
+const inp   = $('chatInput');
+const send  = $('sendBtn');
+const fsel  = $('fileInput');
+
+let convo=[];          // {role,content}[]
+let images=[];         // File[]
+let turns=0, MAX_FREE=15;
+
+function bubble(role,txt){
+  const d=document.createElement('div');
+  d.className=`bubble ${role==='user'?'user':'ai'}`; d.textContent=txt; th.appendChild(d);
+  th.scrollTop=th.scrollHeight;
+}
+function addFiles(list){
+  for(const f of list){
+    if(!f.type.startsWith('image/')) continue;
+    images.push(f); bubble('user','📷 image attached');
+  }
+  fsel.value='';
+}
+async function sendUser(){
+  const txt=inp.innerText.trim();
+  if(!txt && !fsel.files.length) return;
+  if(txt) bubble('user',txt);
+  addFiles(fsel.files);
+  convo.push({role:'user',content:txt});
+  inp.textContent='';
+
+  if(++turns>MAX_FREE){ paywall(); return; }
+
+  const fd=new FormData();
+  fd.append('prompt',JSON.stringify(convo));
+  images.forEach(f=>fd.append('images',f));
+  const r=await fetch('/api/analyse',{method:'POST',body:fd});
+  const j=await r.json(); handleAI(j);
+}
+function handleAI(res){
+  const miss=res.missing_fields||[];
+  if(!miss.length){ bubble('ai','Great! Generating your site…'); return; }
+
+  const next=miss[0];
+  const Q={
+    company_name:'What’s the name of your business?',
+    city:'Which city do you mainly serve?',
+    industry:'What industry best describes your business?',
+    language:'What primary language should the website use?',
+    services:'List your most important services or products.',
+    colours:'Any brand colours? Reply with two hex codes or say “no preference”.',
+    images:'Feel free to drag & drop your logo or photos right here.'
+  }[next]||`Please provide your ${next}.`;
+
+  bubble('ai',Q); convo.push({role:'assistant',content:Q});
+}
+function paywall(){
+  bubble('ai','Free limit reached – <Upgrade to Pro> to continue.');
+  $('chatFooter').remove();
+}
+
+send.onclick=sendUser;
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendUser();}});
+fsel.onchange=()=>addFiles(fsel.files);
+$('fileInput').addEventListener('click',e=>e.stopPropagation()); // keep focus
+
+# 4 ▸  server.js  – systemMsg additions
+• Add "services" to keys list and to follow-up rules:
+  - keys include services
+  - when services are missing, add "services" to missing_fields
+
+# 5 ▸  OPTIONAL: in main Express app, serve /chat
+app.get("/chat", (req,res)=> res.sendFile(path.join(__dirname,"public","chat.html")));
+
+# ————————————————————————————————————————————————————————————
+#    RESULT
+# ————————————————————————————————————————————————————————————
+• Visit /chat → ChatGPT-like bubbles.
+• GPT asks only for missing info; includes new “services/products” question.
+• Image button lets users attach photos.
+• After 15 user messages the chat footer disappears and an upgrade bubble is shown.
