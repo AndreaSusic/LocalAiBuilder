@@ -245,4 +245,6 @@ input.addEventListener('keydown', e => {
 // File upload events handled dynamically when drop zone is created
 
 // Initialize with greeting
-bubble('ai', 'Hi! Tell me about your business and I will help you create a website.');
+window.addEventListener('DOMContentLoaded', () => {
+  bubble('ai', 'Hi! Tell me about your business and I will help you create a website.');
+});
