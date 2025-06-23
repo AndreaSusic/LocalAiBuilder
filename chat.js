@@ -96,8 +96,6 @@ function mergeState(obj) {
   }
 }
 
-const colourWrap = $('wrapColours');
-const dropArea = $('dropArea');
 $('colourDone').onclick = ()=>{
   state.colours = [col1.value, col2.value];
   colourWrap.classList.add('hidden');
@@ -169,9 +167,14 @@ input.addEventListener('keydown', e => {
 });
 
 // File upload and drag-drop events
-files.onchange = () => {
-  if (files.files.length) bubble('user', '📷 image attached');
-};
+if (files) {
+  files.onchange = () => {
+    if (files.files.length) {
+      images.push(...files.files);
+      bubble('user', `📷 ${files.files.length} image(s) attached`);
+    }
+  };
+}
 
 dropArea.addEventListener('dragover', e => {
   e.preventDefault();
