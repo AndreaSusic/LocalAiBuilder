@@ -49,29 +49,44 @@ function initNavigation() {
 function initPromptForm() {
     const prompt   = document.getElementById('aiPrompt');
     const wordCount = document.getElementById('wordCount');
-    const followUp = document.getElementById('followUp');
     const btnStart = document.getElementById('btnStart');
 
-    const wraps = {
-        company:  document.getElementById('wrapCompany'),
-        city:     document.getElementById('wrapCity'),
-        industry: document.getElementById('wrapIndustry'),
-        language: document.getElementById('wrapLanguage'),
-        colors:   document.getElementById('wrapColors')
-    };
+    /* — Helpers — */
+    const $ = id => document.getElementById(id) || console.error(`💥 ${id} not found`);
+    const toggleShow = (el, show=true) => el.classList.toggle('hidden', !show);
 
-    // force panel closed on initial load
+    /* — Elements — */
+    const wraps = {
+      company   : $('wrapCompany'),
+      city      : $('wrapCity'),
+      industry  : $('wrapIndustry'),
+      language  : $('wrapLanguage'),
+      colors    : $('wrapColors')
+    };
+    const followUp = $('followUp');
+
+
+    /* — Ensure everything starts hidden — */
+    Object.values(wraps).forEach(el => el.classList.add('hidden'));
     followUp.classList.add('hidden');
 
-    // Image upload functionality
     const dz      = document.getElementById('dropArea');
-    const input   = document.getElementById('promptImages');
+    const fileInp = document.getElementById('promptImages');
     const thumbs  = document.getElementById('thumbs');
-    let   images  = [];   // File[] array for later POST
 
-    function addFiles(files){
-      for(const f of files){
+    let images = [];              // File[] eventually posted
+    const imageKeys = new Set();  // dedup helper (name_size_lastMod)
+
+    /* helper to build a unique key for each file */
+    const getKey = f => `${f.name}_${f.size}_${f.lastModified}`;
+
+    function addFiles(fileList){
+      for (const f of fileList){
         if(!f.type.startsWith('image/')) continue;
+        const key = getKey(f);
+        if(imageKeys.has(key)) continue;      // already added
+
+        imageKeys.add(key);
         images.push(f);
 
         // preview
@@ -80,8 +95,10 @@ function initPromptForm() {
         img.src = url;
         thumbs.appendChild(img);
       }
+      fileInp.value = "";          // reset so same file can be picked again later
     }
 
+    /* drag-and-drop handlers */
     dz.addEventListener('dragover', e=>{
       e.preventDefault();
       dz.classList.add('dragover');
@@ -93,7 +110,8 @@ function initPromptForm() {
       addFiles(e.dataTransfer.files);
     });
 
-    input.addEventListener('change', ()=> addFiles(input.files));
+    /* file picker handler */
+    fileInp.addEventListener('change', ()=> addFiles(fileInp.files));
 
     // Debounce helper
     function debounce(fn, delay = 600) {
@@ -129,12 +147,24 @@ function initPromptForm() {
             const data = await analyse(val);
             const { missing_fields } = data;
 
+            console.log("missing_fields:", missing_fields);     // keep for debugging
+
+            // 1) hide everything first
             Object.values(wraps).forEach(el => el.classList.add('hidden'));
-            ['company','city','industry','language'].forEach(k=>{
-              if(missing_fields.includes(k)) wraps[k].classList.remove('hidden');
+
+            // 2) show wrappers that GPT wants
+            ['company','city','industry','language'].forEach(key => {
+              toggleShow(wraps[key], missing_fields.includes(key));
             });
-            wraps.colors.classList.toggle('hidden', missing_fields.length === 0);
+
+            // 3) colours always visible when panel is open
+            toggleShow(wraps.colors, missing_fields.length > 0);
+
+            // 4) show/hide master panel
             followUp.classList.toggle('hidden', missing_fields.length === 0);
+
+            // 5) show or hide the drop zone when panel is open/closed
+            dz.classList.toggle('hidden', missing_fields.length === 0);
             
             console.log('GPT Analysis:', data);
         } catch (error) {
