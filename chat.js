@@ -96,68 +96,62 @@ function mergeState(obj) {
   }
 }
 
-// Color picker handler
-$('colourDone').onclick = () => {
+const colourWrap = $('wrapColours');
+const dropArea = $('dropArea');
+$('colourDone').onclick = ()=>{
   state.colours = [col1.value, col2.value];
   colourWrap.classList.add('hidden');
-  askNextQuestion();
+  handleMissing({});
 };
 
-function handleMissing(res) {
+function handleMissing(res){
   mergeState(res);
 
-  // step 1: if colours missing & not yet asked, ask now
-  if (state.colours === null) {
-    const lastAI = convo.filter(m => m.role === 'assistant').pop()?.content;
-    if (lastAI !== 'Please pick two brand colours.') {
-      bubble('ai', 'Please pick two brand colours.');
-      convo.push({role: 'assistant', content: 'Please pick two brand colours.'});
-      colourWrap.classList.remove('hidden');
+  // Step 1: Ask for text Qs (company, city, industry, language, services)
+  const order = ['company_name','city','industry','language','services'];
+  const next  = order.find(k=>state[k]===null);
+
+  if(next){
+    const Q={
+      company_name:'What\'s the name of your business?',
+      city:'Which city do you mainly serve?',
+      industry:'What industry best describes your business?',
+      language:'What primary language should the website use?',
+      services:'List your most important services or products.'
+    }[next];
+    const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
+    if(lastAI!==Q){
+      bubble('ai',Q); convo.push({role:'assistant',content:Q});
+      awaitingKey=next;
     }
     return;
   }
 
-  // step 2: if images missing & dropArea still hidden, ask once
-  if (!images.length && dropArea.classList.contains('hidden')) {
-    bubble('ai', 'Can you upload images and a logo for me to use on your website?');
-    convo.push({role: 'assistant', content: 'Please upload images or logo.'});
+  // Step 2: If colours missing, show picker and wait
+  if(state.colours===null){
+    const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
+    if(lastAI!=='Please pick two brand colours.'){
+      bubble('ai','Please pick two brand colours.');
+      convo.push({role:'assistant',content:'Please pick two brand colours.'});
+      colourWrap.classList.remove('hidden');
+    }
+    return;  // wait for Done
+  }
+
+  // Step 3: If images missing, show drop-zone and wait for file
+  if(images.length===0 && dropArea.classList.contains('hidden')){
+    bubble('ai','Can you upload images and a logo for me to use on your website?');
+    convo.push({role:'assistant',content:'Please upload images or logo.'});
     dropArea.classList.remove('hidden');
     return;
   }
 
-  // step 3: if any other key missing, ask in order
-  askNextQuestion();
-}
-
-function askNextQuestion() {
-  const order = ['company_name', 'city', 'industry', 'language', 'services'];
-  const next = order.find(k => state[k] === null);
-
-  if (!next) {
-    bubble('ai', 'Great! Generating your site...');
-    fetch('/api/build-site', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({state, convo})
-    });
-    return;
-  }
-
-  const questions = {
-    company_name: 'What is the name of your business?',
-    city: 'Which city do you mainly serve?',
-    industry: 'What industry best describes your business?',
-    language: 'What primary language should the website use?',
-    services: 'List your most important services or products.'
-  };
-  const Q = questions[next];
-
-  const lastAI = convo.filter(m => m.role === 'assistant').pop()?.content;
-  if (lastAI !== Q) {
-    bubble('ai', Q);
-    convo.push({role: 'assistant', content: Q});
-    awaitingKey = next;
-  }
+  // Step 4: If everything is ready, generate
+  bubble('ai','Great! Generating your site…');
+  fetch('/api/build-site',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({state, convo})
+  });
 }
 
 function paywall() {
