@@ -212,6 +212,10 @@ MANDATORY language inference (language is NEVER null):
    (≥ 2 words, at least one capitalised non-generic word).
    "dental clinic" or "law firm" do NOT count.
 
+3. "city" must be filled only if the user explicitly
+   mentions a location (e.g. "in Austin", "Belgrade", "Los Angeles").
+   Otherwise set "city":null and list "city" in missing_fields.
+
 missing_fields: only add if data truly cannot be determined after inference
 `;
     const completion = await openai.chat.completions.create({
