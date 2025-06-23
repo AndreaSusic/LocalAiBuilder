@@ -184,9 +184,30 @@ app.post('/signup', async function(req, res) {
 });
 
 // GPT-powered business analysis API
-app.post("/api/analyse", express.json(), async (req, res) => {
+app.post("/api/analyse", express.json(), express.urlencoded({ extended: true }), async (req, res) => {
   try {
-    const userPrompt = (req.body.prompt || "").slice(0, 500);
+    console.log("Request body:", req.body);
+    
+    // Handle both JSON and FormData requests
+    let userPrompt = "";
+    if (req.body && req.body.prompt) {
+      if (typeof req.body.prompt === 'string') {
+        // Try to parse as JSON conversation array
+        try {
+          const conversationArray = JSON.parse(req.body.prompt);
+          if (Array.isArray(conversationArray)) {
+            userPrompt = conversationArray.map(msg => `${msg.role}: ${msg.content}`).join('\n');
+          } else {
+            userPrompt = req.body.prompt;
+          }
+        } catch (e) {
+          userPrompt = req.body.prompt;
+        }
+      } else {
+        userPrompt = req.body.prompt;
+      }
+    }
+    userPrompt = (userPrompt || "No prompt provided").slice(0, 500);
     const systemMsg = `
 Extract business data and return ONLY valid JSON:
 
@@ -248,6 +269,12 @@ RULES:
 5. Missing fields:
    - Add key to missing_fields only if truly cannot determine
    - Apply all inference rules first
+
+5. **Mandatory rule**:  
+   For every key whose value is \`null\`, you MUST include that key
+   in \`missing_fields\`.  
+   If a value is not \`null\`, its key MUST NOT appear in
+   \`missing_fields\`.  The two lists must always stay in sync.
 `;
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
