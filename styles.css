@@ -2191,20 +2191,48 @@ select:focus {
   .chatPane{height:75vh;}
 }
 
-/* Chat layout */
-#chatContainer{display:flex;flex-direction:column;height:100vh;font-family:system-ui;}
+/* right-column pane on HP */
+.chatPane, #chatPane{display:flex;flex-direction:column;height:100%;}
+
+/* intro label */
+#introLabel{font-weight:600;margin:0 0 .8rem .2rem;}
+
+/* chat thread grows but never pushes footer below fold */
 #chatThread{flex:1;overflow-y:auto;padding:1rem;background:#f9f9f9;}
+
+/* placeholder for contenteditable */
+#chatInput:empty:before{
+  content:attr(data-placeholder);
+  color:#999;
+}
+
+#chatInput{flex:1;min-height:42px;max-height:160px;overflow-y:auto;
+           padding:.5rem;border:1px solid #ccc;border-radius:6px;}
+
+#chatFooter{display:flex;align-items:center;gap:.5rem;padding:.6rem;
+            border-top:1px solid #eee;}
+
+#sendBtn{background:#0050c8;color:#fff;border:none;padding:.6rem 1rem;
+         border-radius:6px;cursor:pointer;}
+
+.file-btn{cursor:pointer;}
+
+#thumbs img{width:60px;height:60px;object-fit:cover;margin:4px;border-radius:4px;}
+
+.hidden{display:none!important;}
+
+#chatContainer iframe.chatPane{height:90vh;border:1px solid #ddd;border-radius:8px;}
+
+#chatContainer{display:flex;gap:2rem;align-items:flex-start;}
+.hero{flex:1 0 55%;}
+.chatPaneWrapper{flex:1 0 45%;}
+
+@media(max-width:900px){
+  #chatContainer{flex-direction:column;}
+  #chatContainer iframe.chatPane{height:75vh;}
+}
+
+/* Chat bubbles */
 .bubble{max-width:80%;padding:.6rem .9rem;border-radius:8px;margin:.3rem 0;line-height:1.4;}
 .user{background:#ffc000;color:#222;margin-left:auto;}
 .ai{background:#fff;border:1px solid #ddd;}
-#chatFooter{display:flex;align-items:center;padding:.6rem;border-top:1px solid #eee;}
-#chatInput{flex:1;min-height:36px;max-height:120px;overflow-y:auto;padding:.4rem .6rem;
-           border:1px solid #ccc;border-radius:6px;}
-#sendBtn{background:#0050c8;color:#fff;border:none;padding:.6rem 1rem;border-radius:6px;cursor:pointer;}
-.file-btn{margin-right:.5rem;cursor:pointer;}
-#thumbs img{width:60px;height:60px;object-fit:cover;margin:4px;border-radius:4px;}
-
-/* Industry dropdown styling */
-#wrapIndustrySelect{margin:1rem 0;display:block;}
-#industrySelect{width:100%;padding:.5rem;border:1px solid #ccc;border-radius:6px;}
-.hidden{display:none!important;}

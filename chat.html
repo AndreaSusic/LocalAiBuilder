@@ -1,54 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>GoAiSite Chat Builder</title>
-    <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-    <div id="chatContainer">
-        <div id="chatThread"></div>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><title>GoAiSite – Builder Chat</title>
+<link rel="stylesheet" href="/styles.css">
+</head><body>
 
-        <div id="chatFooter">
-            <label class="file-btn">📎
-                <input type="file" id="fileInput" accept="image/*" multiple hidden>
-            </label>
-            <div id="chatInput" contenteditable placeholder="Describe your business…"></div>
-            <button id="sendBtn">➤</button>
-        </div>
-        
-        <label id="wrapIndustrySelect" class="hidden">
-        Select your industry
-        <select id="industrySelect">
-          <option disabled selected>Select industry…</option>
-          <option>Accounting & Finance</option>
-          <option>Advertising & Marketing</option>
-          <option>Automotive</option>
-          <option>Beauty & Wellness</option>
-          <option>Construction</option>
-          <option>Consulting</option>
-          <option>Dental</option>
-          <option>Education</option>
-          <option>Food & Beverage</option>
-          <option>Healthcare</option>
-          <option>Hospitality</option>
-          <option>IT & Software</option>
-          <option>Landscaping</option>
-          <option>Legal</option>
-          <option>Manufacturing</option>
-          <option>Pets</option>
-          <option>Plumbing</option>
-          <option>Real Estate</option>
-          <option>Retail</option>
-          <option>Roofing</option>
-          <option>Shoes & Apparel</option>
-          <option>Sports & Fitness</option>
-          <option>Transportation & Logistics</option>
-          <option>Travel</option>
-          <option>Other</option>
-        </select>
-        </label>
-    </div>
-    <script src="/chat.js" defer></script>
-</body>
-</html>
+<!--  A .chatPane now holds: label ▸ thread ▸ input  -->
+<div id="chatPane">
+  <p id="introLabel">
+    Hi! I will help you create your website. Tell me about your business and
+    what you would like your site to include.
+  </p>
+
+  <div id="chatThread"></div>
+
+  <div id="chatFooter">
+    <label class="file-btn">📎
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </label>
+    <div id="chatInput" contenteditable="true"
+         data-placeholder="Describe your business…"></div>
+    <button id="sendBtn">➤</button>
+  </div>
+</div>
+
+<script src="/chat.js"></script>  <!-- keep at end, no defer -->
+</body></html>
