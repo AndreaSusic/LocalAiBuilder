@@ -11,7 +11,7 @@ let convo = [], state = {company_name: null, city: null, industry: null,
                          language: null, services: null, colours: null}, images = [],
     turns = 0, MAX_FREE = 15;
 
-let awaitingKey = null;   // (company_name, city, industry, …)
+let awaitingKey = null;
 
 // bubble helper
 function bubble(role, txt) { 
@@ -47,10 +47,10 @@ async function sendUser() {
   // If we just asked for a specific key, take reply verbatim
   if (awaitingKey && text) {
     state[awaitingKey] = text.trim();
-    awaitingKey = null;     // reset
+    awaitingKey = null;
   }
 
-  if (text) bubble('user', text);        // preview
+  if (text) bubble('user', text);
   if (files.files.length) bubble('user', '📷 image attached');
 
   // soft industry mapping only
@@ -97,30 +97,30 @@ function mergeState(obj) {
 }
 
 // Color picker handler
-$('colourDone').onclick = ()=>{
+$('colourDone').onclick = () => {
   state.colours = [col1.value, col2.value];
   colourWrap.classList.add('hidden');
   askNextQuestion();
 };
 
-function handleMissing(res){
+function handleMissing(res) {
   mergeState(res);
 
   // step 1: if colours missing & not yet asked, ask now
-  if(state.colours===null){
-    const lastAI = convo.filter(m=>m.role==='assistant').pop()?.content;
-    if(lastAI!=='Please pick two brand colours.'){
-      bubble('ai','Please pick two brand colours.');
-      convo.push({role:'assistant',content:'Please pick two brand colours.'});
+  if (state.colours === null) {
+    const lastAI = convo.filter(m => m.role === 'assistant').pop()?.content;
+    if (lastAI !== 'Please pick two brand colours.') {
+      bubble('ai', 'Please pick two brand colours.');
+      convo.push({role: 'assistant', content: 'Please pick two brand colours.'});
       colourWrap.classList.remove('hidden');
     }
-    return;        // wait for user to click Done
+    return;
   }
 
   // step 2: if images missing & dropArea still hidden, ask once
-  if(!images.length && dropArea.classList.contains('hidden')){
-    bubble('ai','Can you upload images and a logo for me to use on your website?');
-    convo.push({role:'assistant',content:'Please upload images or logo.'});
+  if (!images.length && dropArea.classList.contains('hidden')) {
+    bubble('ai', 'Can you upload images and a logo for me to use on your website?');
+    convo.push({role: 'assistant', content: 'Please upload images or logo.'});
     dropArea.classList.remove('hidden');
     return;
   }
@@ -129,31 +129,34 @@ function handleMissing(res){
   askNextQuestion();
 }
 
-function askNextQuestion(){
-  const order=['company_name','city','industry','language','services'];
-  const next = order.find(k=>state[k]===null);
+function askNextQuestion() {
+  const order = ['company_name', 'city', 'industry', 'language', 'services'];
+  const next = order.find(k => state[k] === null);
 
-  if(!next){
-    bubble('ai','Great! Generating your site…');
-    fetch('/api/build-site',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({state, convo})
+  if (!next) {
+    bubble('ai', 'Great! Generating your site...');
+    fetch('/api/build-site', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({state, convo})
     });
     return;
   }
 
-  const Q={
-    company_name:'What's the name of your business?',
-    city:'Which city do you mainly serve?',
-    industry:'What industry best describes your business?',
-    language:'What primary language should the website use?',
-    services:'List your most important services or products.'
-  }[next];
+  const questions = {
+    company_name: 'What is the name of your business?',
+    city: 'Which city do you mainly serve?',
+    industry: 'What industry best describes your business?',
+    language: 'What primary language should the website use?',
+    services: 'List your most important services or products.'
+  };
+  const Q = questions[next];
 
-  const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
-  if(lastAI!==Q){
-    bubble('ai',Q); convo.push({role:'assistant',content:Q});
-    awaitingKey=next;
+  const lastAI = convo.filter(m => m.role === 'assistant').pop()?.content;
+  if (lastAI !== Q) {
+    bubble('ai', Q);
+    convo.push({role: 'assistant', content: Q});
+    awaitingKey = next;
   }
 }
 
