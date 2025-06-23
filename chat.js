@@ -124,26 +124,23 @@ function handleMissing(res){
       services: 'List your most important services or products.'
     }[next];
 
-    // Insert as plain label
-    const p = document.createElement('p');
-    p.className = 'prompt-label';
-    p.textContent = Q;
-    thread.appendChild(p);
+    // Show as AI bubble
+    bubble('ai', Q);
     convo.push({role:'assistant', content:Q});
     awaitingKey = next;
-    thread.scrollTop = thread.scrollHeight;
     return;
   }
 
   // 2. If color pickers missing, insert under color label
   if(state.colours === null){
     const label = 'Please pick two brand colours.';
-    const p = document.createElement('p');
-    p.className = 'prompt-label';
-    p.textContent = label;
-    thread.appendChild(p);
-
-    insertAfter(p, `
+    
+    // Show as AI bubble
+    bubble('ai', label);
+    
+    // Insert color picker after the bubble
+    const lastBubble = thread.lastElementChild;
+    insertAfter(lastBubble, `
       <label class="wrapColours">
         Primary <input type="color" id="col1" value="#ffc000">
         Secondary <input type="color" id="col2" value="#000000">
@@ -156,19 +153,19 @@ function handleMissing(res){
       cleanupExtras();
       handleMissing({});
     };
-    thread.scrollTop = thread.scrollHeight;
     return;
   }
 
   // 3. If images missing, insert drop zone under image label
   if(images.length === 0 && !document.querySelector('.drop-zone')){
     const label = 'Can you upload images and a logo for me to use on your website?';
-    const p = document.createElement('p');
-    p.className = 'prompt-label';
-    p.textContent = label;
-    thread.appendChild(p);
-
-    insertAfter(p, `
+    
+    // Show as AI bubble
+    bubble('ai', label);
+    
+    // Insert drop zone after the bubble
+    const lastBubble = thread.lastElementChild;
+    insertAfter(lastBubble, `
       <div id="dropArea" class="drop-zone">
         <p>Drag & drop images/logo here or <label class="file-label">browse
           <input type="file" id="fileInput2" accept="image/*" multiple hidden>
@@ -217,21 +214,16 @@ function handleMissing(res){
       });
     }
     
-    thread.scrollTop = thread.scrollHeight;
     return;
   }
 
   // 4. Everything collected
-  const p = document.createElement('p');
-  p.className = 'prompt-label';
-  p.textContent = 'Great! Generating your site…';
-  thread.appendChild(p);
+  bubble('ai', 'Great! Generating your site…');
   fetch('/api/build-site', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({state, convo})
   });
-  thread.scrollTop = thread.scrollHeight;
 }
 
 function askNextQuestion(){ handleMissing({}); }
