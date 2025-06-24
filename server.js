@@ -5,6 +5,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const upload = multer();
 const path = require('path');
@@ -78,9 +79,24 @@ app.use(session({
   }
 }));
 
+app.use(cookieParser());
+
 // Initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Set persistent draft key cookie for chat sessions
+app.get('/chat', (req, res, next) => {
+  // Ensure a session exists
+  req.session.isChatSession = true;
+  // Set a long-lived cookie with the raw session ID
+  res.cookie('saveDraftKey', req.sessionID, {
+    maxAge: 30*24*60*60*1000, // 30 days
+    httpOnly: false,          // allow client to send it back
+    sameSite: 'lax'
+  });
+  next();
+});
 
 // Configure Google OAuth Strategy
 passport.use(new GoogleStrategy(
@@ -159,13 +175,17 @@ app.get('/auth/google/callback',
     console.log('Google profile:', req.user);
 
     try {
-      // Move any session-scoped draft to the new user ID
-      await pool.query(
-        `UPDATE sites
-         SET user_id = $1
-         WHERE user_id = $2 AND is_draft = TRUE`,
-        [req.user.id, req.sessionID]
-      );
+      // Read the old draft key from the cookie
+      const oldKey = req.cookies.saveDraftKey;
+      if (oldKey) {
+        await pool.query(
+          `UPDATE sites
+           SET user_id = $1
+           WHERE user_id = $2 AND is_draft = TRUE`,
+          [req.user.id, oldKey]
+        );
+        console.log('🔄 Migrated draft from', oldKey, 'to', req.user.id);
+      }
 
       // Check for an existing draft for this user
       const { rows } = await pool.query(
