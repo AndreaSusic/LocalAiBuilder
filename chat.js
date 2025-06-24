@@ -161,6 +161,16 @@ async function sendUser() {
 
     const res = await fetch('/api/analyse', {method: 'POST', body: fd});
     const j = await res.json();
+    
+    // Merge extracted values into our local state immediately:
+    mergeState(j);
+
+    // If this was the very first user message, ask only what's still missing:
+    if (convo.length === 1) {
+      handleMissing({});
+      return;
+    }
+
     handleMissing(j);
   } catch (error) {
     console.error('Error:', error);
