@@ -300,29 +300,37 @@ input.addEventListener('keydown', e => {
 
 // Function to show image gallery with add more option
 function showImageGalleryWithAddMore() {
-  // Remove existing gallery if it exists
-  const existingGallery = document.getElementById('imageGallery');
-  if (existingGallery) existingGallery.remove();
+  // Don't remove existing galleries, just add a new one with unique ID
+  const galleryId = 'imageGallery_' + Date.now();
   
   const galleryWrapper = document.createElement('div');
-  galleryWrapper.id = 'imageGallery';
+  galleryWrapper.id = galleryId;
+  galleryWrapper.className = 'image-gallery';
   galleryWrapper.innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;margin:1rem 0;">
       <span>Images uploaded (${images.length})</span>
-      <button id="addMoreBtn" style="background:#ffc000;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:18px;">+</button>
+      <button class="addMoreBtn" style="background:#ffc000;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:18px;">+</button>
     </div>
   `;
   
-  // Insert before sign-in button if it exists, otherwise append to thread
+  // Find the last image gallery or first position to insert
+  const existingGalleries = document.querySelectorAll('.image-gallery');
   const signInBtn = document.querySelector('.sign-in-btn');
-  if (signInBtn) {
-    thread.insertBefore(galleryWrapper, signInBtn.previousElementSibling);
+  
+  if (existingGalleries.length > 0) {
+    // Insert after the last existing gallery
+    const lastGallery = existingGalleries[existingGalleries.length - 1];
+    lastGallery.insertAdjacentElement('afterend', galleryWrapper);
+  } else if (signInBtn) {
+    // Insert before sign-in button
+    signInBtn.insertAdjacentElement('beforebegin', galleryWrapper);
   } else {
+    // Append to thread
     thread.appendChild(galleryWrapper);
   }
   
   // Wire add more button
-  galleryWrapper.querySelector('#addMoreBtn').onclick = () => {
+  galleryWrapper.querySelector('.addMoreBtn').onclick = () => {
     createDropZone();
   };
   
