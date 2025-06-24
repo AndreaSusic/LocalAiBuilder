@@ -243,11 +243,11 @@ function handleMissing(res){
   if(state.colours===null){
     const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
     if(lastAI!=='Please pick two brand colours.' && !document.getElementById('inlineColorPicker')){
-      bubble('ai','Please pick two brand colours.');
+      // Don't add duplicate bubble, just show the color picker
       convo.push({role:'assistant',content:'Please pick two brand colours.'});
       createColorPicker();
       // Auto-save draft after each AI response
-      saveDraft();
+      setTimeout(() => saveDraft(), 100);
     }
     return;  // wait for Done
   }
@@ -307,13 +307,19 @@ async function saveDraft() {
     if (response.ok) {
       // User is logged in, save the draft
       console.log('Auto-saving draft with state:', state, 'and convo:', convo);
-      await fetch('/api/build-site', {
+      const saveResponse = await fetch('/api/build-site', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({ state, convo })
       });
-      console.log('Draft auto-saved successfully');
+      if (saveResponse.ok) {
+        console.log('Draft auto-saved successfully');
+      } else {
+        console.log('Draft save failed:', saveResponse.status);
+      }
+    } else {
+      console.log('User not authenticated, skipping draft save');
     }
   } catch (error) {
     console.log('Draft auto-save failed:', error);
