@@ -2266,7 +2266,7 @@ select:focus {
 
 /* Chat bubbles */
 .bubble{max-width:80%;padding:.6rem .9rem;border-radius:8px;margin:.3rem 0;line-height:1.4;}
-.user{background:#ffc000;color:#222;margin-left:auto;}
+.user{background:none;border:2px solid #ffc000;color:#222;margin-left:auto;}
 .ai{background:#fff;border:1px solid #ddd;}
 
 /* Auto-resize iframe containers */
@@ -2349,4 +2349,8 @@ iframe.chatPane {
 .footer-bottom a {
   color: #fff;
   text-decoration: underline;
+}
+
+.chatPane { 
+  display: block; 
 }

@@ -5,6 +5,20 @@ const thread = $('chatThread'), input = $('chatInput'),
       sel = $('industrySelect'), colourWrap = $('wrapColours'),
       col1 = $('col1'), col2 = $('col2');
 
+const authModal = document.getElementById('authModal');
+const authConfirmBtn = document.getElementById('modalContinueBtn');
+
+authConfirmBtn.onclick = () => {
+  // hide the modal
+  authModal.classList.remove('open');
+  // actually trigger the site‐build now that the user is authenticated
+  fetch('/api/build-site', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ state, convo })
+  });
+};
+
 const RX_INDS = /(dental|plumb|lawn|roof|legal|marketing|shoe|retail)/i;
 
 let convo = [], state = {company_name: null, city: null, industry: null,
@@ -32,7 +46,7 @@ function createColorPicker() {
       Pick two brand colours:<br>
       Primary <input type="color" id="col1" value="#ffc000">
       Secondary <input type="color" id="col2" value="#000000">
-      <button id="colourDone" style="padding:1rem 2rem;font-size:1.1rem;background:#0050c8;color:#fff;border:none;border-radius:6px;cursor:pointer;margin-top:1rem;">Confirm</button>
+      <button id="colourDone" style="padding:1rem 2rem;font-size:1.1rem;background:#ffc000;color:#222;border:none;border-radius:6px;cursor:pointer;margin-top:1rem;">Confirm</button>
     </div>
   `;
   thread.appendChild(wrapper);
@@ -233,12 +247,12 @@ function handleMissing(res){
     return;
   }
 
-  // Step 4: If everything is ready, generate
-  bubble('ai','Great! Generating your site…');
-  fetch('/api/build-site',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({state, convo})
-  });
+  // Step 4: If everything is ready, require sign-in first
+  // inform the user we're ready but require sign-in first
+  bubble('ai','All set! Please sign in to continue.');
+  // open your existing login modal
+  authModal.classList.add('open');
+  // defer the build until after authConfirmBtn is clicked
 }
 
 function paywall() {
