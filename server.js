@@ -87,7 +87,10 @@ passport.deserializeUser(function(obj, done) {
 // API endpoint to check authentication status
 app.get('/api/me', (req, res) => {
   if (req.user) {
-    res.json({ name: req.user.displayName, email: req.user.emails[0].value });
+    res.json({ 
+      name: req.user.displayName, 
+      email: req.user.emails && req.user.emails[0] ? req.user.emails[0].value : req.user.email 
+    });
   } else {
     res.status(401).json({}); 
   }
