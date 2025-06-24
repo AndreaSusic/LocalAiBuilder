@@ -391,23 +391,26 @@ RULES:
 
 // Save draft endpoint - saves work in progress
 app.post('/api/save-draft', ensureLoggedIn(), async (req, res) => {
+  console.log('❇️  [/api/save-draft] body:', req.body);
   const userId = req.user.id;
   const { state, convo } = req.body;
+
   try {
-    await pool.query(
+    const result = await pool.query(
       `INSERT INTO sites (user_id, state, convo, is_draft, updated_at)
        VALUES ($1, $2::jsonb, $3::jsonb, TRUE, NOW())
        ON CONFLICT (user_id, is_draft)
        DO UPDATE SET state = EXCLUDED.state,
                      convo = EXCLUDED.convo,
-                     updated_at = NOW()`,
+                     updated_at = NOW()
+       RETURNING *;`,
       [userId, state, convo]
     );
-    console.log('Draft saved for user:', userId);
-    res.json({ success: true });
+    console.log('✅  [/api/save-draft] upserted:', result.rows[0]);
+    return res.json({ success: true });
   } catch (err) {
-    console.error('Error saving draft:', err);
-    res.status(500).json({ error: 'Could not save draft' });
+    console.error('❌  [/api/save-draft] error:', err);
+    return res.status(500).json({ error: 'Could not save draft' });
   }
 });
 
