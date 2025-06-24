@@ -87,6 +87,10 @@
                 const iframe = document.querySelector('iframe.chatPane');
                 if (iframe) iframe.style.height = (event.data.height + 20) + 'px';
             }
+            if (event.data?.type === 'trigger-login') {
+                const loginBtn = document.getElementById('loginBtn');
+                if (loginBtn) loginBtn.click();
+            }
         });
         </script>
 
