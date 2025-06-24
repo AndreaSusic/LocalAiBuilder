@@ -261,20 +261,10 @@ function handleMissing(res){
   signInBtn.className = 'sign-in-btn';
   thread.appendChild(signInBtn);
 
-  // wire it to trigger the same action as the header Login button
+  // wire it to trigger login in parent window
   signInBtn.onclick = () => {
-    // Trigger the same action as the header Login button
-    const menuLoginBtn = document.getElementById('loginBtn');
-    if (menuLoginBtn) {
-      menuLoginBtn.click();
-    } else {
-      // Fallback: open the auth modal directly
-      if (authModal) {
-        authModal.classList.add('open');
-      } else {
-        window.parent.postMessage({type: 'open-auth-modal'}, '*');
-      }
-    }
+    // Send message to parent window to trigger login
+    window.parent.postMessage({type: 'trigger-login'}, '*');
   };
 
   thread.scrollTop = thread.scrollHeight;
