@@ -147,7 +147,7 @@ function guessIndustry(word) {
 // send logic
 async function sendUser() {
   const text = input.innerText.trim();
-  if (!text && !files.files.length) return;
+  if (!text) return;
 
   // If we just asked for a specific key, take reply verbatim
   if (awaitingKey && text) {
@@ -156,7 +156,6 @@ async function sendUser() {
   }
 
   if (text) bubble('user', text);
-  if (files.files.length) bubble('user', '📷 image attached');
 
   // soft industry mapping only
   if (!state.industry) { 
@@ -165,8 +164,6 @@ async function sendUser() {
   }
 
   convo.push({role: 'user', content: text});
-  images.push(...files.files);
-  files.value = '';
   input.textContent = '';
 
   if (++turns > MAX_FREE) {
