@@ -51,6 +51,8 @@ passport.use(new GoogleStrategy(
     callbackURL: "/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
+    // Debug log to see what Google returns
+    console.log('Google profile:', JSON.stringify(profile, null, 2));
     // For demo: serialize entire profile
     return done(null, profile);
   }
@@ -128,8 +130,9 @@ app.get('/auth/google/callback',
 app.get('/profile', function(req, res) {
   if (req.isAuthenticated()) {
     const user = req.user;
+    console.log('User object:', JSON.stringify(user, null, 2)); // Debug log
     const displayName = user.displayName || user.emails?.[0]?.value || 'User';
-    const email = user.email || (user.emails ? user.emails[0].value : 'Not provided');
+    const email = user.emails?.[0]?.value || user.email || 'Not provided';
     const photo = user.photos ? user.photos[0].value : '';
     const provider = user.provider || 'google';
     
