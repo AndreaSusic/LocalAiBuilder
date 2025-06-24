@@ -344,6 +344,7 @@ window.addEventListener('load', async () => {
   let name = null;
   
   // Handle draft vs fresh mode
+  let draftLoaded = false;
   if (loadDraft) {
     // fetch last draft and inject
     try {
@@ -354,6 +355,7 @@ window.addEventListener('load', async () => {
         convo = dConvo;
         // render existing convo bubbles
         convo.forEach(m => bubble(m.role, m.content));
+        draftLoaded = true;
       }
     } catch(e){console.error(e);}
   } else if (startFresh) {
@@ -371,9 +373,12 @@ window.addEventListener('load', async () => {
     console.warn('Could not fetch user:', e);
   }
   
-  const greetingText = name
-    ? `Welcome back, ${name}! Let's polish your brand-new website.`
-    : 'Hi! I will help you create your website. Tell me about your business and what you would like your site to include.';
-  bubble('ai', greetingText);
+  // Only show greeting if no draft was loaded
+  if (!draftLoaded) {
+    const greetingText = name
+      ? `Welcome back, ${name}! Let's polish your brand-new website.`
+      : 'Hi! I will help you create your website. Tell me about your business and what you would like your site to include.';
+    bubble('ai', greetingText);
+  }
   sendHeight();
 });
