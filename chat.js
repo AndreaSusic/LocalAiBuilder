@@ -5,6 +5,8 @@ const thread = $('chatThread'), input = $('chatInput'),
       sel = $('industrySelect'), colourWrap = $('wrapColours'),
       col1 = $('col1'), col2 = $('col2');
 
+const userName = window.USER_DISPLAY_NAME;
+
 const authModal = document.getElementById('authModal');
 const authConfirmBtn = document.getElementById('modalContinueBtn');
 
@@ -312,5 +314,11 @@ function showImageGalleryWithAddMore() {
   sendHeight();
 }
 
-// Initialize with greeting
-bubble('ai', 'Hi! Tell me about your business and I will help you create a website.');
+// Initialize with personalized greeting
+window.addEventListener('load', () => {
+  const greetingText = userName
+    ? `Hello, ${userName}! Let's create your brand-new website.`
+    : 'Hi! I will help you create your website. Tell me about your business and what you would like your site to include.';
+  bubble('ai', greetingText);
+  sendHeight();
+});
