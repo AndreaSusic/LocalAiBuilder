@@ -210,14 +210,17 @@ async function sendUser() {
     mergeState(j);
     handleMissing({});               // run your follow‐up flow immediately
     
-    // Persist the current draft after merging GPT's latest response
+    // Persist draft after every merge
     fetch('/api/save-draft', {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ state, convo })
     })
-    .catch(e => console.error('Failed to save draft:', e));
+      .then(resp => {
+        if (!resp.ok) console.error('Draft save failed:', resp.statusText);
+      })
+      .catch(err => console.error('Draft save error:', err));
     
     return;
   } catch (error) {
