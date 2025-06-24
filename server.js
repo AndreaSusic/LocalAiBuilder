@@ -157,17 +157,21 @@ app.get('/auth/google/callback',
     console.log('Google profile:', req.user);
     
     try {
-      // Check for an existing draft
+      // Check for an existing draft in PostgreSQL
       const result = await pool.query(
         'SELECT * FROM user_drafts WHERE user_id = $1 ORDER BY updated_at DESC LIMIT 1',
         [req.user.id]
       );
       
+      console.log('Draft check result:', result.rows.length > 0 ? 'Draft found' : 'No draft');
+      
       if (result.rows.length > 0) {
         // User has a draft, redirect to chat with draft=true
+        console.log('Redirecting to /chat?draft=true');
         return res.redirect('/chat?draft=true');
       } else {
         // No draft, redirect to homepage
+        console.log('Redirecting to homepage');
         return res.redirect('/');
       }
     } catch (error) {
