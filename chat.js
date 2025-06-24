@@ -261,13 +261,19 @@ function handleMissing(res){
   signInBtn.className = 'sign-in-btn';
   thread.appendChild(signInBtn);
 
-  // wire it to open the modal
+  // wire it to trigger the same action as the header Login button
   signInBtn.onclick = () => {
-    if (authModal) {
-      authModal.classList.add('open');
+    // Trigger the same action as the header Login button
+    const menuLoginBtn = document.getElementById('loginBtn');
+    if (menuLoginBtn) {
+      menuLoginBtn.click();
     } else {
-      // Fallback: communicate with parent window to open modal
-      window.parent.postMessage({type: 'open-auth-modal'}, '*');
+      // Fallback: open the auth modal directly
+      if (authModal) {
+        authModal.classList.add('open');
+      } else {
+        window.parent.postMessage({type: 'open-auth-modal'}, '*');
+      }
     }
   };
 
