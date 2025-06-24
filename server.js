@@ -403,21 +403,23 @@ app.post('/api/save-draft', async (req, res) => {
   const ownerKey = req.user?.id || req.sessionID;
   const { state, convo } = req.body;
   console.log('🎯 save-draft for ownerKey=', ownerKey);
+  console.log('📦 state type:', typeof state, 'convo type:', typeof convo);
   try {
+    // Don't double-stringify - the data is already JSON objects from the client
     const result = await pool.query(
       `INSERT INTO sites (user_id, state, convo, is_draft, updated_at)
-       VALUES ($1, $2::jsonb, $3::jsonb, TRUE, NOW())
+       VALUES ($1, $2, $3, TRUE, NOW())
        ON CONFLICT (user_id, is_draft)
        DO UPDATE SET state = EXCLUDED.state,
                      convo = EXCLUDED.convo,
                      updated_at = NOW()
        RETURNING *`,
-      [ownerKey, state, convo]
+      [ownerKey, JSON.stringify(state), JSON.stringify(convo)]
     );
     console.log('✅ save-draft upserted:', result.rows[0]);
     return res.json({ success: true });
   } catch (err) {
-    console.error('❌ save-draft error:', err);
+    console.error('❌ save-draft error:', err.stack || err);
     return res.status(500).json({ error: 'Could not save draft' });
   }
 });
