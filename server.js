@@ -151,34 +151,35 @@ app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-app.get('/auth/google/callback', 
+app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
-  async function(req, res) {
+  async (req, res) => {
+    const userId = req.user.id;
     console.log('Google profile:', req.user);
-    
+
+    // Check for an existing draft for this user
     try {
-      // Check for an existing draft in PostgreSQL
-      const result = await pool.query(
-        'SELECT * FROM user_drafts WHERE user_id = $1 ORDER BY updated_at DESC LIMIT 1',
-        [req.user.id]
+      const { rows } = await pool.query(
+        `SELECT 1 FROM sites
+         WHERE user_id = $1 AND is_draft = TRUE
+         ORDER BY updated_at DESC
+         LIMIT 1`,
+        [userId]
       );
-      
-      console.log('Draft check result:', result.rows.length > 0 ? 'Draft found' : 'No draft');
-      
-      if (result.rows.length > 0) {
-        // User has a draft, redirect to chat with draft=true
-        console.log('Redirecting to /chat?draft=true');
-        return res.redirect('/chat?draft=true');
-      } else {
-        // No draft, redirect to homepage
-        console.log('Redirecting to homepage');
-        return res.redirect('/');
+
+      if (rows.length > 0) {
+        console.log('Draft found, redirecting to /chat');
+        // draft exists → continue in chat
+        return res.redirect('/chat');
       }
-    } catch (error) {
-      console.error('Error checking for drafts:', error);
-      // On error, default to homepage redirect
-      return res.redirect('/');
+    } catch (err) {
+      console.error('DB error checking draft:', err);
+      // on error, default to homepage
     }
+
+    console.log('No draft found, redirecting to homepage');
+    // no draft → homepage
+    res.redirect('/');
   }
 );
 
@@ -396,18 +397,18 @@ app.post('/api/build-site', ensureLoggedIn(), async (req, res) => {
     console.log('Building site with data:', { convo, state });
     
     try {
-      // Upsert draft to PostgreSQL
+      // Upsert draft to sites table
       await pool.query(`
-        INSERT INTO user_drafts (user_id, state, conversation, updated_at)
-        VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
-        ON CONFLICT (user_id)
+        INSERT INTO sites (user_id, state, convo, is_draft, updated_at)
+        VALUES ($1, $2, $3, TRUE, NOW())
+        ON CONFLICT (user_id, is_draft)
         DO UPDATE SET 
           state = EXCLUDED.state,
-          conversation = EXCLUDED.conversation,
-          updated_at = CURRENT_TIMESTAMP
+          convo = EXCLUDED.convo,
+          updated_at = NOW()
       `, [userId, JSON.stringify(state), JSON.stringify(convo)]);
       
-      console.log('Draft saved to PostgreSQL for user:', userId);
+      console.log('Draft saved to sites table for user:', userId);
     } catch (error) {
       console.error('Failed to save draft:', error.message);
     }
