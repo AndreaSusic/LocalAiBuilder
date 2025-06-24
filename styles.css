@@ -2316,24 +2316,24 @@ iframe.chatPane {
 }
 .footer-logo {
   max-width: 100px;
-  margin-bottom: 0.8rem;
-  background: none;
+  margin-right: 1rem;
+  background: transparent;
+  opacity: 1;
 }
 .site-title {
   margin: 0;
   font-size: 1.3rem;
   color: white;
 }
-.footer-col:first-child {
+.footer-brand {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  margin-bottom: 1rem;
 }
-.footer-col:first-child div {
-  flex: 1;
-}
-.footer-col:first-child p {
+.footer-description {
   color: white;
+  margin: 0;
+  line-height: 1.4;
 }
 .footer-bottom {
   text-align: center;
