@@ -1,0 +1,78 @@
+
+# 1) Update POST /api/save-draft to key by sessionID if unauthenticated
+
+In **server.js**, replace your save‐draft route with:
+
+```js
+// Remove ensureLoggedIn() here
+app.post('/api/save-draft', async (req, res) => {
+  await connectDB();
+  // Use Google user ID if present, otherwise sessionID
+  const ownerKey = req.user?.id || req.sessionID;
+  const { state, convo } = req.body;
+  console.log('🎯 save-draft for ownerKey=', ownerKey);
+  try {
+    const result = await pool.query(
+      `INSERT INTO sites (user_id, state, convo, is_draft, updated_at)
+       VALUES ($1, $2::jsonb, $3::jsonb, TRUE, NOW())
+       ON CONFLICT (user_id, is_draft)
+       DO UPDATE SET state = EXCLUDED.state,
+                     convo = EXCLUDED.convo,
+                     updated_at = NOW()
+       RETURNING *`,
+      [ownerKey, state, convo]
+    );
+    console.log('✅ save-draft upserted:', result.rows[0]);
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('❌ save-draft error:', err);
+    return res.status(500).json({ error: 'Could not save draft' });
+  }
+});
+
+2) Update GET /api/last-draft to look up by session or user
+
+In server.js, replace your last-draft route with:
+
+app.get('/api/last-draft', async (req, res) => {
+  await connectDB();
+  const ownerKey = req.user?.id || req.sessionID;
+  console.log('🔍 last-draft lookup for ownerKey=', ownerKey);
+  const { rows } = await pool.query(
+    `SELECT state, convo
+     FROM sites
+     WHERE user_id = $1 AND is_draft = TRUE
+     ORDER BY updated_at DESC
+     LIMIT 1`,
+    [ownerKey]
+  );
+  if (!rows.length) return res.status(204).end();
+  res.json(rows[0]);
+});
+
+3) Migrate draft from session to user on login
+
+In your /auth/google/callback handler, before you check for a draft, insert:
+
+// After passport.authenticate and before lookup:
+await connectDB();
+// Move any session‐scoped draft to the new user ID
+await pool.query(
+  `UPDATE sites
+   SET user_id = $1
+   WHERE user_id = $2 AND is_draft = TRUE`,
+  [req.user.id, req.sessionID]
+);
+
+4) Ensure sessionID persists across login
+
+In your session middleware setup, ensure you’re not regenerating or destroying the session on login. For example:
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: true, sameSite: 'none' }
+}));
+
+Do not call req.session.regenerate() after login.

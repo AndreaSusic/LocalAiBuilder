@@ -157,8 +157,16 @@ app.get('/auth/google/callback',
     const userId = req.user.id;
     console.log('Google profile:', req.user);
 
-    // Check for an existing draft for this user
     try {
+      // Move any session-scoped draft to the new user ID
+      await pool.query(
+        `UPDATE sites
+         SET user_id = $1
+         WHERE user_id = $2 AND is_draft = TRUE`,
+        [req.user.id, req.sessionID]
+      );
+
+      // Check for an existing draft for this user
       const { rows } = await pool.query(
         `SELECT 1 FROM sites
          WHERE user_id = $1 AND is_draft = TRUE
@@ -389,12 +397,12 @@ RULES:
   }
 });
 
-// Save draft endpoint - saves work in progress
-app.post('/api/save-draft', ensureLoggedIn(), async (req, res) => {
-  console.log('🎯 [/api/save-draft] hit with body:', req.body);
-  const userId = req.user.id;
+// Save draft endpoint - saves work in progress (no auth required)
+app.post('/api/save-draft', async (req, res) => {
+  // Use Google user ID if present, otherwise sessionID
+  const ownerKey = req.user?.id || req.sessionID;
   const { state, convo } = req.body;
-
+  console.log('🎯 save-draft for ownerKey=', ownerKey);
   try {
     const result = await pool.query(
       `INSERT INTO sites (user_id, state, convo, is_draft, updated_at)
@@ -403,13 +411,13 @@ app.post('/api/save-draft', ensureLoggedIn(), async (req, res) => {
        DO UPDATE SET state = EXCLUDED.state,
                      convo = EXCLUDED.convo,
                      updated_at = NOW()
-       RETURNING *;`,
-      [userId, state, convo]
+       RETURNING *`,
+      [ownerKey, state, convo]
     );
-    console.log('✅  [/api/save-draft] upserted:', result.rows[0]);
+    console.log('✅ save-draft upserted:', result.rows[0]);
     return res.json({ success: true });
   } catch (err) {
-    console.error('❌  [/api/save-draft] error:', err);
+    console.error('❌ save-draft error:', err);
     return res.status(500).json({ error: 'Could not save draft' });
   }
 });
@@ -462,22 +470,23 @@ app.get('/api/me', (req, res) => {
   }
 });
 
-// Get user's last draft
-app.get('/api/last-draft', ensureLoggedIn(), async (req, res) => {
+// Get user's last draft (no auth required)
+app.get('/api/last-draft', async (req, res) => {
+  const ownerKey = req.user?.id || req.sessionID;
+  console.log('🔍 last-draft lookup for ownerKey=', ownerKey);
   try {
-    const result = await pool.query(
-      'SELECT state, convo FROM sites WHERE user_id = $1 AND is_draft = TRUE ORDER BY updated_at DESC LIMIT 1',
-      [req.user.id]
+    const { rows } = await pool.query(
+      `SELECT state, convo
+       FROM sites
+       WHERE user_id = $1 AND is_draft = TRUE
+       ORDER BY updated_at DESC
+       LIMIT 1`,
+      [ownerKey]
     );
-
-    if (result.rows.length === 0) {
-      return res.status(204).end();
-    }
-
-    const draft = result.rows[0];
-    res.json({ 
-      state: draft.state, 
-      conversation: draft.convo 
+    if (!rows.length) return res.status(204).end();
+    res.json({
+      state: rows[0].state,
+      conversation: rows[0].convo
     });
   } catch (error) {
     console.error('Failed to get draft:', error);
