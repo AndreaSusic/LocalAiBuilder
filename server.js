@@ -96,6 +96,19 @@ app.get('/api/me', (req, res) => {
   }
 });
 
+// API endpoint to get last draft
+app.get('/api/last-draft', (req, res) => {
+  if (req.user) {
+    // For now, return empty state - in future this would load from database
+    res.json({ 
+      state: { company_name:null, city:null, industry:null, language:null, services:null, colours:null },
+      convo: []
+    });
+  } else {
+    res.status(401).json({}); 
+  }
+});
+
 // Serve static files
 app.use(express.static('.'));
 

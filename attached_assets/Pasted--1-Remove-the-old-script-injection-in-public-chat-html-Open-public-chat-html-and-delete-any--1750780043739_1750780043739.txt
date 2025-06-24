@@ -1,0 +1,99 @@
+
+
+# 1) Remove the old script injection in public/chat.html
+Open **public/chat.html** and delete any lines like:
+```html
+<script>
+  window.USER_DISPLAY_NAME = "{{user.displayName}}" || null;
+</script>
+
+2) Update the initial greeting in public/chat.js
+
+Replace your existing window.addEventListener('load', …) block with this:
+
+window.addEventListener('load', async () => {
+  let name = null;
+  try {
+    const r = await fetch('/api/me', { credentials: 'include' });
+    if (r.ok) {
+      const j = await r.json();
+      name = j.name;
+    }
+  } catch (e) {
+    console.warn('Could not fetch user:', e);
+  }
+  const greetingText = name
+    ? `Welcome back, ${name}! Let’s polish your brand-new website.`
+    : 'Hi! I will help you create your website. Tell me about your business and what you would like your site to include.';
+  bubble('ai', greetingText);
+  sendHeight(); // if you’re auto-resizing the iframe
+});
+
+3) Add “Continue where you left off” banner on public/index.html
+
+In public/index.html, just before </body>, add:
+
+<script>
+(async()=>{
+  try {
+    const r = await fetch('/api/me', { credentials: 'include' });
+    if (r.ok) {
+      const user = await r.json();
+      const banner = document.createElement('div');
+      banner.className = 'continue-banner';
+      banner.innerHTML = `
+        Welcome back, ${user.name}! 
+        <a href="/chat?draft=true">Continue where you left off</a> 
+        or <a href="/chat?fresh=true">Start fresh</a>`;
+      document.body.prepend(banner);
+    }
+  } catch(err) {
+    console.warn('No session:', err);
+  }
+})();
+</script>
+
+4) Handle draft vs. fresh in public/chat.js
+
+At the top of public/chat.js, after your imports/constants, add:
+
+const urlParams = new URLSearchParams(window.location.search);
+const loadDraft = urlParams.has('draft');
+const startFresh = urlParams.has('fresh');
+
+And in your load handler, before greeting, do:
+
+if (loadDraft) {
+  // fetch last draft and inject
+  try {
+    const r = await fetch('/api/last-draft', { credentials: 'include' });
+    if (r.ok) {
+      const { state: dState, convo: dConvo } = await r.json();
+      state = dState;
+      convo = dConvo;
+      // render existing convo bubbles
+      convo.forEach(m => bubble(m.role, m.content));
+    }
+  } catch(e){console.error(e);}
+} else if (startFresh) {
+  state = { company_name:null, city:null, industry:null, language:null, services:null, colours:null };
+  convo = [];
+}
+
+5) CSS for the banner (public/styles.css)
+
+Append:
+
+.continue-banner {
+  background: #ffc000;
+  color: #222;
+  padding: .8rem 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+.continue-banner a {
+  color: #0050c8;
+  text-decoration: underline;
+  margin: 0 .5rem;
+}
+
