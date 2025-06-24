@@ -441,7 +441,7 @@ app.get('/api/me', (req, res) => {
 app.get('/api/last-draft', ensureLoggedIn(), async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT state, conversation FROM user_drafts WHERE user_id = $1 ORDER BY updated_at DESC LIMIT 1',
+      'SELECT state, convo FROM sites WHERE user_id = $1 AND is_draft = TRUE ORDER BY updated_at DESC LIMIT 1',
       [req.user.id]
     );
 
@@ -452,7 +452,7 @@ app.get('/api/last-draft', ensureLoggedIn(), async (req, res) => {
     const draft = result.rows[0];
     res.json({ 
       state: draft.state, 
-      convo: draft.conversation 
+      conversation: draft.convo 
     });
   } catch (error) {
     console.error('Failed to get draft:', error);

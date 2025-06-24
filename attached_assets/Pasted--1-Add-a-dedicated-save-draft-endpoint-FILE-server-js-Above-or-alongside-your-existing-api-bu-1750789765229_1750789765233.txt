@@ -1,0 +1,70 @@
+
+1) Add a dedicated “save draft” endpoint
+
+FILE: server.js
+
+Above or alongside your existing /api/build-site route, add:
+
+app.post('/api/save-draft', ensureLoggedIn(), async (req, res) => {
+  const userId = req.user.id;
+  const { state, convo } = req.body;
+
+  try {
+    // Upsert a draft record in Postgres
+    await pool.query(
+      `INSERT INTO sites (user_id, state, convo, is_draft, updated_at)
+       VALUES ($1, $2::jsonb, $3::jsonb, TRUE, NOW())
+       ON CONFLICT (user_id, is_draft)
+       DO UPDATE SET state = EXCLUDED.state,
+                     convo = EXCLUDED.convo,
+                     updated_at = NOW()`,
+      [userId, state, convo]
+    );
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Error saving draft:', err);
+    return res.status(500).json({ error: 'Could not save draft' });
+  }
+});
+
+Note: this uses the same sites table you created, relying on the unique (user_id, is_draft) constraint.
+
+⸻
+
+2) Call that endpoint from the front-end after every merge
+
+FILE: public/chat.js
+
+Inside your sendUser() function, right after you do:
+
+const j = await res.json();
+mergeState(j);
+handleMissing(j);
+
+insert:
+
+// Persist the current draft after merging GPT’s latest response
+fetch('/api/save-draft', {
+  method: 'POST',
+  credentials: 'include',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ state, convo })
+})
+.catch(e => console.error('Failed to save draft:', e));
+
+This ensures that every AI round writes your up-to-date state + convo to the database.
+
+⸻
+
+3) Now /api/last-draft will always find your latest work
+
+Because you’re continuously upserting your draft:
+	•	When you click Continue where you left off, the server-side redirect logic will see a draft exists and send you into /chat.
+	•	On loading /chat, your load handler fetches /api/last-draft, gets the JSON back, and renders your convo.
+
+⸻
+
+Summary of changes
+	1.	Server: New POST /api/save-draft route that upserts the draft.
+	2.	Client: In sendUser(), after mergeState(j), call /api/save-draft with { state, convo }.
+	3.	Everything else (redirects, /api/last-draft, rendering) stays the same.

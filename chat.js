@@ -209,6 +209,16 @@ async function sendUser() {
     // Merge what GPT extracted and then ask only what's still missing:
     mergeState(j);
     handleMissing({});               // run your follow‐up flow immediately
+    
+    // Persist the current draft after merging GPT's latest response
+    fetch('/api/save-draft', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state, convo })
+    })
+    .catch(e => console.error('Failed to save draft:', e));
+    
     return;
   } catch (error) {
     console.error('Error:', error);
@@ -315,26 +325,19 @@ function paywall() {
   document.getElementById('chatFooter').style.display = 'none';
 }
 
-// Auto-save draft function
+// Auto-save draft function - simplified since we now save after each response
 async function saveDraft() {
   try {
-    const response = await fetch('/api/me', { credentials: 'include' });
+    const response = await fetch('/api/save-draft', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state, convo })
+    });
     if (response.ok) {
-      // User is logged in, save the draft
-      console.log('Auto-saving draft with state:', state, 'and convo:', convo);
-      const saveResponse = await fetch('/api/build-site', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ state, convo })
-      });
-      if (saveResponse.ok) {
-        console.log('Draft auto-saved successfully');
-      } else {
-        console.log('Draft save failed:', saveResponse.status);
-      }
+      console.log('Draft auto-saved successfully');
     } else {
-      console.log('User not authenticated, skipping draft save');
+      console.log('Draft save failed:', response.status);
     }
   } catch (error) {
     console.log('Draft auto-save failed:', error);
