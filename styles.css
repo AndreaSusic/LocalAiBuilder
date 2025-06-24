@@ -2079,7 +2079,6 @@ label {
 /* Print Styles */
 @media print {
   .header,
-  .footer,
   .btn-primary,
   .btn-secondary,
   .btn-outline,
