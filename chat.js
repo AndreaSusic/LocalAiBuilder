@@ -5,7 +5,9 @@ const thread = $('chatThread'), input = $('chatInput'),
       sel = $('industrySelect'), colourWrap = $('wrapColours'),
       col1 = $('col1'), col2 = $('col2');
 
-const userName = window.USER_DISPLAY_NAME;
+const urlParams = new URLSearchParams(window.location.search);
+const loadDraft = urlParams.has('draft');
+const startFresh = urlParams.has('fresh');
 
 const authModal = document.getElementById('authModal');
 const authConfirmBtn = document.getElementById('modalContinueBtn');
@@ -338,9 +340,39 @@ function showImageGalleryWithAddMore() {
 }
 
 // Initialize with personalized greeting
-window.addEventListener('load', () => {
-  const greetingText = userName
-    ? `Hello, ${userName}! Let's create your brand-new website.`
+window.addEventListener('load', async () => {
+  let name = null;
+  
+  // Handle draft vs fresh mode
+  if (loadDraft) {
+    // fetch last draft and inject
+    try {
+      const r = await fetch('/api/last-draft', { credentials: 'include' });
+      if (r.ok) {
+        const { state: dState, convo: dConvo } = await r.json();
+        state = dState;
+        convo = dConvo;
+        // render existing convo bubbles
+        convo.forEach(m => bubble(m.role, m.content));
+      }
+    } catch(e){console.error(e);}
+  } else if (startFresh) {
+    state = { company_name:null, city:null, industry:null, language:null, services:null, colours:null };
+    convo = [];
+  }
+  
+  try {
+    const r = await fetch('/api/me', { credentials: 'include' });
+    if (r.ok) {
+      const j = await r.json();
+      name = j.name;
+    }
+  } catch (e) {
+    console.warn('Could not fetch user:', e);
+  }
+  
+  const greetingText = name
+    ? `Welcome back, ${name}! Let's polish your brand-new website.`
     : 'Hi! I will help you create your website. Tell me about your business and what you would like your site to include.';
   bubble('ai', greetingText);
   sendHeight();
