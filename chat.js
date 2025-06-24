@@ -206,6 +206,23 @@ async function sendUser() {
     console.log('GPT raw ->', j);
 
     // Merge what GPT extracted and then ask only what's still missing:
+    mergeState(j);
+
+    // 1️⃣ Log that we're about to save
+    console.log('📝 Calling /api/save-draft with state:', state, 'convo length:', convo.length);
+
+    try {
+      const saveRes = await fetch('/api/save-draft', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ state, convo })
+      });
+      console.log('✅ /api/save-draft status:', saveRes.status);
+    } catch (err) {
+      console.error('❌ /api/save-draft error:', err);
+    }
+
     await handleMissing(j);               // run your follow‐up flow immediately
     
     return;
@@ -229,22 +246,8 @@ function mergeState(obj) {
 }
 
 async function handleMissing(res){
-  // 1️⃣ merge GPT's data
-  mergeState(res);
-
-  // 2️⃣ immediately persist the draft
-  try {
-    await fetch('/api/save-draft', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ state, convo })
-    });
-  } catch (err) {
-    console.error('Draft save error:', err);
-  }
-
-  // 3️⃣ then continue with your existing UI logic
+  // Note: mergeState(res) and draft saving now happens in sendUser()
+  // This function just handles the UI logic for missing fields
 
   // Step 1: Ask for text Qs (company, city, industry, language, services)
   const order = ['company_name','city','industry','language','services'];
