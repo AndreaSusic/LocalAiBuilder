@@ -1,0 +1,74 @@
+OPENAI_API_KEY length: 164
+MongoDB connection failed: 801015CD8F7F0000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:ssl/record/rec_layer_s3.c:907:SSL alert number 80
+
+Full request body: [Object: null prototype] {
+  prompt: '[{"role":"user","content":"lawyer in belgrade"}]'
+}
+Request body type: object
+GPT raw -> {
+  "company_name": null,
+  "industry": "Legal",
+  "city": "Belgrade",
+  "language": "Serbian",
+  "services": null,
+  "missing_fields": [
+    "company_name",
+    "services"
+  ]
+}
+Full request body: [Object: null prototype] {
+  prompt: `[{"role":"user","content":"lawyer in belgrade"},{"role":"assistant","content":"What's the name of your business?"},{"role":"user","content":"batrna"}]`
+}
+Request body type: object
+GPT raw -> {
+  "company_name": "batrna",
+  "industry": "Legal",
+  "city": "Belgrade",
+  "language": "Serbian",
+  "services": null,
+  "missing_fields": [
+    "services"
+  ]
+}
+Full request body: [Object: null prototype] {
+  prompt: `[{"role":"user","content":"lawyer in belgrade"},{"role":"assistant","content":"What's the name of your business?"},{"role":"user","content":"batrna"},{"role":"assistant","content":"List your most important services or products."},{"role":"user","content":"corporate law"}]`
+}
+Request body type: object
+GPT raw -> {
+  "company_name": "batrna",
+  "industry": "Legal",
+  "city": "Belgrade",
+  "language": "Serbian",
+  "services": "corporate law",
+  "missing_fields": []
+}
+Google profile: {
+  "id": "110795423852052644529",
+  "displayName": "Andrea Susic",
+  "name": {
+    "familyName": "Susic",
+    "givenName": "Andrea"
+  },
+  "emails": [
+    {
+      "value": "andrea.susic29@gmail.com",
+      "verified": true
+    }
+  ],
+  "photos": [
+    {
+      "value": "https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa=s96-c"
+    }
+  ],
+  "provider": "google",
+  "_raw": "{\n  \"sub\": \"110795423852052644529\",\n  \"name\": \"Andrea Susic\",\n  \"given_name\": \"Andrea\",\n  \"family_name\": \"Susic\",\n  \"picture\": \"https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa\\u003ds96-c\",\n  \"email\": \"andrea.susic29@gmail.com\",\n  \"email_verified\": true\n}",
+  "_json": {
+    "sub": "110795423852052644529",
+    "name": "Andrea Susic",
+    "given_name": "Andrea",
+    "family_name": "Susic",
+    "picture": "https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa=s96-c",
+    "email": "andrea.susic29@gmail.com",
+    "email_verified": true
+  }
+}
