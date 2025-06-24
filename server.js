@@ -14,6 +14,20 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY            // ← ONE client
 });
 
+const { MongoClient, ObjectId } = require('mongodb');
+
+const MONGODB_URI = process.env.MONGODB_URI;
+let dbClient, db;
+
+async function connectDB() {
+  if (!dbClient) {
+    dbClient = new MongoClient(MONGODB_URI);
+    await dbClient.connect();
+    db = dbClient.db();  // use the default DB
+  }
+}
+connectDB().catch(console.error);
+
 // 🔽 Temporary debug
 console.log("OPENAI_API_KEY length:",
             (process.env.OPENAI_API_KEY || "").length);

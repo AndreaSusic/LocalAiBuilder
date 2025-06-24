@@ -1,0 +1,88 @@
+
+
+In **server.js**, at the top add:
+```js
+const { MongoClient, ObjectId } = require('mongodb');
+const MONGODB_URI = process.env.MONGODB_URI;
+let dbClient, db;
+async function connectDB() {
+  if (!dbClient) {
+    dbClient = new MongoClient(MONGODB_URI);
+    await dbClient.connect();
+    db = dbClient.db();  // use the default DB
+  }
+}
+connectDB().catch(console.error);
+
+2) Extend POST /api/build-site to save drafts
+
+Find your /api/build-site handler and modify it to:
+
+app.post('/api/build-site', ensureLoggedIn(), async (req, res) => {
+  const userId = req.user.id;
+  const { state, convo } = req.body;
+
+  await connectDB();
+  // upsert a draft document for this user
+  await db.collection('sites').updateOne(
+    { userId, isDraft: true },
+    { $set: { userId, state, convo, updatedAt: new Date() } },
+    { upsert: true }
+  );
+
+  // proceed with your site-building logic...
+  res.json({ success: true });
+});
+
+3) Create GET /api/last-draft endpoint
+
+Below your other routes, add:
+
+app.get('/api/last-draft', ensureLoggedIn(), async (req, res) => {
+  await connectDB();
+  const draft = await db.collection('sites')
+    .find({ userId: req.user.id, isDraft: true })
+    .sort({ updatedAt: -1 })
+    .limit(1)
+    .toArray();
+
+  if (!draft.length) return res.status(204).end();
+  res.json({ state: draft[0].state, convo: draft[0].convo });
+});
+
+4) Front-end: fetch and preload draft on chat load
+
+In public/chat.js, at the top:
+
+const urlParams = new URLSearchParams(window.location.search);
+const loadDraft = urlParams.has('draft');
+
+Then inside your window.addEventListener('load', async () => { … }) before rendering the greeting:
+
+if (loadDraft) {
+  try {
+    const r = await fetch('/api/last-draft', { credentials: 'include' });
+    if (r.status === 200) {
+      const { state: dState, convo: dConvo } = await r.json();
+      state = dState;
+      convo = dConvo;
+      convo.forEach(m => bubble(m.role, m.content));
+    }
+  } catch (e) {
+    console.error('Failed to load draft', e);
+  }
+}
+
+5) Homepage banner link
+
+In public/index.html, your “Continue where you left off” banner should link to:
+
+<a href="/chat?draft=true">Continue where you left off</a>
+
+RESULT
+
+• Every build request upserts a draft tied to the user.
+• /api/last-draft returns that draft.
+• When the user clicks “Continue where you left off,” the chat loads with their saved state and convo.
+• If they choose “Start fresh” (link to /chat?fresh=true), you can clear state/convo in your load handler as before.
+
