@@ -2335,6 +2335,12 @@ iframe.chatPane {
   margin: 0;
   line-height: 1.4;
 }
+.footer-col:nth-child(1) {
+  padding-right: 40px;
+}
+.footer-col:nth-child(2) {
+  padding-left: 40px;
+}
 .footer-bottom {
   text-align: center;
   padding: 1rem;
