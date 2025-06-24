@@ -2369,7 +2369,4 @@ iframe.chatPane {
   margin: 0 .5rem;
 }
 
-/* Unified padding for key sections */
-.header, .chatContainer, .benefits, .faq {
-  padding: 0 50px;
-}
+
