@@ -71,19 +71,13 @@ passport.use(new LocalStrategy(
 
 // Serialize and deserialize user
 passport.serializeUser(function(user, done) {
-  // For Google users, use the Google ID; for local users, use our generated ID
-  const id = user.id || user.emails?.[0]?.value;
-  done(null, { id, provider: user.provider || 'google' });
+  // Store the complete user object for the session
+  done(null, user);
 });
 
-passport.deserializeUser(function(obj, done) {
-  if (obj.provider === 'local') {
-    const user = users.find(u => u.id === obj.id);
-    done(null, user);
-  } else {
-    // For Google users, we'd typically fetch from database, but for demo we'll store in session
-    done(null, obj);
-  }
+passport.deserializeUser(function(user, done) {
+  // Return the complete user object from session
+  done(null, user);
 });
 
 // API endpoint to check authentication status
