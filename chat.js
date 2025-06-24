@@ -62,16 +62,14 @@ function createColorPicker() {
   sendHeight();
   
   // Bind event handler
-  wrapper.querySelector('#colourDone').onclick = () => {
+  wrapper.querySelector('#colourDone').onclick = async () => {
     const col1Val = wrapper.querySelector('#col1').value;
     const col2Val = wrapper.querySelector('#col2').value;
     state.colours = [col1Val, col2Val];
     bubble('user', `🎨 Selected colors: ${col1Val}, ${col2Val}`);
     wrapper.remove();
     sendHeight();
-    handleMissing({});
-    // Save draft after color selection
-    setTimeout(() => saveDraft(), 100);
+    await handleMissing({});
   };
 }
 
@@ -94,7 +92,7 @@ function createDropZone() {
   const fileInput = wrapper.querySelector('input[type="file"]');
   
   // File input handler
-  fileInput.onchange = () => {
+  fileInput.onchange = async () => {
     if (fileInput.files.length) {
       images.push(...fileInput.files);
       bubble('user', `📷 ${fileInput.files.length} image(s) attached`);
@@ -102,7 +100,7 @@ function createDropZone() {
       showImageGalleryWithAddMore();
       wrapper.remove();
       sendHeight();
-      handleMissing({});
+      await handleMissing({});
     }
   };
   
@@ -173,6 +171,7 @@ async function sendUser() {
       document.getElementById('inlineDropZone').remove();
       images.push(new File([''], 'placeholder.png', { type: 'image/png' })); // Add placeholder to proceed
       sendHeight();
+      await handleMissing({});
     }
   }
 
@@ -207,20 +206,7 @@ async function sendUser() {
     console.log('GPT raw ->', j);
 
     // Merge what GPT extracted and then ask only what's still missing:
-    mergeState(j);
-    handleMissing({});               // run your follow‐up flow immediately
-    
-    // Persist draft after every merge
-    fetch('/api/save-draft', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ state, convo })
-    })
-      .then(resp => {
-        if (!resp.ok) console.error('Draft save failed:', resp.statusText);
-      })
-      .catch(err => console.error('Draft save error:', err));
+    await handleMissing(j);               // run your follow‐up flow immediately
     
     return;
   } catch (error) {
@@ -242,8 +228,23 @@ function mergeState(obj) {
   }
 }
 
-function handleMissing(res){
+async function handleMissing(res){
+  // 1️⃣ merge GPT's data
   mergeState(res);
+
+  // 2️⃣ immediately persist the draft
+  try {
+    await fetch('/api/save-draft', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state, convo })
+    });
+  } catch (err) {
+    console.error('Draft save error:', err);
+  }
+
+  // 3️⃣ then continue with your existing UI logic
 
   // Step 1: Ask for text Qs (company, city, industry, language, services)
   const order = ['company_name','city','industry','language','services'];
