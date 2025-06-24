@@ -100,6 +100,7 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
+- June 24, 2025: Fixed authentication callback to redirect based on draft status - implemented PostgreSQL draft checking in Google OAuth callback, users with existing drafts now redirect to /chat?draft=true, new users go to homepage, added "no images" skip option with text recognition, fixed color picker to show user selection feedback with colored confirmation message
 - June 24, 2025: Implemented MongoDB draft system for conversation persistence - added database connection with MongoClient, extended /api/build-site to save user drafts, created /api/last-draft endpoint for retrieving saved conversations, updated chat.js to load drafts on ?draft=true parameter, enhanced state management to include conversation history
 - June 24, 2025: Fixed layout padding with unified CSS rule - removed incorrect .footer class while keeping .site-footer, applied consistent 50px horizontal padding using single rule for header/chatContainer/benefits/faq sections, corrected login button conversion to "Profile" for authenticated users
 - June 24, 2025: Fixed Google OAuth email display and streamlined login flow - corrected session serialization to preserve complete user profile data, updated OAuth callback to redirect directly to homepage instead of profile page, confirmed email scope working correctly
