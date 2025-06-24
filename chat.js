@@ -17,9 +17,11 @@ if (authConfirmBtn) {
     // hide the modal
     if (authModal) authModal.classList.remove('open');
     // actually trigger the site‐build now that the user is authenticated
+    console.log('Saving draft with state:', state, 'and convo:', convo);
     fetch('/api/build-site', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ state, convo })
     });
   };
@@ -231,6 +233,8 @@ function handleMissing(res){
     if(lastAI!==Q){
       bubble('ai',Q); convo.push({role:'assistant',content:Q});
       awaitingKey=next;
+      // Auto-save draft after each AI response
+      saveDraft();
     }
     return;
   }
@@ -242,6 +246,8 @@ function handleMissing(res){
       bubble('ai','Please pick two brand colours.');
       convo.push({role:'assistant',content:'Please pick two brand colours.'});
       createColorPicker();
+      // Auto-save draft after each AI response
+      saveDraft();
     }
     return;  // wait for Done
   }
@@ -251,6 +257,8 @@ function handleMissing(res){
     bubble('ai','Can you upload images and a logo for me to use on your website?');
     convo.push({role:'assistant',content:'Please upload images or logo.'});
     createDropZone();
+    // Auto-save draft after each AI response
+    saveDraft();
     return;
   }
 
@@ -276,6 +284,9 @@ function handleMissing(res){
     // Hide chat footer when sign in button appears
     const chatFooter = document.getElementById('chatFooter');
     if (chatFooter) chatFooter.style.display = 'none';
+    
+    // Auto-save draft when conversation is complete
+    saveDraft();
   }
 
 
@@ -349,15 +360,19 @@ window.addEventListener('load', async () => {
     // fetch last draft and inject
     try {
       const r = await fetch('/api/last-draft', { credentials: 'include' });
+      console.log('Draft fetch response:', r.status);
       if (r.ok) {
         const { state: dState, convo: dConvo } = await r.json();
+        console.log('Loaded draft data:', { dState, dConvo });
         state = dState;
         convo = dConvo;
         // render existing convo bubbles
         convo.forEach(m => bubble(m.role, m.content));
         draftLoaded = true;
+      } else if (r.status === 204) {
+        console.log('No draft found');
       }
-    } catch(e){console.error(e);}
+    } catch(e){console.error('Draft loading error:', e);}
   } else if (startFresh) {
     state = { company_name:null, city:null, industry:null, language:null, services:null, colours:null };
     convo = [];
@@ -379,6 +394,8 @@ window.addEventListener('load', async () => {
       ? `Welcome back, ${name}! Let's polish your brand-new website.`
       : 'Hi! I will help you create your website. Tell me about your business and what you would like your site to include.';
     bubble('ai', greetingText);
+  } else {
+    console.log('Draft loaded successfully:', { state, convo });
   }
   sendHeight();
 });
