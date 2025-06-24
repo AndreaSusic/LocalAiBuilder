@@ -253,16 +253,28 @@ function handleMissing(res){
   }
 
   // Step 4: Done – prompt and show Sign In button
-  const p = document.createElement('p');
-  p.className = 'prompt-label';
-  p.textContent = "You're all set to start! You can adjust elements and sections in the next steps. Please sign in to continue.";
-  thread.appendChild(p);
+  // Check if sign in button already exists to avoid duplicates
+  const existingSignIn = document.querySelector('.sign-in-btn');
+  if (!existingSignIn) {
+    const p = document.createElement('p');
+    p.className = 'prompt-label';
+    p.textContent = "You're all set to start! You can adjust elements and sections in the next steps. Please sign in to continue.";
+    thread.appendChild(p);
 
-  // create & insert Sign In button
-  const signInBtn = document.createElement('button');
-  signInBtn.textContent = 'Sign In';
-  signInBtn.className = 'sign-in-btn';
-  thread.appendChild(signInBtn);
+    const signInBtn = document.createElement('button');
+    signInBtn.textContent = 'Sign In';
+    signInBtn.className = 'sign-in-btn';
+    thread.appendChild(signInBtn);
+
+    // wire it to trigger login in parent window
+    signInBtn.onclick = () => {
+      window.parent.postMessage({type: 'trigger-login'}, '*');
+    };
+
+    // Hide chat footer when sign in button appears
+    const chatFooter = document.getElementById('chatFooter');
+    if (chatFooter) chatFooter.style.display = 'none';
+  }
 
 
 
