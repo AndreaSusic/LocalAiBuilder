@@ -153,9 +153,28 @@ app.get('/auth/google',
 
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/' }),
-  function(req, res) {
-    // Successful authentication, redirect to homepage
-    res.redirect('/');
+  async function(req, res) {
+    console.log('Google profile:', req.user);
+    
+    try {
+      // Check for an existing draft
+      const result = await pool.query(
+        'SELECT * FROM user_drafts WHERE user_id = $1 ORDER BY updated_at DESC LIMIT 1',
+        [req.user.id]
+      );
+      
+      if (result.rows.length > 0) {
+        // User has a draft, redirect to chat with draft=true
+        return res.redirect('/chat?draft=true');
+      } else {
+        // No draft, redirect to homepage
+        return res.redirect('/');
+      }
+    } catch (error) {
+      console.error('Error checking for drafts:', error);
+      // On error, default to homepage redirect
+      return res.redirect('/');
+    }
   }
 );
 

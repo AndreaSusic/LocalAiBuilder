@@ -63,10 +63,15 @@ function createColorPicker() {
   
   // Bind event handler
   wrapper.querySelector('#colourDone').onclick = () => {
-    state.colours = [wrapper.querySelector('#col1').value, wrapper.querySelector('#col2').value];
+    const col1Val = wrapper.querySelector('#col1').value;
+    const col2Val = wrapper.querySelector('#col2').value;
+    state.colours = [col1Val, col2Val];
+    bubble('user', `🎨 Selected colors: ${col1Val}, ${col2Val}`);
     wrapper.remove();
     sendHeight();
     handleMissing({});
+    // Save draft after color selection
+    setTimeout(() => saveDraft(), 100);
   };
 }
 
@@ -159,6 +164,16 @@ async function sendUser() {
   if (awaitingKey && text) {
     state[awaitingKey] = text.trim();
     awaitingKey = null;
+  }
+  
+  // Handle "no images" responses
+  if (text.toLowerCase().includes('no') || text.toLowerCase().includes('don\'t have')) {
+    if (images.length === 0 && document.getElementById('inlineDropZone')) {
+      // User doesn't have images, skip this step
+      document.getElementById('inlineDropZone').remove();
+      images.push(new File([''], 'placeholder.png', { type: 'image/png' })); // Add placeholder to proceed
+      sendHeight();
+    }
   }
 
   if (text) bubble('user', text);
