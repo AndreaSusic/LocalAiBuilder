@@ -14,29 +14,33 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY            // ← ONE client
 });
 
-const { MongoClient, ObjectId } = require('mongodb');
+const { Pool } = require('pg');
 
-const MONGODB_URI = process.env.MONGODB_URI;
-let dbClient, db;
+// PostgreSQL connection
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+});
 
-async function connectDB() {
-  if (!dbClient && MONGODB_URI) {
-    try {
-      dbClient = new MongoClient(MONGODB_URI, {
-        tls: true,
-        tlsAllowInvalidCertificates: false,
-        tlsAllowInvalidHostnames: false
-      });
-      await dbClient.connect();
-      db = dbClient.db();  // use the default DB
-      console.log('MongoDB connected successfully');
-    } catch (error) {
-      console.error('MongoDB connection failed:', error.message);
-      // Continue without DB for now
-    }
+// Initialize database tables
+async function initDB() {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS user_drafts (
+        id SERIAL PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        state JSONB,
+        conversation JSONB,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(user_id)
+      )
+    `);
+    console.log('Database tables initialized');
+  } catch (error) {
+    console.error('Database initialization failed:', error.message);
   }
 }
-connectDB().catch(console.error);
+initDB();
 
 // 🔽 Temporary debug
 console.log("OPENAI_API_KEY length:",
@@ -368,17 +372,21 @@ app.post('/api/build-site', ensureLoggedIn(), async (req, res) => {
     const { convo, state } = req.body;
     console.log('Building site with data:', { convo, state });
     
-    if (db) {
-      await connectDB();
-      // upsert a draft document for this user
-      await db.collection('sites').updateOne(
-        { userId, isDraft: true },
-        { $set: { userId, state, convo, updatedAt: new Date() } },
-        { upsert: true }
-      );
-      console.log('Draft saved to MongoDB');
-    } else {
-      console.log('No database connection - draft not saved');
+    try {
+      // Upsert draft to PostgreSQL
+      await pool.query(`
+        INSERT INTO user_drafts (user_id, state, conversation, updated_at)
+        VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
+        ON CONFLICT (user_id)
+        DO UPDATE SET 
+          state = EXCLUDED.state,
+          conversation = EXCLUDED.conversation,
+          updated_at = CURRENT_TIMESTAMP
+      `, [userId, JSON.stringify(state), JSON.stringify(convo)]);
+      
+      console.log('Draft saved to PostgreSQL');
+    } catch (error) {
+      console.error('Failed to save draft:', error.message);
     }
     
     // Here you would typically save to database
@@ -408,20 +416,20 @@ app.get('/api/me', (req, res) => {
 // Get user's last draft
 app.get('/api/last-draft', ensureLoggedIn(), async (req, res) => {
   try {
-    if (!db) {
-      console.log('No database connection - no draft available');
+    const result = await pool.query(
+      'SELECT state, conversation FROM user_drafts WHERE user_id = $1 ORDER BY updated_at DESC LIMIT 1',
+      [req.user.id]
+    );
+
+    if (result.rows.length === 0) {
       return res.status(204).end();
     }
-    
-    await connectDB();
-    const draft = await db.collection('sites')
-      .find({ userId: req.user.id, isDraft: true })
-      .sort({ updatedAt: -1 })
-      .limit(1)
-      .toArray();
 
-    if (!draft.length) return res.status(204).end();
-    res.json({ state: draft[0].state, convo: draft[0].convo });
+    const draft = result.rows[0];
+    res.json({ 
+      state: draft.state, 
+      convo: draft.conversation 
+    });
   } catch (error) {
     console.error('Failed to get draft:', error);
     res.status(500).json({ error: 'Failed to load draft' });
