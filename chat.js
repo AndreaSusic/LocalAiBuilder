@@ -264,15 +264,7 @@ function handleMissing(res){
   signInBtn.className = 'sign-in-btn';
   thread.appendChild(signInBtn);
 
-  // wire it to trigger login in parent window
-  signInBtn.onclick = () => {
-    // Send message to parent window to trigger login
-    window.parent.postMessage({type: 'trigger-login'}, '*');
-  };
 
-  // Hide chat footer when sign in button appears
-  const chatFooter = document.getElementById('chatFooter');
-  if (chatFooter) chatFooter.style.display = 'none';
 
   thread.scrollTop = thread.scrollHeight;
   sendHeight();
@@ -296,6 +288,10 @@ input.addEventListener('keydown', e => {
 
 // Function to show image gallery with add more option
 function showImageGalleryWithAddMore() {
+  // Remove existing gallery if it exists
+  const existingGallery = document.getElementById('imageGallery');
+  if (existingGallery) existingGallery.remove();
+  
   const galleryWrapper = document.createElement('div');
   galleryWrapper.id = 'imageGallery';
   galleryWrapper.innerHTML = `
@@ -304,7 +300,14 @@ function showImageGalleryWithAddMore() {
       <button id="addMoreBtn" style="background:#ffc000;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:18px;">+</button>
     </div>
   `;
-  thread.appendChild(galleryWrapper);
+  
+  // Insert before sign-in button if it exists, otherwise append to thread
+  const signInBtn = document.querySelector('.sign-in-btn');
+  if (signInBtn) {
+    thread.insertBefore(galleryWrapper, signInBtn.previousElementSibling);
+  } else {
+    thread.appendChild(galleryWrapper);
+  }
   
   // Wire add more button
   galleryWrapper.querySelector('#addMoreBtn').onclick = () => {
