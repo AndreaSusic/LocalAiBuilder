@@ -249,17 +249,30 @@ function handleMissing(res){
     return;
   }
 
-  // Step 4: If everything is ready, require sign-in first
-  // inform the user we're ready but require sign-in first
-  bubble('ai','All set! Please sign in to continue.');
-  // open your existing login modal
-  if (authModal) {
-    authModal.classList.add('open');
-  } else {
-    // Fallback: communicate with parent window to open modal
-    window.parent.postMessage({type: 'open-auth-modal'}, '*');
-  }
-  // defer the build until after authConfirmBtn is clicked
+  // Step 4: Done – prompt and show Sign In button
+  const p = document.createElement('p');
+  p.className = 'prompt-label';
+  p.textContent = 'All set! Please sign in to continue.';
+  thread.appendChild(p);
+
+  // create & insert Sign In button
+  const signInBtn = document.createElement('button');
+  signInBtn.textContent = 'Sign In';
+  signInBtn.className = 'sign-in-btn';
+  thread.appendChild(signInBtn);
+
+  // wire it to open the modal
+  signInBtn.onclick = () => {
+    if (authModal) {
+      authModal.classList.add('open');
+    } else {
+      // Fallback: communicate with parent window to open modal
+      window.parent.postMessage({type: 'open-auth-modal'}, '*');
+    }
+  };
+
+  thread.scrollTop = thread.scrollHeight;
+  sendHeight();
 }
 
 function paywall() {
