@@ -234,12 +234,11 @@ RULES:
    - Madrid/Barcelona → "Spanish"
    - Otherwise → "English"
 
-2. A company_name is considered present when the user reply
-   contains **any capitalised word followed by another word**
-   (e.g. "My Tooth", "Green Lawn", "BlueSky").
-   As soon as you detect such a phrase, fill company_name
-   and REMOVE "company_name" from missing_fields.
-   Never ask for company_name again once it is filled.
+2. A company_name must be a distinctive brand term—generic descriptors are not valid.
+   If the user's input contains a generic phrase immediately before words like
+   "company", "service", "studio", "clinic", "agency" (for example, "grass sod company",
+   "auto repair service", "design studio"), then set "company_name": null
+   and add "company_name" to missing_fields.
 
 3. City detection (scan text for these patterns):
    - "in Austin" → city: "Austin"
