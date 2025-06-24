@@ -155,23 +155,23 @@ async function sendUser() {
   }
 
   try {
+    // ALWAYS send to the server, even on the very first message
     const fd = new FormData();
     fd.append('prompt', JSON.stringify(convo));
     images.forEach(f => fd.append('images', f));
 
-    const res = await fetch('/api/analyse', {method: 'POST', body: fd});
+    const res = await fetch('/api/analyse', {
+      method: 'POST',
+      body: fd
+    });
+
     const j = await res.json();
-    
-    // Merge extracted values into our local state immediately:
+    console.log('GPT raw ->', j);
+
+    // Merge what GPT extracted and then ask only what's still missing:
     mergeState(j);
-
-    // If this was the very first user message, ask only what's still missing:
-    if (convo.length === 1) {
-      handleMissing({});
-      return;
-    }
-
-    handleMissing(j);
+    handleMissing({});               // run your follow‐up flow immediately
+    return;
   } catch (error) {
     console.error('Error:', error);
     bubble('ai', 'Sorry, something went wrong. Please try again.');
