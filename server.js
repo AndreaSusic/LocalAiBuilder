@@ -384,7 +384,7 @@ app.post('/api/build-site', ensureLoggedIn(), async (req, res) => {
           updated_at = CURRENT_TIMESTAMP
       `, [userId, JSON.stringify(state), JSON.stringify(convo)]);
       
-      console.log('Draft saved to PostgreSQL');
+      console.log('Draft saved to PostgreSQL for user:', userId);
     } catch (error) {
       console.error('Failed to save draft:', error.message);
     }
