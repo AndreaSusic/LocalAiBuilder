@@ -391,7 +391,7 @@ RULES:
 
 // Save draft endpoint - saves work in progress
 app.post('/api/save-draft', ensureLoggedIn(), async (req, res) => {
-  console.log('❇️  Received /api/save-draft body:', req.body);
+  console.log('🎯 [/api/save-draft] hit with body:', req.body);
   const userId = req.user.id;
   const { state, convo } = req.body;
 

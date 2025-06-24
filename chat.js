@@ -155,6 +155,7 @@ function guessIndustry(word) {
 
 // send logic
 async function sendUser() {
+  console.log('🛫 sendUser triggered; current state:', state);
   const text = input.innerText.trim();
   if (!text) return;
 
@@ -208,9 +209,8 @@ async function sendUser() {
     // Merge what GPT extracted and then ask only what's still missing:
     mergeState(j);
 
-    // 1️⃣ Log that we're about to save
-    console.log('📝 Calling /api/save-draft with state:', state, 'convo length:', convo.length);
-
+    // --- begin save-draft instrumentation ---
+    console.log('📝 About to call save-draft, convo length:', convo.length);
     try {
       const saveRes = await fetch('/api/save-draft', {
         method: 'POST',
@@ -218,10 +218,13 @@ async function sendUser() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ state, convo })
       });
-      console.log('✅ /api/save-draft status:', saveRes.status);
+      console.log('✅ save-draft response status:', saveRes.status);
+      const saveJson = await saveRes.json().catch(() => null);
+      console.log('💾 save-draft response body:', saveJson);
     } catch (err) {
-      console.error('❌ /api/save-draft error:', err);
+      console.error('❌ Error calling save-draft:', err);
     }
+    // --- end save-draft instrumentation ---
 
     await handleMissing(j);               // run your follow‐up flow immediately
     
