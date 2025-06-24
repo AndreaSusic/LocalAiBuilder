@@ -634,21 +634,7 @@ label {
   background-color: var(--primary-color);
 }
 
-/* Footer */
-.footer {
-  padding: var(--spacing-2xl) 0;
-  background-color: var(--dark-color);
-  color: var(--white);
-  text-align: center;
-}
 
-.footer a {
-  color: var(--white);
-}
-
-.footer a:hover {
-  color: var(--accent-color);
-}
 
 /* Pricing Page */
 .pricing-hero {
