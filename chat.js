@@ -286,7 +286,7 @@ function handleMissing(res){
     if (chatFooter) chatFooter.style.display = 'none';
     
     // Auto-save draft when conversation is complete
-    saveDraft();
+    setTimeout(() => saveDraft(), 100);
   }
 
 
@@ -298,6 +298,26 @@ function handleMissing(res){
 function paywall() {
   bubble('ai', 'Free limit reached - <a href="/pricing">upgrade to Pro</a>.');
   document.getElementById('chatFooter').style.display = 'none';
+}
+
+// Auto-save draft function
+async function saveDraft() {
+  try {
+    const response = await fetch('/api/me', { credentials: 'include' });
+    if (response.ok) {
+      // User is logged in, save the draft
+      console.log('Auto-saving draft with state:', state, 'and convo:', convo);
+      await fetch('/api/build-site', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ state, convo })
+      });
+      console.log('Draft auto-saved successfully');
+    }
+  } catch (error) {
+    console.log('Draft auto-save failed:', error);
+  }
 }
 
 // events
