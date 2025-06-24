@@ -87,6 +87,8 @@ function createDropZone() {
     if (fileInput.files.length) {
       images.push(...fileInput.files);
       bubble('user', `📷 ${fileInput.files.length} image(s) attached`);
+      // Show add more images option instead of removing wrapper
+      showImageGalleryWithAddMore();
       wrapper.remove();
       sendHeight();
       handleMissing({});
@@ -116,6 +118,8 @@ function createDropZone() {
     if (imageFiles.length > 0) {
       images.push(...imageFiles);
       bubble('user', `📷 ${imageFiles.length} image(s) attached`);
+      // Show add more images option instead of removing wrapper
+      showImageGalleryWithAddMore();
       wrapper.remove();
       sendHeight();
       handleMissing({});
@@ -252,7 +256,7 @@ function handleMissing(res){
   // Step 4: Done – prompt and show Sign In button
   const p = document.createElement('p');
   p.className = 'prompt-label';
-  p.textContent = 'All set! Please sign in to continue.';
+  p.textContent = "You're all set to start! You can adjust elements and sections in the next steps. Please sign in to continue.";
   thread.appendChild(p);
 
   // create & insert Sign In button
@@ -266,6 +270,10 @@ function handleMissing(res){
     // Send message to parent window to trigger login
     window.parent.postMessage({type: 'trigger-login'}, '*');
   };
+
+  // Hide chat footer when sign in button appears
+  const chatFooter = document.getElementById('chatFooter');
+  if (chatFooter) chatFooter.style.display = 'none';
 
   thread.scrollTop = thread.scrollHeight;
   sendHeight();
@@ -285,14 +293,26 @@ input.addEventListener('keydown', e => {
   }
 });
 
-// File upload from footer file button
-if (files) {
-  files.onchange = () => {
-    if (files.files.length) {
-      images.push(...files.files);
-      bubble('user', `📷 ${files.files.length} image(s) attached`);
-    }
+// File upload handling removed - now handled via drop zones only
+
+// Function to show image gallery with add more option
+function showImageGalleryWithAddMore() {
+  const galleryWrapper = document.createElement('div');
+  galleryWrapper.id = 'imageGallery';
+  galleryWrapper.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin:1rem 0;">
+      <span>Images uploaded (${images.length})</span>
+      <button id="addMoreBtn" style="background:#ffc000;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:18px;">+</button>
+    </div>
+  `;
+  thread.appendChild(galleryWrapper);
+  
+  // Wire add more button
+  galleryWrapper.querySelector('#addMoreBtn').onclick = () => {
+    createDropZone();
   };
+  
+  sendHeight();
 }
 
 // Initialize with greeting
