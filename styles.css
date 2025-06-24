@@ -2183,9 +2183,9 @@ select:focus {
 
 /* Chat layout */
 /* Layout system */
-#chatContainer{display:flex;gap:2rem;align-items:flex-start;min-height:100vh;}
+#chatContainer{display:flex;gap:2rem;align-items:flex-start;min-height:100vh;padding:0 50px;}
 .hero{flex:1 0 45%;max-width:45%;}
-.chatPane{flex:1 0 55%;height:90vh;border:1px solid #ddd;border-radius:8px;margin:30px;max-width:calc(55% - 60px);}
+.chatPane{flex:1 0 55%;height:90vh;border:1px solid #ddd;border-radius:8px;margin:30px 0;max-width:55%;}
 
 /* Hide hero form */
 .hero-form{display:none !important;}

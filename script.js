@@ -755,14 +755,32 @@ function initLoginModal() {
     const loginModal = document.getElementById('loginModal');
     const closeModal = document.getElementById('closeModal');
 
-    if (loginBtn && loginModal) {
-        // Open modal when login button is clicked
-        loginBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            loginModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
+    // Check if user is logged in and update button
+    fetch('/api/me', { credentials: 'include' })
+        .then(r => r.ok ? r.json() : null)
+        .then(user => {
+            if (user && loginBtn) {
+                loginBtn.textContent = 'Profile';
+                loginBtn.onclick = (e) => {
+                    e.preventDefault();
+                    window.location.href = '/profile';
+                };
+                return; // Skip modal setup for logged-in users
+            }
+            
+            // Setup modal for non-logged-in users
+            if (loginBtn && loginModal) {
+                // Open modal when login button is clicked
+                loginBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    loginModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+        })
+        .catch(() => {}); // Ignore errors
 
+    if (loginModal) {
         // Close modal when close button is clicked
         if (closeModal) {
             closeModal.addEventListener('click', function() {
