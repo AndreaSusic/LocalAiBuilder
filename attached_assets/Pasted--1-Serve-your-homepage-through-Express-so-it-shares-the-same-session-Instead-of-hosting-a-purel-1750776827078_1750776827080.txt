@@ -1,0 +1,77 @@
+
+
+1. Serve your homepage through Express (so it shares the same session)
+
+Instead of hosting a purely static index.html, have Express render or proxy it:
+
+// server.js
+app.get('/', (req, res) => {
+  // req.user will now be populated if they’re logged in
+  res.render('index', { user: req.user });
+});
+
+Then in your template (views/index.ejs or similar):
+
+<script>
+  window.USER_DISPLAY_NAME = "<%= user ? user.displayName : '' %>";
+</script>
+
+Because it’s the same origin and the same session cookie, the homepage will “know” who’s logged in.
+
+⸻
+
+2. Keep the static page but fetch the session on load
+
+If you’d rather keep a static homepage, add a small client‐side check:
+	1.	Expose an auth‐aware API in your Express app:
+
+// server.js
+app.get('/api/me', (req, res) => {
+  if (req.user) {
+    res.json({ name: req.user.displayName, email: req.user.emails[0].value });
+  } else {
+    res.status(401).json({}); 
+  }
+});
+
+
+	2.	On your static homepage, add this script just before </body>:
+
+<script>
+  fetch('/api/me', { credentials: 'include' })
+    .then(r => r.ok ? r.json() : null)
+    .then(user => {
+      if (user) {
+        // they’re logged in—show a “Continue where you left off” banner
+        const banner = document.createElement('div');
+        banner.className = 'continue-banner';
+        banner.innerHTML =
+          `Welcome back, ${user.name}! 
+           <a href="/chat">Continue where you left off</a> 
+           or <a href="/chat?fresh=true">Start fresh</a>`;
+        document.body.prepend(banner);
+      }
+    });
+</script>
+
+Make sure your fetch includes { credentials: 'include' } so the session cookie gets sent.
+
+⸻
+
+Quick checklist
+	•	Cookie path/domain
+Ensure your express-session cookie is set with path: '/' (the default) and a domain that covers both pages:
+
+app.use(session({
+  // …
+  cookie: {
+    path: '/',
+    domain: 'goaisite.com',
+    secure: false,       // true if you have HTTPS
+    maxAge: 24*60*60*1000
+  }
+}));
+
+
+	•	Static vs. dynamic
+Either serve your homepage via Express so it has direct access to req.user, or pull req.user client‐side via /api/me.

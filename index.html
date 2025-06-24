@@ -453,5 +453,22 @@
     </footer>
 
     <script src="script.js"></script>
+    
+    <script>
+      fetch('/api/me', { credentials: 'include' })
+        .then(r => r.ok ? r.json() : null)
+        .then(user => {
+          if (user) {
+            // they're logged in—show a "Continue where you left off" banner
+            const banner = document.createElement('div');
+            banner.className = 'continue-banner';
+            banner.innerHTML =
+              `Welcome back, ${user.name}! 
+               <a href="/chat">Continue where you left off</a> 
+               or <a href="/chat?fresh=true">Start fresh</a>`;
+            document.body.prepend(banner);
+          }
+        });
+    </script>
 </body>
 </html>
