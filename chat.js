@@ -8,16 +8,18 @@ const thread = $('chatThread'), input = $('chatInput'),
 const authModal = document.getElementById('authModal');
 const authConfirmBtn = document.getElementById('modalContinueBtn');
 
-authConfirmBtn.onclick = () => {
-  // hide the modal
-  authModal.classList.remove('open');
-  // actually trigger the site‐build now that the user is authenticated
-  fetch('/api/build-site', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ state, convo })
-  });
-};
+if (authConfirmBtn) {
+  authConfirmBtn.onclick = () => {
+    // hide the modal
+    if (authModal) authModal.classList.remove('open');
+    // actually trigger the site‐build now that the user is authenticated
+    fetch('/api/build-site', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state, convo })
+    });
+  };
+}
 
 const RX_INDS = /(dental|plumb|lawn|roof|legal|marketing|shoe|retail)/i;
 
@@ -251,7 +253,12 @@ function handleMissing(res){
   // inform the user we're ready but require sign-in first
   bubble('ai','All set! Please sign in to continue.');
   // open your existing login modal
-  authModal.classList.add('open');
+  if (authModal) {
+    authModal.classList.add('open');
+  } else {
+    // Fallback: communicate with parent window to open modal
+    window.parent.postMessage({type: 'open-auth-modal'}, '*');
+  }
   // defer the build until after authConfirmBtn is clicked
 }
 
