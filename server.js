@@ -20,10 +20,20 @@ const MONGODB_URI = process.env.MONGODB_URI;
 let dbClient, db;
 
 async function connectDB() {
-  if (!dbClient) {
-    dbClient = new MongoClient(MONGODB_URI);
-    await dbClient.connect();
-    db = dbClient.db();  // use the default DB
+  if (!dbClient && MONGODB_URI) {
+    try {
+      dbClient = new MongoClient(MONGODB_URI, {
+        tls: true,
+        tlsAllowInvalidCertificates: false,
+        tlsAllowInvalidHostnames: false
+      });
+      await dbClient.connect();
+      db = dbClient.db();  // use the default DB
+      console.log('MongoDB connected successfully');
+    } catch (error) {
+      console.error('MongoDB connection failed:', error.message);
+      // Continue without DB for now
+    }
   }
 }
 connectDB().catch(console.error);
@@ -37,6 +47,16 @@ const PORT = process.env.PORT || 5000;
 
 // In-memory user store
 const users = []; // { id, email, passwordHash, displayName, provider }
+
+// Middleware to ensure user is logged in
+function ensureLoggedIn() {
+  return (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.status(401).json({ error: 'Authentication required' });
+  };
+}
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -342,10 +362,24 @@ RULES:
 });
 
 // Build site endpoint to save collected data
-app.post('/api/build-site', express.json(), async (req, res) => {
+app.post('/api/build-site', ensureLoggedIn(), async (req, res) => {
   try {
+    const userId = req.user.id;
     const { convo, state } = req.body;
     console.log('Building site with data:', { convo, state });
+    
+    if (db) {
+      await connectDB();
+      // upsert a draft document for this user
+      await db.collection('sites').updateOne(
+        { userId, isDraft: true },
+        { $set: { userId, state, convo, updatedAt: new Date() } },
+        { upsert: true }
+      );
+      console.log('Draft saved to MongoDB');
+    } else {
+      console.log('No database connection - draft not saved');
+    }
     
     // Here you would typically save to database
     // For now, just log the collected data
@@ -356,6 +390,41 @@ app.post('/api/build-site', express.json(), async (req, res) => {
   } catch (error) {
     console.error('Error saving site data:', error);
     res.status(500).json({ error: 'Failed to save site data' });
+  }
+});
+
+// Current user info endpoint  
+app.get('/api/me', (req, res) => {
+  if (req.user) {
+    res.json({ 
+      name: req.user.displayName || req.user.name?.givenName || req.user.email?.split('@')[0] || 'User',
+      email: req.user.emails?.[0]?.value || req.user.email
+    });
+  } else {
+    res.status(401).json({ error: 'Not authenticated' });
+  }
+});
+
+// Get user's last draft
+app.get('/api/last-draft', ensureLoggedIn(), async (req, res) => {
+  try {
+    if (!db) {
+      console.log('No database connection - no draft available');
+      return res.status(204).end();
+    }
+    
+    await connectDB();
+    const draft = await db.collection('sites')
+      .find({ userId: req.user.id, isDraft: true })
+      .sort({ updatedAt: -1 })
+      .limit(1)
+      .toArray();
+
+    if (!draft.length) return res.status(204).end();
+    res.json({ state: draft[0].state, convo: draft[0].convo });
+  } catch (error) {
+    console.error('Failed to get draft:', error);
+    res.status(500).json({ error: 'Failed to load draft' });
   }
 });
 
