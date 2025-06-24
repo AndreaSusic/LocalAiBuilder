@@ -70,9 +70,10 @@ app.use(bodyParser.json());
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-random-secret-key-here',
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,     // now true, cookie sent immediately
   cookie: {
     secure: false, // Set to true in production with HTTPS
+    sameSite: 'lax',
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
