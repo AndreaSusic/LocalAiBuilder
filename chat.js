@@ -1,6 +1,6 @@
 const $ = id => document.getElementById(id);
 const thread = $('chatThread'), input = $('chatInput'),
-      send = $('sendBtn'), files = $('fileInput'),
+      send = $('sendBtn'),
       dropArea = $('dropArea'), selWrap = $('wrapIndustrySelect'),
       sel = $('industrySelect'), colourWrap = $('wrapColours'),
       col1 = $('col1'), col2 = $('col2');
