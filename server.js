@@ -5,6 +5,8 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
 const path = require('path');
 
 const { OpenAI } = require("openai");           // ← ONE import
@@ -184,8 +186,8 @@ app.post('/signup', async function(req, res) {
 });
 
 // GPT-powered business analysis API  
-app.use('/api/analyse', express.json(), express.urlencoded({ extended: true }));
-app.post("/api/analyse", async (req, res) => {
+// Use upload.none() to parse text fields in multipart/form-data
+app.post("/api/analyse", upload.none(), async (req, res) => {
   try {
     console.log("Full request body:", req.body);
     console.log("Request body type:", typeof req.body);
