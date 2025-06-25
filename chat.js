@@ -46,6 +46,47 @@ function bubble(role, txt) {
 }
 
 // Create color picker inline
+// Create font picker inline in chat thread
+function showFontPickerInline() {
+  // Don't create duplicate font pickers
+  if (document.getElementById('inlineFontPicker')) return;
+  
+  const wrapper = document.createElement('div');
+  wrapper.id = 'inlineFontPicker';
+  wrapper.innerHTML = `
+    <div style="background:#f5f5f5;border-radius:8px;padding:1rem;margin:1rem 0;">
+      <p style="margin-bottom:10px;color:#333;">Choose your font:</p>
+      <select id="inlineFontSelect" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;">
+        <option value="Roboto, sans-serif">Roboto</option>
+        <option value="Open Sans, sans-serif">Open Sans</option>
+        <option value="Lato, sans-serif">Lato</option>
+        <option value="Montserrat, sans-serif">Montserrat</option>
+        <option value="Source Sans Pro, sans-serif">Source Sans Pro</option>
+        <option value="Raleway, sans-serif">Raleway</option>
+        <option value="PT Sans, sans-serif">PT Sans</option>
+        <option value="Noto Sans, sans-serif">Noto Sans</option>
+        <option value="Merriweather, serif">Merriweather</option>
+        <option value="Ubuntu, sans-serif">Ubuntu</option>
+        <option value="Poppins, sans-serif">Poppins</option>
+        <option value="Oswald, sans-serif">Oswald</option>
+      </select>
+    </div>
+  `;
+  thread.appendChild(wrapper);
+  thread.scrollTop = thread.scrollHeight;
+  sendHeight();
+  
+  // Wire up the font selector
+  wrapper.querySelector('#inlineFontSelect').addEventListener('change', e => {
+    document.body.style.fontFamily = e.target.value;
+    try {
+      window.parent.document.body.style.fontFamily = e.target.value;
+    } catch (e) {
+      // Cross-origin restriction, ignore
+    }
+  });
+}
+
 function createColorPicker() {
   const wrapper = document.createElement('div');
   wrapper.id = 'inlineColorPicker';
@@ -71,10 +112,7 @@ function createColorPicker() {
     
     // Show font picker after colors are set and images are handled
     if (state.colours && (images.length > 0 || document.getElementById('inlineDropZone'))) {
-      const fontWrapper = document.getElementById('wrapFont');
-      if (fontWrapper) {
-        fontWrapper.classList.remove('hidden');
-      }
+      showFontPickerInline();
     }
     
     sendHeight();
@@ -172,10 +210,7 @@ function createDropZone() {
     
     // Show font picker after "no images" is selected and colours are set
     if (state.colours) {
-      const fontWrapper = document.getElementById('wrapFont');
-      if (fontWrapper) {
-        fontWrapper.classList.remove('hidden');
-      }
+      showFontPickerInline();
     }
     
     sendHeight();
@@ -336,11 +371,7 @@ async function handleMissing(res){
 
   // Show font picker after colours are set and images step is reached
   if (state.colours && (images.length > 0 || document.getElementById('inlineDropZone'))) {
-    const fontWrapper = document.getElementById('wrapFont');
-    if (fontWrapper) {
-      fontWrapper.classList.remove('hidden');
-      console.log('Font picker should now be visible');
-    }
+    showFontPickerInline();
   }
 
   // Step 3: If images missing, show drop-zone inline and wait for file
@@ -351,11 +382,7 @@ async function handleMissing(res){
     
     // Show font picker immediately after drop zone is created if colors are already set
     if (state.colours) {
-      const fontWrapper = document.getElementById('wrapFont');
-      if (fontWrapper) {
-        fontWrapper.classList.remove('hidden');
-        console.log('Font picker shown after drop zone creation');
-      }
+      showFontPickerInline();
     }
     
     // Auto-save draft after each AI response
