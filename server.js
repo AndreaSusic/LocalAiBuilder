@@ -276,23 +276,23 @@ app.post('/login',
 app.post('/signup', async function(req, res) {
   const { email, password } = req.body;
   
-  // Check if user already exists
-  if (users.find(u => u.email === email)) {
-    return res.redirect('/?error=email-exists');
-  }
-  
-  // Hash password and create user
   try {
-    const passwordHash = await bcrypt.hash(password, 10);
-    const newUser = {
-      id: Date.now().toString(), // Simple ID generation
-      email,
-      passwordHash,
-      displayName: email.split('@')[0], // Use email prefix as display name
-      provider: 'local'
-    };
+    // Check if user already exists
+    const existingUser = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+    if (existingUser.rows.length > 0) {
+      return res.redirect('/?error=email-exists');
+    }
     
-    users.push(newUser);
+    // Hash password and create user
+    const passwordHash = await bcrypt.hash(password, 10);
+    const newUserId = Date.now().toString();
+    const displayName = email.split('@')[0];
+    
+    await pool.query(
+      `INSERT INTO users (id, email, password_hash, display_name, provider)
+       VALUES ($1, $2, $3, $4, 'local')`,
+      [newUserId, email, passwordHash, displayName]
+    );
     
     // Log in the new user
     req.login(newUser, function(err) {
