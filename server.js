@@ -206,14 +206,21 @@ app.get('/auth/google/callback',
       );
 
       if (rows.length) {
-        // 2) Migrate only that one by its primary key
-        await pool.query(
-          `UPDATE sites
-           SET user_id = $1
-           WHERE id = $2`,
-          [req.user.id, rows[0].id]
-        );
-        console.log('🔄 Migrated draft id=' + rows[0].id + ' → user ' + req.user.id);
+        try {
+          await pool.query(
+            `UPDATE sites
+             SET user_id = $1
+             WHERE id = $2`,
+            [req.user.id, rows[0].id]
+          );
+          console.log('🔄 Migrated draft id=' + rows[0].id);
+        } catch (err) {
+          if (err.code === '23505') {
+            console.warn('⚠️ Duplicate draft migration ignored for id=' + rows[0].id);
+          } else {
+            console.error('❌ Migration error:', err);
+          }
+        }
       } else {
         console.log('ℹ️  No session‐draft to migrate for', req.cookies.saveDraftKey);
       }
