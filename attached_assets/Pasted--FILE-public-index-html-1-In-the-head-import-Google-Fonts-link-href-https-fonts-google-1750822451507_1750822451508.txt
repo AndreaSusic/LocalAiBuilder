@@ -1,0 +1,81 @@
+
+
+# FILE: public/index.html
+
+1. In the <head>, import Google Fonts:
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+2. Find the form section where you have:
+   - .dropZone (image upload)
+   - Sign-Up button
+
+   Immediately after the dropZone, insert:
+<label for="fontSelect">Choose your font</label>
+<select id="fontSelect">
+  <option value="Roboto, sans-serif">Roboto</option>
+  <option value="Lato, sans-serif">Lato</option>
+  <option value="Montserrat, sans-serif">Montserrat</option>
+</select>
+
+3. Remove any HTML or script that inserts the “Continue where you left off” banner on the homepage.
+
+4. In your global CSS (e.g. public/styles.css) add at the very top:
+html, body { overflow-x: hidden; }
+
+# FILE: public/chat.js
+
+5. Locate your initial greeting in the window.load handler. Replace:
+const greetingText = name
+  ? `Welcome back, ${name}! Let’s polish your brand-new website.`
+  : 'Hi! I will help you create your website...';
+
+with:
+const greetingText = name
+  ? `Welcome, ${name}! Let’s create your brand-new website.`
+  : 'Hi! I will help you create your brand-new website.';
+
+6. At the bottom of that same load handler, wire up the font selector:
+```js
+document.getElementById('fontSelect')?.addEventListener('change', e => {
+  document.body.style.fontFamily = e.target.value;
+});
+
+---
+
+## 2) Persisting user login data
+
+Right now you’re storing users in memory (the `users = []` array). We need a proper **users** table in Postgres to power your future dashboard:
+
+```sql
+-- Run once in the Replit shell:
+psql $DATABASE_URL
+
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY,               -- use Google’s sub or a UUID for local signups
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT,                -- nullable if Google OAuth
+  display_name TEXT NOT NULL,
+  provider TEXT NOT NULL,            -- e.g. 'google' or 'local'
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+Then in server.js:
+	1.	On Google OAuth callback, after successful login, upsert the user:
+
+await pool.query(
+  `INSERT INTO users (id, email, display_name, provider)
+   VALUES ($1, $2, $3, 'google')
+   ON CONFLICT (id) DO UPDATE SET email=EXCLUDED.email`,
+  [req.user.id, req.user.emails[0].value, req.user.displayName]
+);
+
+
+	2.	On local signup (when you register with email/password), hash with bcrypt and then:
+
+await pool.query(
+  `INSERT INTO users (id, email, password_hash, display_name, provider)
+   VALUES ($1, $2, $3, $4, 'local')`,
+  [newUserId, email, passwordHash, displayName]
+);
+
+

@@ -175,6 +175,14 @@ app.get('/auth/google/callback',
     console.log('Google profile:', req.user);
 
     try {
+      // Upsert user into database
+      await pool.query(
+        `INSERT INTO users (id, email, display_name, provider)
+         VALUES ($1, $2, $3, 'google')
+         ON CONFLICT (id) DO UPDATE SET email=EXCLUDED.email, display_name=EXCLUDED.display_name`,
+        [req.user.id, req.user.emails[0].value, req.user.displayName]
+      );
+
       // Read the old draft key from the cookie
       const oldKey = req.cookies.saveDraftKey;
       if (oldKey) {
