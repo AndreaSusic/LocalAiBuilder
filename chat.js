@@ -292,6 +292,13 @@ async function handleMissing(res){
     bubble('ai','Can you upload images and a logo for me to use on your website?');
     convo.push({role:'assistant',content:'Please upload images or logo.'});
     createDropZone();
+    
+    // Show font selector when image upload step is reached
+    const fontSelector = document.getElementById('wrapFont');
+    if (fontSelector) {
+      fontSelector.hidden = false;
+    }
+    
     // Auto-save draft after each AI response
     saveDraft();
     return;
@@ -319,6 +326,12 @@ async function handleMissing(res){
     // Hide chat footer when sign in button appears
     const chatFooter = document.getElementById('chatFooter');
     if (chatFooter) chatFooter.style.display = 'none';
+    
+    // Hide font selector when conversation is complete
+    const fontSelector = document.getElementById('wrapFont');
+    if (fontSelector) {
+      fontSelector.hidden = true;
+    }
     
     // Auto-save draft when conversation is complete
     setTimeout(() => saveDraft(), 100);
@@ -453,6 +466,17 @@ window.addEventListener('load', async () => {
   }
   
 
+  
+  // Wire up font selector for chat interface
+  document.getElementById('fontSelect')?.addEventListener('change', e => {
+    document.body.style.fontFamily = e.target.value;
+    // Also apply to parent window if accessible
+    try {
+      window.parent.document.body.style.fontFamily = e.target.value;
+    } catch (e) {
+      // Cross-origin restriction, ignore
+    }
+  });
   
   sendHeight();
 });
