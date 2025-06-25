@@ -53,6 +53,10 @@ html, body { overflow-x: hidden; }
 /* Utility classes */
 .hidden {
   display: none !important;
+}
+
+/* Continue with other CSS variables */
+.radius-vars {
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;

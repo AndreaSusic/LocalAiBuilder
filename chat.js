@@ -381,7 +381,7 @@ async function handleMissing(res){
     // Hide font selector when conversation is complete
     const fontSelector = document.getElementById('wrapFont');
     if (fontSelector) {
-      fontSelector.hidden = true;
+      fontSelector.classList.add('hidden');
     }
     
     // Auto-save draft when conversation is complete
