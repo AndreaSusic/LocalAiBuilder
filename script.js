@@ -808,7 +808,7 @@ function initLoginModal() {
     
     // Ensure font selector is hidden on homepage load
     const fontWrapper = document.getElementById('wrapFont');
-    if (fontWrapper) {
-        fontWrapper.classList.add('hidden');
-    }
+    const followUpPanel = document.getElementById('followUp');
+    if (fontWrapper) fontWrapper.hidden = true;
+    if (followUpPanel) followUpPanel.hidden = true;
 }
