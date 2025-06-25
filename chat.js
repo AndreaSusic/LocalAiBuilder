@@ -110,10 +110,7 @@ function createColorPicker() {
     bubble('user', `🎨 Selected colors: ${col1Val}, ${col2Val}`);
     wrapper.remove();
     
-    // Show font picker after colors are set and images are handled
-    if (state.colours && (images.length > 0 || document.getElementById('inlineDropZone'))) {
-      showFontPickerInline();
-    }
+    // Font picker will be shown at the final step
     
     sendHeight();
     await handleMissing({});
@@ -208,10 +205,7 @@ function createDropZone() {
     convo.push({ role: 'user', content: 'No images' });
     wrapper.remove();
     
-    // Show font picker after "no images" is selected and colours are set
-    if (state.colours) {
-      showFontPickerInline();
-    }
+    // Font picker will be shown at the final step
     
     sendHeight();
     await handleMissing({});
@@ -369,10 +363,7 @@ async function handleMissing(res){
     return;  // wait for Done
   }
 
-  // Show font picker after colours are set and images step is reached
-  if (state.colours && (images.length > 0 || document.getElementById('inlineDropZone'))) {
-    showFontPickerInline();
-  }
+  // Font picker will be shown at the final step before sign-in
 
   // Step 3: If images missing, show drop-zone inline and wait for file
   if(images.length===0 && !document.getElementById('inlineDropZone')){
@@ -380,20 +371,20 @@ async function handleMissing(res){
     convo.push({role:'assistant',content:'Please upload images or logo.'});
     createDropZone();
     
-    // Show font picker immediately after drop zone is created if colors are already set
-    if (state.colours) {
-      showFontPickerInline();
-    }
+    // Font picker will be shown at the end when all steps are complete
     
     // Auto-save draft after each AI response
     saveDraft();
     return;
   }
 
-  // Step 4: Done – prompt and show Sign In button
+  // Step 4: Done – show font picker then prompt and Sign In button
   // Check if sign in button already exists to avoid duplicates
   const existingSignIn = document.querySelector('.sign-in-btn');
   if (!existingSignIn) {
+    // Show font picker right before completion message
+    showFontPickerInline();
+    
     const p = document.createElement('p');
     p.className = 'prompt-label';
     p.textContent = "You're all set to start! You can adjust elements and sections in the next steps. Please sign in to continue.";
