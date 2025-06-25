@@ -297,7 +297,6 @@ async function handleMissing(res){
     const fontSelector = document.getElementById('wrapFont');
     if (fontSelector) {
       fontSelector.hidden = false;
-      fontSelector.classList.remove('hidden');
     }
     
     // Auto-save draft after each AI response
@@ -332,7 +331,6 @@ async function handleMissing(res){
     const fontSelector = document.getElementById('wrapFont');
     if (fontSelector) {
       fontSelector.hidden = true;
-      fontSelector.classList.add('hidden');
     }
     
     // Auto-save draft when conversation is complete
