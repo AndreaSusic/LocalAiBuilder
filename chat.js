@@ -445,11 +445,17 @@ window.addEventListener('load', async () => {
   // Only show greeting if no draft was loaded
   if (!draftLoaded) {
     const greetingText = name
-      ? `Welcome back, ${name}! Let's polish your brand-new website.`
-      : 'Hi! I will help you create your website. Tell me about your business and what you would like your site to include.';
+      ? `Welcome, ${name}! Let's create your brand-new website.`
+      : 'Hi! I will help you create your brand-new website. Tell me about your business and what you would like your site to include.';
     bubble('ai', greetingText);
   } else {
     console.log('Draft loaded successfully:', { state, convo });
   }
+  
+  // Wire up font selector
+  document.getElementById('fontSelect')?.addEventListener('change', e => {
+    document.body.style.fontFamily = e.target.value;
+  });
+  
   sendHeight();
 });

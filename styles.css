@@ -1,3 +1,5 @@
+html, body { overflow-x: hidden; }
+
 /* Cooper Hewitt font */
 @import url('https://fonts.cdnfonts.com/css/cooper-hewitt');
 
