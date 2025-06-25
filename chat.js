@@ -68,6 +68,15 @@ function createColorPicker() {
     state.colours = [col1Val, col2Val];
     bubble('user', `🎨 Selected colors: ${col1Val}, ${col2Val}`);
     wrapper.remove();
+    
+    // Show font picker after colors are set and images are handled
+    if (state.colours && (images.length > 0 || document.getElementById('inlineDropZone'))) {
+      const fontWrapper = document.getElementById('wrapFont');
+      if (fontWrapper) {
+        fontWrapper.hidden = false;
+      }
+    }
+    
     sendHeight();
     await handleMissing({});
   };
@@ -82,6 +91,7 @@ function createDropZone() {
       <p>Drag & drop images/logo here or <label class="file-label" style="color:#0050c8;cursor:pointer;text-decoration:underline;">browse files
         <input type="file" accept="image/*" multiple hidden>
       </label></p>
+      <button class="skip-btn" style="margin-top:10px;padding:5px 10px;background:#666;color:white;border:none;border-radius:3px;cursor:pointer;">No images</button>
     </div>
   `;
   thread.appendChild(wrapper);
@@ -90,6 +100,7 @@ function createDropZone() {
   
   const dropZone = wrapper.querySelector('div');
   const fileInput = wrapper.querySelector('input[type="file"]');
+  const skipBtn = wrapper.querySelector('.skip-btn');
   
   // File input handler
   fileInput.onchange = async () => {
@@ -99,6 +110,15 @@ function createDropZone() {
       // Show add more images option instead of removing wrapper
       showImageGalleryWithAddMore();
       wrapper.remove();
+      
+      // Show font picker after images are uploaded and colours are set
+      if (state.colours) {
+        const fontWrapper = document.getElementById('wrapFont');
+        if (fontWrapper) {
+          fontWrapper.hidden = false;
+        }
+      }
+      
       sendHeight();
       await handleMissing({});
     }
@@ -130,10 +150,37 @@ function createDropZone() {
       // Show add more images option instead of removing wrapper
       showImageGalleryWithAddMore();
       wrapper.remove();
+      
+      // Show font picker after images are uploaded and colours are set
+      if (state.colours) {
+        const fontWrapper = document.getElementById('wrapFont');
+        if (fontWrapper) {
+          fontWrapper.hidden = false;
+        }
+      }
+      
       sendHeight();
       handleMissing({});
     }
   });
+  
+  // Skip button handler
+  skipBtn.onclick = async () => {
+    bubble('user', 'No images');
+    convo.push({ role: 'user', content: 'No images' });
+    wrapper.remove();
+    
+    // Show font picker after "no images" is selected and colours are set
+    if (state.colours) {
+      const fontWrapper = document.getElementById('wrapFont');
+      if (fontWrapper) {
+        fontWrapper.hidden = false;
+      }
+    }
+    
+    sendHeight();
+    await handleMissing({});
+  };
 }
 
 function guessIndustry(word) {
@@ -285,6 +332,14 @@ async function handleMissing(res){
       setTimeout(() => saveDraft(), 100);
     }
     return;  // wait for Done
+  }
+
+  // Show font picker after colours are set and images step is reached
+  if (state.colours && (images.length > 0 || document.getElementById('inlineDropZone'))) {
+    const fontWrapper = document.getElementById('wrapFont');
+    if (fontWrapper) {
+      fontWrapper.hidden = false;
+    }
   }
 
   // Step 3: If images missing, show drop-zone inline and wait for file
