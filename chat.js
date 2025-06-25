@@ -293,11 +293,7 @@ async function handleMissing(res){
     convo.push({role:'assistant',content:'Please upload images or logo.'});
     createDropZone();
     
-    // Show font selector when image upload step is reached
-    const fontSelector = document.getElementById('wrapFont');
-    if (fontSelector) {
-      fontSelector.hidden = false;
-    }
+    // Font selector will be shown after image upload is complete
     
     // Auto-save draft after each AI response
     saveDraft();
@@ -419,6 +415,9 @@ function showImageGalleryWithAddMore() {
 
 // Initialize with personalized greeting
 window.addEventListener('load', async () => {
+  // On initial load, always hide wrapFont
+  const fontWrapper = document.getElementById('wrapFont');
+  if (fontWrapper) fontWrapper.hidden = true;
   let name = null;
   
   // Handle draft vs fresh mode
