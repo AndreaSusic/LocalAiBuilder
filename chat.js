@@ -339,6 +339,7 @@ async function handleMissing(res){
     const fontWrapper = document.getElementById('wrapFont');
     if (fontWrapper) {
       fontWrapper.classList.remove('hidden');
+      console.log('Font picker should now be visible');
     }
   }
 
@@ -348,7 +349,14 @@ async function handleMissing(res){
     convo.push({role:'assistant',content:'Please upload images or logo.'});
     createDropZone();
     
-    // Font selector will be shown after image upload is complete
+    // Show font picker immediately after drop zone is created if colors are already set
+    if (state.colours) {
+      const fontWrapper = document.getElementById('wrapFont');
+      if (fontWrapper) {
+        fontWrapper.classList.remove('hidden');
+        console.log('Font picker shown after drop zone creation');
+      }
+    }
     
     // Auto-save draft after each AI response
     saveDraft();
