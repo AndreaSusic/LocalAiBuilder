@@ -195,30 +195,39 @@ app.get('/auth/google/callback',
         [req.user.id, req.user.emails[0].value, req.user.displayName]
       );
 
-      // Read the old draft key from the cookie
-      const oldKey = req.cookies.saveDraftKey;
-      if (oldKey) {
-        await pool.query(
-          `UPDATE sites
-           SET user_id = $1
-           WHERE user_id = $2 AND is_draft = TRUE`,
-          [req.user.id, oldKey]
-        );
-        console.log('🔄 Migrated draft from', oldKey, 'to', req.user.id);
-      }
-
-      // Check for an existing draft for this user
+      // 1) Find the latest session draft row
       const { rows } = await pool.query(
-        `SELECT 1 FROM sites
+        `SELECT id
+         FROM sites
          WHERE user_id = $1 AND is_draft = TRUE
          ORDER BY updated_at DESC
          LIMIT 1`,
-        [userId]
+        [req.cookies.saveDraftKey]
       );
 
-      if (rows.length > 0) {
+      if (rows.length) {
+        // 2) Migrate only that one by its primary key
+        await pool.query(
+          `UPDATE sites
+           SET user_id = $1
+           WHERE id = $2`,
+          [req.user.id, rows[0].id]
+        );
+        console.log('🔄 Migrated draft id=' + rows[0].id + ' → user ' + req.user.id);
+      } else {
+        console.log('ℹ️  No session‐draft to migrate for', req.cookies.saveDraftKey);
+      }
+
+      // 3) Now check for that ONE migrated draft under the user ID
+      const { rows: urows } = await pool.query(
+        `SELECT 1 FROM sites
+         WHERE user_id = $1 AND is_draft = TRUE
+         LIMIT 1`,
+        [req.user.id]
+      );
+
+      if (urows.length) {
         console.log('Draft found, redirecting to /chat');
-        // draft exists → continue in chat
         return res.redirect('/chat');
       }
     } catch (err) {

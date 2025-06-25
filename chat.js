@@ -452,10 +452,7 @@ window.addEventListener('load', async () => {
     console.log('Draft loaded successfully:', { state, convo });
   }
   
-  // Wire up font selector
-  document.getElementById('fontSelect')?.addEventListener('change', e => {
-    document.body.style.fontFamily = e.target.value;
-  });
+
   
   sendHeight();
 });
