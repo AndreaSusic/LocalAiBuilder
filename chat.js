@@ -73,7 +73,7 @@ function createColorPicker() {
     if (state.colours && (images.length > 0 || document.getElementById('inlineDropZone'))) {
       const fontWrapper = document.getElementById('wrapFont');
       if (fontWrapper) {
-        fontWrapper.hidden = false;
+        fontWrapper.classList.remove('hidden');
       }
     }
     
@@ -174,7 +174,7 @@ function createDropZone() {
     if (state.colours) {
       const fontWrapper = document.getElementById('wrapFont');
       if (fontWrapper) {
-        fontWrapper.hidden = false;
+        fontWrapper.classList.remove('hidden');
       }
     }
     
@@ -338,7 +338,7 @@ async function handleMissing(res){
   if (state.colours && (images.length > 0 || document.getElementById('inlineDropZone'))) {
     const fontWrapper = document.getElementById('wrapFont');
     if (fontWrapper) {
-      fontWrapper.hidden = false;
+      fontWrapper.classList.remove('hidden');
     }
   }
 
@@ -472,7 +472,7 @@ function showImageGalleryWithAddMore() {
 window.addEventListener('load', async () => {
   // On initial load, always hide wrapFont
   const fontWrapper = document.getElementById('wrapFont');
-  if (fontWrapper) fontWrapper.hidden = true;
+  if (fontWrapper) fontWrapper.classList.add('hidden');
   let name = null;
   
   // Handle draft vs fresh mode
