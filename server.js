@@ -117,10 +117,22 @@ passport.use(new GoogleStrategy(
 passport.use(new LocalStrategy(
   { usernameField: 'email' },
   async (email, password, done) => {
-    const user = users.find(u => u.email === email);
-    if (!user) return done(null, false, { message: 'Wrong email.' });
-    const ok = await bcrypt.compare(password, user.passwordHash);
-    return ok ? done(null, user) : done(null, false, { message: 'Wrong password.' });
+    try {
+      const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+      if (result.rows.length === 0) {
+        return done(null, false, { message: 'User not found' });
+      }
+
+      const user = result.rows[0];
+      const isValid = await bcrypt.compare(password, user.password_hash);
+      if (!isValid) {
+        return done(null, false, { message: 'Invalid password' });
+      }
+
+      return done(null, user);
+    } catch (error) {
+      return done(error);
+    }
   }
 ));
 
@@ -293,6 +305,15 @@ app.post('/signup', async function(req, res) {
        VALUES ($1, $2, $3, $4, 'local')`,
       [newUserId, email, passwordHash, displayName]
     );
+    
+    // Create user object for login
+    const newUser = {
+      id: newUserId,
+      email,
+      password_hash: passwordHash,
+      display_name: displayName,
+      provider: 'local'
+    };
     
     // Log in the new user
     req.login(newUser, function(err) {
