@@ -6,51 +6,66 @@ export default function DesktopDashboard() {
   const [selectedTab, setTab] = useState("text");
   const [draftChat, setChat] = useState("");
 
-  const sendChat = () => {
-    console.log("Send chat:", draftChat);
-  };
+  /* HANDLERS */
+  const sendChat = () => { console.log("Chat:", draftChat); setChat(""); };
+  const newSite = () => console.log("New Site");
+  const saveSite = () => console.log("Save");
+  const publish = () => console.log("Publish");
+  const openVer = v => console.log("Open", v);
 
   return (
-    <div className="dashboard">
-      {/* Header */}
-      <div className="header">
-        <div className="logo">GoAISite</div>
-        <div className="headerActions">
-          <button className="btn">🔔</button>
-          <button className="btn primary">Publish</button>
+    <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+      {/* ---------------- TOP BAR ---------------- */}
+      <div className="topBar">
+        <div className="group">
+          <span className="hamburger">☰</span>
+          <strong>Logo</strong>
+          <button className="btn" onClick={newSite}>New Site</button>
+          <button className="btn" onClick={saveSite}>Save</button>
+          <button className="btn" onClick={publish}>Publish</button>
+        </div>
+
+        <div className="group">
+          <div className="usage">Basic Plan  3 / 10 q's</div>
+          <button className="iconBtn">🛎️</button>
+          <button className="iconBtn">❔</button>
+        </div>
+
+        <div className="group">
+          <button className="btn">Sites ▼</button>
+          <button className="btn">Pages ▼</button>
+          <button className="btn">Profile ▼</button>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="main">
-        {/* Left Panel: Versions + Chat */}
+      {/* ---------------- GRID ---------------- */}
+      <div className="grid">
+
+        {/* Versions + Chat */}
         <div className="panel">
           <h2>Versions</h2>
           <input
-            type="text"
-            placeholder="Search versions..."
+            className="search"
+            placeholder="Search versions…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="searchInput"
+            onChange={e=>setSearch(e.target.value)}
           />
-          <div className="versionList">
-            {versions.map((v, i) => (
-              <div key={i} className="versionItem">
-                {v}
-              </div>
+          <div className="versionsCards">
+            {versions
+              .filter(v=>v.toLowerCase().includes(search.toLowerCase()))
+              .map(v=>(
+                <div key={v} className="versionCard" onClick={()=>openVer(v)}>
+                  {v}
+                </div>
             ))}
           </div>
-
-          <h2>Chat with AI</h2>
-          <div className="chatArea">
+          <div className="chatBox">
             <textarea
-              placeholder="Ask AI to modify your site..."
+              placeholder="Chat with AI…"
               value={draftChat}
-              onChange={(e) => setChat(e.target.value)}
+              onChange={e=>setChat(e.target.value)}
             />
-            <button className="btn" onClick={sendChat}>
-              Send
-            </button>
+            <button className="btn" onClick={sendChat}>Send</button>
           </div>
         </div>
 
@@ -60,8 +75,8 @@ export default function DesktopDashboard() {
           <div className="preview">
             <iframe title="preview" src="about:blank" />
           </div>
-          <button
-            className="view-live-btn"
+          <button 
+            className="view-live-btn" 
             onClick={() => window.open("about:blank", "_blank")}
           >
             View Live Site
@@ -69,24 +84,20 @@ export default function DesktopDashboard() {
         </div>
 
         {/* Editor */}
-        <div className="panel editor">
+        <div className="panel">
           <h2>Edit Yourself</h2>
-          <div className="unsaved">⚠️ Unsaved changes</div>
+          <div className="unsaved">You have unsaved changes</div>
+
           <div className="tabs">
-            {["text", "media", "components"].map((tab) => (
-              <button
-                key={tab}
-                className={`tabBtn ${selectedTab === tab ? "active" : ""}`}
-                onClick={() => setTab(tab)}
-              >
-                {tab}
-              </button>
-            ))}
+            <button className="tabBtn" onClick={()=>setTab("text")}>Text Editor</button>
+            <button className="tabBtn" onClick={()=>setTab("media")}>Image & Video</button>
+            <button className="tabBtn" onClick={()=>setTab("components")}>Components</button>
           </div>
+
           <div className="tabContent">
-            {selectedTab === "text" && <p>📝 Typography controls…</p>}
-            {selectedTab === "media" && <p>🖼️ Media upload / crop…</p>}
-            {selectedTab === "components" && <p>📦 Component list…</p>}
+            {selectedTab==="text"       && <p>📝 Typography controls…</p>}
+            {selectedTab==="media"      && <p>🖼️ Media upload / crop…</p>}
+            {selectedTab==="components" && <p>📦 Component list…</p>}
           </div>
         </div>
       </div>
