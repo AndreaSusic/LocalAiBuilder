@@ -35,7 +35,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd dashboard && PORT=5173 npm run dev"
+args = "cd dashboard && npm run dev"
 waitForPort = 5173
 
 [deployment]
