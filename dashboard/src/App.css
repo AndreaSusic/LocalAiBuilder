@@ -195,6 +195,32 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   line-height: 1.4;
 }
 
+/* Editor Toolbar Styles */
+.flex {
+  display: flex;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.border-b {
+  border-bottom: 1px solid;
+}
+.border-gray-300 {
+  border-color: #d1d5db;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.hover\:bg-gray-100:hover {
+  background-color: #f3f4f6;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+
 /* MOBILE PREVIEW OVERLAY */
 .mobile-preview-btn { display: none; }
 @media (max-width: 600px) {
