@@ -37,3 +37,39 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 .tabBtn{background:#fff;border:1px solid #2a2a2a;border-radius:10px;padding:6px 12px;cursor:pointer}
 .tabContent{flex:1;background:#f5f5f5;border:1px solid #2a2a2a;border-radius:10px;padding:10px;overflow:auto}
 .unsaved{background:#ffefc4;border:1px solid #f5c542;border-radius:10px;padding:8px;text-align:center;margin-bottom:5px}
+
+/* MOBILE PREVIEW OVERLAY */
+.mobile-preview-btn { display: none; }
+@media (max-width: 800px) {
+  .mobile-preview-btn {
+    position: fixed;
+    bottom: 10px; left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid #2a2a2a;
+    border-radius: 5px;
+    padding: 8px 16px;
+    z-index: 100;
+    cursor: pointer;
+  }
+}
+.preview-overlay {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex; flex-direction: column;
+  z-index: 200;
+}
+.close-btn {
+  align-self: flex-start;
+  margin: 16px;
+  background: white;
+  border: 1px solid #2a2a2a;
+  border-radius: 50%;
+  width: 32px; height: 32px;
+  font-size: 1.2rem; line-height: 1;
+  cursor: pointer;
+}
+.overlay-iframe {
+  flex: 1; border: none;
+}
