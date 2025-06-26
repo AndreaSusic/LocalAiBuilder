@@ -8,6 +8,7 @@ export default function App(){
   const [versions]           = useState(["Version 1","Version 2","Version 3"]);
   const [selectedTab,setTab] = useState("text");
   const [draftChat,setChat]  = useState("");
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   /* HANDLERS */
   const sendChat   = () => { console.log("Chat:", draftChat); setChat(""); };
@@ -102,6 +103,30 @@ export default function App(){
           </div>
         </div>
       </div>
+
+      {/* --- MOBILE FULL-SCREEN PREVIEW OVERLAY --- */}
+      <button
+        className="mobile-preview-btn"
+        onClick={() => setIsPreviewOpen(true)}
+      >
+        View Preview
+      </button>
+
+      {isPreviewOpen && (
+        <div className="preview-overlay">
+          <button
+            className="close-btn"
+            onClick={() => setIsPreviewOpen(false)}
+          >
+            ×
+          </button>
+          <iframe
+            src="about:blank"
+            title="Full Preview"
+            className="overlay-iframe"
+          />
+        </div>
+      )}
     </div>
   );
 }
