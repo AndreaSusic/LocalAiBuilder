@@ -1,35 +1,107 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {useState} from "react";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+/* ------------------------------------------------------------------ */
+export default function App(){
+  /* STATE */
+  const [search,setSearch]   = useState("");
+  const [versions]           = useState(["Version 1","Version 2","Version 3"]);
+  const [selectedTab,setTab] = useState("text");
+  const [draftChat,setChat]  = useState("");
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+  /* HANDLERS */
+  const sendChat   = () => { console.log("Chat:", draftChat); setChat(""); };
+  const newSite    = () => console.log("New Site");
+  const saveSite   = () => console.log("Save");
+  const publish    = () => console.log("Publish");
+  const openVer    = v  => console.log("Open",v);
+
+  /* UI */
+  return(
+    <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+      {/* ---------------- TOP BAR ---------------- */}
+      <div className="topBar">
+        <div className="group">
+          <span className="hamburger">☰</span>
+          <strong>Logo</strong>
+          <button className="btn" onClick={newSite}>New Site</button>
+          <button className="btn" onClick={saveSite}>Save</button>
+          <button className="btn" onClick={publish}>Publish</button>
+        </div>
+
+        <div className="group">
+          <div className="usage">Basic Plan  3 / 10 q's</div>
+          <button className="iconBtn">🛎️</button>
+          <button className="iconBtn">❔</button>
+        </div>
+
+        <div className="group">
+          <button className="btn">Sites ▼</button>
+          <button className="btn">Pages ▼</button>
+          <button className="btn">Profile ▼</button>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+
+      {/* ---------------- GRID ---------------- */}
+      <div className="grid">
+
+        {/* Versions + Chat */}
+        <div className="panel">
+          <h2>Versions</h2>
+          <input
+            className="search"
+            placeholder="Search versions…"
+            value={search}
+            onChange={e=>setSearch(e.target.value)}
+          />
+          <div className="versionsCards">
+            {versions
+              .filter(v=>v.toLowerCase().includes(search.toLowerCase()))
+              .map(v=>(
+                <div key={v} className="versionCard" onClick={()=>openVer(v)}>
+                  {v}
+                </div>
+            ))}
+          </div>
+          <div className="chatBox">
+            <textarea
+              placeholder="Chat with AI…"
+              value={draftChat}
+              onChange={e=>setChat(e.target.value)}
+            />
+            <button className="btn" onClick={sendChat}>Send</button>
+          </div>
+        </div>
+
+        {/* Live Preview */}
+        <div className="panel">
+          <h2>Live Preview</h2>
+          <div className="preview">
+            <iframe title="preview" src="about:blank" />
+          </div>
+          <button className="btn" onClick={()=>console.log("View live")}>
+            View Live Site
+          </button>
+        </div>
+
+        {/* Editor */}
+        <div className="panel">
+          <h2>Edit Yourself</h2>
+          <div className="unsaved">You have unsaved changes</div>
+
+          <div className="tabs">
+            <button className="tabBtn" onClick={()=>setTab("text")}>Text Editor</button>
+            <button className="tabBtn" onClick={()=>setTab("media")}>Image & Video</button>
+            <button className="tabBtn" onClick={()=>setTab("components")}>Components</button>
+          </div>
+
+          <div className="tabContent">
+            {selectedTab==="text"       && <p>📝 Typography controls…</p>}
+            {selectedTab==="media"      && <p>🖼️ Media upload / crop…</p>}
+            {selectedTab==="components" && <p>📦 Component list…</p>}
+          </div>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
-
-export default App
