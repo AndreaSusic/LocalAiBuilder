@@ -38,6 +38,33 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 .tabContent{flex:1;background:#f5f5f5;border:1px solid #2a2a2a;border-radius:10px;padding:10px;overflow:auto}
 .unsaved{background:#ffefc4;border:1px solid #f5c542;border-radius:10px;padding:8px;text-align:center;margin-bottom:5px}
 
+/* VIEW LIVE SITE BUTTON */
+.view-live-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #2a2a2a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.view-live-btn:hover {
+  background: #3a3a3a;
+}
+
+/* MOBILE BREAKPOINTS */
+@media (max-width: 600px) {
+  .panel:nth-child(1),  /* hide Versions */
+  .panel.editor {       /* hide Editor */
+    display: none;
+  }
+  .preview {
+    flex: 1;            /* fill the whole screen */
+  }
+}
+
 /* MOBILE PREVIEW OVERLAY */
 .mobile-preview-btn { display: none; }
 @media (max-width: 800px) {
