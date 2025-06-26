@@ -230,7 +230,7 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 
 /* MOBILE PREVIEW OVERLAY */
 .mobile-preview-btn { display: none; }
-@media (max-width: 800px) {
+@media (max-width: 600px) {
   .mobile-preview-btn {
     position: fixed;
     bottom: 10px; left: 50%;
