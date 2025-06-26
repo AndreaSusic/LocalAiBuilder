@@ -1,0 +1,39 @@
+/* RESET / BASE */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%}
+body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-direction:column}
+
+/* TOP BAR */
+.topBar{display:flex;justify-content:space-between;align-items:center;background:#f5f5f5;padding:10px 20px}
+.group{display:flex;align-items:center;gap:10px}
+.btn,.usage,.iconBtn{background:#fff;border:1px solid #2a2a2a;border-radius:10px;padding:5px 10px;cursor:pointer}
+.iconBtn{font-size:1.2em;padding:5px}
+.hamburger{display:none;font-size:1.5em;cursor:pointer}
+
+/* GRID */
+.grid{flex:1;display:grid;grid-template-columns:1fr 2fr 1fr;gap:10px;padding:10px;height:calc(100% - 56px)}
+@media(max-width:800px){
+  .grid{grid-template-columns:1fr}
+  .panel:nth-child(1),.panel:nth-child(3){display:none}
+  .hamburger{display:inline-block}
+}
+.panel{background:#fff;border-radius:10px;padding:10px;display:flex;flex-direction:column}
+.panel h2{font-size:1rem;margin-bottom:10px}
+
+/* VERSIONS */
+.search{padding:6px;border:1px solid #2a2a2a;border-radius:10px;margin-bottom:8px}
+.versionsCards{flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px}
+.versionCard{background:#f5f5f5;border:1px solid #2a2a2a;border-radius:10px;padding:8px;text-align:center;cursor:pointer}
+.chatBox{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.chatBox textarea{min-height:80px;resize:none;padding:8px;border:1px solid #2a2a2a;border-radius:10px}
+.chatBox button{align-self:flex-end}
+
+/* PREVIEW */
+.preview{flex:1;border:1px solid #2a2a2a;border-radius:10px;overflow:hidden}
+.preview iframe{width:100%;height:100%;border:none}
+
+/* EDITOR */
+.tabs{display:flex;gap:5px;margin-bottom:5px}
+.tabBtn{background:#fff;border:1px solid #2a2a2a;border-radius:10px;padding:6px 12px;cursor:pointer}
+.tabContent{flex:1;background:#f5f5f5;border:1px solid #2a2a2a;border-radius:10px;padding:10px;overflow:auto}
+.unsaved{background:#ffefc4;border:1px solid #f5c542;border-radius:10px;padding:8px;text-align:center;margin-bottom:5px}
