@@ -1,0 +1,189 @@
+Here’s a ready-to-drop React version of the dashboard without the yellow borders (all borders now use #2a2a2a), plus a concise “copy-paste” prompt you can give Replit’s AI (or run in the Shell) to scaffold, install and launch.
+
+⸻
+
+1. One-shot prompt for Replit
+
+Prompt for Replit
+“Create a Vite + React dashboard using these exact files. After installing, run npm run dev. I want the site visible at the Repl URL. The code is below.”
+(then paste the two code blocks)
+
+⸻
+
+2.  src/App.css
+
+/* RESET / BASE */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%}
+body{font-family:sans-serif;color:#2a2a2a;background:#d3d3d3;display:flex;flex-direction:column}
+
+/* TOP BAR */
+.topBar{display:flex;justify-content:space-between;align-items:center;background:#d3d3d3;padding:10px 20px}
+.group{display:flex;align-items:center;gap:10px}
+.btn,.usage,.iconBtn{background:#fff;border:1px solid #2a2a2a;border-radius:10px;padding:5px 10px;cursor:pointer}
+.iconBtn{font-size:1.2em;padding:5px}
+.hamburger{display:none;font-size:1.5em;cursor:pointer}
+
+/* GRID */
+.grid{flex:1;display:grid;grid-template-columns:1fr 2fr 1fr;gap:10px;padding:10px;height:calc(100% - 56px)}
+@media(max-width:800px){
+  .grid{grid-template-columns:1fr}
+  .panel:nth-child(1),.panel:nth-child(3){display:none}
+  .hamburger{display:inline-block}
+}
+.panel{background:#fff;border-radius:10px;padding:10px;display:flex;flex-direction:column}
+.panel h2{font-size:1rem;margin-bottom:10px}
+
+/* VERSIONS */
+.search{padding:6px;border:1px solid #2a2a2a;border-radius:10px;margin-bottom:8px}
+.versionsCards{flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px}
+.versionCard{background:#f5f5f5;border:1px solid #2a2a2a;border-radius:10px;padding:8px;text-align:center;cursor:pointer}
+.chatBox{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.chatBox textarea{min-height:80px;resize:none;padding:8px;border:1px solid #2a2a2a;border-radius:10px}
+.chatBox button{align-self:flex-end}
+
+/* PREVIEW */
+.preview{flex:1;border:1px solid #2a2a2a;border-radius:10px;overflow:hidden}
+.preview iframe{width:100%;height:100%;border:none}
+
+/* EDITOR */
+.tabs{display:flex;gap:5px;margin-bottom:5px}
+.tabBtn{background:#fff;border:1px solid #2a2a2a;border-radius:10px;padding:6px 12px;cursor:pointer}
+.tabContent{flex:1;background:#f5f5f5;border:1px solid #2a2a2a;border-radius:10px;padding:10px;overflow:auto}
+.unsaved{background:#ffefc4;border:1px solid #f5c542;border-radius:10px;padding:8px;text-align:center;margin-bottom:5px}
+
+
+⸻
+
+3.  src/App.jsx
+
+import {useState} from "react";
+import "./App.css";
+
+/* ------------------------------------------------------------------ */
+export default function App(){
+  /* STATE */
+  const [search,setSearch]   = useState("");
+  const [versions]           = useState(["Version 1","Version 2","Version 3"]);
+  const [selectedTab,setTab] = useState("text");
+  const [draftChat,setChat]  = useState("");
+
+  /* HANDLERS */
+  const sendChat   = () => { console.log("Chat:", draftChat); setChat(""); };
+  const newSite    = () => console.log("New Site");
+  const saveSite   = () => console.log("Save");
+  const publish    = () => console.log("Publish");
+  const openVer    = v  => console.log("Open",v);
+
+  /* UI */
+  return(
+    <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+      {/* ---------------- TOP BAR ---------------- */}
+      <div className="topBar">
+        <div className="group">
+          <span className="hamburger">☰</span>
+          <strong>Logo</strong>
+          <button className="btn" onClick={newSite}>New Site</button>
+          <button className="btn" onClick={saveSite}>Save</button>
+          <button className="btn" onClick={publish}>Publish</button>
+        </div>
+
+        <div className="group">
+          <div className="usage">Basic Plan  3 / 10 q’s</div>
+          <button className="iconBtn">🛎️</button>
+          <button className="iconBtn">❔</button>
+        </div>
+
+        <div className="group">
+          <button className="btn">Sites ▼</button>
+          <button className="btn">Pages ▼</button>
+          <button className="btn">Profile ▼</button>
+        </div>
+      </div>
+
+      {/* ---------------- GRID ---------------- */}
+      <div className="grid">
+
+        {/* Versions + Chat */}
+        <div className="panel">
+          <h2>Versions</h2>
+          <input
+            className="search"
+            placeholder="Search versions…"
+            value={search}
+            onChange={e=>setSearch(e.target.value)}
+          />
+          <div className="versionsCards">
+            {versions
+              .filter(v=>v.toLowerCase().includes(search.toLowerCase()))
+              .map(v=>(
+                <div key={v} className="versionCard" onClick={()=>openVer(v)}>
+                  {v}
+                </div>
+            ))}
+          </div>
+          <div className="chatBox">
+            <textarea
+              placeholder="Chat with AI…"
+              value={draftChat}
+              onChange={e=>setChat(e.target.value)}
+            />
+            <button className="btn" onClick={sendChat}>Send</button>
+          </div>
+        </div>
+
+        {/* Live Preview */}
+        <div className="panel">
+          <h2>Live Preview</h2>
+          <div className="preview">
+            <iframe title="preview" src="about:blank" />
+          </div>
+          <button className="btn" onClick={()=>console.log("View live")}>
+            View Live Site
+          </button>
+        </div>
+
+        {/* Editor */}
+        <div className="panel">
+          <h2>Edit Yourself</h2>
+          <div className="unsaved">You have unsaved changes</div>
+
+          <div className="tabs">
+            <button className="tabBtn" onClick={()=>setTab("text")}>Text Editor</button>
+            <button className="tabBtn" onClick={()=>setTab("media")}>Image & Video</button>
+            <button className="tabBtn" onClick={()=>setTab("components")}>Components</button>
+          </div>
+
+          <div className="tabContent">
+            {selectedTab==="text"       && <p>📝 Typography controls…</p>}
+            {selectedTab==="media"      && <p>🖼️ Media upload / crop…</p>}
+            {selectedTab==="components" && <p>📦 Component list…</p>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+⸻
+
+4.  src/main.jsx
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+
+⸻
+
+2-step run-sheet (once the files are in place)
+
+npm install        # if not already run
+npm run dev        # Vite dev-server; Replit shows the public URL
+
+Open the printed URL (something like
+https://dashboard.<your-repl-id>.repl.co) to see the dashboard.
+
+All buttons & cards log to the console for now—wire them to your API when ready.
