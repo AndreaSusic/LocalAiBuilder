@@ -5,9 +5,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: Number(process.env.PORT) || 5173,
+    port: 3001,
     strictPort: true,
     allowedHosts: 'all',
-    hmr: { protocol: 'wss', clientPort: Number(process.env.PORT) || 5173 }
+    hmr: { protocol: 'wss', clientPort: 3001 }
   }
 })
