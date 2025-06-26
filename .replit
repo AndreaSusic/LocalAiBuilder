@@ -35,7 +35,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd dashboard && npm run dev"
+args = "cd dashboard && PORT=5173 npm run dev"
 waitForPort = 5173
 
 [deployment]
@@ -52,4 +52,3 @@ externalPort = 80
 [[ports]]
 localPort = 5173
 externalPort = 5173
-exposeLocalhost = true
