@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { EditorToolbar } from "./EditorToolbar";
 
 export default function DesktopDashboard() {
   const [search, setSearch] = useState("");
@@ -12,6 +13,9 @@ export default function DesktopDashboard() {
   const saveSite = () => console.log("Save");
   const publish = () => console.log("Publish");
   const openVer = v => console.log("Open", v);
+  const handleEditorAction = (action) => {
+    console.log('Toolbar action:', action);
+  };
 
   return (
     <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
@@ -87,6 +91,8 @@ export default function DesktopDashboard() {
         <div className="panel">
           <h2>Edit Yourself</h2>
           <div className="unsaved">You have unsaved changes</div>
+          
+          <EditorToolbar onAction={handleEditorAction} />
 
           <div className="tabs">
             <button className="tabBtn" onClick={()=>setTab("text")}>Text Editor</button>

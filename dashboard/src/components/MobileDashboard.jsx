@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { EditorToolbar } from "./EditorToolbar";
 
 export default function MobileDashboard() {
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
@@ -8,6 +9,10 @@ export default function MobileDashboard() {
   const sendChat = () => {
     console.log("Send chat:", draftChat);
     setChat("");
+  };
+
+  const handleEditorAction = (action) => {
+    console.log('Toolbar action:', action);
   };
 
   return (
@@ -65,6 +70,7 @@ export default function MobileDashboard() {
             </div>
             <div className={`editor-wireframe ${selectedTab === "editor" ? "active" : ""}`}>
               <p><strong>Editor Controls</strong></p>
+              <EditorToolbar onAction={handleEditorAction} />
               <p>– Text formatting<br/>
                  – Image & Video tools<br/>
                  – Component list…</p>
