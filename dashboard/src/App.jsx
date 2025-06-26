@@ -80,7 +80,10 @@ export default function App(){
           <div className="preview">
             <iframe title="preview" src="about:blank" />
           </div>
-          <button className="btn" onClick={()=>console.log("View live")}>
+          <button 
+            className="view-live-btn" 
+            onClick={() => window.open("about:blank", "_blank")}
+          >
             View Live Site
           </button>
         </div>
