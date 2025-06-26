@@ -4,16 +4,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    /**
-     * Let Vite bind on 0.0.0.0 so Replit can
-     * expose it on its public URL.
-     */
-    host: true,
-    port: 5173,       // or any free port
-    /**
-     * Easiest: allow *any* host when running in Replit.
-     * (You can tighten this later.)
-     */
-    allowedHosts: 'all',    // ← key line
-  },
+    host: true,               // bind 0.0.0.0  (needed on Replit)
+    port: 5173,               // feel free to keep 3000 if you prefer
+    allowedHosts: 'all',      // <— stops the "Blocked request" error
+    hmr: { clientPort: 443, protocol: 'wss' } // nice-to-have for Replit proxy
+  }
 });
