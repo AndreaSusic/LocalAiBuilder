@@ -2,16 +2,16 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
+   base: '/dashboard/',       
   plugins: [react()],
   server: {
-    host: '0.0.0.0',                     // listen on all interfaces
-    port: 5173,
-    strictPort: true,                    // never auto-increment
-    allowedHosts: 'all',                 // allow any host header
+    host: '0.0.0.0',
+    port: Number(process.env.PORT) || 5173,  // ← use Replit’s PORT
+    strictPort: true,
+    allowedHosts: 'all',
     hmr: {
-      protocol: 'wss',                   // use secure websockets
-      clientPort: 5173
-      // no `host:` here—let the client use window.location.hostname
+      protocol: 'wss',
+      clientPort: Number(process.env.PORT) || 5173
     }
   }
 })
