@@ -146,13 +146,7 @@ function createDropZone() {
       showImageGalleryWithAddMore();
       wrapper.remove();
       
-      // Show font picker after images are uploaded and colours are set
-      if (state.colours) {
-        const fontWrapper = document.getElementById('wrapFont');
-        if (fontWrapper) {
-          fontWrapper.hidden = false;
-        }
-      }
+      // Font picker will be shown at the final step
       
       sendHeight();
       await handleMissing({});
@@ -186,13 +180,7 @@ function createDropZone() {
       showImageGalleryWithAddMore();
       wrapper.remove();
       
-      // Show font picker after images are uploaded and colours are set
-      if (state.colours) {
-        const fontWrapper = document.getElementById('wrapFont');
-        if (fontWrapper) {
-          fontWrapper.hidden = false;
-        }
-      }
+      // Font picker will be shown at the final step
       
       sendHeight();
       handleMissing({});
