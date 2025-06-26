@@ -100,6 +100,7 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
+- June 26, 2025: Created React dashboard with Vite - added complete dashboard interface in /dashboard folder with three-panel layout (versions/chat, live preview, editor), responsive design with mobile hamburger menu, all buttons wired to console logging, running on port 3000 alongside main Node.js app on port 5000
 - June 25, 2025: Fixed font picker positioning and visibility system - created showFontPickerInline() function to inject font picker directly into chat thread before completion message, replaced all hidden attribute usage with CSS classes for consistent visibility control, font picker now appears at correct position in conversation flow after colors and images are handled
 - June 24, 2025: Fixed authentication callback to redirect based on draft status - implemented PostgreSQL draft checking in Google OAuth callback, users with existing drafts now redirect to /chat?draft=true, new users go to homepage, added "no images" skip option with text recognition, fixed color picker to show user selection feedback with colored confirmation message
 - June 24, 2025: Implemented MongoDB draft system for conversation persistence - added database connection with MongoClient, extended /api/build-site to save user drafts, created /api/last-draft endpoint for retrieving saved conversations, updated chat.js to load drafts on ?draft=true parameter, enhanced state management to include conversation history
