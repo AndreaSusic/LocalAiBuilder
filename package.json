@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@headlessui/react": "^2.2.4",
     "@vitejs/plugin-react": "^4.6.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
