@@ -1,0 +1,36 @@
+Here’s a single prompt you can paste into Replit’s AI to scaffold the responsive mobile dashboard alongside your existing desktop version:
+
+You have an existing React/Vite Dashboard component that renders a three-column desktop layout for screens ≥800px. Now add a mobile-only version for <800px without touching the desktop code:
+
+1. Create two new React components under `src/components/`:  
+   • `DesktopDashboard.jsx` – copy and paste your current desktop Dashboard UI here.  
+   • `MobileDashboard.jsx` – implement the mobile HTML/CSS wireframe with:  
+     – Sticky top bar (hamburger, 🔔, Publish, View Preview)  
+     – Versions panel  
+     – Tabbed Chat / Editor panel  
+
+2. In `src/App.jsx` (or your route component), wrap these in a single `ResponsiveDashboard` component that does:  
+   ```jsx
+   import { useState, useEffect } from 'react';
+   import DesktopDashboard from './components/DesktopDashboard';
+   import MobileDashboard from './components/MobileDashboard';
+
+   export default function ResponsiveDashboard() {
+     const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
+     useEffect(() => {
+       const onResize = () => setIsMobile(window.innerWidth < 800);
+       window.addEventListener('resize', onResize);
+       return () => window.removeEventListener('resize', onResize);
+     }, []);
+     return isMobile ? <MobileDashboard /> : <DesktopDashboard />;
+   }
+
+	3.	Ensure your global CSS (or Tailwind config) has the same panel, button, border‐radius and color styles (#d3d3d3 background, #2a2a2a borders, white panels, 10px radius).
+	4.	Wire up the “Publish” and “View Preview” handlers in MobileDashboard.jsx the same way they work on desktop.
+	5.	Test by resizing the browser:
+– ≥800px shows your existing desktop layout unchanged.
+– <800px shows the new mobile layout.
+
+Generate all files, import paths and basic styling. Don’t delete any desktop code—just layer the new mobile component behind this responsive switch.
+
+Just paste that into Replit’s AI chat and it will generate the two components plus the responsive wrapper for you.

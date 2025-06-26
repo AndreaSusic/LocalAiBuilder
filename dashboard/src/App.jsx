@@ -1,14 +1,17 @@
-import {useState} from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
+import DesktopDashboard from "./components/DesktopDashboard";
+import MobileDashboard from "./components/MobileDashboard";
 
-/* ------------------------------------------------------------------ */
-export default function App(){
-  /* STATE */
-  const [search,setSearch]   = useState("");
-  const [versions]           = useState(["Version 1","Version 2","Version 3"]);
-  const [selectedTab,setTab] = useState("text");
-  const [draftChat,setChat]  = useState("");
+export default function App() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 800);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   /* HANDLERS */
   const sendChat   = () => { console.log("Chat:", draftChat); setChat(""); };
