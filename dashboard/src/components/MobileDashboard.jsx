@@ -31,52 +31,11 @@ export default function MobileDashboard() {
           </ul>
         </div>
 
-        {/* Live Preview */}
-        <div className="panel">
-          <h2>Live Preview</h2>
-          <div className="preview">
-            <iframe title="preview" src="about:blank" />
-          </div>
-          <button 
-            className="view-live-btn" 
-            onClick={() => window.open("about:blank", "_blank")}
-          >
-            View Live Site
-          </button>
+        {/* Unified Command Chat Panel */}
+        <div className="panel-wireframe">
+          <UnifiedCommandChatPanel />
         </div>
-        
--          {/* Chat / Editor Panel with Tabs */}
-                <div className="panel-wireframe">
-                  <h2>Chat / Editor</h2>
-                  <div className="tabs-wireframe">
-                    <button 
-                      className={selectedTab === "chat" ? "active" : ""}
-                      onClick={() => setTab("chat")}
-                    >
-                      Chat
-                    </button>
-                    <button 
-                      className={selectedTab === "editor" ? "active" : ""}
-                      onClick={() => setTab("editor")}
-                    >
-                      Editor
-                    </button>
-                  </div>
-                  <div className="tab-content-wireframe">
-                    <div className={`chat-wireframe ${selectedTab === "chat" ? "active" : ""}`}>
-                      <textarea 
-                        placeholder="Type your message…"
-                        value={draftChat}
-                        onChange={(e) => setChat(e.target.value)}
-                      />
-                      <button onClick={sendChat}>Send ➤</button>
-                    </div>
-                    <div className={`editor-wireframe ${selectedTab === "editor" ? "active" : ""}`}>
-                      <UnifiedCommandChatPanel />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        }
+      </div>
+    </div>
+  );
+}
