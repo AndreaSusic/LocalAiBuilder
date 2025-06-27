@@ -3,7 +3,6 @@ import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
 export default function MobileDashboard() {
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
-  const [showVersions, setShowVersions] = useState(false);
 
   return (
     <div className="mobile-dashboard-wireframe">
@@ -12,26 +11,6 @@ export default function MobileDashboard() {
         <button className="hamburger-wireframe">☰</button>
         <button className="icon-btn-wireframe">🔔</button>
         <button className="small-btn-wireframe">Publish</button>
-        <div className="dropdown-wrapper">
-          <button 
-            className="small-btn-wireframe"
-            onClick={() => setShowVersions(!showVersions)}
-          >
-            Versions ▼
-          </button>
-          {showVersions && (
-            <div className="versions-dropdown">
-              {versions.map((v, i) => (
-                <div key={i} className="version-item" onClick={() => {
-                  console.log("Selected version:", v);
-                  setShowVersions(false);
-                }}>
-                  {v}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
         <button 
           className="small-btn-wireframe"
           onClick={() => window.open("about:blank", "_blank")}
@@ -42,18 +21,14 @@ export default function MobileDashboard() {
 
       {/* Scrollable main content */}
       <div className="container-wireframe">
-        {/* Live Preview */}
-        <div className="panel-wireframe">
-          <h2>Live Preview</h2>
-          <div className="preview-mobile">
-            <iframe title="preview" src="about:blank" />
-          </div>
-          <button 
-            className="view-live-btn-mobile" 
-            onClick={() => window.open("about:blank", "_blank")}
-          >
-            View Live Site
-          </button>
+        {/* Versions Panel */}
+        <div className="panel-wireframe versions-wireframe">
+          <h2>Versions</h2>
+          <ul>
+            {versions.map((v, i) => (
+              <li key={i}>{v}</li>
+            ))}
+          </ul>
         </div>
 
         {/* Unified Command Chat Panel */}
