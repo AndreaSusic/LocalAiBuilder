@@ -56,38 +56,38 @@ export default function MobileDashboard() {
           </button>
         </div>
         
-        {/* Chat / Editor Panel with Tabs */}
-        <div className="panel-wireframe">
-          <h2>Chat / Editor</h2>
-          <div className="tabs-wireframe">
-            <button 
-              className={selectedTab === "chat" ? "active" : ""}
-              onClick={() => setTab("chat")}
-            >
-              Chat
-            </button>
-            <button 
-              className={selectedTab === "editor" ? "active" : ""}
-              onClick={() => setTab("editor")}
-            >
-              Editor
-            </button>
-          </div>
-          <div className="tab-content-wireframe">
-            <div className={`chat-wireframe ${selectedTab === "chat" ? "active" : ""}`}>
-              <textarea 
-                placeholder="Type your message…"
-                value={draftChat}
-                onChange={(e) => setChat(e.target.value)}
-              />
-              <button onClick={sendChat}>Send ➤</button>
+-          {/* Chat / Editor Panel with Tabs */}
+                <div className="panel-wireframe">
+                  <h2>Chat / Editor</h2>
+                  <div className="tabs-wireframe">
+                    <button 
+                      className={selectedTab === "chat" ? "active" : ""}
+                      onClick={() => setTab("chat")}
+                    >
+                      Chat
+                    </button>
+                    <button 
+                      className={selectedTab === "editor" ? "active" : ""}
+                      onClick={() => setTab("editor")}
+                    >
+                      Editor
+                    </button>
+                  </div>
+                  <div className="tab-content-wireframe">
+                    <div className={`chat-wireframe ${selectedTab === "chat" ? "active" : ""}`}>
+                      <textarea 
+                        placeholder="Type your message…"
+                        value={draftChat}
+                        onChange={(e) => setChat(e.target.value)}
+                      />
+                      <button onClick={sendChat}>Send ➤</button>
+                    </div>
+                    <div className={`editor-wireframe ${selectedTab === "editor" ? "active" : ""}`}>
+                      <UnifiedCommandChatPanel />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className={`editor-wireframe ${selectedTab === "editor" ? "active" : ""}`}>
-              <UnifiedCommandChatPanel />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+          );
+        }
