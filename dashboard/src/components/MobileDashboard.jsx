@@ -31,6 +31,20 @@ export default function MobileDashboard() {
           </ul>
         </div>
 
+        {/* Live Preview */}
+        <div className="panel">
+          <h2>Live Preview</h2>
+          <div className="preview">
+            <iframe title="preview" src="about:blank" />
+          </div>
+          <button 
+            className="view-live-btn" 
+            onClick={() => window.open("about:blank", "_blank")}
+          >
+            View Live Site
+          </button>
+        </div>
+        
         {/* Unified Command Chat Panel */}
         <div className="panel-wireframe">
           <UnifiedCommandChatPanel />
