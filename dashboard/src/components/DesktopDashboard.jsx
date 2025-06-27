@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { EditorToolbar } from "./EditorToolbar";
+import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
 export default function DesktopDashboard() {
   const [search, setSearch] = useState("");
@@ -87,25 +87,8 @@ export default function DesktopDashboard() {
           </button>
         </div>
 
-        {/* Editor */}
-        <div className="panel">
-          <h2>Edit Yourself</h2>
-          <div className="unsaved">You have unsaved changes</div>
-          
-          <EditorToolbar onAction={handleEditorAction} />
-
-          <div className="tabs">
-            <button className="tabBtn" onClick={()=>setTab("text")}>Text Editor</button>
-            <button className="tabBtn" onClick={()=>setTab("media")}>Image & Video</button>
-            <button className="tabBtn" onClick={()=>setTab("components")}>Components</button>
-          </div>
-
-          <div className="tabContent">
-            {selectedTab==="text"       && <p>📝 Typography controls…</p>}
-            {selectedTab==="media"      && <p>🖼️ Media upload / crop…</p>}
-            {selectedTab==="components" && <p>📦 Component list…</p>}
-          </div>
-        </div>
+        {/* Unified Command Chat Panel */}
+        <UnifiedCommandChatPanel />
       </div>
     </div>
   );
