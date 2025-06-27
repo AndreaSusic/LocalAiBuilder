@@ -6,6 +6,7 @@ export default function DesktopDashboard() {
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
   const [selectedTab, setTab] = useState("text");
   const [draftChat, setChat] = useState("");
+  const [previewScreen, setPreviewScreen] = useState("desktop");
 
   /* HANDLERS */
   const sendChat = () => { console.log("Chat:", draftChat); setChat(""); };
@@ -15,6 +16,13 @@ export default function DesktopDashboard() {
   const openVer = v => console.log("Open", v);
   const handleEditorAction = (action) => {
     console.log('Toolbar action:', action);
+  };
+  const switchPreviewScreen = () => {
+    const screens = ["desktop", "tablet", "mobile"];
+    const currentIndex = screens.indexOf(previewScreen);
+    const nextIndex = (currentIndex + 1) % screens.length;
+    setPreviewScreen(screens[nextIndex]);
+    console.log('Preview screen:', screens[nextIndex]);
   };
 
   return (
@@ -36,6 +44,11 @@ export default function DesktopDashboard() {
         </div>
 
         <div className="group">
+          <button className="btn preview-switcher" onClick={switchPreviewScreen}>
+            {previewScreen === "desktop" && "🖥️ Desktop"}
+            {previewScreen === "tablet" && "📱 Tablet"}
+            {previewScreen === "mobile" && "📱 Mobile"}
+          </button>
           <button className="btn">Sites ▼</button>
           <button className="btn">Pages ▼</button>
           <button className="btn">Profile ▼</button>
@@ -63,20 +76,13 @@ export default function DesktopDashboard() {
                 </div>
             ))}
           </div>
-          <div className="chatBox">
-            <textarea
-              placeholder="Chat with AI…"
-              value={draftChat}
-              onChange={e=>setChat(e.target.value)}
-            />
-            <button className="btn" onClick={sendChat}>Send</button>
-          </div>
+       
         </div>
 
         {/* Live Preview */}
         <div className="panel">
-          <h2>Live Preview</h2>
-          <div className="preview">
+          <h2>Live Preview - {previewScreen}</h2>
+          <div className={`preview preview-${previewScreen}`}>
             <iframe title="preview" src="about:blank" />
           </div>
           <button 
