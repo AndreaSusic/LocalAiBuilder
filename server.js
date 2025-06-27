@@ -234,17 +234,20 @@ app.get('/auth/google/callback',
       );
 
       if (urows.length) {
-        console.log('Draft found, redirecting to /chat');
-        return res.redirect('/chat');
+        console.log('Draft found, redirecting to dashboard');
+        // After successful login, send users to the dashboard on port 3002 (mapped from 4000)
+        const dashboardUrl = process.env.DASHBOARD_URL || 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
+        return res.redirect(dashboardUrl);
       }
     } catch (err) {
       console.error('DB error checking draft:', err);
       // on error, default to homepage
     }
 
-    console.log('No draft found, redirecting to homepage');
-    // no draft → homepage
-    res.redirect('/');
+    console.log('No draft found, redirecting to dashboard');
+    // After successful login, send users to the dashboard on port 3002 (mapped from 4000)
+    const dashboardUrl = process.env.DASHBOARD_URL || 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
+    res.redirect(dashboardUrl);
   }
 );
 
