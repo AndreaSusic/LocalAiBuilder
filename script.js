@@ -43,6 +43,39 @@ function initNavigation() {
             }
         });
     }
+    
+    // Language dropdown
+    const languageBtn = document.getElementById('languageBtn');
+    const languageMenu = document.getElementById('languageMenu');
+    
+    if (languageBtn && languageMenu) {
+        languageBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            languageMenu.classList.toggle('show');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!languageBtn.contains(e.target) && !languageMenu.contains(e.target)) {
+                languageMenu.classList.remove('show');
+            }
+        });
+        
+        // Handle language selection
+        languageMenu.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A') {
+                e.preventDefault();
+                const selectedLang = e.target.getAttribute('data-lang');
+                const langMap = { 'en': 'EN', 'de': 'DE', 'sr': 'SR', 'hr': 'HR' };
+                
+                languageBtn.innerHTML = `🌐 ${langMap[selectedLang]} ▼`;
+                languageMenu.classList.remove('show');
+                
+                console.log('Language selected:', selectedLang);
+                // Here you would implement actual language switching logic
+            }
+        });
+    }
 }
 
 // Prompt form functionality - simplified for chat interface

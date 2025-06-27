@@ -54,6 +54,28 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   background: #3a3a3a;
 }
 
+/* Dashboard logo styles */
+.logo-link {
+  text-decoration: none;
+}
+
+.dashboard-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+.mobile-logo-link {
+  margin-left: auto;
+  text-decoration: none;
+}
+
+.mobile-dashboard-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
 /* Preview screen switcher */
 .preview-switcher {
   background: #f0f0f0 !important;
