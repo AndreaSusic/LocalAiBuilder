@@ -27,7 +27,9 @@ if (authConfirmBtn) {
   };
 }
 
-const RX_INDS = /(dental|plumb|lawn|roof|legal|marketing|shoe|retail)/i;
+
+const RX_INDS = /(dental|doctor|health|plastic|psic|saas|news|magaz|astrol|home|decor|apparel|cloth|market|cosmetics|plumb|lawn|roof|legal|marketing|shoe|retail|realestate|tech|it|finance|automotive|beauty|food|hospitality|manufacturing|pets|sports|travel|transport)/i;
+
 
 let convo = [], state = {company_name: null, city: null, industry: null,
                          language: null, services: null, colours: null}, images = [],
@@ -202,17 +204,44 @@ function createDropZone() {
 
 function guessIndustry(word) {
   const map = {
-    dental: 'Dental',
-    plumb: 'Plumbing',
-    lawn: 'Landscaping',
-    roof: 'Roofing',
-    legal: 'Legal',
-    marketing: 'Advertising & Marketing',
-    shoe: 'Shoes & Apparel',
-    retail: 'Retail'
+    dental:        'Dental',
+    doctor:        'Medical',
+    health:        'Medical',
+    plastic:       'Medical',
+    psic:          'Medical',      // catches “psychologist”
+    saas:          'SaaS',
+    news:          'News & Magazine',
+    magaz:         'News & Magazine',
+    astrol:        'Astrology',
+    home:          'Home & Decor',
+    decor:         'Home & Decor',
+    apparel:       'Clothes & Apparel',
+    cloth:         'Clothes & Apparel',
+    market:        'Marketplaces',
+    cosmetics:     'Cosmetics',
+    plumb:         'Plumbing',
+    lawn:          'Landscaping',
+    roof:          'Roofing',
+    legal:         'Legal',
+    marketing:     'Advertising & Marketing',
+    retail:        'Retail',
+    realestate:    'Real Estate',
+    tech:          'IT & Software',
+    it:            'IT & Software',
+    finance:       'Accounting & Finance',
+    automotive:    'Automotive',
+    beauty:        'Beauty & Wellness',
+    food:          'Food & Beverage',
+    hospitality:   'Hospitality',
+    manufacturing: 'Manufacturing',
+    pets:          'Pets',
+    sports:        'Sports & Fitness',
+    travel:        'Travel',
+    transport:     'Transportation & Logistics'
   };
-  for (const k in map) {
-    if (word.toLowerCase().includes(k)) return map[k];
+  word = word.toLowerCase();
+  for (const key in map) {
+    if (word.includes(key)) return map[key];
   }
   return null;
 }
