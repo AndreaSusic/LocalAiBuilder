@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { EditorToolbar } from "./EditorToolbar";
+import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
 export default function MobileDashboard() {
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
@@ -42,6 +42,20 @@ export default function MobileDashboard() {
           </ul>
         </div>
 
+        {/* Live Preview */}
+        <div className="panel">
+          <h2>Live Preview</h2>
+          <div className="preview">
+            <iframe title="preview" src="about:blank" />
+          </div>
+          <button 
+            className="view-live-btn" 
+            onClick={() => window.open("about:blank", "_blank")}
+          >
+            View Live Site
+          </button>
+        </div>
+        
         {/* Chat / Editor Panel with Tabs */}
         <div className="panel-wireframe">
           <h2>Chat / Editor</h2>
@@ -69,11 +83,7 @@ export default function MobileDashboard() {
               <button onClick={sendChat}>Send ➤</button>
             </div>
             <div className={`editor-wireframe ${selectedTab === "editor" ? "active" : ""}`}>
-              <p><strong>Editor Controls</strong></p>
-              <EditorToolbar onAction={handleEditorAction} />
-              <p>– Text formatting<br/>
-                 – Image & Video tools<br/>
-                 – Component list…</p>
+              <UnifiedCommandChatPanel />
             </div>
           </div>
         </div>

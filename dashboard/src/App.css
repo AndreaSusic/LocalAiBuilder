@@ -57,7 +57,7 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 /* MOBILE DASHBOARD WIREFRAME STYLES */
 .mobile-dashboard-wireframe {
   font-family: sans-serif;
-  background: #d3d3d3;
+  background: #f5f5f5;
   color: #2a2a2a;
   display: flex;
   flex-direction: column;
@@ -68,8 +68,8 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 .mobile-header-wireframe {
   position: sticky;
   top: 0;
-  background: #d3d3d3;
-  border-bottom: 1px solid #2a2a2a;
+  background: #f5f5f5;
+ /* border-bottom: 1px solid #2a2a2a; */
   padding: 8px 12px;
   display: flex;
   align-items: center;
@@ -155,8 +155,9 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 
 .tabs-wireframe button.active {
   background: white;
-  border-top: 2px solid #2a2a2a;
+  border: 2px solid #2a2a2a;
   font-weight: bold;
+  margin-right: 10px;
 }
 
 .tab-content-wireframe > div {
