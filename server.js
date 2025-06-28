@@ -196,27 +196,9 @@ app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
   const ver = req.params.ver;
   console.log(`Template route hit: v${ver}`);
   
-  // Simple redirect to the dashboard template viewer
+  // HTTP redirect to the dashboard template viewer
   const dashboardUrl = `https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:4000/templates/homepage-${ver}`;
-  
-  const templateHtml = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage Template v${ver}</title>
-    <meta http-equiv="refresh" content="0; url=${dashboardUrl}">
-    <script>
-        window.location.href = '${dashboardUrl}';
-    </script>
-</head>
-<body>
-    <p>Redirecting to template...</p>
-    <p>If you are not redirected automatically, <a href="${dashboardUrl}">click here</a>.</p>
-</body>
-</html>`;
-  res.send(templateHtml);
+  res.redirect(302, dashboardUrl);
 });
 
 // Serve static files (after template routes)
