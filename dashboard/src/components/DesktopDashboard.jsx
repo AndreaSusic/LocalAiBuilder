@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
 export default function DesktopDashboard() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function DesktopDashboard() {
   const publish = () => console.log("Publish");
   const openVer = v => {
     if (v === "Version 1") {
-      window.open('/templates/homepage-1', '_blank');
+      navigate('/templates');
     } else {
       console.log("Open", v);
     }
@@ -102,7 +103,8 @@ export default function DesktopDashboard() {
           </button>
         </div>
 
-
+        {/* Unified Command Chat Panel */}
+        <UnifiedCommandChatPanel />
       </div>
     </div>
   );
