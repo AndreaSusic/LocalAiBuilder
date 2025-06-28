@@ -49,21 +49,7 @@ export default function DashboardPage() {
 
   return (
     <div className="dashboard">
-      <aside className="version-selector">
-        <h3 style={{ margin: "0 0 16px 0", color: "#333" }}>Homepage Templates</h3>
-        {[1, 2, 3].map((v) => (
-          <button
-            key={v}
-            className={v === version ? "active" : ""}
-            onClick={() => handleSwitch(v)}
-            disabled={loading}
-          >
-            Homepage v{v}
-          </button>
-        ))}
-      </aside>
-
-      <main className="preview-canvas">
+      <main className="preview-canvas" style={{ width: "100%" }}>
         {loading ? (
           <div style={{ padding: "2rem", textAlign: "center" }}>Loading template...</div>
         ) : Template ? (
