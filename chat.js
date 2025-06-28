@@ -29,10 +29,29 @@ if (authConfirmBtn) {
 
 
 const RX_INDS = /(dental|doctor|health|plastic|psic|saas|news|magaz|astrol|home|decor|apparel|cloth|market|cosmetics|plumb|lawn|roof|legal|marketing|shoe|retail|realestate|tech|it|finance|automotive|beauty|food|hospitality|manufacturing|pets|sports|travel|transport)/i;
+const RX_SOCIAL = /(facebook\.com|instagram\.com|tiktok\.com|linkedin\.com)/i;
+const RX_GBP    = /(goo\.gl\/maps|google\.[a-z.]+\/maps|business\.site)/i;
+const RX_PAY    = /(payment|financ(e|ing)|installment|plan)/i;
+const RX_VID    = /(youtube\.com|youtu\.be|vimeo\.com)/i;
 
 
-let convo = [], state = {company_name: null, city: null, industry: null,
-                         language: null, services: null, colours: null}, images = [],
+let convo = [], state = {
+  company_name: null,
+  city: null,
+  industry: null,
+  language: null,
+  services: null,
+  colours: null,
+  social: {                // NEW  : fb / ig / tt / li etc.
+    facebook: null,
+    instagram: null,
+    tiktok: null,
+    linkedin: null
+  },
+  google_profile: null,    // NEW  : full "https://goo.gl/maps/…" or business.site url
+  payment_plans: null,     // NEW  : "Yes" / "No" / details
+  hero_video: null         // NEW  : YouTube/Vimeo URL or uploaded File
+}, images = [],
     turns = 0, MAX_FREE = 15;
 
 let awaitingKey = null;
@@ -254,7 +273,11 @@ async function sendUser() {
 
   // If we just asked for a specific key, take reply verbatim
   if (awaitingKey && text) {
-    state[awaitingKey] = text.trim();
+    if (awaitingKey === 'hero_video' && text.toLowerCase().includes('skip')) {
+      state[awaitingKey] = 'skip';
+    } else {
+      state[awaitingKey] = text.trim();
+    }
     awaitingKey = null;
   }
   
@@ -275,6 +298,29 @@ async function sendUser() {
   if (!state.industry) { 
     const m = text.match(RX_INDS);
     if (m) state.industry = guessIndustry(m[1]); 
+  }
+
+  // --- quick auto-detect for new keys ---
+  if (!state.social.facebook && !state.social.instagram && !state.social.tiktok && !state.social.linkedin && RX_SOCIAL.test(text)) {
+    const urlMatch = text.match(/https?:\/\/\S+/);
+    if (urlMatch) {
+      const url = urlMatch[0];
+      if (url.includes('facebook')) state.social.facebook = url;
+      if (url.includes('instagram')) state.social.instagram = url;
+      if (url.includes('tiktok')) state.social.tiktok = url;
+      if (url.includes('linkedin')) state.social.linkedin = url;
+    }
+  }
+  if (!state.google_profile && RX_GBP.test(text)) {
+    const urlMatch = text.match(/https?:\/\/\S+/);
+    if (urlMatch) state.google_profile = urlMatch[0];
+  }
+  if (!state.payment_plans && RX_PAY.test(text)) {
+    state.payment_plans = text;
+  }
+  if (!state.hero_video && RX_VID.test(text)) {
+    const urlMatch = text.match(/https?:\/\/\S+/);
+    if (urlMatch) state.hero_video = urlMatch[0];
   }
 
   convo.push({role: 'user', content: text});
@@ -339,15 +385,29 @@ function mergeState(obj) {
   } else if (obj.city) {
     state.city = [obj.city];
   }
+  
+  // Handle new fields
+  if (obj.social) state.social = obj.social;
+  if (obj.google_profile) state.google_profile = obj.google_profile;
+  if (obj.payment_plans) state.payment_plans = obj.payment_plans;
+  if (obj.hero_video) state.hero_video = obj.hero_video;
 }
 
 async function handleMissing(res){
   // Note: mergeState(res) and draft saving now happens in sendUser()
   // This function just handles the UI logic for missing fields
 
-  // Step 1: Ask for text Qs (company, city, industry, language, services)
-  const order = ['company_name','city','industry','language','services'];
-  const next  = order.find(k=>state[k]===null);
+  // Step 1: Ask for text Qs (company, city, industry, language, services, social, google_profile, payment_plans, hero_video)
+  const order = [
+    'company_name','city','industry','language','services',
+    'social','google_profile','payment_plans','hero_video'
+  ];
+  const next = order.find(k => {
+    if (k === 'social') {
+      return !state.social.facebook && !state.social.instagram && !state.social.tiktok && !state.social.linkedin;
+    }
+    return state[k] === null;
+  });
 
   if(next){
     const Q={
@@ -355,7 +415,11 @@ async function handleMissing(res){
       city:'Which city do you mainly serve?',
       industry:'What industry best describes your business?',
       language:'What primary language should the website use?',
-      services:'List your most important services or products.'
+      services:'List your most important services or products.',
+      social: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)?',
+      google_profile: 'Do you have a Google Business Profile link?  If yes, paste it here.',
+      payment_plans: 'Do you offer payment plans or financing options?',
+      hero_video: 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say "skip").'
     }[next];
     const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
     if(lastAI!==Q){

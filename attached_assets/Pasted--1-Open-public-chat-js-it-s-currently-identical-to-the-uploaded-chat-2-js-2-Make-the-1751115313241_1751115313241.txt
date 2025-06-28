@@ -1,0 +1,88 @@
+### 1️⃣  Open public/chat.js  (it’s currently identical to the uploaded chat-2.js)
+
+### 2️⃣ Make the following edits – *only* inside chat.js
+################################################################################
+#  A. Extend the state schema
+################################################################################
+# -- Find the first occurrence of
+#        state = {company_name: … }
+# -- Replace that initial literal with:
+
+state = {
+  company_name: null,
+  city: null,
+  industry: null,
+  language: null,
+  services: null,
+  colours: null,
+  social: {                // NEW  : fb / ig / tt / li etc.
+    facebook: null,
+    instagram: null,
+    tiktok: null,
+    linkedin: null
+  },
+  google_profile: null,    // NEW  : full “https://goo.gl/maps/…” or business.site url
+  payment_plans: null,     // NEW  : “Yes” / “No” / details
+  hero_video: null         // NEW  : YouTube/Vimeo URL or uploaded File
+};
+
+################################################################################
+#  B. Add NEW helper regexes + auto-detectors (put them below RX_INDS)
+################################################################################
+const RX_SOCIAL = /(facebook\.com|instagram\.com|tiktok\.com|linkedin\.com)/i;
+const RX_GBP    = /(goo\.gl\/maps|google\.[a-z.]+\/maps|business\.site)/i;
+const RX_PAY    = /(payment|financ(e|ing)|installment|plan)/i;
+const RX_VID    = /(youtube\.com|youtu\.be|vimeo\.com)/i;
+
+################################################################################
+#  C. Update mergeState(obj) so it copies obj.social, obj.google_profile,
+#     obj.payment_plans and obj.hero_video *if they exist* (exact same way the
+#     other keys are copied).
+################################################################################
+#  D. Expand the “order” array in handleMissing() so we ask for the new bits
+#     in logical order **AFTER services** but **BEFORE colours**:
+#
+#     const order = [
+#       'company_name','city','industry','language','services',
+#       'social','google_profile','payment_plans','hero_video'
+#     ];
+#
+#  E. Below the Q=… map (inside handleMissing) add prompts for each new key:
+#
+      social      : 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)?',
+      google_profile : 'Do you have a Google Business Profile link?  If yes, paste it here.',
+      payment_plans  : 'Do you offer payment plans or financing options?',
+      hero_video     : 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say “skip”).'
+#
+#  F. Right after we capture user free-text in sendUser(), insert lightweight
+#     auto-detection so we don’t pester the user twice:
+#
+      // --- quick auto-detect for new keys ---
+      if (!state.social.facebook && RX_SOCIAL.test(text)) {
+        const url = text.match(/https?:\/\/\S+/)[0];
+        if (url.includes('facebook')) state.social.facebook = url;
+        if (url.includes('instagram')) state.social.instagram = url;
+        if (url.includes('tiktok')) state.social.tiktok = url;
+        if (url.includes('linkedin')) state.social.linkedin = url;
+      }
+      if (!state.google_profile && RX_GBP.test(text)) {
+        state.google_profile = text.match(/https?:\/\/\S+/)[0];
+      }
+      if (!state.payment_plans && RX_PAY.test(text)) {
+        state.payment_plans = text;
+      }
+      if (!state.hero_video && RX_VID.test(text)) {
+        state.hero_video = text.match(/https?:\/\/\S+/)[0];
+      }
+#
+#  G. When colours / images / font picker are done and we reach the sign-in
+#     step, nothing else changes – the new keys are already part of `state`
+#     and will be saved by /api/save-draft as usual.
+################################################################################
+
+### 3️⃣ No other files need to change
+
+### 4️⃣ Run “npm run dev” and test:
+#  •  Type a Facebook or GBP link – the assistant should *not* ask for it again
+#  •  Verify the new questions appear in correct sequence otherwise
+#  •  Confirm that `/api/save-draft` payload now contains the new keys
