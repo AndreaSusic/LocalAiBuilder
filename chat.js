@@ -307,6 +307,7 @@ function guessIndustry(word) {
 // send logic
 async function sendUser() {
   console.log('🛫 sendUser triggered; current state:', state);
+  console.log('🔍 gbpList length:', gbpList.length, 'awaitingKey:', awaitingKey);
   const text = input.innerText.trim();
   if (!text) return;
 
@@ -314,6 +315,7 @@ async function sendUser() {
 
   // Handle GBP selection responses first (highest priority)
   if (gbpList.length > 0) {
+    console.log('📋 Processing GBP selection with gbpList:', gbpList);
     if (gbpList.length === 1 && (text.toLowerCase().includes('yes') || text.toLowerCase().includes('confirm'))) {
       // User confirmed the single result
       state.google_profile = gbpList[0].mapsUrl;
@@ -399,7 +401,13 @@ async function sendUser() {
     }
   }
 
-  if (text) bubble('user', text);
+  // Only add user message to chat if it wasn't handled by special logic
+  if (text && !responseHandled) {
+    console.log('💬 Adding user message to chat:', text);
+    bubble('user', text);
+  } else if (responseHandled) {
+    console.log('🚫 Skipping user message bubble - response was handled by special logic');
+  }
 
   // soft industry mapping only
   if (!state.industry) { 
