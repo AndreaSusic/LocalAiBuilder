@@ -13,7 +13,13 @@ export default function DesktopDashboard() {
   const newSite = () => console.log("New Site");
   const saveSite = () => console.log("Save");
   const publish = () => console.log("Publish");
-  const openVer = v => console.log("Open", v);
+  const openVer = v => {
+    if (v === "Version 1") {
+      window.location.href = '/templates/homepage-1';
+    } else {
+      console.log("Open", v);
+    }
+  };
   const handleEditorAction = (action) => {
     console.log('Toolbar action:', action);
   };
@@ -53,13 +59,6 @@ export default function DesktopDashboard() {
           </button>
           <button className="btn">Sites ▼</button>
           <button className="btn">Pages ▼</button>
-          <button 
-            className="btn"
-            onClick={() => window.location.href = '/templates/homepage-1'}
-            style={{ backgroundColor: '#5DD39E', color: 'white' }}
-          >
-            View Template
-          </button>
           <button className="btn">Profile ▼</button>
         </div>
       </div>
