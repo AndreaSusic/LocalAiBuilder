@@ -48,12 +48,16 @@ export default function App() {
         
         {/* New template dashboard with version selector */}
         <Route path="/templates" element={<DashboardPage />} />
-        <Route path="/templates/homepage-1" element={<TemplateOne />} />
         
         {/* Exact template routes */}
         <Route path="/templates/homepage/v1/index.jsx" element={<HomepageV1 />} />
         <Route path="/templates/homepage/v2/index.jsx" element={<HomepageV2 />} />
         <Route path="/templates/homepage/v3/index.jsx" element={<HomepageV3 />} />
+        
+        {/* Alternative template routes for versioned access */}
+        <Route path="/templates/homepage-1" element={<HomepageV1 />} />
+        <Route path="/templates/homepage-2" element={<HomepageV2 />} />
+        <Route path="/templates/homepage-3" element={<HomepageV3 />} />
         
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />
