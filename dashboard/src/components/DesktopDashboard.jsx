@@ -53,6 +53,13 @@ export default function DesktopDashboard() {
           </button>
           <button className="btn">Sites ▼</button>
           <button className="btn">Pages ▼</button>
+          <button 
+            className="btn"
+            onClick={() => window.location.href = '/templates/homepage-1'}
+            style={{ backgroundColor: '#5DD39E', color: 'white' }}
+          >
+            View Template
+          </button>
           <button className="btn">Profile ▼</button>
         </div>
       </div>
