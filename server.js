@@ -183,15 +183,32 @@ app.get('/', async (req, res, next) => {
 // Serve static files
 app.use(express.static('.'));
 
-// Template routing
-const tplRoot = path.join(__dirname, 'dashboard', 'dist', 'templates', 'homepage');
-
-app.use('/templates/homepage', express.static(tplRoot));
-
+// Template routing - serve rendered HTML pages that display the templates directly
 app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
-  // e.g. /templates/homepage/v2/index.jsx
-  const ver = req.params.ver;           // "1", "2", "3", …
-  res.sendFile(path.join(tplRoot, `v${ver}`, 'index.jsx'));
+  const ver = req.params.ver;
+  
+  // Serve the dashboard template viewer in an iframe for the specific version
+  const templateHtml = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage Template v${ver}</title>
+    <style>
+        body { margin: 0; padding: 0; }
+        iframe { width: 100%; height: 100vh; border: none; }
+    </style>
+</head>
+<body>
+    <iframe 
+        src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/templates/homepage/v${ver}/index.jsx"
+        title="Homepage Template v${ver}"
+        frameborder="0">
+    </iframe>
+</body>
+</html>`;
+  res.send(templateHtml);
 });
 
 // Auth routes
