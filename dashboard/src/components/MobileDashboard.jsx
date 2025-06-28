@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
 export default function MobileDashboard() {
+  const navigate = useNavigate();
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
   const [showVersions, setShowVersions] = useState(false);
 
