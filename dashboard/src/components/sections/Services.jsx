@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme } from "../../lib/theme";
+import { useTheme } from "../../lib/theme.jsx";
 
 export default function Services({ data }) {
   const { colors, fonts } = useTheme();
