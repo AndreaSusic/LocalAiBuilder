@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
 export default function DesktopDashboard() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
   const [selectedTab, setTab] = useState("text");
@@ -15,7 +17,7 @@ export default function DesktopDashboard() {
   const publish = () => console.log("Publish");
   const openVer = v => {
     if (v === "Version 1") {
-      window.location.href = '/templates/homepage-1';
+      navigate('/templates/homepage-1');
     } else {
       console.log("Open", v);
     }

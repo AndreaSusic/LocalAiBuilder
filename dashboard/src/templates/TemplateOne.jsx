@@ -452,7 +452,7 @@ export default function TemplateOne() {
             display: block;
           }
           .nav-links {
-            display: ${isMenuOpen ? 'flex' : 'none'};
+            display: none;
             flex-direction: column;
             position: absolute;
             top: 100%;
@@ -460,6 +460,10 @@ export default function TemplateOne() {
             width: 100%;
             background: #fff;
             border-bottom: 1px solid #ddd;
+            z-index: 1000;
+          }
+          .nav-links.mobile-open {
+            display: flex;
           }
           .nav-links li {
             padding: 0.75rem;
@@ -502,7 +506,7 @@ export default function TemplateOne() {
       <nav className="nav">
         <div className="logo">YourLogo</div>
         <button className="hamburger" onClick={toggleMenu} aria-label="Toggle menu">☰</button>
-        <ul className="nav-links">
+        <ul className={`nav-links ${isMenuOpen ? 'mobile-open' : ''}`}>
           <li><a href="#">Home</a></li>
           <li>
             <a href="#">Services ▾</a>
