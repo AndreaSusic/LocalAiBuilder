@@ -26,7 +26,11 @@ export default function MobileDashboard() {
             <div className="versions-dropdown">
               {versions.map((v, i) => (
                 <div key={i} className="version-item" onClick={() => {
-                  console.log("Selected version:", v);
+                  if (v === "Version 1") {
+                    window.location.href = '/templates/homepage-1';
+                  } else {
+                    console.log("Selected version:", v);
+                  }
                   setShowVersions(false);
                 }}>
                   {v}
@@ -56,13 +60,6 @@ export default function MobileDashboard() {
             onClick={() => window.open("about:blank", "_blank")}
           >
             View Live Site
-          </button>
-          <button 
-            className="view-live-btn-mobile" 
-            onClick={() => window.location.href = '/templates/homepage-1'}
-            style={{ backgroundColor: '#5DD39E', color: 'white', marginTop: '10px' }}
-          >
-            View Template
           </button>
         </div>
 
