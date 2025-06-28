@@ -1,0 +1,66 @@
+What’s happening?
+	1.	You type “yes” to something earlier in the Q & A flow.
+	2.	When the Google-Business-Profile lookup runs it switches the UI into “confirmation” mode (awaitingKey: 'google_profile').
+	3.	Because the <div id="chatInput" …> (or <textarea>) is not cleared when the new prompt is rendered, the previously typed text (“yes”) is still inside the editable field.
+	4.	When you hit Send, that stale value is posted again and lands in the wrong place – it shows up as the reply to the GBP-confirm question instead of being blank.
+
+Quick fix
+
+Clear the composer whenever the bot swaps to a new “awaiting” key (or, more generally, after every successful send).
+
+// === util =========================================================
+function clearInput () {
+  const input = document.getElementById("chatInput");
+  if (input) {
+    if (input.value !== undefined)        input.value  = "";   // <textarea>
+    else                                   input.textContent = ""; // contenteditable div
+  }
+}
+
+// === in sendUser() AFTER you push the user bubble ================
+// ...
+convo.push({ role:"user", content: userText });
+renderUserBubble(userText);
+clearInput();          // <—— this line guarantees a fresh field
+// ---------------------------------------------------------------
+
+// === when we trigger a new follow-up that changes awaitingKey ====
+// … right after you set draft.awaitingKey = "google_profile";
+clearInput();
+
+That alone will stop the “yes” (or any other leftover keystrokes) from leaking into the next answer slot.
+
+⸻
+
+More robust pattern
+
+If you’d like stricter control, you can introduce a tiny state machine so only yes / no are accepted while awaitingKey === "google_profile":
+
+function handleSendClick () {
+  const raw = getInputText().trim();
+  if (!raw) return;
+
+  // If we're waiting for GBP confirmation, ignore anything except yes/no
+  if (draft.awaitingKey === "google_profile") {
+    const normalized = raw.toLowerCase();
+    if (!["yes","y","no","n"].includes(normalized)) {
+      renderSystemBubble("Please type Yes or No.");
+      clearInput();
+      return;
+    }
+  }
+
+  // …rest of sendUser as today
+}
+
+That way even if the user pastes a paragraph it won’t accidentally get swallowed as the confirmation.
+
+⸻
+
+Where to drop the patch
+	1.	clearInput() helper can live near your other UI helpers (next to scrollToBottom()).
+	2.	Call it immediately after every successful send and any time you programmatically change awaitingKey.
+
+No other parts of the flow need to change, and desktop / mobile layout remains untouched.
+
+Give it a try in Replit and let me know if the stale “yes” disappears!
