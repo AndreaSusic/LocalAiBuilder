@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import DesktopDashboard from "./components/DesktopDashboard";
 import MobileDashboard from "./components/MobileDashboard";
-import TemplateOne from "./templates/TemplateOne";
+import DashboardPage from "./pages/Dashboard";
 
 export default function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
@@ -42,8 +42,9 @@ export default function App() {
           </>
         } />
         
-        {/* New template preview routes */}
-        <Route path="/templates/homepage-1" element={<TemplateOne />} />
+        {/* New template dashboard with version selector */}
+        <Route path="/templates" element={<DashboardPage />} />
+        <Route path="/templates/homepage-1" element={<DashboardPage />} />
         
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />

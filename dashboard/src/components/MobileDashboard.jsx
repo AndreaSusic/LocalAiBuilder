@@ -29,7 +29,7 @@ export default function MobileDashboard() {
               {versions.map((v, i) => (
                 <div key={i} className="version-item" onClick={() => {
                   if (v === "Version 1") {
-                    navigate('/templates/homepage-1');
+                    navigate('/templates');
                   } else {
                     console.log("Selected version:", v);
                   }
