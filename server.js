@@ -172,32 +172,11 @@ app.get('/api/last-draft', (req, res) => {
   }
 });
 
-// Homepage redirect for logged-in users
+// Homepage redirect for logged-in users (temporarily disabled to debug GBP flow)
 app.get('/', async (req, res, next) => {
-  if (req.user) {
-    try {
-      // Check if user has drafts
-      const urows = await pool.query(
-        'SELECT id FROM user_drafts WHERE user_id = $1 ORDER BY updated_at DESC LIMIT 1',
-        [req.user.id]
-      );
-
-      if (urows.rows.length) {
-        console.log('Logged-in user with draft, redirecting to dashboard');
-        const dashboardUrl = process.env.DASHBOARD_URL || 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
-        return res.redirect(dashboardUrl);
-      } else {
-        console.log('Logged-in user without draft, redirecting to dashboard');
-        const dashboardUrl = process.env.DASHBOARD_URL || 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
-        return res.redirect(dashboardUrl);
-      }
-    } catch (err) {
-      console.error('DB error checking user drafts on homepage:', err);
-      // On error, continue to serve static homepage
-    }
-  }
-  
-  // For non-authenticated users, serve static homepage
+  // Temporarily disabled redirect to debug GBP issues
+  // TODO: Re-enable after fixing GBP confirmation flow
+  console.log('Homepage accessed, user authenticated:', !!req.user);
   next();
 });
 
