@@ -310,6 +310,8 @@ async function sendUser() {
   const text = input.innerText.trim();
   if (!text) return;
 
+  let responseHandled = false;
+
   // Handle GBP selection responses first (highest priority)
   if (gbpList.length > 0) {
     if (gbpList.length === 1 && (text.toLowerCase().includes('yes') || text.toLowerCase().includes('confirm'))) {
@@ -318,7 +320,7 @@ async function sendUser() {
       gbpList = []; // Clear the list
       awaitingKey = null; // Clear awaiting key
       console.log('✅ GBP confirmed, set to:', state.google_profile);
-      // Don't process this response further - it's handled
+      responseHandled = true;
       input.innerText = '';
       await handleMissing({});
       return;
@@ -328,7 +330,7 @@ async function sendUser() {
       gbpList = []; // Clear the list
       awaitingKey = null; // Clear awaiting key
       console.log('❌ GBP rejected, set to no');
-      // Don't process this response further - it's handled
+      responseHandled = true;
       input.innerText = '';
       await handleMissing({});
       return;
@@ -340,7 +342,7 @@ async function sendUser() {
         gbpList = []; // Clear the list
         awaitingKey = null; // Clear awaiting key
         console.log('🔢 GBP selected from list:', state.google_profile);
-        // Don't process this response further - it's handled
+        responseHandled = true;
         input.innerText = '';
         await handleMissing({});
         return;
@@ -349,7 +351,7 @@ async function sendUser() {
         gbpList = []; // Clear the list
         awaitingKey = null; // Clear awaiting key
         console.log('0️⃣ GBP none selected, set to no');
-        // Don't process this response further - it's handled
+        responseHandled = true;
         input.innerText = '';
         await handleMissing({});
         return;
