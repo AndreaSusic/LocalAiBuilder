@@ -3,38 +3,7 @@
   height: 100vh;
 }
 
-.version-selector {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-  background: #f5f5f5;
-  border-right: 1px solid #ddd;
-  min-width: 200px;
-}
 
-.version-selector button {
-  padding: 6px 10px;
-  border: 1px solid #ddd;
-  background: #fff;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.version-selector button.active {
-  background: #5DD39E;
-  color: #fff;
-  border-color: #5DD39E;
-}
-
-.version-selector button:hover {
-  background: #e8e8e8;
-}
-
-.version-selector button.active:hover {
-  background: #4ac085;
-}
 
 .preview-canvas {
   flex: 1;

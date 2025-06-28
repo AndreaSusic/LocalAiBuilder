@@ -100,6 +100,7 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
+- June 28, 2025: Removed .version-selector class from templates page - eliminated sidebar version selection interface from template dashboard as requested
 - June 28, 2025: Implemented React component template system - extracted homepage into 9 modular components (Hero, Features, Services, Testimonials, Team, Gallery, ContactMap, SecondaryCTA, Footer), created design token system with ThemeProvider context, built data-driven template architecture with JSON schema, added React Router for template preview routes (/templates/homepage-1), integrated template navigation into existing Version 1 cards in both desktop and mobile dashboards, preserved original dashboard functionality while enabling component-based website generation
 - June 28, 2025: Fixed GBP duplicate message issue - implemented clearInput() helper function to prevent stale text in input fields, added proper input clearing throughout conversation flow, eliminated duplicate "yes" responses during GBP confirmation process
 - June 28, 2025: Implemented intelligent Google Business Profile lookup system - replaced address-based search with company name + city lookup for more accurate results, added yes/no prompt for GBP ownership, integrated Google Places API with name-based filtering, enhanced user experience with numbered selection system, removed unnecessary address field from state schema, improved search precision by matching business names rather than physical addresses
