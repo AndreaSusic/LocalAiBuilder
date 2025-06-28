@@ -111,6 +111,18 @@ function bubble(role, txt) {
   sendHeight();
 }
 
+// Clear the input field to prevent stale values
+function clearInput() {
+  const input = document.getElementById("chatInput");
+  if (input) {
+    if (input.value !== undefined) {
+      input.value = "";   // <textarea>
+    } else {
+      input.textContent = ""; // contenteditable div
+    }
+  }
+}
+
 // Create color picker inline
 // Create font picker inline in chat thread
 function showFontPickerInline() {
@@ -330,7 +342,7 @@ async function sendUser() {
       awaitingKey = null; // Clear awaiting key
       console.log('✅ GBP confirmed, set to:', state.google_profile);
       responseHandled = true;
-      input.innerText = '';
+      clearInput();
       await handleMissing({});
       return;
     } else if (gbpList.length === 1 && text.toLowerCase().includes('no')) {
@@ -340,7 +352,7 @@ async function sendUser() {
       awaitingKey = null; // Clear awaiting key
       console.log('❌ GBP rejected, set to no');
       responseHandled = true;
-      input.innerText = '';
+      clearInput();
       await handleMissing({});
       return;
     } else if (/^[0-9]+$/.test(text.trim())) {
@@ -382,6 +394,7 @@ async function sendUser() {
         // Search for GBP by company name + city
         awaitingKey = null; // Clear the awaiting key
         responseHandled = true; // Mark response as handled
+        clearInput(); // Clear the input field
         console.log('🔍 User has GBP, triggering lookup');
         setTimeout(async () => {
           await performGbpLookup();
@@ -392,6 +405,7 @@ async function sendUser() {
         state.google_profile = 'no';
         awaitingKey = null;
         responseHandled = true; // Mark response as handled
+        clearInput(); // Clear the input field
         console.log('🚫 User said no to having GBP');
       }
     } else {
@@ -451,7 +465,7 @@ async function sendUser() {
   }
 
   convo.push({role: 'user', content: text});
-  input.textContent = '';
+  clearInput();
 
   if (++turns > MAX_FREE) {
     paywall();
