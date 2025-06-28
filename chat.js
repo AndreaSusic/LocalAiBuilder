@@ -59,6 +59,7 @@ let gbpList = [];  // Store GBP search results
 
 // Perform GBP lookup and display results
 async function performGbpLookup() {
+  console.log('🔍 Starting GBP lookup for:', state.company_name, 'in', state.city);
   try {
     const response = await fetch('/api/find-gbp', {
       method: 'POST',
@@ -71,17 +72,22 @@ async function performGbpLookup() {
     
     const list = await response.json();
     gbpList = list; // Store for selection
+    console.log('📋 GBP lookup results:', list.length, 'businesses found');
+    console.log('📋 Updated gbpList:', gbpList);
     
     if (list.length === 1) {
       // Only one result found - ask for confirmation
+      console.log('📍 Single GBP result, asking for confirmation');
       bubble('ai', `Can you confirm that this is your business address?\n${list[0].name} – ${list[0].address}\n\nReply "yes" to confirm or "no" if this isn't your business.`);
       convo.push({role: 'assistant', content: `Can you confirm that this is your business address?\n${list[0].name} – ${list[0].address}\n\nReply "yes" to confirm or "no" if this isn't your business.`});
     } else if (list.length > 1) {
       // Multiple results found - show numbered list
+      console.log('📍 Multiple GBP results, showing numbered list');
       const numbered = list.map((m, i) => `${i + 1}) ${m.name} – ${m.address}`).join('\n');
       bubble('ai', `Which one of these is your business?\n${numbered}\n0) None of these`);
       convo.push({role: 'assistant', content: `Which one of these is your business?\n${numbered}\n0) None of these`});
     } else {
+      console.log('📍 No GBP results found');
       bubble('ai', 'No Google Business Profiles found with that name. We\'ll continue without it.');
       state.google_profile = 'no';
       convo.push({role: 'assistant', content: 'No Google Business Profiles found with that name.'});
@@ -374,6 +380,8 @@ async function sendUser() {
       if (text.toLowerCase().includes('yes')) {
         // Search for GBP by company name + city
         awaitingKey = null; // Clear the awaiting key
+        responseHandled = true; // Mark response as handled
+        console.log('🔍 User has GBP, triggering lookup');
         setTimeout(async () => {
           await performGbpLookup();
         }, 100);
@@ -382,6 +390,7 @@ async function sendUser() {
         // User doesn't have GBP
         state.google_profile = 'no';
         awaitingKey = null;
+        responseHandled = true; // Mark response as handled
         console.log('🚫 User said no to having GBP');
       }
     } else {
