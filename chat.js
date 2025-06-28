@@ -322,6 +322,7 @@ async function sendUser() {
   // Handle GBP selection responses first (highest priority)
   if (gbpList.length > 0) {
     console.log('📋 Processing GBP selection with gbpList:', gbpList);
+    console.log('📝 User response for GBP confirmation:', text);
     if (gbpList.length === 1 && (text.toLowerCase().includes('yes') || text.toLowerCase().includes('confirm'))) {
       // User confirmed the single result
       state.google_profile = gbpList[0].mapsUrl;
