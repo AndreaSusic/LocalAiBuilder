@@ -1,0 +1,264 @@
+
+
+
+**TASK:** Extract the lead-gen homepage into independent React components
+and wire them up to a central token system.  
+Tech: Vite + React 19 + plain CSS (no Tailwind yet).
+
+────────────────────────────────────────────────────────────
+1.  ♻️  Create design-token file
+────────────────────────────────────────────────────────────
+📄  src/tokens.json
+{
+  "colors": {
+    "primary":   "#5DD39E",
+    "secondary": "#EFD5BD",
+    "text":      "#2a2a2a",
+    "bgLight":   "#f9f9f9",
+    "bgDark":    "#f5f5f5"
+  },
+  "fonts": {
+    "body":   "'Roboto', sans-serif",
+    "heading":" 'Work Sans', sans-serif"
+  },
+  "radius": "6px",
+  "shadow": "0 0 10px rgba(0,0,0,.1)"
+}
+
+Add  **src/lib/theme.js**
+
+```jsx
+import React, { createContext, useContext } from "react";
+import tokens from "../tokens.json";
+export const ThemeContext = createContext(tokens);
+export const useTheme = () => useContext(ThemeContext);
+export const ThemeProvider = ({children}) => (
+  <ThemeContext.Provider value={tokens}>{children}</ThemeContext.Provider>
+);
+
+Wrap <App /> in ThemeProvider inside main.jsx.
+
+────────────────────────────────────────────────────────────
+2.  🧩  Component files (all under src/components)
+────────────────────────────────────────────────────────────
+Each component receives a data prop shaped like the schema below
+(keep prop drilling simple for now).
+Import the global CSS you already wrote; don’t rewrite styling.
+
+• Hero.jsx
+• Features.jsx
+• Services.jsx
+• Testimonials.jsx
+• Team.jsx
+• Gallery.jsx
+• ContactMap.jsx
+• SecondaryCTA.jsx
+• Footer.jsx
+
+Example – Hero.jsx
+
+import React from "react";
+import { useTheme } from "../lib/theme";
+
+export default function Hero({ data }) {
+  const { colors } = useTheme();
+  return (
+    <section className="hero" style={{ "--primary": colors.primary }}>
+      <h1>{data.title}</h1>
+      <p>{data.subtitle}</p>
+      <button className="btn-primary">{data.ctaLabel}</button>
+    </section>
+  );
+}
+
+Do the same for the rest—pull text / images from data.
+
+────────────────────────────────────────────────────────────
+3.  🏗️  Schema for the page JSON
+────────────────────────────────────────────────────────────
+Create src/data/home-v1.json
+
+{
+  "hero": {
+    "title": "Your Practice Name",
+    "subtitle": "High-quality care in a welcoming environment—expertise you can trust.",
+    "ctaLabel": "Schedule Now",
+    "bgImage": "https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?q=80&auto=format&fit=crop&w=1740"
+  },
+  "features": [
+    { "icon": "🦷", "title": "Experienced Dentists", "text": "Our highly skilled dentists provide compassionate and personalized care." },
+    { "icon": "🖥️", "title": "State-of-the-Art Facility", "text": "Advanced technology ensures accurate diagnoses and effective treatments." },
+    { "icon": "😊", "title": "Patient-Centered Care", "text": "A friendly team dedicated to making your visit comfortable." }
+  ],
+  "services": [
+    { "img": "https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900", "title": "General Dentistry", "text": "Comprehensive exams, cleanings, and preventative care." },
+    { "img": "https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900", "title": "Cosmetic Veneers", "text": "Transform your smile with porcelain veneers." },
+    { "img": "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900", "title": "Invisalign®", "text": "Clear aligner therapy for discreet straightening." }
+  ],
+  "testimonials": [
+    { "text": "Fantastic experience—couldn’t be happier!", "stars": 5 },
+    { "text": "Professional, friendly staff—highly recommend!", "stars": 4 },
+    { "text": "Top-quality care in a comfortable environment.", "stars": 5 }
+  ],
+  "team": [
+    { "img": "https://images.unsplash.com/photo-1665080954352-5a12ef53017a?w=900", "name": "Dr. Smith", "role": "DDS, Founder" },
+    { "img": "https://images.unsplash.com/photo-1620928269189-dc4ee9d981c0?w=900", "name": "Dr. Jones", "role": "Orthodontist" },
+    { "img": "https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=900", "name": "Dr. Lee", "role": "Oral Surgeon" }
+  ],
+  "gallery": [
+    "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900",
+    "https://images.unsplash.com/photo-1616391182219-e080b4d1043a?w=900",
+    "https://plus.unsplash.com/premium_photo-1672922646298-3afc6c6397c9?w=900"
+  ],
+  "contact": {
+    "headline": "Get in Touch",
+    "address": "123 Dental St., Austin, TX",
+    "map": "https://maps.google.com/maps?q=Austin&t=&z=13&ie=UTF8&iwloc=&output=embed"
+  },
+  "cta": {
+    "headline": "Ready to Transform Your Smile?",
+    "sub": "View available appointments and enjoy dentistry done right.",
+    "button": "Contact Us Today"
+  },
+  "footer": {
+    "practice": "YourPractice",
+    "address": "123 Dental St.\nAustin, TX 78701",
+    "services": ["General Dentistry", "Cosmetic Veneers", "Invisalign®"],
+    "links": ["Home", "About", "Contact"]
+  }
+}
+
+────────────────────────────────────────────────────────────
+4.  🧹  Refactor page
+────────────────────────────────────────────────────────────
+Create src/pages/HomeV1.jsx
+
+import data from "../data/home-v1.json";
+import Hero from "../components/Hero";
+import Features from "../components/Features";
+import Services from "../components/Services";
+import Testimonials from "../components/Testimonials";
+import Team from "../components/Team";
+import Gallery from "../components/Gallery";
+import ContactMap from "../components/ContactMap";
+import SecondaryCTA from "../components/SecondaryCTA";
+import Footer from "../components/Footer";
+
+export default function HomeV1() {
+  return (
+    <>
+      <Hero   data={data.hero} />
+      <Features data={data.features} />
+      <Services data={data.services} />
+      <Testimonials data={data.testimonials} />
+      <Team data={data.team} />
+      <Gallery data={data.gallery} />
+      <ContactMap data={data.contact} />
+      <SecondaryCTA data={data.cta} />
+      <Footer data={data.footer} />
+    </>
+  );
+}
+
+
+
+
+the landing page that already lives at the root (/) must stay untouched.
+Every prototype template we build will live at its own path, e.g.:
+
+/templates/homepage-1
+/templates/homepage-2
+/templates/homepage-3
+
+
+⸻
+
+1 · Add a “Templates” sub-router
+
+src/App.jsx (or wherever your BrowserRouter lives)
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage                 from "./pages/HomePage";        // <- current HP (unchanged)
+import TemplateOnePreview       from "./templates/TemplateOne"; // <- NEW
+import TemplateTwoPreview       from "./templates/TemplateTwo"; // ...
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* === KEEP OLD HOMEPAGE ON ROOT === */}
+        <Route path="/" element={<HomePage />} />
+
+        {/* === NEW READ-ONLY PREVIEW ROUTES === */}
+        <Route path="/templates/homepage-1" element={<TemplateOnePreview />} />
+        <Route path="/templates/homepage-2" element={<TemplateTwoPreview />} />
+        <Route path="/templates/homepage-3" element={<TemplateThreePreview />} />
+
+        {/* optional catch-all */}
+        <Route path="*" element={<h1>404 – Not found</h1>} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+What goes in TemplateOnePreview.jsx?
+
+import Hero        from "../components/sections/Hero";
+import Features    from "../components/sections/Features";
+import Services    from "../components/sections/Services";
+import LocationSEO from "../components/sections/LocationSEO";
+import Team        from "../components/sections/Team";
+import Gallery     from "../components/sections/Gallery";
+import ContactMap  from "../components/sections/ContactMap";
+import SecondaryCTA from "../components/sections/SecondaryCTA";
+import Footer      from "../components/sections/Footer";
+
+export default function TemplateOnePreview() {
+  return (
+    <>
+      <Hero    preset="homepage-1" />
+      <LocationSEO />
+      <Features preset="homepage-1" />
+      <Services preset="dental-v1" />
+      <Team    />
+      <Gallery />
+      <ContactMap />
+      <SecondaryCTA />
+      <Footer  />
+    </>
+  );
+}
+
+The components above are the ones we extracted in the previous step;
+preset / theme props just swap colours, images, layout tweaks.
+
+2 · Leave index.html alone
+
+Nothing in /public/index.html (the plain file Replit serves at /) changes, so your original Q&A flow continues to load.
+
+3 · Build / Preview in Replit
+
+Dev:
+
+cd dashboard
+npm run dev
+
+	•	Replit will print …5173 — open
+https://<hash>-5173.picard.replit.dev/templates/homepage-1
+
+Production:
+
+npm run build      # outputs to /dist
+npm run serve      # vite preview (or your Nix start script)
+
+	•	Open
+https://<hash>-4000.picard.replit.dev/templates/homepage-1 (or whatever port Replit picks)
+
+4 · Share links safely
+
+Now you can send stakeholders URLs like
+
+/templates/homepage-1
+/templates/homepage-2
+
+without ever touching the public homepage.
