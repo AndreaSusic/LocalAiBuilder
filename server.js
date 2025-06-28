@@ -180,14 +180,25 @@ app.get('/', async (req, res, next) => {
   next();
 });
 
-// Serve static files
-app.use(express.static('.'));
+// Block template JSX files from being served as static content
+app.use('/templates/homepage', (req, res, next) => {
+  if (req.path.endsWith('.jsx')) {
+    // Let our route handler deal with it
+    next();
+  } else {
+    // For other files, serve them normally
+    express.static(path.join(__dirname, 'dashboard', 'dist', 'templates', 'homepage'))(req, res, next);
+  }
+});
 
 // Template routing - serve rendered HTML pages that display the templates directly
 app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
   const ver = req.params.ver;
+  console.log(`Template route hit: v${ver}`);
   
-  // Serve the dashboard template viewer in an iframe for the specific version
+  // Simple redirect to the dashboard template viewer
+  const dashboardUrl = `https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:4000/templates/homepage-${ver}`;
+  
   const templateHtml = `
 <!DOCTYPE html>
 <html lang="en">
@@ -195,21 +206,21 @@ app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage Template v${ver}</title>
-    <style>
-        body { margin: 0; padding: 0; }
-        iframe { width: 100%; height: 100vh; border: none; }
-    </style>
+    <meta http-equiv="refresh" content="0; url=${dashboardUrl}">
+    <script>
+        window.location.href = '${dashboardUrl}';
+    </script>
 </head>
 <body>
-    <iframe 
-        src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/templates/homepage/v${ver}/index.jsx"
-        title="Homepage Template v${ver}"
-        frameborder="0">
-    </iframe>
+    <p>Redirecting to template...</p>
+    <p>If you are not redirected automatically, <a href="${dashboardUrl}">click here</a>.</p>
 </body>
 </html>`;
   res.send(templateHtml);
 });
+
+// Serve static files (after template routes)
+app.use(express.static('.'));
 
 // Auth routes
 app.get('/auth/google', 
