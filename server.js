@@ -183,6 +183,17 @@ app.get('/', async (req, res, next) => {
 // Serve static files
 app.use(express.static('.'));
 
+// Template routing
+const tplRoot = path.join(__dirname, 'dashboard', 'dist', 'templates', 'homepage');
+
+app.use('/templates/homepage', express.static(tplRoot));
+
+app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
+  // e.g. /templates/homepage/v2/index.jsx
+  const ver = req.params.ver;           // "1", "2", "3", …
+  res.sendFile(path.join(tplRoot, `v${ver}`, 'index.jsx'));
+});
+
 // Auth routes
 app.get('/auth/google', 
   passport.authenticate('google', { scope: ['profile', 'email'] })
