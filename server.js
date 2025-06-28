@@ -628,12 +628,6 @@ app.get('/api/last-draft', async (req, res) => {
   }
 });
 
-// Redirect /templates to React dashboard 
-app.get('/templates', function(req, res) {
-  const dashboardUrl = `https://${req.get('host').replace(':5000', ':3002')}${req.path}`;
-  res.redirect(302, dashboardUrl);
-});
-
 // Handle SPA routing - serve index.html for unknown routes
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
