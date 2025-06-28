@@ -57,6 +57,13 @@ export default function MobileDashboard() {
           >
             View Live Site
           </button>
+          <button 
+            className="view-live-btn-mobile" 
+            onClick={() => window.location.href = '/templates/homepage-1'}
+            style={{ backgroundColor: '#5DD39E', color: 'white', marginTop: '10px' }}
+          >
+            View Template
+          </button>
         </div>
 
         {/* Unified Command Chat Panel */}
