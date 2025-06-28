@@ -103,6 +103,17 @@ export default function HomepageV1({ tokens = {} }) {
           gap: 0.5rem;
           font-weight: 500;
         }
+        .cta {
+          background: var(--primary);
+          color: white;
+          border: none;
+          padding: 0.5rem 1.25rem;
+          border-radius: 4px;
+          font-weight: 500;
+          cursor: pointer;
+          text-decoration: none;
+          display: inline-block;
+        }
         
         /* Hero */
         .hero {
@@ -520,6 +531,7 @@ export default function HomepageV1({ tokens = {} }) {
           <li><a href="#">Contact</a></li>
           <li><a href="tel:+123456789" className="contact-phone">📞 +1 234 567 89</a></li>
         </ul>
+        <button className="cta">Schedule now</button>
       </nav>
 
       {/* Hero */}
