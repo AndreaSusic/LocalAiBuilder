@@ -1,0 +1,118 @@
+### 👉  PROJECT-WIDE CHANGES  ###############################################
+# 1. Folder structure – create if they don’t exist
+mkdir -p src/templates/homepage/v1
+mkdir -p src/templates/homepage/v2
+mkdir -p src/templates/homepage/v3
+
+# 2. Move the current “Homepage V1” React markup into:
+#      src/templates/homepage/v1/index.jsx
+#    (If it’s still raw HTML, wrap it in a functional component
+#     and export default.)
+#    Do NOT delete the old file until this runs cleanly.
+
+# 3. Add a small template loader helper.
+cat > src/utils/templateLoader.ts <<'EOF'
+/**
+ * Dynamic template loader.
+ * Usage: const Mod = await loadTemplate("homepage", 2);
+ *        <Mod tokens={siteTokens} />
+ */
+export async function loadTemplate(page: string, v: number) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore – we accept runtime path
+  const mod = await import(
+    /* @vite-ignore */ `../templates/${page}/v${v}/index.jsx`
+  );
+  return mod.default;
+}
+EOF
+
+# 4. Update the Dashboard “Preview pane” component.
+apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/pages/Dashboard.jsx
+@@
+-import CurrentPreview from "../components/CurrentPreview";
++import { useState } from "react";
++import { loadTemplate } from "../utils/templateLoader";
++
++// ----------------------------------------------------------------------------
++// State: currentPageType ("homepage", later "landing", etc.)
++//        currentVersion   (1 | 2 | 3)
++// ----------------------------------------------------------------------------
+ export default function DashboardPage() {
+-  return <CurrentPreview />;
++  const [pageType] = useState("homepage");
++  const [version, setVersion] = useState(1);
++  const [Template, setTemplate] = useState(null);
++
++  // Load the first template on mount.
++  useEffect(() => {
++    loadTemplate(pageType, version).then(setTemplate);
++  }, []);
++
++  const handleSwitch = async (v) => {
++    setVersion(v);
++    const Mod = await loadTemplate(pageType, v);
++    setTemplate(() => Mod);
++  };
++
++  return (
++    <div className="dashboard">
++      <aside className="version-selector">
++        {[1, 2, 3].map((v) => (
++          <button
++            key={v}
++            className={v === version ? "active" : ""}
++            onClick={() => handleSwitch(v)}
++          >
++            Homepage v{v}
++          </button>
++        ))}
++      </aside>
++
++      <main className="preview-canvas">
++        {Template ? <Template tokens={siteTokens} /> : "Loading…"}
++      </main>
++    </div>
++  );
+ }
+*** End Patch
+PATCH
+
+# 5. VERY small CSS so the selector doesn’t look broken.
+apply_patch <<'PATCH'
+*** Begin Patch
+*** Add File: src/styles/templateSelector.css
+.version-selector{
+  display:flex; flex-direction:column; gap:8px; padding:16px;
+}
+.version-selector button{
+  padding:6px 10px; border:1px solid #ddd; background:#fff; cursor:pointer;
+}
+.version-selector button.active{
+  background:#5DD39E; color:#fff; border-color:#5DD39E;
+}
+.preview-canvas{ flex:1; overflow:auto; padding:16px; }
+*** End Patch
+PATCH
+echo 'import "../styles/templateSelector.css";' >> src/pages/Dashboard.jsx
+
+# 6. (Optional) create empty placeholder components for homepage v2/v3 so build passes.
+cat > src/templates/homepage/v2/index.jsx <<'EOF'
+export default function HomepageV2() {
+  return <h2 style={{padding:"2rem"}}>Homepage V2 – coming soon</h2>;
+}
+EOF
+
+cat > src/templates/homepage/v3/index.jsx <<'EOF'
+export default function HomepageV3() {
+  return <h2 style={{padding:"2rem"}}>Homepage V3 – coming soon</h2>;
+}
+EOF
+
+# 7. Run lint / TS checks & restart Vite
+npm run lint --if-present || true
+pkill -f vite || true
+npm run dev -- --host 0.0.0.0 --port 3002
+###  END OF PROMPT  ###########################################################
