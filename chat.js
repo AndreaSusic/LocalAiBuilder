@@ -72,7 +72,12 @@ async function performGbpLookup() {
     const list = await response.json();
     gbpList = list; // Store for selection
     
-    if (list.length > 0) {
+    if (list.length === 1) {
+      // Only one result found - ask for confirmation
+      bubble('ai', `Can you confirm that this is your business address?\n${list[0].name} – ${list[0].address}\n\nReply "yes" to confirm or "no" if this isn't your business.`);
+      convo.push({role: 'assistant', content: `Can you confirm that this is your business address?\n${list[0].name} – ${list[0].address}\n\nReply "yes" to confirm or "no" if this isn't your business.`});
+    } else if (list.length > 1) {
+      // Multiple results found - show numbered list
       const numbered = list.map((m, i) => `${i + 1}) ${m.name} – ${m.address}`).join('\n');
       bubble('ai', `Which one of these is your business?\n${numbered}\n0) None of these`);
       convo.push({role: 'assistant', content: `Which one of these is your business?\n${numbered}\n0) None of these`});
@@ -318,22 +323,35 @@ async function sendUser() {
     } else if (awaitingKey === 'google_profile') {
       if (text.toLowerCase().includes('yes')) {
         // Search for GBP by company name + city
+        awaitingKey = null; // Clear the awaiting key
         setTimeout(async () => {
           await performGbpLookup();
         }, 100);
+        return; // Don't continue with normal flow
       } else {
         // User doesn't have GBP
         state.google_profile = 'no';
       }
-    } else if (gbpList.length > 0 && /^[0-9]+$/.test(text.trim())) {
-      // Handle numbered GBP selection
-      const idx = parseInt(text.trim()) - 1;
-      if (idx >= 0 && idx < gbpList.length) {
-        state.google_profile = gbpList[idx].mapsUrl;
+    } else if (gbpList.length > 0) {
+      // Handle GBP selection responses
+      if (gbpList.length === 1 && (text.toLowerCase().includes('yes') || text.toLowerCase().includes('confirm'))) {
+        // User confirmed the single result
+        state.google_profile = gbpList[0].mapsUrl;
         gbpList = []; // Clear the list
-      } else if (text.trim() === '0') {
+      } else if (gbpList.length === 1 && text.toLowerCase().includes('no')) {
+        // User rejected the single result
         state.google_profile = 'no';
         gbpList = []; // Clear the list
+      } else if (/^[0-9]+$/.test(text.trim())) {
+        // Handle numbered selection for multiple results
+        const idx = parseInt(text.trim()) - 1;
+        if (idx >= 0 && idx < gbpList.length) {
+          state.google_profile = gbpList[idx].mapsUrl;
+          gbpList = []; // Clear the list
+        } else if (text.trim() === '0') {
+          state.google_profile = 'no';
+          gbpList = []; // Clear the list
+        }
       }
     } else {
       state[awaitingKey] = text.trim();
