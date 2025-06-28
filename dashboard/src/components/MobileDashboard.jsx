@@ -13,7 +13,7 @@ export default function MobileDashboard() {
         <button className="icon-btn-wireframe">🔔</button>
         <button className="small-btn-wireframe">Publish</button>
         <a href="/" target="_blank" rel="noopener noreferrer" className="mobile-logo-link">
-          <img src="/assets/logo.svg" alt="LocalAI Builder" className="mobile-dashboard-logo" />
+          <img src="/logo.svg" alt="LocalAI Builder" className="mobile-dashboard-logo" />
         </a>
         <div className="dropdown-wrapper">
           <button 

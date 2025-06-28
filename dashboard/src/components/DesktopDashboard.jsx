@@ -32,7 +32,7 @@ export default function DesktopDashboard() {
         <div className="group">
           <span className="hamburger">☰</span>
           <a href="/" target="_blank" rel="noopener noreferrer" className="logo-link">
-            <img src="/assets/logo.svg" alt="LocalAI Builder" className="dashboard-logo" />
+            <img src="/logo.svg" alt="LocalAI Builder" className="dashboard-logo" />
           </a>
           <button className="btn" onClick={newSite}>New Site</button>
           <button className="btn" onClick={saveSite}>Save</button>
