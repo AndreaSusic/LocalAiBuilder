@@ -4,6 +4,7 @@ import "./App.css";
 import DesktopDashboard from "./components/DesktopDashboard";
 import MobileDashboard from "./components/MobileDashboard";
 import DashboardPage from "./pages/Dashboard";
+import TemplateOne from "./templates/TemplateOne";
 
 export default function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
@@ -44,7 +45,7 @@ export default function App() {
         
         {/* New template dashboard with version selector */}
         <Route path="/templates" element={<DashboardPage />} />
-        <Route path="/templates/homepage-1" element={<DashboardPage />} />
+        <Route path="/templates/homepage-1" element={<TemplateOne />} />
         
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />
