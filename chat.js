@@ -318,12 +318,20 @@ async function sendUser() {
       gbpList = []; // Clear the list
       awaitingKey = null; // Clear awaiting key
       console.log('✅ GBP confirmed, set to:', state.google_profile);
+      // Don't process this response further - it's handled
+      input.innerText = '';
+      await handleMissing({});
+      return;
     } else if (gbpList.length === 1 && text.toLowerCase().includes('no')) {
       // User rejected the single result
       state.google_profile = 'no';
       gbpList = []; // Clear the list
       awaitingKey = null; // Clear awaiting key
       console.log('❌ GBP rejected, set to no');
+      // Don't process this response further - it's handled
+      input.innerText = '';
+      await handleMissing({});
+      return;
     } else if (/^[0-9]+$/.test(text.trim())) {
       // Handle numbered selection for multiple results
       const idx = parseInt(text.trim()) - 1;
@@ -332,11 +340,19 @@ async function sendUser() {
         gbpList = []; // Clear the list
         awaitingKey = null; // Clear awaiting key
         console.log('🔢 GBP selected from list:', state.google_profile);
+        // Don't process this response further - it's handled
+        input.innerText = '';
+        await handleMissing({});
+        return;
       } else if (text.trim() === '0') {
         state.google_profile = 'no';
         gbpList = []; // Clear the list
         awaitingKey = null; // Clear awaiting key
         console.log('0️⃣ GBP none selected, set to no');
+        // Don't process this response further - it's handled
+        input.innerText = '';
+        await handleMissing({});
+        return;
       }
     }
   }
@@ -509,7 +525,7 @@ async function handleMissing(res){
   if(next){
     const Q={
       company_name:'What\'s the name of your business?',
-      city:'Which city do you mainly serve?',
+      city:'In which city is your business located?',
       industry:'What industry best describes your business?',
       language:'What primary language should the website use?',
       services:'List your most important services or products.',
