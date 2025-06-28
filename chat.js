@@ -42,6 +42,7 @@ let convo = [], state = {
   language: null,
   services: null,
   colours: null,
+  address: null,           // NEW  : street address for GBP lookup
   social: {                // NEW  : fb / ig / tt / li etc.
     facebook: null,
     instagram: null,
@@ -55,6 +56,41 @@ let convo = [], state = {
     turns = 0, MAX_FREE = 15;
 
 let awaitingKey = null;
+let gbpList = [];  // Store GBP search results
+
+// Perform GBP lookup and display results
+async function performGbpLookup() {
+  try {
+    const response = await fetch('/api/find-gbp', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: state.company_name,
+        city: state.city,
+        address: state.address
+      }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    
+    const list = await response.json();
+    gbpList = list; // Store for selection
+    
+    if (list.length > 0) {
+      const numbered = list.map((m, i) => `${i + 1}) ${m.name} – ${m.address}`).join('\n');
+      bubble('ai', `Here's what I found:\n${numbered}\n0) None of these`);
+      convo.push({role: 'assistant', content: `Here's what I found:\n${numbered}\n0) None of these`});
+    } else {
+      bubble('ai', 'No Google Business Profiles found for this address. We\'ll continue without it.');
+      state.google_profile = 'none';
+      convo.push({role: 'assistant', content: 'No Google Business Profiles found for this address.'});
+      await handleMissing({});
+    }
+  } catch (error) {
+    console.error('GBP lookup error:', error);
+    bubble('ai', 'Unable to search for Google Business Profile. We\'ll continue without it.');
+    state.google_profile = 'none';
+    await handleMissing({});
+  }
+}
 
 // bubble helper
 function bubble(role, txt) { 
@@ -281,6 +317,22 @@ async function sendUser() {
       if (!RX_SOCIAL.test(text)) {
         state.social.response = text.trim();
       }
+    } else if (awaitingKey === 'google_profile' && /^[0-9]+$/.test(text.trim())) {
+      // Handle numbered GBP selection
+      const idx = parseInt(text.trim()) - 1;
+      if (idx >= 0 && idx < gbpList.length) {
+        state.google_profile = gbpList[idx].mapsUrl;
+      } else if (text.trim() === '0') {
+        state.google_profile = 'none';
+      }
+    } else if (awaitingKey === 'address') {
+      state[awaitingKey] = text.trim();
+      // Trigger GBP lookup after setting address
+      setTimeout(async () => {
+        if (state.google_profile === null) {
+          await performGbpLookup();
+        }
+      }, 100);
     } else {
       state[awaitingKey] = text.trim();
     }
@@ -383,7 +435,7 @@ async function sendUser() {
 }
 
 function mergeState(obj) {
-  ['company_name', 'industry', 'language', 'services'].forEach(k => {
+  ['company_name', 'industry', 'language', 'services', 'address'].forEach(k => {
     if (obj[k]) state[k] = obj[k];
   });
   
@@ -408,7 +460,7 @@ async function handleMissing(res){
   // Step 1: Ask for text Qs (company, city, industry, language, services, social, google_profile, payment_plans, hero_video)
   const order = [
     'company_name','city','industry','language','services',
-    'social','google_profile','payment_plans','hero_video'
+    'social','address','google_profile','payment_plans','hero_video'
   ];
   const next = order.find(k => {
     if (k === 'social') {
@@ -427,7 +479,8 @@ async function handleMissing(res){
       language:'What primary language should the website use?',
       services:'List your most important services or products.',
       social: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.',
-      google_profile: 'Do you have a Google Business Profile link?  If yes, paste it here.',
+      address: 'What\'s your street address (street + number)?',
+      google_profile: 'Which one of these is your business? (Reply 1, 2, 3 or 0=None)',
       payment_plans: 'Do you offer payment plans or financing options?',
       hero_video: 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say "skip").'
     }[next];
