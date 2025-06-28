@@ -310,8 +310,38 @@ async function sendUser() {
   const text = input.innerText.trim();
   if (!text) return;
 
+  // Handle GBP selection responses first (highest priority)
+  if (gbpList.length > 0) {
+    if (gbpList.length === 1 && (text.toLowerCase().includes('yes') || text.toLowerCase().includes('confirm'))) {
+      // User confirmed the single result
+      state.google_profile = gbpList[0].mapsUrl;
+      gbpList = []; // Clear the list
+      awaitingKey = null; // Clear awaiting key
+      console.log('✅ GBP confirmed, set to:', state.google_profile);
+    } else if (gbpList.length === 1 && text.toLowerCase().includes('no')) {
+      // User rejected the single result
+      state.google_profile = 'no';
+      gbpList = []; // Clear the list
+      awaitingKey = null; // Clear awaiting key
+      console.log('❌ GBP rejected, set to no');
+    } else if (/^[0-9]+$/.test(text.trim())) {
+      // Handle numbered selection for multiple results
+      const idx = parseInt(text.trim()) - 1;
+      if (idx >= 0 && idx < gbpList.length) {
+        state.google_profile = gbpList[idx].mapsUrl;
+        gbpList = []; // Clear the list
+        awaitingKey = null; // Clear awaiting key
+        console.log('🔢 GBP selected from list:', state.google_profile);
+      } else if (text.trim() === '0') {
+        state.google_profile = 'no';
+        gbpList = []; // Clear the list
+        awaitingKey = null; // Clear awaiting key
+        console.log('0️⃣ GBP none selected, set to no');
+      }
+    }
+  }
   // If we just asked for a specific key, take reply verbatim
-  if (awaitingKey && text) {
+  else if (awaitingKey && text) {
     if (awaitingKey === 'hero_video' && text.toLowerCase().includes('skip')) {
       state[awaitingKey] = 'skip';
     } else if (awaitingKey === 'social') {
@@ -331,33 +361,10 @@ async function sendUser() {
       } else {
         // User doesn't have GBP
         state.google_profile = 'no';
+        awaitingKey = null;
+        console.log('🚫 User said no to having GBP');
       }
-    } else if (gbpList.length > 0) {
-      // Handle GBP selection responses
-      if (gbpList.length === 1 && (text.toLowerCase().includes('yes') || text.toLowerCase().includes('confirm'))) {
-        // User confirmed the single result
-        state.google_profile = gbpList[0].mapsUrl;
-        gbpList = []; // Clear the list
-        awaitingKey = null; // Clear awaiting key
-      } else if (gbpList.length === 1 && text.toLowerCase().includes('no')) {
-        // User rejected the single result
-        state.google_profile = 'no';
-        gbpList = []; // Clear the list
-        awaitingKey = null; // Clear awaiting key
-      } else if (/^[0-9]+$/.test(text.trim())) {
-        // Handle numbered selection for multiple results
-        const idx = parseInt(text.trim()) - 1;
-        if (idx >= 0 && idx < gbpList.length) {
-          state.google_profile = gbpList[idx].mapsUrl;
-          gbpList = []; // Clear the list
-          awaitingKey = null; // Clear awaiting key
-        } else if (text.trim() === '0') {
-          state.google_profile = 'no';
-          gbpList = []; // Clear the list
-          awaitingKey = null; // Clear awaiting key
-        }
-      }
-    } else if (awaitingKey) {
+    } else {
       state[awaitingKey] = text.trim();
       awaitingKey = null;
     }
