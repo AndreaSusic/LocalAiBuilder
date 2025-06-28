@@ -301,15 +301,17 @@ async function sendUser() {
   }
 
   // --- quick auto-detect for new keys ---
-  if (!state.social.facebook && !state.social.instagram && !state.social.tiktok && !state.social.linkedin && RX_SOCIAL.test(text)) {
-    const urlMatch = text.match(/https?:\/\/\S+/);
-    if (urlMatch) {
-      const url = urlMatch[0];
-      if (url.includes('facebook')) state.social.facebook = url;
-      if (url.includes('instagram')) state.social.instagram = url;
-      if (url.includes('tiktok')) state.social.tiktok = url;
-      if (url.includes('linkedin')) state.social.linkedin = url;
-    }
+  if (RX_SOCIAL.test(text)) {
+    const urls = text.match(/https?:\/\/\S+/g) || [];
+    urls.forEach(url => {
+      if (url.includes('facebook') && !state.social.facebook) state.social.facebook = url;
+      if (url.includes('instagram') && !state.social.instagram) state.social.instagram = url;
+      if (url.includes('tiktok') && !state.social.tiktok) state.social.tiktok = url;
+      if (url.includes('linkedin') && !state.social.linkedin) state.social.linkedin = url;
+    });
+  } else if (awaitingKey === 'social' && !RX_SOCIAL.test(text)) {
+    // If user responded to social question but no URLs detected, mark as "no social media"
+    state.social = { facebook: null, instagram: null, tiktok: null, linkedin: null, response: text };
   }
   if (!state.google_profile && RX_GBP.test(text)) {
     const urlMatch = text.match(/https?:\/\/\S+/);
@@ -404,7 +406,9 @@ async function handleMissing(res){
   ];
   const next = order.find(k => {
     if (k === 'social') {
-      return !state.social.facebook && !state.social.instagram && !state.social.tiktok && !state.social.linkedin;
+      // Consider social "complete" if user provided any URLs OR answered the question
+      return !state.social.facebook && !state.social.instagram && !state.social.tiktok && !state.social.linkedin && 
+             !state.social.response;
     }
     return state[k] === null;
   });
@@ -416,7 +420,7 @@ async function handleMissing(res){
       industry:'What industry best describes your business?',
       language:'What primary language should the website use?',
       services:'List your most important services or products.',
-      social: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)?',
+      social: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.',
       google_profile: 'Do you have a Google Business Profile link?  If yes, paste it here.',
       payment_plans: 'Do you offer payment plans or financing options?',
       hero_video: 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say "skip").'
