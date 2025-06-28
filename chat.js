@@ -338,25 +338,29 @@ async function sendUser() {
         // User confirmed the single result
         state.google_profile = gbpList[0].mapsUrl;
         gbpList = []; // Clear the list
+        awaitingKey = null; // Clear awaiting key
       } else if (gbpList.length === 1 && text.toLowerCase().includes('no')) {
         // User rejected the single result
         state.google_profile = 'no';
         gbpList = []; // Clear the list
+        awaitingKey = null; // Clear awaiting key
       } else if (/^[0-9]+$/.test(text.trim())) {
         // Handle numbered selection for multiple results
         const idx = parseInt(text.trim()) - 1;
         if (idx >= 0 && idx < gbpList.length) {
           state.google_profile = gbpList[idx].mapsUrl;
           gbpList = []; // Clear the list
+          awaitingKey = null; // Clear awaiting key
         } else if (text.trim() === '0') {
           state.google_profile = 'no';
           gbpList = []; // Clear the list
+          awaitingKey = null; // Clear awaiting key
         }
       }
-    } else {
+    } else if (awaitingKey) {
       state[awaitingKey] = text.trim();
+      awaitingKey = null;
     }
-    awaitingKey = null;
   }
   
   // Handle "no images" responses
@@ -487,6 +491,10 @@ async function handleMissing(res){
       // Consider social "complete" if user provided any URLs OR answered the question
       return !state.social.facebook && !state.social.instagram && !state.social.tiktok && !state.social.linkedin && 
              !state.social.response;
+    }
+    if (k === 'google_profile') {
+      // Consider google_profile "complete" if it has any value (URL, 'no', etc.)
+      return state.google_profile === null;
     }
     return state[k] === null;
   });
