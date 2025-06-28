@@ -5,6 +5,9 @@ import DesktopDashboard from "./components/DesktopDashboard";
 import MobileDashboard from "./components/MobileDashboard";
 import DashboardPage from "./pages/Dashboard";
 import TemplateOne from "./templates/TemplateOne";
+import HomepageV1 from "./templates/homepage/v1/index.jsx";
+import HomepageV2 from "./templates/homepage/v2/index.jsx";
+import HomepageV3 from "./templates/homepage/v3/index.jsx";
 
 export default function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
@@ -46,6 +49,11 @@ export default function App() {
         {/* New template dashboard with version selector */}
         <Route path="/templates" element={<DashboardPage />} />
         <Route path="/templates/homepage-1" element={<TemplateOne />} />
+        
+        {/* Exact template routes */}
+        <Route path="/templates/homepage/v1/index.jsx" element={<HomepageV1 />} />
+        <Route path="/templates/homepage/v2/index.jsx" element={<HomepageV2 />} />
+        <Route path="/templates/homepage/v3/index.jsx" element={<HomepageV3 />} />
         
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />
