@@ -17,7 +17,7 @@ export default function DesktopDashboard() {
   const publish = () => console.log("Publish");
   const openVer = v => {
     if (v === "Version 1") {
-      navigate('/templates');
+      window.open('/templates', '_blank');
     } else {
       console.log("Open", v);
     }
