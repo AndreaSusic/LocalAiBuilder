@@ -275,6 +275,12 @@ async function sendUser() {
   if (awaitingKey && text) {
     if (awaitingKey === 'hero_video' && text.toLowerCase().includes('skip')) {
       state[awaitingKey] = 'skip';
+    } else if (awaitingKey === 'social') {
+      // Don't assign directly, let the auto-detection handle it
+      // Just mark that we got a response
+      if (!RX_SOCIAL.test(text)) {
+        state.social.response = text.trim();
+      }
     } else {
       state[awaitingKey] = text.trim();
     }
