@@ -42,7 +42,6 @@ let convo = [], state = {
   language: null,
   services: null,
   colours: null,
-  address: null,           // NEW  : street address for GBP lookup
   social: {                // NEW  : fb / ig / tt / li etc.
     facebook: null,
     instagram: null,
@@ -65,8 +64,7 @@ async function performGbpLookup() {
       method: 'POST',
       body: JSON.stringify({
         name: state.company_name,
-        city: state.city,
-        address: state.address
+        city: state.city
       }),
       headers: { 'Content-Type': 'application/json' }
     });
@@ -76,18 +74,18 @@ async function performGbpLookup() {
     
     if (list.length > 0) {
       const numbered = list.map((m, i) => `${i + 1}) ${m.name} – ${m.address}`).join('\n');
-      bubble('ai', `Here's what I found:\n${numbered}\n0) None of these`);
-      convo.push({role: 'assistant', content: `Here's what I found:\n${numbered}\n0) None of these`});
+      bubble('ai', `Which one of these is your business?\n${numbered}\n0) None of these`);
+      convo.push({role: 'assistant', content: `Which one of these is your business?\n${numbered}\n0) None of these`});
     } else {
-      bubble('ai', 'No Google Business Profiles found for this address. We\'ll continue without it.');
-      state.google_profile = 'none';
-      convo.push({role: 'assistant', content: 'No Google Business Profiles found for this address.'});
+      bubble('ai', 'No Google Business Profiles found with that name. We\'ll continue without it.');
+      state.google_profile = 'no';
+      convo.push({role: 'assistant', content: 'No Google Business Profiles found with that name.'});
       await handleMissing({});
     }
   } catch (error) {
     console.error('GBP lookup error:', error);
     bubble('ai', 'Unable to search for Google Business Profile. We\'ll continue without it.');
-    state.google_profile = 'none';
+    state.google_profile = 'no';
     await handleMissing({});
   }
 }
@@ -317,22 +315,26 @@ async function sendUser() {
       if (!RX_SOCIAL.test(text)) {
         state.social.response = text.trim();
       }
-    } else if (awaitingKey === 'google_profile' && /^[0-9]+$/.test(text.trim())) {
+    } else if (awaitingKey === 'google_profile') {
+      if (text.toLowerCase().includes('yes')) {
+        // Search for GBP by company name + city
+        setTimeout(async () => {
+          await performGbpLookup();
+        }, 100);
+      } else {
+        // User doesn't have GBP
+        state.google_profile = 'no';
+      }
+    } else if (gbpList.length > 0 && /^[0-9]+$/.test(text.trim())) {
       // Handle numbered GBP selection
       const idx = parseInt(text.trim()) - 1;
       if (idx >= 0 && idx < gbpList.length) {
         state.google_profile = gbpList[idx].mapsUrl;
+        gbpList = []; // Clear the list
       } else if (text.trim() === '0') {
-        state.google_profile = 'none';
+        state.google_profile = 'no';
+        gbpList = []; // Clear the list
       }
-    } else if (awaitingKey === 'address') {
-      state[awaitingKey] = text.trim();
-      // Trigger GBP lookup after setting address
-      setTimeout(async () => {
-        if (state.google_profile === null) {
-          await performGbpLookup();
-        }
-      }, 100);
     } else {
       state[awaitingKey] = text.trim();
     }
@@ -435,7 +437,7 @@ async function sendUser() {
 }
 
 function mergeState(obj) {
-  ['company_name', 'industry', 'language', 'services', 'address'].forEach(k => {
+  ['company_name', 'industry', 'language', 'services'].forEach(k => {
     if (obj[k]) state[k] = obj[k];
   });
   
@@ -460,7 +462,7 @@ async function handleMissing(res){
   // Step 1: Ask for text Qs (company, city, industry, language, services, social, google_profile, payment_plans, hero_video)
   const order = [
     'company_name','city','industry','language','services',
-    'social','address','google_profile','payment_plans','hero_video'
+    'social','google_profile','payment_plans','hero_video'
   ];
   const next = order.find(k => {
     if (k === 'social') {
@@ -479,8 +481,7 @@ async function handleMissing(res){
       language:'What primary language should the website use?',
       services:'List your most important services or products.',
       social: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.',
-      address: 'What\'s your street address (street + number)?',
-      google_profile: 'Which one of these is your business? (Reply 1, 2, 3 or 0=None)',
+      google_profile: 'Do you have a Google Business Profile? (Reply "yes" or "no")',
       payment_plans: 'Do you offer payment plans or financing options?',
       hero_video: 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say "skip").'
     }[next];

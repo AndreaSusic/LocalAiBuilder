@@ -349,15 +349,16 @@ app.post('/signup', async function(req, res) {
 // Google Business Profile lookup API
 app.post('/api/find-gbp', async (req, res) => {
   try {
-    const { name, city, address } = req.body;
+    const { name, city } = req.body;
     const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
     
     if (!GOOGLE_API_KEY) {
       return res.status(500).json({ error: 'Google API key not configured' });
     }
     
-    // Build search query
-    const query = `${name} ${Array.isArray(city) ? city[0] : city} ${address}`;
+    // Build search query using company name + city
+    const cityName = Array.isArray(city) ? city[0] : city;
+    const query = `${name} ${cityName}`;
     const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${GOOGLE_API_KEY}`;
     
     const response = await fetch(searchUrl);
@@ -367,8 +368,15 @@ app.post('/api/find-gbp', async (req, res) => {
       return res.json([]);
     }
     
+    // Filter results to only include businesses that closely match the name
+    const nameWords = name.toLowerCase().split(' ');
+    const filteredResults = data.results.filter(place => {
+      const placeName = place.name.toLowerCase();
+      return nameWords.some(word => placeName.includes(word));
+    });
+    
     // Format results for frontend
-    const results = data.results.slice(0, 5).map(place => ({
+    const results = filteredResults.slice(0, 5).map(place => ({
       name: place.name,
       address: place.formatted_address,
       mapsUrl: `https://maps.google.com/maps?place_id=${place.place_id}`,
