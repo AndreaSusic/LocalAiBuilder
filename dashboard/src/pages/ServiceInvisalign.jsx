@@ -16,24 +16,20 @@ export const serviceTokens = {
   ],
   ctaLabel: "Schedule Now",
 
-  painPoints: [
-    {emoji:"😬", title:"Metal-Mouth Worries",
-     copy:"You want straight teeth but can't stand the idea of bulky brackets and wires affecting your confidence at work or school."},
-    {emoji:"⌛", title:"No Time for Adjustments",
-     copy:"Busy careers (and kids!) leave little room for frequent tightening visits and emergency wire repairs."},
-    {emoji:"🍿", title:"Food Limitations",
-     copy:"Popcorn, apples, caramel – traditional braces force you to give up the foods you love for years on end."}
+  problemTitle: "Your Smile Struggles",
+  problemImage: "https://plus.unsplash.com/premium_photo-1661774814529-071787053b8e?w=900&auto=format&fit=crop&q=60",
+  problemList: [
+    "Crooked front teeth make you hide your smile in photos.",
+    "Metal braces feel unprofessional for client-facing work.",
+    "You've had relapse after childhood braces and want a subtle fix.",
+    "Tight schedules leave no room for monthly wire adjustments."
   ],
 
   benefits: [
-    {icon:"🦷", title:"Nearly Invisible",
-     copy:"Crystal-clear trays keep treatment our little secret – no brackets or wires."},
-    {icon:"🍎", title:"Eat Anything",
-     copy:"Simply remove your aligners at mealtimes – enjoy popcorn, pizza or apples freely."},
-    {icon:"⏱️", title:"Fewer Appointments",
-     copy:"Check-ups every 6–8 weeks mean less time in the chair and more living life."},
-    {icon:"✨", title:"Predictable Results",
-     copy:"Digital 3-D planning shows your future smile before we even begin."}
+    {title:"Almost Invisible", copy:"Crystal-clear trays keep treatment our little secret — confidence intact."},
+    {title:"Eat Anything", copy:"Remove your aligners at mealtimes — enjoy popcorn, pizza or apples freely."},
+    {title:"Fewer Visits", copy:"Check-ups every 6-8 weeks mean less time in the chair, more living life."},
+    {title:"Predictable Results", copy:"3-D planning lets you preview your future smile before treatment begins."}
   ],
 
   beforeImg: "https://images.unsplash.com/photo-1658849350672-7a708745b68e?w=900&auto=format&fit=crop&q=60",
@@ -120,28 +116,45 @@ const Hero = ({ tokens }) => (
   </section>
 );
 
-// Pain Points Component
-const PainPoints = ({ tokens }) => (
-  <section style={{ background: "#fff", padding: "4rem 2rem" }}>
-    <div style={{ margin: "0 auto", textAlign: "center" }}>
-      <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", fontFamily: "var(--font-heading)" }}>
-        Traditional Braces Challenges
-      </h2>
-      <div style={{ display: "grid", gap: "2rem", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
-        {tokens.painPoints.map((point, i) => (
-          <div key={i} style={{
-            background: "var(--bg-light)",
-            padding: "2rem",
-            borderRadius: "8px",
-            textAlign: "left"
-          }}>
-            <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>{point.emoji}</div>
-            <h3 style={{ fontSize: "1.3rem", marginBottom: "1rem", fontFamily: "var(--font-heading)" }}>
-              {point.title}
-            </h3>
-            <p style={{ color: "#555", lineHeight: "1.6" }}>{point.copy}</p>
-          </div>
-        ))}
+// Problem Component (replaces PainPoints)
+const Problem = ({ tokens }) => (
+  <section style={{ background: "var(--bg-light)", padding: "60px 20px" }}>
+    <div style={{ 
+      maxWidth: "1100px", 
+      margin: "auto", 
+      display: "flex", 
+      gap: "50px", 
+      alignItems: "center", 
+      flexWrap: "wrap" 
+    }}>
+      <div style={{ flex: "1 1 350px" }}>
+        <img src={tokens.problemImage} alt="Dental concerns" style={{
+          width: "100%",
+          height: "auto",
+          borderRadius: "8px"
+        }} />
+      </div>
+      <div style={{ flex: "1 1 320px" }}>
+        <h2 style={{ 
+          marginBottom: "1rem", 
+          fontSize: "2rem", 
+          fontFamily: "var(--font-heading)" 
+        }}>
+          {tokens.problemTitle}
+        </h2>
+        <ul style={{ 
+          listStyle: "disc", 
+          paddingLeft: "1.25rem" 
+        }}>
+          {tokens.problemList.map((item, i) => (
+            <li key={i} style={{ 
+              marginBottom: "0.7rem", 
+              fontSize: "1.05rem" 
+            }}>
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </section>
@@ -162,8 +175,19 @@ const Benefits = ({ tokens }) => (
             borderRadius: "8px",
             boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
           }}>
-            <div style={{ fontSize: "3rem", marginBottom: "1rem", color: "var(--primary)" }}>
-              {benefit.icon}
+            <div style={{
+              width: "72px",
+              height: "72px",
+              borderRadius: "50%",
+              background: "var(--secondary)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 0.9rem",
+              fontSize: "2rem",
+              color: "var(--primary)"
+            }}>
+              ✨
             </div>
             <h3 style={{ fontSize: "1.3rem", marginBottom: "1rem", fontFamily: "var(--font-heading)" }}>
               {benefit.title}
@@ -464,7 +488,7 @@ export default function ServiceInvisalign() {
       <Menu tokens={serviceTokens} />
       
       <Hero tokens={serviceTokens} />
-      <PainPoints tokens={serviceTokens} />
+      <Problem tokens={serviceTokens} />
       <Benefits tokens={serviceTokens} />
       <BeforeAfter tokens={serviceTokens} />
       <Testimonials tokens={serviceTokens} />
