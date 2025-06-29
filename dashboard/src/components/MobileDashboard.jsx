@@ -29,9 +29,11 @@ export default function MobileDashboard() {
               {versions.map((v, i) => (
                 <div key={i} className="version-item" onClick={() => {
                   if (v === "Version 1") {
-                    window.open('/templates', '_blank');
-                  } else {
-                    console.log("Selected version:", v);
+                    window.open('/templates/homepage/v1/index.jsx', '_blank');
+                  } else if (v === "Version 2") {
+                    window.open('/templates/homepage/v2/index.jsx', '_blank');
+                  } else if (v === "Version 3") {
+                    window.open('/templates/homepage/v3/index.jsx', '_blank');
                   }
                   setShowVersions(false);
                 }}>
