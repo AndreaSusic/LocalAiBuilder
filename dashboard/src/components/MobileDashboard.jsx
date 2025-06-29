@@ -6,6 +6,7 @@ export default function MobileDashboard() {
   const navigate = useNavigate();
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
   const [showVersions, setShowVersions] = useState(false);
+  const [showPagesDropdown, setShowPagesDropdown] = useState(false);
 
   return (
     <div className="mobile-dashboard-wireframe">
@@ -20,26 +21,29 @@ export default function MobileDashboard() {
         <div className="dropdown-wrapper">
           <button 
             className="small-btn-wireframe"
-            onClick={() => setShowVersions(!showVersions)}
+            onClick={() => setShowPagesDropdown(!showPagesDropdown)}
           >
-            Versions ▼
+            Pages ▼
           </button>
-          {showVersions && (
+          {showPagesDropdown && (
             <div className="versions-dropdown">
-              {versions.map((v, i) => (
-                <div key={i} className="version-item" onClick={() => {
-                  if (v === "Version 1") {
-                    window.open('/templates/homepage/v1/index.jsx', '_blank');
-                  } else if (v === "Version 2") {
-                    window.open('/templates/homepage/v2/index.jsx', '_blank');
-                  } else if (v === "Version 3") {
-                    window.open('/templates/homepage/v3/index.jsx', '_blank');
-                  }
-                  setShowVersions(false);
-                }}>
-                  {v}
-                </div>
-              ))}
+              <div className="version-item" onClick={() => {
+                window.open('/templates/homepage/v1/index.jsx', '_blank');
+                setShowPagesDropdown(false);
+              }}>
+                Homepage
+              </div>
+              <div className="version-item" onClick={() => {
+                window.open('/templates/service/v1/index.jsx', '_blank');
+                setShowPagesDropdown(false);
+              }}>
+                Service
+              </div>
+              <div className="version-item" onClick={() => {
+                setShowPagesDropdown(false);
+              }}>
+                Contact
+              </div>
             </div>
           )}
         </div>

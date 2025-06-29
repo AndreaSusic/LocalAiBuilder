@@ -374,44 +374,37 @@ const SimilarServices = ({ tokens }) => (
 
 // Map Block Component
 const MapBlock = ({ tokens }) => (
-  <section style={{ background: "#fff", padding: "4rem 2rem" }}>
-    <div style={{ margin: "0 auto" }}>
-      <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", textAlign: "center", fontFamily: "var(--font-heading)" }}>
-        Visit Our Practice
-      </h2>
-      <div style={{ display: "grid", gap: "2rem", gridTemplateColumns: "1fr 1fr" }}>
-        <div>
-          <h3 style={{ marginBottom: "1rem", fontFamily: "var(--font-heading)" }}>{tokens.practice.name}</h3>
-          <p style={{ marginBottom: "0.5rem", color: "#555" }}>{tokens.practice.address}</p>
-          <p style={{ marginBottom: "2rem", color: "#555" }}>{tokens.practice.phone}</p>
-          <button style={{
-            background: "var(--primary)",
-            color: "white",
-            border: "none",
-            padding: "0.75rem 1.5rem",
-            borderRadius: "4px",
-            fontSize: "1rem",
-            fontWeight: "500",
-            cursor: "pointer"
-          }}>
-            Get Directions
-          </button>
-        </div>
-        <div style={{ position: "relative", height: "300px" }}>
-          <iframe
-            src={tokens.practice.mapEmbed}
-            style={{
-              width: "100%",
-              height: "100%",
-              border: 0,
-              borderRadius: "8px"
-            }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        </div>
-      </div>
+  <section style={{ 
+    position: "relative", 
+    height: "340px", 
+    padding: "10px" 
+  }} className="map-box">
+    <iframe 
+      loading="lazy" 
+      src="https://maps.google.com/maps?q=austin%20dentist&t=&z=13&ie=UTF8&iwloc=&output=embed"
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        border: 0,
+        padding: "20px"
+      }}
+    />
+    <div style={{
+      position: "absolute",
+      bottom: "20px",
+      left: "20px",
+      background: "#fff",
+      padding: "1rem 1.5rem",
+      borderRadius: "6px",
+      boxShadow: "0 2px 8px rgba(0,0,0,.15)"
+    }} className="map-overlay">
+      <strong>YourPractice Austin</strong><br/>
+      123 Dental St, Austin<br/>
+      Mon-Fri 8 am – 5 pm<br/>
+      <a href="tel:+123456789" style={{ color: "var(--primary)", textDecoration: "none" }}>
+        Call +1 234 567 89
+      </a>
     </div>
   </section>
 );
