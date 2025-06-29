@@ -191,14 +191,13 @@ app.use('/templates/homepage', (req, res, next) => {
   }
 });
 
-// Template routing - serve rendered HTML pages that display the templates directly
+// Template routing - proxy to dashboard for direct URL access
 app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
   const ver = req.params.ver;
   console.log(`Template route hit: v${ver}`);
   
-  // HTTP redirect to the dashboard template viewer  
-  const dashboardUrl = `${req.protocol}://${req.get('host').replace('5000', '4000')}/templates/homepage-${ver}`;
-  res.redirect(302, dashboardUrl);
+  // Serve the dashboard index.html to handle React Router for this route
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
 // Serve static files (after template routes)

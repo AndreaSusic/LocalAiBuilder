@@ -17,9 +17,11 @@ export default function DesktopDashboard() {
   const publish = () => console.log("Publish");
   const openVer = v => {
     if (v === "Version 1") {
-      window.open('/templates', '_blank');
-    } else {
-      console.log("Open", v);
+      window.open('/templates/homepage/v1/index.jsx', '_blank');
+    } else if (v === "Version 2") {
+      window.open('/templates/homepage/v2/index.jsx', '_blank'); 
+    } else if (v === "Version 3") {
+      window.open('/templates/homepage/v3/index.jsx', '_blank');
     }
   };
   const handleEditorAction = (action) => {
