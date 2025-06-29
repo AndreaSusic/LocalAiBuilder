@@ -1,0 +1,113 @@
+# 1️⃣  Create a new React file at:
+#      src/pages/ServiceInvisalign.jsx
+#    (keep all other project structure untouched)
+
+# 2️⃣  File content — import the existing shared <Menu /> and <Footer /> components
+#    that are already used on the home-page, then render the Service page content
+#    from service1.html (attached) **inside the same CSS-in-JS token system**.
+
+# --------------------------------------------------------------------
+#    2.a  TOKEN SCHEMA (export so other pages can re-use)
+# --------------------------------------------------------------------
+#    export const serviceTokens = {
+#      slug:            "invisalign",
+#      heroBg:          "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=1740&q=60",
+#      heroTitle:       "Invisalign® Clear Aligners",
+#      heroText: [
+#        "Discreet, removable and digitally-planned orthodontics tailored for busy adults.",
+#        "No brackets, no wires — just comfortable, crystal-clear trays that fit your lifestyle.",
+#        "Eat what you love, brush normally, and watch your smile transform week by week.",
+#        "Start your journey today with Austin’s most trusted Invisalign® provider."
+#      ],
+#      ctaLabel:        "Schedule Now",
+#
+#      painPoints: [
+#        {emoji:"😬",title:"Metal-Mouth Worries",
+#         copy:"You want straight teeth but can’t stand the idea of bulky brackets and wires affecting your confidence at work or school."},
+#        {emoji:"⌛",title:"No Time for Adjustments",
+#         copy:"Busy careers (and kids!) leave little room for frequent tightening visits and emergency wire repairs."},
+#        {emoji:"🍿",title:"Food Limitations",
+#         copy:"Popcorn, apples, caramel – traditional braces force you to give up the foods you love for years on end."}
+#      ],
+#
+#      benefits: [
+#        {icon:"🦷", title:"Nearly Invisible",
+#         copy:"Crystal-clear trays keep treatment our little secret – no brackets or wires."},
+#        {icon:"🍎", title:"Eat Anything",
+#         copy:"Simply remove your aligners at mealtimes – enjoy popcorn, pizza or apples freely."},
+#        {icon:"⏱️", title:"Fewer Appointments",
+#         copy:"Check-ups every 6–8 weeks mean less time in the chair and more living life."},
+#        {icon:"✨", title:"Predictable Results",
+#         copy:"Digital 3-D planning shows your future smile before we even begin."}
+#      ],
+#
+#      beforeImg:"https://images.unsplash.com/photo-1658849350672-7a708745b68e?w=900&auto=format&fit=crop&q=60",
+#      afterImg :"https://images.unsplash.com/photo-1660732205495-f65510d8180e?w=900&auto=format&fit=crop&q=60",
+#
+#      testimonials:[
+#        {avatar:"https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&w=96&q=60",
+#         text:"I never imagined straightening my teeth could be this comfortable. Zero metal-mouth drama!",
+#         name:"Samantha K.",stars:5},
+#        {avatar:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=96&q=60",
+#         text:"The 3-D simulation sold me right away – and my real smile looks even better!",
+#         name:"Daniel R.",stars:5}
+#      ],
+#
+#      faqs:[
+#        {q:"How long does Invisalign® take?",
+#         a:"Most cases finish within 6-14 months, depending on complexity and how diligently you wear the trays."},
+#        {q:"Is it painful?",
+#         a:"Expect gentle pressure the first day of a new tray; patients report far less discomfort than braces."},
+#        {q:"Will insurance cover Invisalign®?",
+#         a:"Many orthodontic policies apply. We’ll check your benefits and offer flexible payment plans if needed."}
+#      ],
+#
+#      similar:[
+#        {title:"Teeth Whitening", img:"https://images.unsplash.com/photo-1674775372064-8c75d3f8c757?w=900&auto=format&fit=crop&q=60", href:"#"},
+#        {title:"Cosmetic Veneers", img:"https://plus.unsplash.com/premium_photo-1661768571778-52173afa5a74?w=900&auto=format&fit=crop&q=60", href:"#"},
+#        {title:"Dental Implants", img:"https://plus.unsplash.com/premium_photo-1674998806375-58edc35ddf3b?w=900&auto=format&fit=crop&q=60", href:"#"}
+#      ],
+#
+#      practice:{
+#        name:"YourPractice",
+#        address:"123 Dental St, Austin, TX 78701",
+#        phone:"+1 234 567 89",
+#        mapEmbed:"https://maps.google.com/maps?q=austin%20dentist&t=&z=13&ie=UTF8&iwloc=&output=embed"
+#      }
+#    }
+#
+#    IMPORTANT:  do **NOT** hard-code colours / fonts; continue using the
+#    CSS-token approach (`--primary`, `--secondary`, …) so the page
+#    responds to the user’s chosen palette.
+#
+# --------------------------------------------------------------------
+#    2.b  COMPONENT LAYOUT
+# --------------------------------------------------------------------
+#    <Menu />      ← import from existing home-page
+#    <Hero />      ← use heroBg, heroTitle, heroText, ctaLabel
+#    <PainPoints />
+#    <Benefits />
+#    <BeforeAfter />
+#    <Testimonials />
+#    <FaqAccordion />
+#    <SecondaryCta />   (same design as home-page secondary-cta)
+#    <SimilarServices />
+#    <MapBlock />   (overlay style already in service1.html)
+#    <Footer />     ← import from existing home-page
+#
+#    Mobile sticky CTA component is shared; import it as <StickyBar />.
+#
+# --------------------------------------------------------------------
+# 3️⃣  Add route to router:
+#      <Route path="/service/invisalign" element={<ServiceInvisalign />} />
+#
+# 4️⃣  Update <Menu /> links:
+#      “Home” → “/”
+#      “Invisalign®” (under Services dropdown) → “/service/invisalign”
+#
+# 5️⃣  No other build / vite changes.  Build should still serve on port 4000.
+#
+# 6️⃣  Commit & push so the page is reachable at:
+#      https://<your-repl>.replit.dev/service/invisalign
+#
+#    Done.
