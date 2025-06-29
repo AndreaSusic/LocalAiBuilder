@@ -200,6 +200,14 @@ app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
   res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
+// Service page routing - proxy to dashboard for React Router
+app.get('/service/:serviceName', (req, res) => {
+  console.log(`Service route hit: ${req.path}`);
+  
+  // Serve the dashboard index.html to handle React Router for this route
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
+
 // Serve static files (after template routes)
 app.use(express.static('.'));
 
