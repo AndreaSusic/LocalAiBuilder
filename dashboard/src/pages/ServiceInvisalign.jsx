@@ -478,6 +478,27 @@ export default function ServiceInvisalign() {
           margin: 0;
           padding: 0;
         }
+        .sticky-cta {
+          display: none;
+        }
+        @media (max-width: 768px) {
+          .sticky-cta {
+            display: flex !important;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid #ddd;
+            padding: 0.75rem 1rem;
+            z-index: 90;
+          }
+          footer {
+            padding-bottom: 120px !important;
+          }
+        }
         @media (max-width: 768px) {
           .sticky-bar {
             display: block !important;
@@ -505,7 +526,36 @@ export default function ServiceInvisalign() {
         links: ["About Us", "Contact", "Privacy Policy", "Terms of Service"]
       }} />
       
-      <StickyBar />
+      
+      {/* Sticky CTA for mobile */}
+      <div className="sticky-cta">
+        <a href="tel:+123456789" style={{
+          flex: 1,
+          textAlign: "center",
+          margin: "0 0.5rem",
+          padding: "0.65rem 0",
+          borderRadius: "4px",
+          fontWeight: "600",
+          background: "var(--primary)",
+          color: "#fff",
+          textDecoration: "none"
+        }}>
+          Call
+        </a>
+        <a href="#" style={{
+          flex: 1,
+          textAlign: "center",
+          margin: "0 0.5rem",
+          padding: "0.65rem 0",
+          borderRadius: "4px",
+          fontWeight: "600",
+          background: "var(--secondary)",
+          color: "var(--text)",
+          textDecoration: "none"
+        }}>
+          Schedule
+        </a>
+      </div>
     </div>
   );
 }
