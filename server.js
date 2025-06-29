@@ -196,8 +196,8 @@ app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
   const ver = req.params.ver;
   console.log(`Template route hit: v${ver}`);
   
-  // HTTP redirect to the dashboard template viewer
-  const dashboardUrl = `${req.protocol}://${req.get('host').replace(':5000', ':4200')}/templates/homepage-${ver}`;
+  // HTTP redirect to the dashboard template viewer  
+  const dashboardUrl = `${req.protocol}://${req.get('host').replace('5000', '4000')}/templates/homepage-${ver}`;
   res.redirect(302, dashboardUrl);
 });
 
