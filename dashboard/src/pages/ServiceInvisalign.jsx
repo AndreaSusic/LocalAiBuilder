@@ -89,7 +89,7 @@ const Hero = ({ tokens }) => (
       background: "rgba(0,0,0,0.4)",
       zIndex: 1
     }} />
-    <div style={{ position: "relative", zIndex: 2, maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ position: "relative", zIndex: 2, margin: "0 auto", padding: "0 2rem" }}>
       <h1 style={{
         fontSize: "3.5rem",
         marginBottom: "2rem",
@@ -123,7 +123,7 @@ const Hero = ({ tokens }) => (
 // Pain Points Component
 const PainPoints = ({ tokens }) => (
   <section style={{ background: "#fff", padding: "4rem 2rem" }}>
-    <div style={{ maxWidth: "1200px", margin: "0 auto", textAlign: "center" }}>
+    <div style={{ margin: "0 auto", textAlign: "center" }}>
       <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", fontFamily: "var(--font-heading)" }}>
         Traditional Braces Challenges
       </h2>
@@ -150,7 +150,7 @@ const PainPoints = ({ tokens }) => (
 // Benefits Component
 const Benefits = ({ tokens }) => (
   <section style={{ background: "var(--bg-light)", padding: "4rem 2rem" }}>
-    <div style={{ maxWidth: "1200px", margin: "0 auto", textAlign: "center" }}>
+    <div style={{ margin: "0 auto", textAlign: "center" }}>
       <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", fontFamily: "var(--font-heading)" }}>
         Why Choose Invisalign®
       </h2>
@@ -323,7 +323,7 @@ const SecondaryCta = ({ tokens }) => (
 // Similar Services Component
 const SimilarServices = ({ tokens }) => (
   <section style={{ background: "var(--bg-light)", padding: "4rem 2rem" }}>
-    <div style={{ maxWidth: "1200px", margin: "0 auto", textAlign: "center" }}>
+    <div style={{ margin: "0 auto", textAlign: "center" }}>
       <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", fontFamily: "var(--font-heading)" }}>
         Other Services You Might Like
       </h2>
