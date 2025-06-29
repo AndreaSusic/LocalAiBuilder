@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import DesktopDashboard from "./components/DesktopDashboard";
 import MobileDashboard from "./components/MobileDashboard";
@@ -20,7 +20,7 @@ export default function App() {
   }, []);
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         {/* Keep dashboard as default route */}
         <Route path="/" element={
@@ -62,6 +62,6 @@ export default function App() {
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }

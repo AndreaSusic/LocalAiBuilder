@@ -196,8 +196,8 @@ app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
   const ver = req.params.ver;
   console.log(`Template route hit: v${ver}`);
   
-  // HTTP redirect to the dashboard template viewer using hash routing
-  const dashboardUrl = `https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:4000/#/templates/homepage-${ver}`;
+  // HTTP redirect to the dashboard template viewer
+  const dashboardUrl = `https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:4000/templates/homepage-${ver}`;
   res.redirect(302, dashboardUrl);
 });
 

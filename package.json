@@ -13,6 +13,7 @@
     "@vitejs/plugin-react": "^4.6.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
+    "connect-history-api-fallback": "^2.0.0",
     "cookie-parser": "^1.4.7",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
