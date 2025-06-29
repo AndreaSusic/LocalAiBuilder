@@ -31,11 +31,24 @@ export default function HomepageV2({ tokens = {} }) {
           </div>
           
           {/* Desktop Navigation */}
-          <nav style={{ display: "flex", gap: "30px" }} className="desktop-nav">
+          <nav style={{ display: "flex", gap: "30px", alignItems: "center" }} className="desktop-nav">
             <a href="#home" style={{ textDecoration: "none", color: "#333", fontWeight: "500" }}>Home</a>
             <a href="#services" style={{ textDecoration: "none", color: "#333", fontWeight: "500" }}>Services</a>
             <a href="#about" style={{ textDecoration: "none", color: "#333", fontWeight: "500" }}>About</a>
             <a href="#contact" style={{ textDecoration: "none", color: "#333", fontWeight: "500" }}>Contact</a>
+            <a href="tel:+123456789" style={{ textDecoration: "none", color: "#333", fontWeight: "500", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              📞 +1 234 567 89
+            </a>
+            <a href="#" style={{ 
+              textDecoration: "none", 
+              backgroundColor: tokens.primaryColor || "#5DD39E", 
+              color: "white", 
+              padding: "0.5rem 1.25rem", 
+              borderRadius: "4px", 
+              fontWeight: "500" 
+            }}>
+              Schedule now
+            </a>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -68,6 +81,20 @@ export default function HomepageV2({ tokens = {} }) {
           <a href="#services" style={{ display: "block", padding: "10px 0", textDecoration: "none", color: "#333" }}>Services</a>
           <a href="#about" style={{ display: "block", padding: "10px 0", textDecoration: "none", color: "#333" }}>About</a>
           <a href="#contact" style={{ display: "block", padding: "10px 0", textDecoration: "none", color: "#333" }}>Contact</a>
+          <a href="tel:+123456789" style={{ display: "block", padding: "10px 0", textDecoration: "none", color: "#333" }}>📞 +1 234 567 89</a>
+          <a href="#" style={{ 
+            display: "block", 
+            padding: "12px 0", 
+            textDecoration: "none", 
+            backgroundColor: tokens.primaryColor || "#5DD39E", 
+            color: "white", 
+            textAlign: "center", 
+            borderRadius: "4px", 
+            fontWeight: "500",
+            margin: "10px 0"
+          }}>
+            Schedule now
+          </a>
         </nav>
       </header>
 

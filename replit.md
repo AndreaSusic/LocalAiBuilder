@@ -100,6 +100,7 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
+- June 29, 2025: Added "Schedule now" button to all template navigation bars - implemented consistent CTA button across all three template versions (V1, V2, V3) in both desktop and mobile navigation menus, styled buttons to match each template's design system with appropriate colors and gradients, rebuilt dashboard with updated components
 - June 29, 2025: Implemented final destination template URLs - converted template routes from redirects to direct serving, URLs /templates/homepage/v1/index.jsx, /templates/homepage/v2/index.jsx, /templates/homepage/v3/index.jsx now serve as final destinations through dashboard React Router, updated both desktop and mobile dashboard version buttons to open exact template URLs in new tabs, built and configured server to serve dashboard index.html for template routes
 - June 28, 2025: Fixed versioned template routing system - implemented exact routes pointing to /templates/homepage/v1/index.jsx, /templates/homepage/v2/index.jsx, /templates/homepage/v3/index.jsx with HTTP 302 redirects to React dashboard template viewer, resolved static file serving conflicts with custom middleware, added server-side route handlers with proper debugging, confirmed routes work correctly with redirect to port 4000 dashboard templates
 - June 28, 2025: Removed .version-selector class from templates page - eliminated sidebar version selection interface from template dashboard as requested

@@ -41,11 +41,26 @@ export default function HomepageV3({ tokens = {} }) {
           </div>
           
           {/* Desktop Navigation */}
-          <nav style={{ display: "flex", gap: "40px" }} className="desktop-nav">
+          <nav style={{ display: "flex", gap: "40px", alignItems: "center" }} className="desktop-nav">
             <a href="#home" style={{ textDecoration: "none", color: "#2c3e50", fontWeight: "600", fontSize: "16px" }}>Home</a>
             <a href="#services" style={{ textDecoration: "none", color: "#2c3e50", fontWeight: "600", fontSize: "16px" }}>Services</a>
             <a href="#about" style={{ textDecoration: "none", color: "#2c3e50", fontWeight: "600", fontSize: "16px" }}>About</a>
             <a href="#contact" style={{ textDecoration: "none", color: "#2c3e50", fontWeight: "600", fontSize: "16px" }}>Contact</a>
+            <a href="tel:+123456789" style={{ textDecoration: "none", color: "#2c3e50", fontWeight: "600", fontSize: "16px", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              📞 +1 234 567 89
+            </a>
+            <a href="#" style={{ 
+              textDecoration: "none", 
+              background: `linear-gradient(135deg, ${tokens.primaryColor || "#667eea"}, ${tokens.secondaryColor || "#764ba2"})`,
+              color: "white", 
+              padding: "12px 24px", 
+              borderRadius: "25px", 
+              fontWeight: "600",
+              fontSize: "16px",
+              boxShadow: "0 4px 15px rgba(102, 126, 234, 0.4)"
+            }}>
+              Schedule now
+            </a>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -80,6 +95,20 @@ export default function HomepageV3({ tokens = {} }) {
           <a href="#services" style={{ display: "block", padding: "15px 0", textDecoration: "none", color: "#2c3e50", fontWeight: "600" }}>Services</a>
           <a href="#about" style={{ display: "block", padding: "15px 0", textDecoration: "none", color: "#2c3e50", fontWeight: "600" }}>About</a>
           <a href="#contact" style={{ display: "block", padding: "15px 0", textDecoration: "none", color: "#2c3e50", fontWeight: "600" }}>Contact</a>
+          <a href="tel:+123456789" style={{ display: "block", padding: "15px 0", textDecoration: "none", color: "#2c3e50", fontWeight: "600" }}>📞 +1 234 567 89</a>
+          <a href="#" style={{ 
+            display: "block", 
+            padding: "15px 0", 
+            textDecoration: "none", 
+            background: `linear-gradient(135deg, ${tokens.primaryColor || "#667eea"}, ${tokens.secondaryColor || "#764ba2"})`,
+            color: "white", 
+            fontWeight: "600",
+            textAlign: "center",
+            borderRadius: "25px",
+            margin: "10px 0"
+          }}>
+            Schedule now
+          </a>
         </nav>
       </header>
 
