@@ -72,7 +72,7 @@ export default function Menu({ tokens = {} }) {
               <a href="#" style={{ textDecoration: "none", color: "#000" }}>Cosmetic Veneers</a>
             </li>
             <li style={{ padding: "0.5rem 1rem" }}>
-              <a href="/service/invisalign" style={{ textDecoration: "none", color: "#000" }}>Invisalign®</a>
+              <a href="/templates/service/v1/index.jsx" style={{ textDecoration: "none", color: "#000" }}>Invisalign®</a>
             </li>
           </ul>
         </li>
