@@ -175,7 +175,7 @@ const Benefits = ({ tokens }) => (
             borderRadius: "8px",
             boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
           }}>
-            <div style={{
+            <div className="icon" style={{
               width: "72px",
               height: "72px",
               borderRadius: "50%",
@@ -183,11 +183,14 @@ const Benefits = ({ tokens }) => (
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              margin: "0 auto 0.9rem",
-              fontSize: "2rem",
-              color: "var(--primary)"
+              margin: "0 auto 0.9rem"
             }}>
-              ✨
+              <svg viewBox="0 0 24 24" style={{ width: "34px", height: "34px", fill: "var(--primary)" }}>
+                {i === 0 && <path d="M12 2a8 8 0 0 0 0 16c2.2 0 4.2-.9 5.7-2.3L12 11V2z" />}
+                {i === 1 && <path d="M4 12h16M4 6h16M4 18h16" strokeWidth="2" stroke="currentColor" fill="none"/>}
+                {i === 2 && <><circle cx="12" cy="12" r="10" strokeWidth="2" stroke="currentColor" fill="none"/><path d="M12 6v6l4 2" strokeWidth="2" stroke="currentColor" fill="none"/></>}
+                {i === 3 && <><path d="M4 4h16v16H4z" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" fill="none"/></>}
+              </svg>
             </div>
             <h3 style={{ fontSize: "1.3rem", marginBottom: "1rem", fontFamily: "var(--font-heading)" }}>
               {benefit.title}
@@ -204,28 +207,20 @@ const Benefits = ({ tokens }) => (
 const BeforeAfter = ({ tokens }) => (
   <section style={{ background: "#fff", padding: "4rem 2rem" }}>
     <div style={{ margin: "0 auto", textAlign: "center" }}>
-      <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", fontFamily: "var(--font-heading)" }}>
-        Real Results
+      <h2 style={{ fontSize: "2rem", marginBottom: "2rem", textAlign: "center", fontFamily: "var(--font-heading)" }}>
+        See the Difference
       </h2>
-      <div style={{ display: "grid", gap: "2rem", gridTemplateColumns: "1fr 1fr" }}>
-        <div>
-          <h3 style={{ marginBottom: "1rem", fontFamily: "var(--font-heading)" }}>Before</h3>
-          <img src={tokens.beforeImg} alt="Before treatment" style={{
-            width: "100%",
-            height: "300px",
-            objectFit: "cover",
-            borderRadius: "8px"
-          }} />
-        </div>
-        <div>
-          <h3 style={{ marginBottom: "1rem", fontFamily: "var(--font-heading)" }}>After</h3>
-          <img src={tokens.afterImg} alt="After treatment" style={{
-            width: "100%",
-            height: "300px",
-            objectFit: "cover",
-            borderRadius: "8px"
-          }} />
-        </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", justifyContent: "center" }}>
+        <img src={tokens.beforeImg} alt="Before Invisalign" style={{
+          width: "100%",
+          maxWidth: "420px",
+          borderRadius: "8px"
+        }} />
+        <img src={tokens.afterImg} alt="After Invisalign" style={{
+          width: "100%",
+          maxWidth: "420px",
+          borderRadius: "8px"
+        }} />
       </div>
     </div>
   </section>
