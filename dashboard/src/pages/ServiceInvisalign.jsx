@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Menu from "../components/sections/Menu.jsx";
 import Footer from "../components/sections/Footer.jsx";
 
@@ -99,7 +99,7 @@ const Hero = ({ tokens }) => (
           {text}
         </p>
       ))}
-      <button style={{
+      <button id="hero-cta-button" style={{
         background: "var(--secondary)",
         color: "var(--text)",
         border: "none",
@@ -442,6 +442,25 @@ const StickyBar = () => (
 
 // Main Service Invisalign Component
 export default function ServiceInvisalign() {
+  const [showStickyBar, setShowStickyBar] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroButton = document.getElementById('hero-cta-button');
+      if (heroButton) {
+        const rect = heroButton.getBoundingClientRect();
+        const isButtonVisible = rect.bottom > 0 && rect.top < window.innerHeight;
+        setShowStickyBar(!isButtonVisible);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // Initial check
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div style={{
       fontFamily: "'Roboto', sans-serif",
@@ -484,6 +503,11 @@ export default function ServiceInvisalign() {
             border-top: 1px solid #ddd;
             padding: 0.75rem 1rem;
             z-index: 90;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+          }
+          .sticky-cta.show {
+            transform: translateY(0);
           }
           footer {
             padding-bottom: 120px !important;
@@ -527,7 +551,7 @@ export default function ServiceInvisalign() {
       
       
       {/* Sticky CTA for mobile */}
-      <div className="sticky-cta">
+      <div className={`sticky-cta ${showStickyBar ? 'show' : ''}`}>
         <a href="tel:+123456789" style={{
           flex: 1,
           textAlign: "center",
