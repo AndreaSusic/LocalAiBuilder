@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Invisalign® Service | YourPractice</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* === TOKENS ========================================================= */
+:root{
+  --primary:#5DD39E;
+  --secondary:#EFD5BD;
+  --text:#3f3f3f;
+  --bg-light:#f9f9f9;
+  --bg-dark:#f5f5f5;
+  --font-sans:'Roboto',sans-serif;
+  --font-heading:'Work Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:16px/1.6 var(--font-sans);color:var(--text)}
+h1,h2,h3,h4{font-family:var(--font-heading)}
+a{text-decoration:none;color:var(--primary)}
+img{max-width:100%;display:block}
+
+/* === NAV ============================================================== */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#fff;padding:1rem;border-bottom:1px solid #ddd;position:relative;z-index:100;
+}
+nav .logo{font-size:1.5rem;font-weight:700}
+nav .hamburger{display:none;background:none;border:none;font-size:1.6rem;cursor:pointer}
+nav ul{list-style:none;display:flex;gap:1rem;align-items:center}
+nav li{position:relative}
+nav li:hover>ul{display:block}
+nav li>ul{
+  display:none;position:absolute;top:2.5rem;left:0;background:#fff;border:1px solid #ddd;padding:.5rem 0;min-width:10rem
+}
+nav li>ul li{padding:.5rem 1rem}
+nav .nav-links>li>a{padding:.5rem;color:#000}
+nav .contact-phone{display:flex;align-items:center;gap:.5rem;font-weight:500}
+nav .cta{background:var(--primary);color:#fff;border:none;padding:.5rem 1.25rem;border-radius:4px;font-weight:500}
+@media(max-width:768px){
+  nav .hamburger{display:block}
+  nav ul{display:none;flex-direction:column;position:absolute;top:100%;left:0;width:100%;background:#fff;border-bottom:1px solid #ddd}
+  nav ul.open{display:flex}
+  nav li{padding:.75rem;text-align:center}
+}
+
+/* === SECTION GENERICS ================================================ */
+section{padding:60px 20px}
+.container{max-width:1100px;margin:auto}
+
+/* === HERO ============================================================ */
+.hero{
+  position:relative;text-align:center;color:#fff;padding:110px 20px;
+  background:url('https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=1740&q=60') center/cover no-repeat;
+}
+.hero::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.4)}
+.hero>*{position:relative}
+.hero h1{font-size:2.75rem;margin-bottom:1rem;color:#fff}
+.hero p{font-size:1.1rem;margin:.4rem auto 2rem;max-width:650px}
+.hero .btn{background:var(--secondary);color:var(--text);padding:.9rem 2rem;border:none;border-radius:4px;font-weight:600;cursor:pointer;font-size:1rem}
+
+/* === PROBLEM / PAIN-POINTS ========================================== */
+.problem{background:var(--bg-light)}
+.problem-flex{display:flex;gap:50px;align-items:center;flex-wrap:wrap}
+.problem-img{flex:1 1 350px}
+.problem-img img{width:100%;height:auto;border-radius:8px}
+.problem-list{flex:1 1 320px}
+.problem-list h2{margin-bottom:1rem}
+.problem-list ul{list-style:disc;padding-left:1.25rem}
+.problem-list li{margin-bottom:.7rem;font-size:1.05rem}
+
+/* === BENEFITS ======================================================== */
+.benefits{background:#fff}
+.benefit-grid{display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.benefit-card{text-align:center;padding:1.5rem;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.08);background:#fff}
+.benefit-card .icon{
+  width:72px;height:72px;border-radius:50%;background:var(--secondary);
+  display:flex;align-items:center;justify-content:center;margin:0 auto .9rem
+}
+.benefit-card .icon svg{width:34px;height:34px;fill:var(--primary)}
+.benefit-card h3{margin-bottom:.5rem;font-size:1.15rem}
+.benefit-card p{font-size:.95rem;color:#555}
+
+/* ----- BEFORE / AFTER (simple 2-image) ----------------------------- */
+.before-after{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
+.before-after img{width:100%;max-width:420px;border-radius:8px}
+
+/* === TESTIMONIALS ==================================================== */
+.testimonials{background:var(--bg-dark)}
+.testi-grid{display:grid;gap:2rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.testi{background:#fff;padding:1.5rem;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.06);text-align:center}
+.testi img{width:64px;height:64px;border-radius:50%;object-fit:cover;margin:0 auto .75rem}
+.stars{color:gold;font-size:1rem;margin-top:.5rem}
+
+/* === FAQ ============================================================= */
+.faq-item{border-bottom:1px solid #ddd;padding:1rem 0}
+.faq-q{display:flex;justify-content:space-between;cursor:pointer;font-weight:600}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.faq-q svg{transition:transform .3s}
+
+/* === SECONDARY CTA =================================================== */
+.secondary-cta{background:var(--secondary);text-align:center;padding:60px 20px}
+.secondary-cta h2{font-size:1.9rem;margin-bottom:.6rem}
+.secondary-cta p{font-size:1rem;margin-bottom:1.2rem;color:var(--text)}
+.secondary-cta .btn-accent{background:var(--primary);color:#fff;border:none;padding:.85rem 2rem;border-radius:4px;font-weight:600;cursor:pointer}
+
+/* === SIMILAR SERVICES =============================================== */
+.similar{background:#fff}
+.similar-grid{display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.sim-card{border:1px solid #eee;border-radius:8px;overflow:hidden;transition:transform .2s}
+.sim-card:hover{transform:translateY(-4px)}
+.sim-card img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.sim-card h4{padding:1rem;font-size:1.05rem;color:var(--text)}
+
+/* === MAP ============================================================= */
+.map-box{position:relative;height:340px; padding: 10px !important}          /* no negative margins */
+.map-box iframe{position:absolute;width:100%;height:100%;border:0; padding: 20px}
+.map-overlay{position:absolute;bottom:20px;left:20px;background:#fff;padding:1rem 1.5rem;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+
+/* === FOOTER ========================================================== */
+footer{background:#3f3f3f;color:#eee;padding:2rem 1rem}
+.footer-grid{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+footer h4{color:#fff;margin-bottom:.75rem;font-size:1rem}
+footer a{color:#ccc;display:block;margin:.35rem 0}
+.footer-social{display:flex;gap:14px;margin-top:8px}
+.footer-social .icon{display:inline-flex;width:38px;height:38px;border:1px solid #fff;border-radius:50%;justify-content:center;align-items:center;transition:.25s}
+.footer-social .icon svg{fill:#fff;width:20px;height:20px}
+.footer-social .icon:hover{background:var(--primary);border-color:var(--primary)}
+
+/* extra space so sticky bar doesn’t cover links */
+@media(max-width:768px){footer{padding-bottom:120px}}
+
+/* === STICKY CTA ====================================================== */
+.sticky-cta{display:none}
+@media(max-width:768px){
+  .sticky-cta{
+    display:flex;justify-content:space-around;align-items:center;
+    position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;padding:.75rem 1rem;z-index:90
+  }
+  .sticky-cta a{flex:1;text-align:center;margin:0 .5rem;padding:.65rem 0;border-radius:4px;font-weight:600}
+  .sticky-cta .call{background:var(--primary);color:#fff}
+  .sticky-cta .sched{background:var(--secondary);color:var(--text)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">YourLogo</div>
+  <button class="hamburger" aria-label="menu">☰</button>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="#">Services ▾</a>
+      <ul>
+        <li><a href="#">General Dentistry</a></li>
+        <li><a href="#">Cosmetic Veneers</a></li>
+        <li><a href="#">Invisalign®</a></li>
+      </ul>
+    </li>
+    <li><a href="#">About</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li class="contact-phone"><a href="tel:+123456789">📞 +1 234 567 89</a><button class="cta">Schedule Now</button></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Invisalign® Clear Aligners</h1>
+  <p>Discreet, removable and digitally-planned orthodontics tailored for busy adults.<br>
+     No brackets, no wires — just comfortable, crystal-clear trays that fit your lifestyle.<br>
+     Eat what you love, brush normally, and watch your smile transform week by week.<br>
+     Start your journey today with Austin’s most trusted Invisalign® provider.</p>
+  <button class="btn">Schedule Now</button>
+</section>
+
+<!-- PROBLEM / PAIN-POINTS -->
+<section class="problem">
+  <div class="container problem-flex">
+    <div class="problem-img">
+      <img src="https://plus.unsplash.com/premium_photo-1661774814529-071787053b8e?w=900&auto=format&fit=crop&q=60" alt="Dental pain">
+    </div>
+    <div class="problem-list">
+      <h2>Your Smile Struggles</h2>
+      <ul>
+        <li>Crooked front teeth make you hide your smile in photos.</li>
+        <li>Metal braces feel unprofessional for client-facing work.</li>
+        <li>You’ve had relapse after childhood braces and want a subtle fix.</li>
+        <li>Tight schedules leave no room for monthly wire adjustments.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits">
+  <div class="container">
+    <h2 style="text-align:center;margin-bottom:2.5rem">Why Patients Choose Invisalign®</h2>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2a8 8 0 0 0 0 16c2.2 0 4.2-.9 5.7-2.3L12 11V2z" /></svg>
+        </div>
+        <h3>Almost Invisible</h3>
+        <p>Crystal-clear trays keep treatment our little secret — confidence intact.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M4 12h16M4 6h16M4 18h16" stroke-width="2" stroke="currentColor" fill="none"/></svg>
+        </div>
+        <h3>Eat Anything</h3>
+        <p>Remove your aligners at mealtimes — enjoy popcorn, pizza or apples freely.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2" stroke="currentColor" fill="none"/><path d="M12 6v6l4 2" stroke-width="2" stroke="currentColor" fill="none"/></svg>
+        </div>
+        <h3>Fewer Visits</h3>
+        <p>Check-ups every 6-8 weeks mean less time in the chair, more living life.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </div>
+        <h3>Predictable Results</h3>
+        <p>3-D planning lets you preview your future smile before treatment begins.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BEFORE / AFTER (2 images) ========== -->
+<section>
+  <div class="container">
+    <h2 style="text-align:center;margin-bottom:2rem">See the Difference</h2>
+    <div class="before-after">
+      <img src="https://images.unsplash.com/photo-1658849350672-7a708745b68e?w=900&auto=format&fit=crop&q=60" alt="Before Invisalign">
+      <img src="https://images.unsplash.com/photo-1660732205495-f65510d8180e?w=900&auto=format&fit=crop&q=60" alt="After Invisalign">
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="container">
+    <h2 style="text-align:center;margin-bottom:2rem">Happy Invisalign® Patients</h2>
+    <div class="testi-grid">
+      <div class="testi">
+        <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&w=96&q=60" alt="">
+        <p>“I never imagined straightening my teeth could be this comfortable. Zero metal-mouth drama!”</p>
+        <strong>— Samantha K.</strong>
+        <div class="stars">★★★★★</div>
+      </div>
+      <div class="testi">
+        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=96&q=60" alt="">
+        <p>“The 3-D simulation sold me right away – and my real smile looks even better!”</p>
+        <strong>— Daniel R.</strong>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container" style="max-width:720px">
+    <h2 style="text-align:center;margin-bottom:2rem">Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">How long does Invisalign® take?
+        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="var(--primary)" stroke-width="2" d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-a"><p>Most cases finish within 6-14 months, depending on complexity and how diligently you wear the trays.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is it painful?
+        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="var(--primary)" stroke-width="2" d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-a"><p>You may feel gentle pressure the first day of a new tray, but patients report far less discomfort than braces.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Will insurance cover Invisalign®?
+        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="var(--primary)" stroke-width="2" d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-a"><p>Many orthodontic policies apply. We’ll check your benefits and offer flexible payment plans if needed.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SIMILAR SERVICES -->
+<section class="similar">
+  <div class="container">
+    <h2 style="text-align:center;margin-bottom:2rem">Similar Services</h2>
+    <div class="similar-grid">
+      <a class="sim-card" href="#">
+        <img src="https://images.unsplash.com/photo-1674775372064-8c75d3f8c757?w=900&auto=format&fit=crop&q=60" alt="">
+        <h4>Teeth Whitening</h4>
+      </a>
+      <a class="sim-card" href="#">
+        <img src="https://plus.unsplash.com/premium_photo-1661768571778-52173afa5a74?w=900&auto=format&fit=crop&q=60" alt="">
+        <h4>Cosmetic Veneers</h4>
+      </a>
+      <a class="sim-card" href="#">
+        <img src="https://plus.unsplash.com/premium_photo-1674998806375-58edc35ddf3b?w=900&auto=format&fit=crop&q=60" alt="">
+        <h4>Dental Implants</h4>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- MAP -->
+<section class="map-box">
+  <iframe loading="lazy" src="https://maps.google.com/maps?q=austin%20dentist&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+  <div class="map-overlay">
+    <strong>YourPractice Austin</strong><br>
+    123 Dental St, Austin<br>
+    Mon-Fri  8 am – 5 pm<br>
+    <a href="tel:+123456789">Call +1 234 567 89</a>
+  </div>
+</section>
+
+<!-- SECONDARY CTA -->
+<section class="secondary-cta">
+  <h2>Ready to Transform Your Smile?</h2>
+  <p>View available appointments and enjoy dentistry done right.</p>
+  <button class="btn-accent">Contact Us Today</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>YourPractice</h4>
+      <p>123 Dental St.<br>Austin, TX 78701</p>
+    </div>
+    <div>
+      <h4>Services</h4>
+      <a href="#">General Dentistry</a><a href="#">Cosmetic Veneers</a><a href="#">Invisalign®</a>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <a href="/">Home</a><a href="#">About</a><a href="#faq">FAQ</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <div class="footer-social">
+        <a class="icon" href="#"><svg viewBox="0 0 24 24"><path d="M15 3h4V0h-4c-3.9 0-7 3.1-7 7v3H5v4h3v10h4V14h3.1l.9-4H12V7c0-1.1.9-2 2-2z"/></svg></a>
+        <a class="icon" href="#"><svg viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-1.7-1.3-3-3-3H7zm5 4.5A5.5 5.5 0 1 0 17.5 12 5.51 5.51 0 0 0 12 6.5z"/></svg></a>
+        <a class="icon" href="#"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 8.94 5.78h-8.9v3.44h5.4A5.57 5.57 0 0 1 12 17.56a5.56 5.56 0 0 1 0-11.12"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+
+
+<!-- STICKY CTA -->
+<div class="sticky-cta">
+  <a href="tel:+123456789" class="call">Call</a>
+  <a href="#" class="sched">Schedule</a>
+</div>
+
+<script>
+/* Mobile nav */
+document.querySelector('.hamburger').addEventListener('click',()=>{document.querySelector('.nav-links').classList.toggle('open');});
+
+/* FAQ toggle */
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const ans=q.nextElementSibling,icon=q.querySelector('svg');
+    ans.style.maxHeight?ans.style.maxHeight=null:ans.style.maxHeight=ans.scrollHeight+"px";
+    icon.style.transform=ans.style.maxHeight?"rotate(180deg)":"rotate(0)";
+  });
+});
+</script>
+</body>
+</html>
