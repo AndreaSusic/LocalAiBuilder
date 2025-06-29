@@ -208,6 +208,9 @@ app.get('/service/:serviceName', (req, res) => {
   res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
+// Serve dashboard assets (before main static files)
+app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'assets')));
+
 // Serve static files (after template routes)
 app.use(express.static('.'));
 

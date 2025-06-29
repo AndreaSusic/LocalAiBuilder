@@ -437,7 +437,7 @@ export default function ServiceInvisalign() {
       margin: 0,
       padding: 0
     }}>
-      <style jsx>{`
+      <style>{`
         :root {
           --primary: #5DD39E;
           --secondary: #EFD5BD;

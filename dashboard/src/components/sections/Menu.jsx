@@ -105,7 +105,7 @@ export default function Menu({ tokens = {} }) {
         </li>
       </ul>
 
-      <style jsx>{`
+      <style>{`
         .nav-links li:hover > .dropdown {
           display: block;
         }
