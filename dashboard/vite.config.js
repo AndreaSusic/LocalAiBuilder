@@ -1,20 +1,19 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import history from 'connect-history-api-fallback'
 
 export default defineConfig({
   plugins: [
     react(),
     {
-      name: 'spa-fallback',
+      name: 'spa-routing',
       configureServer(server) {
-        server.middlewares.use(
-          history({
-            rewrites: [
-              { from: /^\/templates\/.*$/, to: '/index.html' }
-            ]
-          })
-        )
+        server.middlewares.use('/templates', (req, res, next) => {
+          // For template routes, serve the index.html to let React Router handle it
+          if (req.method === 'GET' && !req.url.includes('.')) {
+            req.url = '/';
+          }
+          next();
+        });
       }
     }
   ],
