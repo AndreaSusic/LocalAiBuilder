@@ -8,6 +8,7 @@ import TemplateOne from "./templates/TemplateOne";
 import HomepageV1 from "./templates/homepage/v1/index.jsx";
 import HomepageV2 from "./templates/homepage/v2/index.jsx";
 import HomepageV3 from "./templates/homepage/v3/index.jsx";
+import ServiceInvisalign from "./pages/ServiceInvisalign.jsx";
 
 export default function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
@@ -58,6 +59,9 @@ export default function App() {
         <Route path="/templates/homepage-1" element={<HomepageV1 />} />
         <Route path="/templates/homepage-2" element={<HomepageV2 />} />
         <Route path="/templates/homepage-3" element={<HomepageV3 />} />
+        
+        {/* Service pages */}
+        <Route path="/service/invisalign" element={<ServiceInvisalign />} />
         
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />
