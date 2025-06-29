@@ -267,7 +267,7 @@ const FaqAccordion = ({ tokens }) => {
 
   return (
     <section style={{ background: "#fff", padding: "4rem 2rem" }}>
-      <div style={{ margin: "0 auto" }}>
+      <div style={{ maxWidth: "720px", margin: "0 auto" }}>
         <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", textAlign: "center", fontFamily: "var(--font-heading)" }}>
           Frequently Asked Questions
         </h2>
@@ -342,7 +342,7 @@ const SecondaryCta = ({ tokens }) => (
 // Similar Services Component
 const SimilarServices = ({ tokens }) => (
   <section style={{ background: "var(--bg-light)", padding: "4rem 2rem" }}>
-    <div style={{ margin: "0 auto", textAlign: "center" }}>
+    <div style={{ maxWidth: "1100px", margin: "0 auto", textAlign: "center" }}>
       <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", fontFamily: "var(--font-heading)" }}>
         Other Services You Might Like
       </h2>
@@ -465,6 +465,7 @@ export default function ServiceInvisalign() {
         body {
           margin: 0;
           padding: 0;
+          display: block;
         }
         .sticky-cta {
           display: none;
