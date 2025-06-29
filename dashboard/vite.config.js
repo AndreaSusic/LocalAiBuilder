@@ -10,7 +10,7 @@ export default defineConfig({
   },
   server: {
     host: true, // ⬅️  bind on all + disable host check
-    port: 4000, // any free port
+    port: 4001, // any free port
     strictPort: true,
     allowedHosts: "all", // still allowed, but host:true is the key
     hmr: {
