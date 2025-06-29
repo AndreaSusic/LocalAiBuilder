@@ -179,7 +179,7 @@ const Benefits = ({ tokens }) => (
 // Before/After Component
 const BeforeAfter = ({ tokens }) => (
   <section style={{ background: "#fff", padding: "4rem 2rem" }}>
-    <div style={{ maxWidth: "1000px", margin: "0 auto", textAlign: "center" }}>
+    <div style={{ margin: "0 auto", textAlign: "center" }}>
       <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", fontFamily: "var(--font-heading)" }}>
         Real Results
       </h2>
@@ -210,7 +210,7 @@ const BeforeAfter = ({ tokens }) => (
 // Testimonials Component
 const Testimonials = ({ tokens }) => (
   <section style={{ background: "var(--bg-light)", padding: "4rem 2rem" }}>
-    <div style={{ maxWidth: "1000px", margin: "0 auto", textAlign: "center" }}>
+    <div style={{ margin: "0 auto", textAlign: "center" }}>
       <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", fontFamily: "var(--font-heading)" }}>
         Patient Stories
       </h2>
@@ -248,7 +248,7 @@ const FaqAccordion = ({ tokens }) => {
 
   return (
     <section style={{ background: "#fff", padding: "4rem 2rem" }}>
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+      <div style={{ margin: "0 auto" }}>
         <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", textAlign: "center", fontFamily: "var(--font-heading)" }}>
           Frequently Asked Questions
         </h2>
@@ -297,7 +297,7 @@ const SecondaryCta = ({ tokens }) => (
     padding: "4rem 1rem",
     textAlign: "center"
   }}>
-    <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ margin: "0 auto" }}>
       <h2 style={{ fontSize: "2.75rem", marginBottom: "2rem", fontFamily: "var(--font-heading)" }}>
         Ready to Transform Your Smile?
       </h2>
@@ -356,7 +356,7 @@ const SimilarServices = ({ tokens }) => (
 // Map Block Component
 const MapBlock = ({ tokens }) => (
   <section style={{ background: "#fff", padding: "4rem 2rem" }}>
-    <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+    <div style={{ margin: "0 auto" }}>
       <h2 style={{ fontSize: "2.5rem", marginBottom: "3rem", textAlign: "center", fontFamily: "var(--font-heading)" }}>
         Visit Our Practice
       </h2>
