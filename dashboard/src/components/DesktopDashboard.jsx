@@ -9,6 +9,7 @@ export default function DesktopDashboard() {
   const [selectedTab, setTab] = useState("text");
   const [draftChat, setChat] = useState("");
   const [previewScreen, setPreviewScreen] = useState("desktop");
+  const [showPagesDropdown, setShowPagesDropdown] = useState(false);
 
   /* HANDLERS */
   const sendChat = () => { console.log("Chat:", draftChat); setChat(""); };
@@ -62,7 +63,71 @@ export default function DesktopDashboard() {
             {previewScreen === "mobile" && "📱 Mobile"}
           </button>
           <button className="btn">Sites ▼</button>
-          <button className="btn">Pages ▼</button>
+          <div style={{ position: "relative" }}>
+            <button 
+              className="btn" 
+              onClick={() => setShowPagesDropdown(!showPagesDropdown)}
+            >
+              Pages ▼
+            </button>
+            {showPagesDropdown && (
+              <div style={{
+                position: "absolute",
+                top: "100%",
+                right: 0,
+                background: "white",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+                minWidth: "120px",
+                zIndex: 1000,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+              }}>
+                <a 
+                  href="/templates/homepage/v1/index.jsx" 
+                  target="_blank"
+                  style={{
+                    display: "block",
+                    padding: "8px 16px",
+                    textDecoration: "none",
+                    color: "#333",
+                    borderBottom: "1px solid #eee"
+                  }}
+                  onMouseOver={e => e.target.style.background = "#f5f5f5"}
+                  onMouseOut={e => e.target.style.background = "white"}
+                >
+                  Homepage
+                </a>
+                <a 
+                  href="/templates/service/v1/index.jsx" 
+                  target="_blank"
+                  style={{
+                    display: "block",
+                    padding: "8px 16px",
+                    textDecoration: "none",
+                    color: "#333",
+                    borderBottom: "1px solid #eee"
+                  }}
+                  onMouseOver={e => e.target.style.background = "#f5f5f5"}
+                  onMouseOut={e => e.target.style.background = "white"}
+                >
+                  Service
+                </a>
+                <a 
+                  href="#" 
+                  style={{
+                    display: "block",
+                    padding: "8px 16px",
+                    textDecoration: "none",
+                    color: "#333"
+                  }}
+                  onMouseOver={e => e.target.style.background = "#f5f5f5"}
+                  onMouseOut={e => e.target.style.background = "white"}
+                >
+                  Contact
+                </a>
+              </div>
+            )}
+          </div>
           <button className="btn">Profile ▼</button>
         </div>
       </div>
@@ -71,7 +136,7 @@ export default function DesktopDashboard() {
       <div className="grid">
 
         {/* Versions + Chat */}
-        <div className="panel">
+        <div className="panel" style={{ display: "none" }}>
           <h2>Versions</h2>
           <input
             className="search"
