@@ -62,6 +62,6 @@ export default function App() {
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
