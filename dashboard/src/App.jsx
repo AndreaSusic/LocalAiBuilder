@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import DesktopDashboard from "./components/DesktopDashboard";
 import MobileDashboard from "./components/MobileDashboard";
@@ -20,7 +20,7 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         {/* Keep dashboard as default route */}
         <Route path="/" element={
