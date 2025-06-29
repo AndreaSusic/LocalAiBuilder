@@ -60,8 +60,8 @@ export default function App() {
         <Route path="/templates/homepage-2" element={<HomepageV2 />} />
         <Route path="/templates/homepage-3" element={<HomepageV3 />} />
         
-        {/* Service pages */}
-        <Route path="/service/invisalign" element={<ServiceInvisalign />} />
+        {/* Service template routes */}
+        <Route path="/templates/service/v1/index.jsx" element={<ServiceInvisalign />} />
         
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />
