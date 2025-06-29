@@ -210,11 +210,12 @@ const BeforeAfter = ({ tokens }) => (
       <h2 style={{ fontSize: "2rem", marginBottom: "2rem", textAlign: "center", fontFamily: "var(--font-heading)" }}>
         See the Difference
       </h2>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", justifyContent: "center" }}>
+      <div className="before-after-images" style={{ display: "flex", flexWrap: "wrap", gap: "20px", justifyContent: "center" }}>
         <img src={tokens.beforeImg} alt="Before Invisalign" style={{
           width: "100%",
           maxWidth: "420px",
-          borderRadius: "8px"
+          borderRadius: "8px",
+          height: "auto"
         }} />
         <img src={tokens.afterImg} alt="After Invisalign" style={{
           width: "100%",
@@ -491,6 +492,15 @@ export default function ServiceInvisalign() {
         @media (max-width: 768px) {
           .sticky-bar {
             display: block !important;
+          }
+          .before-after-images {
+            display: grid;
+            grid-template-columns: 2fr 2fr;
+            gap: 20px;
+          }
+          .before-after-images img {
+            height: 200px;
+            object-fit: cover;
           }
         }
       `}</style>
