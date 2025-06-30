@@ -16,6 +16,7 @@ const openai = new OpenAI({
 });
 
 const { Pool } = require('pg');
+const { getStockImages } = require('./imageSelector');
 
 // PostgreSQL connection
 const pool = new Pool({
@@ -655,6 +656,23 @@ app.get('/api/last-draft', async (req, res) => {
   } catch (error) {
     console.error('Failed to get draft:', error);
     res.status(500).json({ error: 'Failed to load draft' });
+  }
+});
+
+// Stock images API endpoint
+app.post('/api/stock-images', async (req, res) => {
+  try {
+    const { serviceType, country, minNeeded = 4, userImages = [] } = req.body;
+    
+    if (!serviceType || !country) {
+      return res.status(400).json({ error: 'serviceType and country are required' });
+    }
+    
+    const images = await getStockImages(serviceType, country, minNeeded, userImages);
+    res.json({ images });
+  } catch (error) {
+    console.error('Stock images API error:', error);
+    res.status(500).json({ error: 'Failed to fetch stock images' });
   }
 });
 

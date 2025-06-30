@@ -1,11 +1,26 @@
-const fetch = require('node-fetch');
+// Use dynamic import for node-fetch ES module
+let fetch;
+(async () => {
+  const { default: nodeFetch } = await import('node-fetch');
+  fetch = nodeFetch;
+})();
 
 // Environment variables for API keys
 const UNSPLASH_KEY = process.env.UNSPLASH_KEY;
 const PEXELS_KEY = process.env.PEXELS_KEY;
 
+// Ensure fetch is available
+async function ensureFetch() {
+  if (!fetch) {
+    const { default: nodeFetch } = await import('node-fetch');
+    fetch = nodeFetch;
+  }
+}
+
 // Unsplash API wrapper
 async function fetchUnsplashImages(query, count = 10) {
+  await ensureFetch();
+  
   if (!UNSPLASH_KEY) {
     console.warn('UNSPLASH_KEY not configured');
     return [];
@@ -40,6 +55,8 @@ async function fetchUnsplashImages(query, count = 10) {
 
 // Pexels API wrapper
 async function fetchPexelsImages(query, count = 10) {
+  await ensureFetch();
+  
   if (!PEXELS_KEY) {
     console.warn('PEXELS_KEY not configured');
     return [];
