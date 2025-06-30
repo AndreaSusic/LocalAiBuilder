@@ -13,11 +13,11 @@ export default function DashboardPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Check for bootstrap data
-  const bootstrapData = typeof window !== 'undefined' ? window.bootstrapData : {};
+  const bootstrapData = (typeof window !== 'undefined' && window.bootstrapData) ? window.bootstrapData : {};
 
   // Default site tokens that can be customized
   const siteTokens = {
-    companyName: bootstrapData.company_name || "Your Practice Name",
+    companyName: (bootstrapData && bootstrapData.company_name) || "Your Practice Name",
     tagline: "High-quality care in a welcoming environment—expertise you can trust.",
     primaryColor: "#5DD39E",
     secondaryColor: "#EFD5BD",
@@ -77,7 +77,7 @@ export default function DashboardPage() {
   };
 
   // If in preview mode and we have bootstrap data, show the template
-  if (previewMode && Object.keys(bootstrapData).length > 0) {
+  if (previewMode && bootstrapData && Object.keys(bootstrapData).length > 0) {
     return (
       <div style={{ position: 'relative' }}>
         <button 
@@ -209,7 +209,7 @@ export default function DashboardPage() {
           >
             Open Chat Wizard
           </button>
-          {Object.keys(bootstrapData).length > 0 && (
+          {(bootstrapData && Object.keys(bootstrapData).length > 0) && (
             <button 
               onClick={() => setPreviewMode(true)}
               style={{
