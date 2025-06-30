@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import DashboardPage from './pages/Dashboard';
 import { SiteDataContext } from './context/SiteDataContext';
@@ -9,7 +9,6 @@ export default function App({ bootstrap = {} }) {
   const windowBootstrap = typeof window !== 'undefined' ? window.bootstrapData : {};
   const finalBootstrap = { ...bootstrap, ...windowBootstrap };
   
-  // Otherwise render the normal dashboard
   return (
     <Router>
       <Routes>
