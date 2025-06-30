@@ -8,30 +8,35 @@ export default function HomepageV1({ tokens = {} }) {
   };
 
   return (
-    <div style={{
-      fontFamily: "'Roboto', sans-serif",
-      color: '#3f3f3f',
-      lineHeight: '1.5',
-      margin: 0,
-      padding: 0
-    }}>
+    <div
+      style={{
+        fontFamily: "'Roboto', sans-serif",
+        color: "#3f3f3f",
+        lineHeight: "1.5",
+        margin: 0,
+        padding: 0,
+      }}
+    >
       <style jsx>{`
         :root {
-          --primary: #5DD39E;
-          --secondary: #EFD5BD;
+          --primary: #5dd39e;
+          --secondary: #efd5bd;
           --text: #3f3f3f;
           --bg-light: #f9f9f9;
           --bg-dark: #f5f5f5;
-          --font-sans: 'Roboto', sans-serif;
-          --font-heading: 'Work Sans', sans-serif;
+          --font-sans: "Roboto", sans-serif;
+          --font-heading: "Work Sans", sans-serif;
         }
         * {
           box-sizing: border-box;
           margin: 0;
           padding: 0;
         }
-        h1, h2, h3, h4 {
-          font-family: 'Work Sans', sans-serif;
+        h1,
+        h2,
+        h3,
+        h4 {
+          font-family: "Work Sans", sans-serif;
           color: var(--text);
         }
         a {
@@ -42,7 +47,7 @@ export default function HomepageV1({ tokens = {} }) {
           max-width: 100%;
           display: block;
         }
-        
+
         /* Navigation */
         .nav {
           display: flex;
@@ -59,7 +64,7 @@ export default function HomepageV1({ tokens = {} }) {
         .logo {
           font-size: 1.5rem;
           font-weight: 700;
-          font-family: 'Work Sans', sans-serif;
+          font-family: "Work Sans", sans-serif;
         }
         .hamburger {
           display: none;
@@ -113,11 +118,11 @@ export default function HomepageV1({ tokens = {} }) {
           cursor: pointer;
           text-decoration: none;
         }
-        
+
         /* Hero */
         .hero {
           position: relative;
-          background-image: url('https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+          background-image: url("https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
           background-size: cover;
           background-position: center;
           text-align: center;
@@ -127,8 +132,11 @@ export default function HomepageV1({ tokens = {} }) {
         .hero::before {
           content: "";
           position: absolute;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.4);
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.4);
         }
         .hero * {
           position: relative;
@@ -152,7 +160,7 @@ export default function HomepageV1({ tokens = {} }) {
           font-weight: 500;
           cursor: pointer;
         }
-        
+
         /* Location Section */
         .location-section {
           background: #fff;
@@ -187,7 +195,7 @@ export default function HomepageV1({ tokens = {} }) {
           margin-bottom: 16px;
           color: #444;
         }
-        
+
         /* Features */
         .features {
           display: flex;
@@ -197,7 +205,7 @@ export default function HomepageV1({ tokens = {} }) {
           padding: 3rem 1rem;
           text-align: center;
           border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .feature {
           flex: 1;
@@ -216,7 +224,7 @@ export default function HomepageV1({ tokens = {} }) {
           font-size: 0.95rem;
           color: #555;
         }
-        
+
         /* Services */
         .services {
           background: white;
@@ -253,7 +261,7 @@ export default function HomepageV1({ tokens = {} }) {
           font-size: 0.9rem;
           color: #555;
         }
-        
+
         /* Testimonials */
         .testimonials {
           background: white;
@@ -284,7 +292,7 @@ export default function HomepageV1({ tokens = {} }) {
           color: gold;
           font-size: 1.1rem;
         }
-        
+
         /* Team */
         .team {
           background: var(--bg-dark);
@@ -315,7 +323,7 @@ export default function HomepageV1({ tokens = {} }) {
           font-size: 0.9rem;
           color: #555;
         }
-        
+
         /* Gallery */
         .gallery {
           background: white;
@@ -339,7 +347,7 @@ export default function HomepageV1({ tokens = {} }) {
           object-fit: cover;
           border-radius: 6px;
         }
-        
+
         /* Contact + Map */
         .contact-form {
           background: var(--bg-light);
@@ -382,7 +390,7 @@ export default function HomepageV1({ tokens = {} }) {
           border: 0;
           border-radius: 4px;
         }
-        
+
         /* Secondary CTA */
         .secondary-cta {
           background: var(--secondary);
@@ -407,7 +415,7 @@ export default function HomepageV1({ tokens = {} }) {
           font-size: 1rem;
           cursor: pointer;
         }
-        
+
         /* Footer */
         footer {
           background: #3f3f3f;
@@ -444,7 +452,9 @@ export default function HomepageV1({ tokens = {} }) {
           border-radius: 50%;
           justify-content: center;
           align-items: center;
-          transition: background .25s, border-color .25s;
+          transition:
+            background 0.25s,
+            border-color 0.25s;
         }
         .footer-social .icon svg {
           width: 20px;
@@ -452,10 +462,10 @@ export default function HomepageV1({ tokens = {} }) {
           fill: #fff;
         }
         .footer-social .icon:hover {
-          background: #5DD39E;
-          border-color: #5DD39E;
+          background: #5dd39e;
+          border-color: #5dd39e;
         }
-        
+
         /* Mobile Responsive */
         @media (max-width: 800px) {
           .hamburger {
@@ -487,7 +497,7 @@ export default function HomepageV1({ tokens = {} }) {
             align-items: stretch;
             max-width: 900px;
             margin: 0 auto;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
           }
           .team-grid {
             display: flex;
@@ -510,33 +520,64 @@ export default function HomepageV1({ tokens = {} }) {
       `}</style>
 
       {/* Google Fonts */}
-      <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
-      
+      <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet"
+      />
+
       {/* Navigation */}
       <nav className="nav">
         <div className="logo">YourLogo</div>
-        <button className="hamburger" onClick={toggleMenu} aria-label="Toggle menu">☰</button>
-        <ul className={`nav-links ${isMenuOpen ? 'mobile-open' : ''}`}>
-          <li><a href="#">Home</a></li>
+        <button
+          className="hamburger"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          ☰
+        </button>
+        <ul className={`nav-links ${isMenuOpen ? "mobile-open" : ""}`}>
+          <li>
+            <a href="#">Home</a>
+          </li>
           <li>
             <a href="#">Services ▾</a>
             <ul>
-              <li><a href="#">General Dentistry</a></li>
-              <li><a href="#">Cosmetic Veneers</a></li>
-              <li><a href="#">Invisalign®</a></li>
+              <li>
+                <a href="#">General Dentistry</a>
+              </li>
+              <li>
+                <a href="#">Cosmetic Veneers</a>
+              </li>
+              <li>
+                <a href="#">Invisalign®</a>
+              </li>
             </ul>
           </li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="tel:+123456789" className="contact-phone">📞 +1 234 567 89</a></li>
-          <li><a href="#" className="cta">Schedule now</a></li>
+          <li>
+            <a href="#">About</a>
+          </li>
+          <li>
+            <a href="#">Contact</a>
+          </li>
+          <li>
+            <a href="tel:+123456789" className="contact-phone">
+              📞 +1 234 567 89
+            </a>
+          </li>
+          <li>
+            <a href="#" className="cta">
+              Schedule now
+            </a>
+          </li>
         </ul>
       </nav>
 
       {/* Hero */}
       <section className="hero">
-        <h1>Your Practice Name</h1>
-        <p>High-quality care in a welcoming environment—expertise you can trust.</p>
+        <h1>Title that describes business</h1>
+        <p>
+          High-quality care in a welcoming environment—expertise you can trust.
+        </p>
         <button className="btn-primary">Schedule Now</button>
       </section>
 
@@ -544,13 +585,29 @@ export default function HomepageV1({ tokens = {} }) {
       <section className="location-section">
         <div className="location-content">
           <div className="location-image">
-            <img src="https://plus.unsplash.com/premium_photo-1674575134867-cb7623d39bdb?w=900&auto=format&fit=crop&q=60" alt="Dentistry Services" />
+            <img
+              src="https://plus.unsplash.com/premium_photo-1674575134867-cb7623d39bdb?w=900&auto=format&fit=crop&q=60"
+              alt="Dentistry Services"
+            />
           </div>
           <div className="location-text">
             <h2>Serving Austin's Smiles with Excellence</h2>
-            <p>At Your Practice, we're proud to be part of the Austin community. From our state-of-the-art facilities in downtown Austin to our friendly, highly trained staff, every element is designed to put you at ease and deliver world-class care.</p>
-            <p>We combine the latest minimally invasive techniques with a warm, inviting atmosphere so you feel relaxed from the moment you walk in.</p>
-            <p>Whether it's a routine cleaning or a complex cosmetic procedure, our team takes the time to listen to your needs, explain every step, and ensure you leave with a healthier, more confident smile.</p>
+            <p>
+              At Your Practice, we're proud to be part of the Austin community.
+              From our state-of-the-art facilities in downtown Austin to our
+              friendly, highly trained staff, every element is designed to put
+              you at ease and deliver world-class care.
+            </p>
+            <p>
+              We combine the latest minimally invasive techniques with a warm,
+              inviting atmosphere so you feel relaxed from the moment you walk
+              in.
+            </p>
+            <p>
+              Whether it's a routine cleaning or a complex cosmetic procedure,
+              our team takes the time to listen to your needs, explain every
+              step, and ensure you leave with a healthier, more confident smile.
+            </p>
           </div>
         </div>
       </section>
@@ -559,34 +616,67 @@ export default function HomepageV1({ tokens = {} }) {
       <section className="features">
         <div className="feature">
           <div className="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M9 7a4 4 0 1 1 6 0v1H9V7z"/>
-              <path d="M21 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              fill="none"
+              stroke="var(--primary)"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M9 7a4 4 0 1 1 6 0v1H9V7z" />
+              <path d="M21 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
             </svg>
           </div>
           <h3>Experienced Dentists</h3>
-          <p>Our highly skilled dentists provide compassionate and personalized care to each patient.</p>
+          <p>
+            Our highly skilled dentists provide compassionate and personalized
+            care to each patient.
+          </p>
         </div>
 
         <div className="feature">
           <div className="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" strokeWidth="2" viewBox="0 0 24 24">
-              <rect x="3" y="11" width="18" height="10" rx="2"/>
-              <path d="M3 11V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              fill="none"
+              stroke="var(--primary)"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <rect x="3" y="11" width="18" height="10" rx="2" />
+              <path d="M3 11V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5" />
             </svg>
           </div>
           <h3>State-of-the-Art Facility</h3>
-          <p>We use advanced technology to ensure accurate diagnoses and effective treatments.</p>
+          <p>
+            We use advanced technology to ensure accurate diagnoses and
+            effective treatments.
+          </p>
         </div>
 
         <div className="feature">
           <div className="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              fill="none"
+              stroke="var(--primary)"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
             </svg>
           </div>
           <h3>Patient-Centered Care</h3>
-          <p>Our friendly team is dedicated to making your visit comfortable and stress-free.</p>
+          <p>
+            Our friendly team is dedicated to making your visit comfortable and
+            stress-free.
+          </p>
         </div>
       </section>
 
@@ -595,19 +685,37 @@ export default function HomepageV1({ tokens = {} }) {
         <h2>Our Services</h2>
         <div className="services-grid">
           <div className="service-card">
-            <img src="https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60" alt="" />
+            <img
+              src="https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60"
+              alt=""
+            />
             <h4>General Dentistry</h4>
-            <p>Complete check-ups, cleanings, and preventive treatments for all ages.</p>
+            <p>
+              Complete check-ups, cleanings, and preventive treatments for all
+              ages.
+            </p>
           </div>
           <div className="service-card">
-            <img src="https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=60" alt="" />
+            <img
+              src="https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=60"
+              alt=""
+            />
             <h4>Cosmetic Veneers</h4>
-            <p>Thin, custom-made shells to improve the color, shape, and size of your teeth.</p>
+            <p>
+              Thin, custom-made shells to improve the color, shape, and size of
+              your teeth.
+            </p>
           </div>
           <div className="service-card">
-            <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&auto=format&fit=crop&q=60" alt="" />
+            <img
+              src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&auto=format&fit=crop&q=60"
+              alt=""
+            />
             <h4>Invisalign®</h4>
-            <p>Clear aligners to straighten teeth discreetly without traditional braces.</p>
+            <p>
+              Clear aligners to straighten teeth discreetly without traditional
+              braces.
+            </p>
           </div>
         </div>
       </section>
@@ -617,15 +725,24 @@ export default function HomepageV1({ tokens = {} }) {
         <h2>What Patients Say</h2>
         <div className="testimonials-grid">
           <div className="testimonial">
-            <p>"Fantastic experience—couldn't be happier with my new smile and the care I received."</p>
+            <p>
+              "Fantastic experience—couldn't be happier with my new smile and
+              the care I received."
+            </p>
             <div className="stars">★★★★★</div>
           </div>
           <div className="testimonial">
-            <p>"Professional, friendly staff—every visit exceeded my expectations. Highly recommend!"</p>
+            <p>
+              "Professional, friendly staff—every visit exceeded my
+              expectations. Highly recommend!"
+            </p>
             <div className="stars">★★★★☆</div>
           </div>
           <div className="testimonial">
-            <p>"Top-quality care in a comfortable environment. My family and I trust them completely."</p>
+            <p>
+              "Top-quality care in a comfortable environment. My family and I
+              trust them completely."
+            </p>
             <div className="stars">★★★★★</div>
           </div>
         </div>
@@ -636,17 +753,26 @@ export default function HomepageV1({ tokens = {} }) {
         <h2>Meet the Team</h2>
         <div className="team-grid">
           <div className="team-member">
-            <img src="https://images.unsplash.com/photo-1665080954352-5a12ef53017a?w=900&auto=format&fit=crop&q=60" alt="" />
+            <img
+              src="https://images.unsplash.com/photo-1665080954352-5a12ef53017a?w=900&auto=format&fit=crop&q=60"
+              alt=""
+            />
             <h4>Dr. Smith</h4>
             <p>DDS, Founder</p>
           </div>
           <div className="team-member">
-            <img src="https://images.unsplash.com/photo-1620928269189-dc4ee9d981c0?w=900&auto=format&fit=crop&q=60" alt="" />
+            <img
+              src="https://images.unsplash.com/photo-1620928269189-dc4ee9d981c0?w=900&auto=format&fit=crop&q=60"
+              alt=""
+            />
             <h4>Dr. Jones</h4>
             <p>Orthodontist</p>
           </div>
           <div className="team-member">
-            <img src="https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=900&auto=format&fit=crop&q=60" alt="" />
+            <img
+              src="https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=900&auto=format&fit=crop&q=60"
+              alt=""
+            />
             <h4>Dr. Lee</h4>
             <p>Oral Surgeon</p>
           </div>
@@ -657,9 +783,18 @@ export default function HomepageV1({ tokens = {} }) {
       <section className="gallery">
         <h2>Our Office</h2>
         <div className="gallery-grid">
-          <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&auto=format&fit=crop&q=60" alt="" />
-          <img src="https://images.unsplash.com/photo-1616391182219-e080b4d1043a?w=900&auto=format&fit=crop&q=60" alt="" />
-          <img src="https://plus.unsplash.com/premium_photo-1672922646298-3afc6c6397c9?w=900&auto=format&fit=crop&q=60" alt="" />
+          <img
+            src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&auto=format&fit=crop&q=60"
+            alt=""
+          />
+          <img
+            src="https://images.unsplash.com/photo-1616391182219-e080b4d1043a?w=900&auto=format&fit=crop&q=60"
+            alt=""
+          />
+          <img
+            src="https://plus.unsplash.com/premium_photo-1672922646298-3afc6c6397c9?w=900&auto=format&fit=crop&q=60"
+            alt=""
+          />
         </div>
       </section>
 
@@ -696,7 +831,11 @@ export default function HomepageV1({ tokens = {} }) {
         <div className="footer-grid">
           <div>
             <h4>YourPractice</h4>
-            <p>123 Dental St.<br/>City, State ZIP</p>
+            <p>
+              123 Dental St.
+              <br />
+              City, State ZIP
+            </p>
           </div>
           <div>
             <h4>Services</h4>
@@ -714,13 +853,19 @@ export default function HomepageV1({ tokens = {} }) {
             <h4>Connect</h4>
             <div className="footer-social">
               <a href="#" aria-label="Facebook" className="icon">
-                <svg viewBox="0 0 24 24"><path d="M15 3h4V0h-4c-3.9 0-7 3.1-7 7v3H5v4h3v10h4V14h3.1l.9-4H12V7c0-1.1.9-2 2-2z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M15 3h4V0h-4c-3.9 0-7 3.1-7 7v3H5v4h3v10h4V14h3.1l.9-4H12V7c0-1.1.9-2 2-2z" />
+                </svg>
               </a>
               <a href="#" aria-label="Instagram" className="icon">
-                <svg viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-1.7-1.3-3-3-3H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 12 5.51 5.51 0 0 0 12 7.5zm0 9A3.5 3.5 0 1 1 15.5 13 3.5 3.5 0 0 1 12 16.5zm5.9-10.1a1.3 1.3 0 1 1-1.3-1.3 1.3 1.3 0 0 1 1.3 1.3z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-1.7-1.3-3-3-3H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 12 5.51 5.51 0 0 0 12 7.5zm0 9A3.5 3.5 0 1 1 15.5 13 3.5 3.5 0 0 1 12 16.5zm5.9-10.1a1.3 1.3 0 1 1-1.3-1.3 1.3 1.3 0 0 1 1.3 1.3z" />
+                </svg>
               </a>
               <a href="#" aria-label="Google Reviews" className="icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 8.94 5.78h-8.9v3.44h5.4A5.57 5.57 0 0 1 12 17.56a5.56 5.56 0 0 1 0-11.12c1.5 0 2.85.57 3.88 1.5l2.73-2.73A9.92 9.92 0 0 0 12 2z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2a10 10 0 1 0 8.94 5.78h-8.9v3.44h5.4A5.57 5.57 0 0 1 12 17.56a5.56 5.56 0 0 1 0-11.12c1.5 0 2.85.57 3.88 1.5l2.73-2.73A9.92 9.92 0 0 0 12 2z" />
+                </svg>
               </a>
             </div>
           </div>

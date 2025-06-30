@@ -1,0 +1,191 @@
+Below is a single copy-and-paste prompt.
+It scaffolds everything in one go:
+	•	React refactor – break your current homepage/v1/index.jsx into section components, add SiteDataContext, and keep CSS untouched.
+	•	HomePage orchestrator with props.
+	•	Serverless /api/gbp-details endpoint that calls Google Places.
+	•	Stock-image fallback (re-uses the Unsplash → Pexels module we built).
+	•	Chat wizard → state bootstrap.
+
+⸻
+
+
+You are a senior full-stack dev inside a new Replit project that already
+contains:
+
+• /src/chat.js          – wizard that finishes with a `state` object
+• homepage/v1/index.jsx       – monolithic home-page template (current HP)
+• /src/stock.ts         – getStockImages() (Unsplash → Pexels → filters)
+• styles.css  (or check in which file is css for homepage template)  – existing CSS classes (keep as-is)
+
+### JOB
+Refactor front-end + add a tiny Express API so the wizard answers feed
+dynamic templates.
+
+──────────────────────────────────────────────────────────
+ PART A — FRONT-END REFACTOR
+──────────────────────────────────────────────────────────
+
+1. **Section files**  
+   Create `/src/sections/` and move the JSX blocks from `homepage/v1/index.jsx`
+   into:  
+     • HeroSection.jsx  
+     • ServicesSection.jsx  
+     • AboutSection.jsx  
+     • GallerySection.jsx  
+     • ReviewsSection.jsx  
+     • ContactSection.jsx  
+   Maintain all existing class names & inline styles.
+
+2. **Replace hard-coded text** with props or Context values:<br>
+   • company_name → state.company_name<br>
+   • hero tagline → first item in state.services OR fallback<br>
+   • images → (state.images || gbp.photos || getStockImages())<br>
+   • phone / address → gbp data (if present)<br>
+   • etc.
+
+3. **SiteDataContext**  
+   `/src/context/SiteDataContext.js`
+   ```js
+   import { createContext } from 'react';
+   export const SiteDataContext = createContext(null);
+
+	4.	/templates/HomePageV1.jsx
+/templates/HomePageV1.jsx
+
+import { Hero, Services, About, Gallery, Reviews, Contact } from '../sections';
+export default function HomePage() {
+  return (
+    <>
+      <Hero/>
+      <Services/>
+      <About/>
+      <Gallery/>
+      <Reviews/>
+      <Contact/>
+    </>
+  );
+}
+
+
+	5.	App entry
+In /src/App.jsx
+
+import { SiteDataContext } from './context/SiteDataContext';
+import HomePage from './pages/HomePage';
+export default function App({ bootstrap }) {
+  return (
+    <SiteDataContext.Provider value={bootstrap}>
+      <HomePage/>
+    </SiteDataContext.Provider>
+  );
+}
+
+
+	6.	Wizard → Bootstrap
+At the end of chat.js, after const state = {...} do:
+
+window.bootstrapData = state;      // expose to React
+window.location.href = '/preview'; // or wherever HomePage mounts
+
+In index.html (or your main template) add:
+
+<script>
+  window.bootstrapData = window.bootstrapData || {};
+</script>
+<div id="root"></div>
+<script type="module" src="/src/main.jsx"></script>
+
+Then inside main.jsx
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+ReactDOM.createRoot(document.getElementById('root'))
+  .render(<App bootstrap={window.bootstrapData} />);
+
+
+	7.	Image fallback logic
+In each section (e.g. HeroSection) use:
+
+const { images=[], google={} } = useContext(SiteDataContext);
+const heroImg =
+  images[0] ||
+  google.photos?.[0] ||
+  getStockImages('hero', { services, company_name })[0];
+
+
+
+──────────────────────────────────────────────────────────
+PART B — BACK-END  (/api/gbp-details)
+──────────────────────────────────────────────────────────
+	1.	Install Express & dotenv
+
+npm i express dotenv node-fetch
+
+
+	2.	/server/index.js
+
+import express from 'express';
+import fetch from 'node-fetch';
+import 'dotenv/config';
+
+const app = express();
+app.use(express.json());
+
+app.post('/api/gbp-details', async (req,res) => {
+  const { placeUrl } = req.body;         // full Maps URL
+  if (!placeUrl) return res.status(400).json({error:'no url'});
+  // STEP 1: fetch Place ID
+  const idResp = await fetch(
+    `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeUrl)}&inputtype=textquery&fields=place_id&key=${process.env.GOOGLE_KEY}`
+  ).then(r=>r.json());
+  const place_id = idResp.candidates?.[0]?.place_id;
+  if (!place_id) return res.status(404).json({error:'not found'});
+
+  // STEP 2: details
+  const details = await fetch(
+    `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,photo,rating,user_ratings_total&key=${process.env.GOOGLE_KEY}`
+  ).then(r=>r.json());
+
+  // build photo URLs (first 3)
+  const photos = (details.result.photos||[]).slice(0,3).map(p=>
+    `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=${p.photo_reference}&key=${process.env.GOOGLE_KEY}`
+  );
+
+  res.json({
+    name: details.result.name,
+    address: details.result.formatted_address,
+    phone: details.result.formatted_phone_number,
+    rating: details.result.rating,
+    reviews: details.result.user_ratings_total,
+    photos
+  });
+});
+
+app.listen(3001, () => console.log('API on :3001'));
+
+
+	3.	ENV
+
+GOOGLE_KEY=•••
+
+
+	4.	Front-end fetch
+In chat.js, if the user pastes a GBP URL, call:
+
+const gbp = await fetch('/api/gbp-details',{
+  method:'POST', headers:{'Content-Type':'application/json'},
+  body: JSON.stringify({ placeUrl:url })
+}).then(r=>r.json());
+state.google = gbp;
+
+
+
+──────────────────────────────────────────────────────────
+PART C — STOCK IMAGE MODULE
+──────────────────────────────────────────────────────────
+Assume getStockImages is already exported from /src/stock.ts.
+Each section pulls it only if both state.images and google.photos
+arrays are empty.
+
+──
