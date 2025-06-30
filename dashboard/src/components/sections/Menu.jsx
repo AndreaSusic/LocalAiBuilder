@@ -139,9 +139,9 @@ export default function Menu({ tokens = {} }) {
           }
           .nav-links .dropdown {
             position: static !important;
-            display: block !important;
+            display: none !important;
             border: none !important;
-            background: var(--bg-light) !important;
+            background: white !important;
             margin-top: 0.5rem;
           }
         }
