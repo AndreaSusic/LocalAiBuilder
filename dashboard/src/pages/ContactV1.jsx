@@ -299,6 +299,13 @@ export default function ContactV1() {
           font: 16px/1.6 var(--font-sans);
           color: var(--text);
         }
+        
+        /* Desktop body display block */
+        @media (min-width: 768px) {
+          body {
+            display: block;
+          }
+        }
         h1, h2, h3, h4 {
           font-family: var(--font-heading);
           color: var(--text);
