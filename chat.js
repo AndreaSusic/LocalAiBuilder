@@ -101,6 +101,65 @@ async function performGbpLookup() {
   }
 }
 
+// Fetch detailed GBP information using the new API
+async function fetchGbpDetails(placeUrl) {
+  try {
+    bubble('ai', 'Fetching your business details...');
+    
+    const response = await fetch('/api/gbp-details', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ placeUrl })
+    });
+    
+    if (response.ok) {
+      const gbpData = await response.json();
+      console.log('📍 GBP details fetched:', gbpData);
+      
+      // Store GBP data in state
+      state.google = gbpData;
+      state.google_profile = placeUrl;
+      
+      bubble('ai', `Great! I found: ${gbpData.name}${gbpData.address ? ` at ${gbpData.address}` : ''}. This will help personalize your website with accurate contact details and photos.`);
+      
+      // Bootstrap data for template system
+      updateBootstrapData();
+      
+      awaitingKey = null;
+      await handleMissing({});
+    } else {
+      console.error('❌ GBP details fetch failed:', response.status);
+      state.google_profile = placeUrl; // Still store the URL
+      bubble('ai', 'Found your business profile but couldn\'t fetch all details. We can proceed with creating your website.');
+      awaitingKey = null;
+      await handleMissing({});
+    }
+  } catch (error) {
+    console.error('❌ GBP details error:', error);
+    state.google_profile = placeUrl; // Still store the URL
+    bubble('ai', 'Found your business profile. Let\'s continue with creating your website.');
+    awaitingKey = null;
+    await handleMissing({});
+  }
+}
+
+// Update bootstrap data for the template system
+function updateBootstrapData() {
+  if (typeof window !== 'undefined') {
+    window.bootstrapData = {
+      company_name: state.company_name,
+      city: state.city,
+      industry: state.industry,
+      language: state.language,
+      services: state.services ? state.services.split(',').map(s => s.trim()) : [],
+      images: images.filter(img => img.size > 0).map((img, index) => URL.createObjectURL(img)),
+      google: state.google || {},
+      colors: state.colours
+    };
+    console.log('🎨 Bootstrap data updated:', window.bootstrapData);
+  }
+}
+
 // bubble helper
 function bubble(role, txt) { 
   const d = document.createElement('div');
@@ -772,6 +831,9 @@ window.addEventListener('load', async () => {
   } else {
     console.log('Draft loaded successfully:', { state, convo });
   }
+  
+  // Initialize bootstrap data for template system
+  window.bootstrapData = window.bootstrapData || {};
   
 
   
