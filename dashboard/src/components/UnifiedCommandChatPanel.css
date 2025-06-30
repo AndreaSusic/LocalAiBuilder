@@ -201,7 +201,7 @@
 /* Responsive adjustments */
 @media (max-width: 600px) {
   .toolbar {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(7, 1fr);
   }
   
   .toolbar button,
