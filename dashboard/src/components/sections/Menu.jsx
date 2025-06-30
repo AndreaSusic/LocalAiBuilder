@@ -120,7 +120,7 @@ export default function Menu({ tokens = {} }) {
             display: block !important;
           }
           .nav-links {
-            display: none;
+            display: none !important;
             flex-direction: column;
             position: absolute;
             top: 100%;
