@@ -4,81 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terms of Service - GoAISite</title>
+    <link href="https://fonts.cdnfonts.com/css/cooper-hewitt" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Work+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="/logo.svg">
+    <link rel="icon" type="image/x-icon" href="/assets/logo.svg">
     <style>
-        body {
+        .legal-content {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
             max-width: 800px;
-            margin: 0 auto;
+            margin: 2rem auto;
             padding: 2rem;
         }
-        h1, h2, h3 {
+        .legal-content h1, .legal-content h2, .legal-content h3 {
             color: #2a2a2a;
             margin-top: 2rem;
             margin-bottom: 1rem;
         }
-        h1 {
+        .legal-content h1 {
             border-bottom: 3px solid #ffc000;
             padding-bottom: 0.5rem;
         }
-        h3 {
+        .legal-content h3 {
             margin-top: 1.5rem;
             color: #555;
         }
-        a {
+        .legal-content a {
             color: #2e8b57;
             text-decoration: none;
         }
-        a:hover {
+        .legal-content a:hover {
             text-decoration: underline;
         }
-        hr {
+        .legal-content hr {
             border: none;
             border-top: 1px solid #e1e5e9;
             margin: 2rem 0;
         }
-        ul, ol {
+        .legal-content ul, .legal-content ol {
             padding-left: 1.5rem;
         }
-        li {
+        .legal-content li {
             margin-bottom: 0.5rem;
         }
-        em {
+        .legal-content em {
             color: #666;
             font-style: italic;
         }
-        strong {
+        .legal-content strong {
             color: #2a2a2a;
-        }
-        .header-nav {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .header-nav a {
-            margin: 0 1rem;
-            padding: 0.5rem 1rem;
-            background: #f8f9fa;
-            border-radius: 4px;
-            color: #333;
-        }
-        .header-nav a:hover {
-            background: #ffc000;
-            color: white;
-            text-decoration: none;
         }
     </style>
 </head>
 <body>
-    <div class="header-nav">
-        <a href="/">← Back to GoAISite</a>
-        <a href="/privacy.html">Privacy Policy</a>
-        <a href="/cookies.html">Cookie Policy</a>
-    </div>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/" class="brand">
+                    <img src="/assets/logo.svg" alt="GoAISite logo" class="logo">
+                    <span class="wordmark">GoAISite</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="industries/index.html">Industries</a></li>
+                    <li><a href="/#faq">FAQ</a></li>
+                    <li><button id="loginBtn" class="btn-secondary">Login</button></li>
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
 
-    <main>
+    <main class="legal-content">
         <!-- =================================================================== -->
         <!--  Terms of Service – GoAISite                                        -->
         <!--  Last Updated: 30 June 2025                                         -->
@@ -97,7 +100,7 @@
         <h2>1. Who We Are</h2>
         <p>
           The Platform is operated by <strong>Asymmetric Digital d.o.o.</strong>,
-          Futoški put 40, 21000 Novi Sad, Serbia ("<em>Company</em>").
+          Gospodar Jovanova, Belgrade, Serbia ("<em>Company</em>").
         </p>
 
         <hr />
@@ -233,14 +236,14 @@
           <li>These Terms are governed by the laws of Serbia, without regard to its conflict-of-law principles.</li>
           <li>
             ◆All disputes shall be submitted to the competent courts in
-            <strong>Novi Sad, Serbia</strong>.
+            <strong>Belgrade, Serbia</strong>.
             If you are a consumer resident in the EU/UK, you may also bring proceedings
             in your home member-state.
           </li>
           <li>
             <em>US customers only:</em> you and the Company agree to resolve disputes
             through <strong>binding arbitration</strong> in English under the ICC
-            Rules, seat Novi Sad, except where prohibited.
+            Rules, seat Belgrade, except where prohibited.
           </li>
         </ul>
 
@@ -259,13 +262,50 @@
         <p>
           Questions?  Write to
           <a href="mailto:support@goaisite.com">support@goaisite.com</a> or
-          Asymmetric Digital d.o.o., Futoški put 40, 21000 Novi Sad, Serbia.
+          Asymmetric Digital d.o.o., Gospodar Jovanova, Belgrade, Serbia.
         </p>
     </main>
 
-    <script>
-        // Simple analytics placeholder
-        console.log('Terms of Service page loaded');
-    </script>
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="footer-col">
+          <div class="footer-brand">
+            <img src="/assets/logo-transparent.png" alt="Site Logo" class="footer-logo">
+            <h2 class="site-title">GoAISite</h2>
+          </div>
+          <p class="footer-description">Your personal AI that transforms your ideas into professional websites instantly.</p>
+        </div>
+        <div class="footer-col">
+          <h3>About us</h3>
+          <ul>
+            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Some of Industries</h3>
+          <ul>
+            <li>Lawn Care</li>
+            <li>Legal</li>
+            <li>Dentist</li>
+            <li>Ecommerce</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="/tos.html">Terms of Service</a></li>
+            <li><a href="/privacy.html">Privacy Policy</a></li>
+            <li><a href="/cookies.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2025 Powered by <a href="https://asymmetric.digital/" target="_blank" rel="noopener">Asymmetric Digital</a>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>

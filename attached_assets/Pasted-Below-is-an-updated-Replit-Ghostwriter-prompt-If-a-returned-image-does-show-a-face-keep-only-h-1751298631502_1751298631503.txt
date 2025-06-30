@@ -1,0 +1,93 @@
+Below is an updated Replit-Ghostwriter prompt:
+	•	If a returned image does show a face → keep only happy / neutral-professional expressions.
+	•	If it shows no face → accept if the scene is clearly on-topic (dentist chair, clean clinic interior, dental tools, etc.).
+	•	The function now returns only what you need for the page: src and alt.
+	•	The legal credit string is saved in an internal field (hiddenCredit) so you can surface it later (e.g., in an HTML data-credit attribute) if Unsplash ever requests attribution, but it never appears in the visible UI.
+
+⸻
+
+
+You are an expert TypeScript developer working in Replit.
+
+**Goal**  
+Build a module that fetches up to *N* stock images from Unsplash (primary) and
+Pexels (fallback) when the user supplies too few.  Images must:
+
+• Fit a specific **service type** (e.g., “dentist”) and **country** (e.g., “Germany”).  
+• Prefer smiling / professional faces, but faceless clinic shots are OK.  
+• Reject images with weird faces, negative expressions, unrelated subjects.  
+• Output **only** `{ src, alt }` for UI; keep `hiddenCredit` internally.
+
+### 1. ENV
+
+UNSPLASH_KEY=…
+PEXELS_KEY=…
+
+### 2. Deps
+
+node-fetch
+face-api.js          # tiny model for optional face check
+canvas
+@types/node
+@types/node-fetch
+
+### 3. Structure
+
+src/
+├─ stock.ts           # providers + filtering
+├─ llm.ts             # precise query builder
+├─ imageSelector.ts   # orchestration (getStockImages)
+└─ demo.ts            # CLI demo
+
+### 4. stock.ts
+* Wrappers return raw records PLUS `{ hiddenCredit }` (unused in UI).  
+* `filterFaces(img)` → if face detected → accept only happy/neutral > 0.6.  
+* `filterNoFace(img, serviceType)` → keep if alt/tags contain key nouns
+  (dentist, clinic, tooth, patient, etc.).  
+* Public mapping strips `hiddenCredit` and `origin`.
+
+### 5. llm.ts
+Prompt:
+
+SYSTEM: You are a creative director.
+USER:
+Generate 3 Unsplash search phrases (≤5 words) for {serviceType} in {country}.
+At least one query should include people, and one may focus on interiors or
+equipment.  Use local cues (city names, cultural nouns).  Return JSON array only.
+
+### 6. imageSelector.ts
+Algorithm:
+
+if userImages >= minNeeded → return userImages
+
+queries = await buildQueries(service,country)
+for q of queries:
+imgs = await unsplash(q)
+imgs = faceAwareFilter(imgs)
+if imgs.length < minNeeded:
+imgs += await pexels(q)
+imgs = faceAwareFilter(imgs)
+results.push(…imgs)
+if results.length >= minNeeded: break
+
+return results.slice(0,minNeeded).map(({src,alt}) => ({src,alt}))
+
+### 7. CLI demo
+
+npm run dev – “dentist” “Germany” 4
+
+Returns:
+
+```json
+[
+  {
+    "src": "https://images.unsplash.com/photo-…",
+    "alt": "Modern dental clinic interior"
+  },
+  …
+]
+
+8. Footer / hidden attribution (if ever needed)
+
+<img src="{src}" alt="{alt}" data-credit="{hiddenCredit}">
+
