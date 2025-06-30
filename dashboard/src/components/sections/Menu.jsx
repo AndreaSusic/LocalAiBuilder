@@ -56,7 +56,14 @@ export default function Menu({ tokens = {} }) {
         padding: 0
       }} className={`nav-links ${isMenuOpen ? "mobile-open" : ""}`}>
         <li><a href="/" style={{ textDecoration: "none", color: "#000", padding: "0.5rem" }}>Home</a></li>
-        <li style={{ position: "relative" }}>
+        <li style={{ position: "relative" }} onClick={(e) => {
+          if (window.innerWidth <= 800) {
+            e.preventDefault();
+            const dropdown = e.currentTarget.querySelector('.dropdown');
+            const isVisible = dropdown.style.display === 'block';
+            dropdown.style.display = isVisible ? 'none' : 'block';
+          }
+        }}>
           <a href="#" style={{ textDecoration: "none", color: "#000", padding: "0.5rem" }}>Services ▾</a>
           <ul style={{
             display: "none",
@@ -112,7 +119,10 @@ export default function Menu({ tokens = {} }) {
 
       <style>{`
         .nav-links li:hover > .dropdown {
-          display: block;
+          display: block !important;
+        }
+        .nav-links li {
+          position: relative;
         }
         
         @media (max-width: 800px) {
@@ -143,6 +153,14 @@ export default function Menu({ tokens = {} }) {
             border: none !important;
             background: white !important;
             margin-top: 0.5rem;
+            list-style: none !important;
+            padding-left: 0 !important;
+            text-align: left !important;
+          }
+          .nav-links .dropdown li {
+            list-style: none !important;
+            text-align: left !important;
+            padding-left: 0 !important;
           }
         }
       `}</style>
