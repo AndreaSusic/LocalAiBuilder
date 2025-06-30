@@ -34,7 +34,7 @@ export default function UnifiedCommandChatPanel() {
   return (
     <div className="panel-root">
       <p className="intro">
-        Let me help you polish your webpage. Click on icons to edit content or ask or type a command.
+        Click on icons to edit content or type a command.
       </p>
 
       <div className="tabs">
