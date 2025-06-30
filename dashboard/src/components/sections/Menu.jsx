@@ -24,13 +24,14 @@ export default function Menu({ tokens = {} }) {
       top: 0,
       zIndex: 1000
     }}>
-      <div style={{
+      <a href="/templates/homepage/v1/index.jsx" style={{
         fontSize: "1.5rem",
         fontWeight: "700",
-        color: "var(--primary)"
+        color: "var(--primary)",
+        textDecoration: "none"
       }}>
-        {tokens.companyName || "YourPractice"}
-      </div>
+        YourLogo
+      </a>
       
       <button 
         style={{
