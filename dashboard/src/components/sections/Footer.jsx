@@ -69,30 +69,52 @@ export default function Footer({ data }) {
               color: colors.primary,
               fontWeight: 'bold'
             }}>
-              Quick Links
+              Legal
             </h4>
             <ul style={{
               listStyle: 'none',
               padding: 0,
               margin: 0
             }}>
-              {data.links.map((link, index) => (
-                <li key={index} style={{
-                  marginBottom: '0.5rem'
-                }}>
-                  <a href="#" style={{
-                    color: 'white',
-                    textDecoration: 'none',
-                    opacity: 0.9,
-                    transition: 'opacity 0.2s'
-                  }}
-                  onMouseOver={(e) => e.target.style.opacity = '1'}
-                  onMouseOut={(e) => e.target.style.opacity = '0.9'}
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li style={{ marginBottom: '0.5rem' }}>
+                <a href="/tos.html" style={{
+                  color: 'white',
+                  textDecoration: 'none',
+                  opacity: 0.9,
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.opacity = '1'}
+                onMouseOut={(e) => e.target.style.opacity = '0.9'}
+                >
+                  Terms of Service
+                </a>
+              </li>
+              <li style={{ marginBottom: '0.5rem' }}>
+                <a href="/privacy.html" style={{
+                  color: 'white',
+                  textDecoration: 'none',
+                  opacity: 0.9,
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.opacity = '1'}
+                onMouseOut={(e) => e.target.style.opacity = '0.9'}
+                >
+                  Privacy Policy
+                </a>
+              </li>
+              <li style={{ marginBottom: '0.5rem' }}>
+                <a href="/cookies.html" style={{
+                  color: 'white',
+                  textDecoration: 'none',
+                  opacity: 0.9,
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.opacity = '1'}
+                onMouseOut={(e) => e.target.style.opacity = '0.9'}
+                >
+                  Cookie Policy
+                </a>
+              </li>
             </ul>
           </div>
         </div>

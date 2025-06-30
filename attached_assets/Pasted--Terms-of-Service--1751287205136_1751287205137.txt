@@ -1,0 +1,182 @@
+<!-- =================================================================== -->
+<!--  Terms of Service – GoAISite                                        -->
+<!--  Last Updated: 30 June 2025                                         -->
+<!-- =================================================================== -->
+<h1>Terms&nbsp;of&nbsp;Service</h1>
+<p>
+  Please read these Terms of Service (“<strong>Terms</strong>”) carefully.
+  By creating an account or using any product or service offered by
+  <strong>GoAISite</strong> (“<em>Platform</em>,” “<em>we</em>,” “<em>our</em>”),
+  you agree to be bound by these Terms and by our
+  <a href="/privacy">Privacy&nbsp;Policy</a>.
+</p>
+
+<hr />
+
+<h2>1. Who We Are</h2>
+<p>
+  The Platform is operated by <strong>Asymmetric Digital d.o.o.</strong>,
+  Futoški put 40, 21000 Novi Sad, Serbia (“<em>Company</em>”).
+</p>
+
+<hr />
+
+<h2>2. Eligibility & Account Security</h2>
+<ul>
+  <li>You must be at least&nbsp;18&nbsp;years old and capable of forming a binding contract.</li>
+  <li>You are responsible for all activity under your account and must keep
+      your password and OAuth credentials confidential.</li>
+  <li>Notify us immediately at <a href="mailto:support@goaisite.com">support@goaisite.com</a>
+      of any unauthorized access.</li>
+</ul>
+
+<hr />
+
+<h2>3. Subscriptions & Payments</h2>
+<ul>
+  <li>All paid plans are billed in advance via <strong>Paddle.com Market Ltd</strong>
+      (“Merchant of Record”).  Paddle’s
+      <a href="https://www.paddle.com/legal/checkout-buyer-terms">Checkout Terms</a>
+      apply in addition to ours.</li>
+  <li>Plans auto-renew at the end of each billing cycle until cancelled.
+      You can cancel at any time in your account settings; access remains active
+      until the current term ends.  ◆<em>No pro-rated refunds</em>, except where
+      required by law.</li>
+  <li>Price changes or material plan changes will be announced at least
+      30&nbsp;days in advance by email.</li>
+</ul>
+
+<hr />
+
+<h2>4. Intellectual-Property Ownership</h2>
+
+<h3>4.1 Your Inputs</h3>
+<p>
+  You retain all rights to the text, images, and other content you
+  supply to the Platform (“<em>User&nbsp;Content</em>”).  You grant us a
+  <em>non-exclusive, worldwide, royalty-free</em> licence to process and display
+  User Content solely to provide the service.
+</p>
+
+<h3>4.2 AI-Generated Output</h3>
+<p>
+  All HTML, CSS, React code, images, and text generated for you (“<em>Generated&nbsp;Site</em>”)
+  are licensed to you under the <strong>Creative&nbsp;Commons&nbsp;BY&nbsp;4.0</strong>
+  licence, <em>unless</em> the output contains third-party assets
+  (e.g., stock photos) that carry their own licences.  We will flag any such
+  assets in your dashboard.  You are responsible for ensuring that your use of
+  the Generated Site complies with local laws and any third-party licences.
+</p>
+
+<h3>4.3 Platform IP</h3>
+<p>
+  The underlying software, models, and templates remain our exclusive property.
+  ◆You may not reverse-engineer, decompile, or create derivative works
+  from the Platform itself.
+</p>
+
+<hr />
+
+<h2>5. Acceptable-Use Policy</h2>
+<p>You agree <em>not</em> to:</p>
+<ul>
+  <li>Upload or generate content that is infringing, hateful, or illegal;</li>
+  <li>Use the Platform to build competing AI site-generation services;</li>
+  <li>Conduct automated scraping or rate-limit-breaking calls;</li>
+  <li>Bypass or disable security or usage-tracking mechanisms.</li>
+</ul>
+<p>
+  We may suspend or terminate your account for violations without notice.
+</p>
+
+<hr />
+
+<h2>6. Termination</h2>
+<p>
+  Either party may terminate these Terms at any time:
+  <ul>
+    <li><strong>You</strong> → by cancelling your subscription and deleting your account.</li>
+    <li><strong>We</strong> → for breach, non-payment, or legal compliance.</li>
+  </ul>
+  Upon termination we will permanently delete your Generated Site and
+  User Content after 30&nbsp;days, except data we must retain for legal
+  reasons (see our Privacy Policy).
+</p>
+
+<hr />
+
+<h2>7. Disclaimers</h2>
+<p>
+  The Platform and Generated Sites are provided
+  <strong>“AS&nbsp;IS” and “AS&nbsp;AVAILABLE.”</strong>  
+  To the fullest extent permitted by law we disclaim all warranties,
+  express or implied, including merchantability, fitness for a particular
+  purpose, and non-infringement.  We do not guarantee uninterrupted service,
+  freedom from errors, or that generated content will meet every legal
+  or regulatory requirement in your jurisdiction.
+</p>
+
+<hr />
+
+<h2>8. Limitation of Liability</h2>
+<p>
+  To the maximum extent permitted by law, neither the Company nor its
+  suppliers will be liable for any indirect, incidental, special,
+  consequential, or punitive damages, or for any loss of profits, data,
+  goodwill, or business opportunities arising out of these Terms or your
+  use of the Platform—even if we have been advised of the possibility of
+  such damages.
+</p>
+<p>
+  Our aggregate liability for any claim related to the service will not
+  exceed the total amount you paid us in the <strong>12&nbsp;months</strong>
+  preceding the claim.
+</p>
+<p><em>Some jurisdictions do not allow certain exclusions—these limits
+apply to you only to the extent permitted by law.</em></p>
+
+<hr />
+
+<h2>9. Indemnification</h2>
+<p>
+  You agree to indemnify and hold harmless the Company and its affiliates
+  from any claim or demand (including reasonable legal fees) arising out
+  of or related to your User Content, your Generated Site, or your
+  violation of these Terms or applicable law.
+</p>
+
+<hr />
+
+<h2>10. Governing Law & Dispute Resolution</h2>
+<ul>
+  <li>These Terms are governed by the laws of Serbia, without regard to its conflict-of-law principles.</li>
+  <li>
+    ◆All disputes shall be submitted to the competent courts in
+    <strong>Novi Sad, Serbia</strong>.
+    If you are a consumer resident in the EU/UK, you may also bring proceedings
+    in your home member-state.
+  </li>
+  <li>
+    <em>US customers only:</em> you and the Company agree to resolve disputes
+    through <strong>binding arbitration</strong> in English under the ICC
+    Rules, seat Novi Sad, except where prohibited.
+  </li>
+</ul>
+
+<hr />
+
+<h2>11. Changes to These Terms</h2>
+<p>
+  We may update these Terms occasionally.  Material changes will be notified
+  by email or in-app banner at least 14&nbsp;days before they take effect.
+  Continued use of the Platform after the effective date constitutes acceptance.
+</p>
+
+<hr />
+
+<h2>12. Contact</h2>
+<p>
+  Questions?  Write to
+  <a href="mailto:support@goaisite.com">support@goaisite.com</a> or
+  Asymmetric Digital d.o.o., adresa, 11 000 Belgrade, Serbia.
+</p>
