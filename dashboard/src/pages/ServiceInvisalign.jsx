@@ -552,19 +552,6 @@ export default function ServiceInvisalign() {
       
       {/* Sticky CTA for mobile */}
       <div className={`sticky-cta ${showStickyBar ? 'show' : ''}`}>
-        <a href="tel:+123456789" style={{
-          flex: 1,
-          textAlign: "center",
-          margin: "0 0.5rem",
-          padding: "0.65rem 0",
-          borderRadius: "4px",
-          fontWeight: "600",
-          background: "var(--primary)",
-          color: "#fff",
-          textDecoration: "none"
-        }}>
-          Call
-        </a>
         <a href="#" style={{
           flex: 1,
           textAlign: "center",
@@ -576,7 +563,7 @@ export default function ServiceInvisalign() {
           color: "var(--text)",
           textDecoration: "none"
         }}>
-          Schedule
+          Schedule now
         </a>
       </div>
     </div>
