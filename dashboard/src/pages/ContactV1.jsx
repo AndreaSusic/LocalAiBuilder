@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Menu from "../components/sections/Menu.jsx";
 
 // Contact page tokens and data
 export const contactTokens = {
@@ -61,38 +62,7 @@ export const contactTokens = {
   }
 };
 
-// Navigation Component
-const NavBar = ({ tokens }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  return (
-    <nav>
-      <div className="logo">{tokens.companyName}</div>
-      <button className="hamburger" aria-label="menu" onClick={toggleMenu}>☰</button>
-      <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
-        <li><a href="/">Home</a></li>
-        <li>
-          <a href="#">Services ▾</a>
-          <ul>
-            <li><a href="#">General Dentistry</a></li>
-            <li><a href="#">Cosmetic Veneers</a></li>
-            <li><a href="#">Invisalign®</a></li>
-          </ul>
-        </li>
-        <li><a href="#">About</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li className="contact-phone">
-          <a href="tel:+123456789">📞 +1 234 567 89</a>
-          <button className="cta">Schedule Now</button>
-        </li>
-      </ul>
-    </nav>
-  );
-};
 
 // Hero Component
 const Hero = ({ tokens }) => (
