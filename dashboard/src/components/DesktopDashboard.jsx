@@ -10,6 +10,7 @@ export default function DesktopDashboard() {
   const [draftChat, setChat] = useState("");
   const [previewScreen, setPreviewScreen] = useState("desktop");
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
+  const [previewContent, setPreviewContent] = useState(null);
 
   /* HANDLERS */
   const sendChat = () => { console.log("Chat:", draftChat); setChat(""); };
@@ -34,6 +35,12 @@ export default function DesktopDashboard() {
     const nextIndex = (currentIndex + 1) % screens.length;
     setPreviewScreen(screens[nextIndex]);
     console.log('Preview screen:', screens[nextIndex]);
+  };
+
+  const showTemplatePreview = (templateUrl) => {
+    setPreviewContent(templateUrl);
+    setShowPagesDropdown(false);
+    console.log('Showing template preview:', templateUrl);
   };
 
   return (
@@ -82,36 +89,36 @@ export default function DesktopDashboard() {
                 zIndex: 1000,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
               }}>
-                <a 
-                  href="/templates/homepage/v1/index.jsx" 
-                  target="_blank"
+                <div 
+                  onClick={() => showTemplatePreview("/templates/homepage/v1/index.jsx")}
                   style={{
                     display: "block",
                     padding: "8px 16px",
                     textDecoration: "none",
                     color: "#333",
-                    borderBottom: "1px solid #eee"
+                    borderBottom: "1px solid #eee",
+                    cursor: "pointer"
                   }}
                   onMouseOver={e => e.target.style.background = "#f5f5f5"}
                   onMouseOut={e => e.target.style.background = "white"}
                 >
                   Homepage
-                </a>
-                <a 
-                  href="/templates/service/v1/index.jsx" 
-                  target="_blank"
+                </div>
+                <div 
+                  onClick={() => showTemplatePreview("/templates/service/v1/index.jsx")}
                   style={{
                     display: "block",
                     padding: "8px 16px",
                     textDecoration: "none",
                     color: "#333",
-                    borderBottom: "1px solid #eee"
+                    borderBottom: "1px solid #eee",
+                    cursor: "pointer"
                   }}
                   onMouseOver={e => e.target.style.background = "#f5f5f5"}
                   onMouseOut={e => e.target.style.background = "white"}
                 >
                   Service
-                </a>
+                </div>
                 <a 
                   href="/templates/contact/v1/index.jsx" 
                   target="_blank"
