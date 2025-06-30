@@ -53,7 +53,11 @@ export default function UnifiedCommandChatPanel() {
       {/* Toolbars */}
       <div className={`toolbar ${active==='text'?'active':''}`} data-toolbar="text">
         <button>𝐁</button><button>𝑰</button><button>𝑼</button>
-        <button>• List</button><button>1. List</button>
+        <select>
+          <option>List</option>
+          <option>• Unordered</option>
+          <option>1. Ordered</option>
+        </select>
         <select><option>8px</option><option>12px</option><option>14px</option><option>16px</option></select>
         <button>A🖌️</button><button>🖍️</button>
       </div>
