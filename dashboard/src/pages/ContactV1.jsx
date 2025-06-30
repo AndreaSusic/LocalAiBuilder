@@ -593,7 +593,7 @@ export default function ContactV1() {
         referrerPolicy="no-referrer"
       />
 
-      <NavBar tokens={contactTokens} />
+      <Menu tokens={contactTokens} />
       <Hero tokens={contactTokens} />
       <ContactGrid tokens={contactTokens} />
       <ContactForm tokens={contactTokens} />
