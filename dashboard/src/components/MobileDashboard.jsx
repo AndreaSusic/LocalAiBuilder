@@ -7,7 +7,7 @@ export default function MobileDashboard() {
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
   const [showVersions, setShowVersions] = useState(false);
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
-  const [previewContent, setPreviewContent] = useState(null);
+  const [previewContent, setPreviewContent] = useState('/templates/homepage/v1/index.jsx');
 
   const showTemplatePreview = (templateUrl) => {
     setPreviewContent(templateUrl);
@@ -19,7 +19,7 @@ export default function MobileDashboard() {
     <div className="mobile-dashboard-wireframe">
       {/* Sticky Top Bar */}
       <header className="mobile-header-wireframe">
-        <div style={{display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: 'flex-start'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-start'}}>
           <a href="/" className="mobile-logo-link">
             <img src="/logo.svg" alt="LocalAI Builder" className="mobile-dashboard-logo" />
           </a>

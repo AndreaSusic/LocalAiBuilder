@@ -9,5 +9,38 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Chatislav 24/7 Support Chat -->
+    <script>
+      (function (w, d, o, f) {
+        w[o] =
+          w[o] ||
+          function (config) {
+            var js = d.createElement("script");
+            js.src = f;
+            js.async = true;
+            js.onload = function () {
+              var e = d.createElement("div");
+              e.id = o;
+              d.body.appendChild(e);
+              w.init_chatislav
+                ? w.init_chatislav(o, config)
+                : console.error("chatislav init function not available.");
+            };
+            d.body.appendChild(js);
+          };
+      })(
+        window,
+        document,
+        "ctslv_bbl",
+        "https://chatislav.ai/api/static/chat-bot/index.js"
+      );
+
+      /* Initialize widget */
+      ctslv_bbl({
+        base_url: "https://chatislav.ai/api",
+        token: "92072c32-e8e4-4e76-9aca-a4f3c635c64e"
+      });
+    </script>
   </body>
 </html>
