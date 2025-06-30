@@ -115,7 +115,7 @@ export default function Menu({ tokens = {} }) {
             display: block !important;
           }
           .nav-links {
-            display: none !important;
+            display: none;
             flex-direction: column;
             position: absolute;
             top: 100%;

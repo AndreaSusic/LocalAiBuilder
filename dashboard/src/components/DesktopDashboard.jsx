@@ -10,7 +10,7 @@ export default function DesktopDashboard() {
   const [draftChat, setChat] = useState("");
   const [previewScreen, setPreviewScreen] = useState("desktop");
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
-  const [previewContent, setPreviewContent] = useState(null);
+  const [previewContent, setPreviewContent] = useState('/templates/homepage/v1/index.jsx');
 
   /* HANDLERS */
   const sendChat = () => { console.log("Chat:", draftChat); setChat(""); };
