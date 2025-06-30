@@ -154,7 +154,7 @@
 
 .chat-input button {
   padding: 10px 16px;
-  background: #007bff;
+  background: #ffc000;
   color: white;
   border: none;
   border-radius: 20px;
@@ -164,7 +164,7 @@
 }
 
 .chat-input button:hover {
-  background: #ffc000;
+  background: #e6ac00;
 }
 
 /* Suggestions Dropdown */

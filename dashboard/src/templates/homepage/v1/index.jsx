@@ -105,7 +105,7 @@ export default function HomepageV1({ tokens = {} }) {
         }
         .cta {
           background: var(--primary);
-          color: white;
+          color: white !important;
           border: none;
           padding: 0.5rem 1.25rem;
           border-radius: 4px;

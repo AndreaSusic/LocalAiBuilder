@@ -126,7 +126,7 @@ export default function Menu({ tokens = {} }) {
             padding: 1rem 0;
           }
           .nav-links.mobile-open {
-            display: flex;
+            display: flex !important;
           }
           .nav-links li {
             padding: 0.75rem;
