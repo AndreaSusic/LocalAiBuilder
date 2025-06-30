@@ -209,6 +209,15 @@ app.get('/templates/service/v:ver/index.jsx', (req, res) => {
   res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
+// Contact template routing - proxy to dashboard for React Router  
+app.get('/templates/contact/v:ver/index.jsx', (req, res) => {
+  const ver = req.params.ver;
+  console.log(`Contact template route hit: v${ver}`);
+  
+  // Serve the dashboard index.html to handle React Router for this route
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
+
 // Serve dashboard assets (before main static files)
 app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'assets')));
 

@@ -40,6 +40,7 @@ export default function MobileDashboard() {
                 Service
               </div>
               <div className="version-item" onClick={() => {
+                window.open('/templates/contact/v1/index.jsx', '_blank');
                 setShowPagesDropdown(false);
               }}>
                 Contact

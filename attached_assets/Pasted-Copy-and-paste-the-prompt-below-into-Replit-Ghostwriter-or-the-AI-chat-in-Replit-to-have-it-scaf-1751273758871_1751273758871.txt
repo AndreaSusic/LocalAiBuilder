@@ -1,0 +1,57 @@
+Copy-and-paste the prompt below into Replit Ghostwriter (or the “AI” chat in Replit) to have it scaffold the page in React. It tells Ghostwriter to keep every visual detail from the HTML/CSS you just uploaded, while converting the markup to JSX and splitting it into tidy components.
+
+⸻
+
+
+You are an expert React/NextJS front-end engineer.
+
+**Goal:** Convert the attached **Contact1.html** file into a React single-page “Contact” template for a dentistry website called “Your Website”.  
+Keep the layout, colors, fonts, and CSS tokens EXACTLY as they appear in the file—no creative redesigns.
+
+### Deliverables
+1. A working React project (Create-React-App or Vite—your call) with the following structure:
+
+src/
+├─ App.jsx
+├─ components/
+│   ├─ NavBar.jsx        – responsive menu with dropdown + hamburger toggle
+│   ├─ Hero.jsx
+│   ├─ ContactGrid.jsx   – three info cards
+│   ├─ ContactForm.jsx   – 3-field form + heading “Send us an inquiry or a message, we will get back to you soon.”
+│   ├─ Map.jsx           – full-width iframe section
+│   ├─ HoursTable.jsx
+│   ├─ SecondaryCTA.jsx
+│   └─ Footer.jsx        – social icons must render correctly
+├─ assets/
+│   └─ logo.svg (placeholder)
+└─ styles/
+├─ variables.css     – copy the :root token block from Contact1.html
+└─ globals.css       – paste the rest of the <style> rules as-is, then change any class → className collisions in JSX
+
+2. **Font & icon setup**
+   * Load Google Fonts **Work Sans** and **Roboto** exactly as in the HTML.
+   * Include Font Awesome via CDN in **public/index.html** *or* install `@fortawesome/react-fontawesome`—either is fine as long as icons display.
+
+3. **Mobile navigation**
+   * Implement the hamburger show/hide logic with React state (`useState`).
+   * Match the desktop hover-dropdown behaviour using pure CSS (same rules already in the file).
+
+4. **Map section**
+   * Keep the existing Google-Maps iframe URL and make sure the section spans 100 % width on ≥ 992 px screens.
+
+5. **Form stub**
+   * No back-end integration—just `preventDefault()` on submit and log the form data to console.
+
+6. **No design drift**
+   * Do *not* rename classes or tweak spacing/colours—stick to the original Contact1.html markup unless a change is mandatory for valid JSX.
+
+7. **README**
+   * Write a short README explaining how to run the project locally (`npm i && npm start`) and where to edit tokens or section content.
+
+### Extra Implementation Notes
+* Replace every `class=` with `className=` in JSX.
+* Self-close empty tags (`<img />`, `<input />`, etc.).
+* Wrap SVG code used for social icons inside `<span className=\"icon\">…</span>` exactly as in the HTML so styles apply.
+* Keep the mobile-first breakpoints (`@media (max-width: 768px)` and `600px`) unchanged.
+
+Deliver the complete project files in Replit so hitting **Run** opens the contact page at `localhost:3000` with pixel-perfect fidelity to Contact1.html.

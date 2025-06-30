@@ -113,7 +113,8 @@ export default function DesktopDashboard() {
                   Service
                 </a>
                 <a 
-                  href="#" 
+                  href="/templates/contact/v1/index.jsx" 
+                  target="_blank"
                   style={{
                     display: "block",
                     padding: "8px 16px",
