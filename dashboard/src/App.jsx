@@ -1,11 +1,18 @@
-import React from 'react';
-import { SiteDataContext } from './context/SiteDataContext';
-import HomePageV1 from './templates/HomePageV1';
+import { useState, useEffect } from "react";
+import DesktopDashboard from "./components/DesktopDashboard";
+import MobileDashboard from "./components/MobileDashboard";
 
-export default function App({ bootstrap = {} }) {
-  return (
-    <SiteDataContext.Provider value={bootstrap}>
-      <HomePageV1 />
-    </SiteDataContext.Provider>
-  );
+export default function App() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile ? <MobileDashboard /> : <DesktopDashboard />;
 }
