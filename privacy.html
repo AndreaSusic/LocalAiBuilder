@@ -84,11 +84,28 @@
     </style>
 </head>
 <body>
-    <div class="header-nav">
-        <a href="/">← Back to GoAISite</a>
-        <a href="/tos.html">Terms of Service</a>
-        <a href="/cookies.html">Cookie Policy</a>
-    </div>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/" class="brand">
+                    <img src="/assets/logo.svg" alt="GoAISite logo" class="logo">
+                    <span class="wordmark">GoAISite</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="industries/index.html">Industries</a></li>
+                    <li><a href="/#faq">FAQ</a></li>
+                    <li><button id="loginBtn" class="btn-secondary">Login</button></li>
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
 
     <main>
         <!-- =================================================================== -->
@@ -108,7 +125,7 @@
         <h2>1. Data Controller Details</h2>
         <p>
           <strong>Controller:</strong> Asymmetric Digital d.o.o. (trading as GoAISite) <br />
-          <strong>Address:</strong> Futoški put 40, 21000 Novi Sad, Serbia <br />
+          <strong>Address:</strong> Gospodar Jovanova, Belgrade, Serbia <br />
           <strong>Email:</strong> <a href="mailto:support@goaisite.com">support@goaisite.com</a> <br />
           <strong>DPO (EU/UK contact):</strong> <a href="mailto:dpo@goaisite.com">dpo@goaisite.com</a>
         </p>
@@ -247,13 +264,50 @@
         <p>
           Questions?  Write to
           <a href="mailto:support@goaisite.com">support@goaisite.com</a> or
-          <strong>Asymmetric Digital d.o.o.</strong>, Futoški put 40, 21000 Novi Sad, Serbia.
+          <strong>Asymmetric Digital d.o.o.</strong>, Gospodar Jovanova, Belgrade, Serbia.
         </p>
     </main>
 
-    <script>
-        // Simple analytics placeholder
-        console.log('Privacy Policy page loaded');
-    </script>
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="footer-col">
+          <div class="footer-brand">
+            <img src="/assets/logo-transparent.png" alt="Site Logo" class="footer-logo">
+            <h2 class="site-title">GoAISite</h2>
+          </div>
+          <p class="footer-description">Your personal AI that transforms your ideas into professional websites instantly.</p>
+        </div>
+        <div class="footer-col">
+          <h3>About us</h3>
+          <ul>
+            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Some of Industries</h3>
+          <ul>
+            <li>Lawn Care</li>
+            <li>Legal</li>
+            <li>Dentist</li>
+            <li>Ecommerce</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="/tos.html">Terms of Service</a></li>
+            <li><a href="/privacy.html">Privacy Policy</a></li>
+            <li><a href="/cookies.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2025 Powered by <a href="https://asymmetric.digital/" target="_blank" rel="noopener">Asymmetric Digital</a>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
