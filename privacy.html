@@ -3,129 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-lang="privacyPageTitle">Privacy Policy - GoAISite</title>
-    <!-- sr: Politika privatnosti - GoAISite -->
-    <meta name="description" content="Privacy Policy for GoAISite platform">
-    <link href="https://fonts.cdnfonts.com/css/cooper-hewitt" rel="stylesheet">
+    <title>Privacy Policy - GoAISite</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="/logo.svg">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1, h2, h3 {
+            color: #2a2a2a;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            border-bottom: 3px solid #ffc000;
+            padding-bottom: 0.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        code {
+            background-color: #f1f3f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+        a {
+            color: #2e8b57;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e1e5e9;
+            margin: 2rem 0;
+        }
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+        small {
+            color: #666;
+        }
+        .header-nav {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header-nav a {
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+            color: #333;
+        }
+        .header-nav a:hover {
+            background: #ffc000;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="nav">
-            <div class="nav-container">
-                <a href="/" class="brand">
-                    <img src="/assets/logo.svg" alt="GoAISite logo" class="logo">
-                    <span class="wordmark">GoAISite</span>
-                </a>
-                <ul class="nav-links">
-                    <li><a href="index.html" data-lang="navHome">Home</a></li>
-                    <li><a href="pricing.html" data-lang="navPricing">Pricing</a></li>
-                    <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li>
-                    <li><a href="index.html#faq" data-lang="navFAQ">FAQ</a></li>
-                    <li><a href="account.html" class="btn-secondary" data-lang="navLogin">Login</a></li>
-                </ul>
-                <button class="nav-toggle" aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </nav>
-    </header>
+    <div class="header-nav">
+        <a href="/">← Back to GoAISite</a>
+        <a href="/tos.html">Terms of Service</a>
+        <a href="/cookies.html">Cookie Policy</a>
+    </div>
 
     <main>
-        <section class="legal-section">
-            <div class="container">
-                <div class="legal-content">
-                    <h1 data-lang="privacyTitle">Privacy Policy</h1>
-                    <!-- sr: Politika privatnosti -->
-                    <p data-lang="privacyEffective">Effective: 21 June 2025</p>
-                    <!-- sr: Važi od: 21. jun 2025. -->
-                    <p data-lang="privacyIntro">This notice explains how LocalAI Builder ("LAB") collects and uses your data.</p>
-                    <!-- sr: Ovo obaveštenje objašnjava kako LocalAI Builder ("LAB") prikuplja i koristi vaše podatke. -->
-                    
-                    <h2 data-lang="privacyDataCollectedTitle">Data We Collect</h2>
-                    <!-- sr: Podaci koje prikupljamo -->
-                    <ul class="legal-list">
-                        <li data-lang="privacyDataCollected1">Account info: name, email, payment tokens (Stripe/PayPal).</li>
-                        <!-- sr: Informacije o nalogu: ime, email, tokeni za plaćanje (Stripe/PayPal). -->
-                        <li data-lang="privacyDataCollected2">Prompt inputs you submit to generate websites.</li>
-                        <!-- sr: Unosi koji se šalju za generisanje sajtova. -->
-                        <li data-lang="privacyDataCollected3">Usage analytics (IP address, browser) via Plausible Analytics.</li>
-                        <!-- sr: Analitika korišćenja (IP adresa, pretraživač) preko Plausible Analytics. -->
-                    </ul>
-                    
-                    <h2 data-lang="privacyDataUseTitle">How We Use Data</h2>
-                    <!-- sr: Kako koristimo podatke -->
-                    <ul class="legal-list">
-                        <li data-lang="privacyDataUse1">Provide and improve the service.</li>
-                        <!-- sr: Pružanje i poboljšanje usluge. -->
-                        <li data-lang="privacyDataUse2">Process payments and prevent fraud.</li>
-                        <!-- sr: Procesiranje plaćanja i sprečavanje prevare. -->
-                        <li data-lang="privacyDataUse3">Email transactional notices.</li>
-                        <!-- sr: Slanje transakcijskih obaveštenja putem email-a. -->
-                    </ul>
-                    
-                    <h2 data-lang="privacyRightsTitle">Your Rights</h2>
-                    <!-- sr: Vaša prava -->
-                    <p data-lang="privacyRightsText">You may access, correct, or delete personal data by emailing privacy@localai-builder.com. EU/EEA users can lodge complaints with their DPA.</p>
-                    <!-- sr: Možete pristupiti, ispraviti ili obrisati lične podatke slanjem email-a na privacy@localai-builder.com. Korisnici iz EU/EEA mogu podnositi žalbe svojoj DPA. -->
-                    
-                    <h2 data-lang="privacyCookiesTitle">Cookies</h2>
-                    <!-- sr: Kolačići -->
-                    <p data-lang="privacyCookiesText">LAB uses essential cookies for login sessions and Stripe Checkout only.</p>
-                    <!-- sr: LAB koristi osnovne kolačiće samo za sesije prijave i Stripe Checkout. -->
-                    
-                    <h2 data-lang="privacyContactTitle">Contact</h2>
-                    <!-- sr: Kontakt -->
-                    <p data-lang="privacyContactText">privacy@localai-builder.com • +381 11 000 0000</p>
-                    <!-- sr: privacy@localai-builder.com • +381 11 000 0000 -->
-                </div>
-            </div>
-        </section>
+        <!-- =================================================================== -->
+        <!--  Privacy Policy – GoAISite                                          -->
+        <!--  Last Updated: 30 June 2025                                         -->
+        <!-- =================================================================== -->
+        <h1>Privacy Policy</h1>
+        <p>
+          This notice explains how <strong>GoAISite</strong> ("<em>we</em>", "<em>our</em>", "<em>us</em>")
+          collects, uses, and shares your personal information when you visit
+          <code>goaisite.com</code>, create an account, or use any website generated
+          through our platform.
+        </p>
+
+        <hr />
+
+        <h2>1. Data Controller Details</h2>
+        <p>
+          <strong>Controller:</strong> Asymmetric Digital d.o.o. (trading as GoAISite) <br />
+          <strong>Address:</strong> Futoški put 40, 21000 Novi Sad, Serbia <br />
+          <strong>Email:</strong> <a href="mailto:support@goaisite.com">support@goaisite.com</a> <br />
+          <strong>DPO (EU/UK contact):</strong> <a href="mailto:dpo@goaisite.com">dpo@goaisite.com</a>
+        </p>
+
+        <hr />
+
+        <h2>2. What We Collect & Why</h2>
+
+        <table>
+          <thead>
+            <tr><th>Category</th><th>Examples</th><th>Purpose&nbsp;/&nbsp;Legal&nbsp;Basis*</th><th>Retention</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Account&nbsp;data</td>
+              <td>Name, email, hashed password <br> or Google&nbsp;OAuth ID</td>
+              <td>Provide service; secure login <br><em>GDPR Art. 6(1)(b) – Contract</em></td>
+              <td>Active account + 24 months of inactivity</td>
+            </tr>
+            <tr>
+              <td>Payment&nbsp;data</td>
+              <td>Paddle transaction ID, plan, billing country <br>(<u>we never see full card numbers</u>)</td>
+              <td>Process payments, comply with tax law <br><em>Art. 6(1)(c) – Legal obligation</em></td>
+              <td>7 years (statutory bookkeeping)</td>
+            </tr>
+            <tr>
+              <td>Prompt inputs</td>
+              <td>Text you submit to generate a website</td>
+              <td>Render &amp; improve your site; detect abuse <br><em>Art. 6(1)(b)</em></td>
+              <td>Deleted automatically after 30 days</td>
+            </tr>
+            <tr>
+              <td>Usage&nbsp;analytics</td>
+              <td>IP (truncated), device, pages visited <br>(Plausible, cookie-less)</td>
+              <td>Improve performance &amp; UX <br><em>Art. 6(1)(f) – Legitimate interest</em></td>
+              <td>Raw events → 24 hours; aggregated stats indefinite</td>
+            </tr>
+            <tr>
+              <td>Support&nbsp;chat</td>
+              <td>Messages sent via Chatislav.ai widget</td>
+              <td>Customer support <br><em>Art. 6(1)(b)</em></td>
+              <td>12 months after ticket closed</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p><small>*For California residents, these purposes map to the "business purposes" and "commercial purposes" defined in the CCPA/CPRA.</small></p>
+
+        <hr />
+
+        <h2>3. How & With Whom We Share Data</h2>
+        <p>
+          We do <strong>not</strong> sell or share personal information for cross-context behavioural advertising.  
+          We only disclose data to vetted processors under strict contracts:
+        </p>
+        <ul>
+          <li><strong>Paddle.com Market Ltd</strong> – Merchant-of-Record, payment &amp; invoicing (UK)</li>
+          <li><strong>Google LLC</strong> – OAuth sign-in, Google Fonts CDN (USA)</li>
+          <li><strong>Chatislav.ai</strong> – Real-time support chat (EU data centre)</li>
+          <li><strong>Plausible&nbsp;Analytics</strong> – First-party, cookie-less analytics (EU/EEA hosted)</li>
+        </ul>
+        <p>
+          Each provider is bound by a Data Processing Addendum (DPA) and may only process data on our instructions.
+        </p>
+
+        <hr />
+
+        <h2>4. International Transfers</h2>
+        <p>
+          Where data leaves the EEA/UK (e.g., to Google LLC in the United States) we rely on the
+          <em>EU Standard Contractual Clauses</em> ("SCCs") and UK Addendum, plus technical measures
+          such as encryption in transit and at rest.
+        </p>
+
+        <hr />
+
+        <h2>5. Retention Periods</h2>
+        <ul>
+          <li>Account &amp; site content → kept while your subscription is active + 24 months.</li>
+          <li>Billing records → 7 years (tax/regulatory).</li>
+          <li>Prompt text → 30 days (rolling deletion).</li>
+          <li>Support tickets → 12 months after resolution.</li>
+          <li>Back-ups → erased within 30 days of retention period expiring.</li>
+        </ul>
+
+        <hr />
+
+        <h2>6. Your Rights</h2>
+        <p>
+          <strong>EU/UK (GDPR):</strong> access, rectification, erasure, restriction, portability, objection,
+          complaint to a supervisory authority.<br>
+          <strong>California (CCPA/CPRA):</strong> know, delete, correct, opt-out of sale/share, limit the use
+          of sensitive personal info.
+        </p>
+        <p>
+          To exercise any right, email
+          <a href="mailto:privacy@goaisite.com">privacy@goaisite.com</a> or use the
+          "Privacy Request" form linked in the footer. We will respond within 30 days.
+        </p>
+
+        <hr />
+
+        <h2>7. Automated Decision-Making</h2>
+        <p>
+          GoAISite does <strong>not</strong> engage in automated decision-making or profiling that
+          produces legal or similarly significant effects as defined by GDPR Art. 22.
+        </p>
+
+        <hr />
+
+        <h2>8. Cookies &amp; Tracking</h2>
+        <ul>
+          <li><strong>Essential</strong> – Session cookie (<code>goai_session</code>) to keep you logged in.</li>
+          <li><strong>Paddle</strong> – Checkout flow cookies (<code>__paddle_session</code>) for fraud prevention.</li>
+          <li><strong>Analytics</strong> – Plausible operates <em>without</em> cookies; no personal data stored.</li>
+          <li><strong>Marketing</strong> – None.</li>
+        </ul>
+        <p>
+          For granular details (names, expiry, purpose) see our separate
+          <a href="/cookies.html">Cookie Policy</a>.
+        </p>
+
+        <hr />
+
+        <h2>9. Updates to This Notice</h2>
+        <p>
+          We may update this Privacy Policy to reflect legal or operational changes.
+          We will post the new version here and, if the changes are material, notify
+          you by email or in-app banner at least 14 days before they take effect.
+          The "Last Updated" date at the top shows the current revision.
+        </p>
+
+        <hr />
+
+        <h2>10. Contact</h2>
+        <p>
+          Questions?  Write to
+          <a href="mailto:support@goaisite.com">support@goaisite.com</a> or
+          <strong>Asymmetric Digital d.o.o.</strong>, Futoški put 40, 21000 Novi Sad, Serbia.
+        </p>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2025 LocalAI Builder • <a href="tos.html">ToS</a> • <a href="privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-    
-    <!-- Chatislav 24/7 Support Chat -->
     <script>
-      (function (w, d, o, f) {
-        w[o] =
-          w[o] ||
-          function (config) {
-            var js = d.createElement("script");
-            js.src = f;
-            js.async = true;
-            js.onload = function () {
-              var e = d.createElement("div");
-              e.id = o;
-              d.body.appendChild(e);
-              w.init_chatislav
-                ? w.init_chatislav(o, config)
-                : console.error("chatislav init function not available.");
-            };
-            d.body.appendChild(js);
-          };
-      })(
-        window,
-        document,
-        "ctslv_bbl",
-        "https://chatislav.ai/api/static/chat-bot/index.js"
-      );
-
-      /* Initialize widget */
-      ctslv_bbl({
-        base_url: "https://chatislav.ai/api",
-        token: "92072c32-e8e4-4e76-9aca-a4f3c635c64e"
-      });
+        // Simple analytics placeholder
+        console.log('Privacy Policy page loaded');
     </script>
 </body>
 </html>
