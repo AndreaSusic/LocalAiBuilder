@@ -733,6 +733,12 @@ app.post('/api/gbp-details', async (req, res) => {
   }
 });
 
+// Preview route for template system
+app.get('/preview', (req, res) => {
+  console.log('Preview route accessed');
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
+
 // Handle SPA routing - serve index.html for unknown routes
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));

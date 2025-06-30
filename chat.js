@@ -418,13 +418,14 @@ async function sendUser() {
       // Handle numbered selection for multiple results
       const idx = parseInt(text.trim()) - 1;
       if (idx >= 0 && idx < gbpList.length) {
-        state.google_profile = gbpList[idx].mapsUrl;
+        const selectedPlace = gbpList[idx];
         gbpList = []; // Clear the list
         awaitingKey = null; // Clear awaiting key
-        console.log('🔢 GBP selected from list:', state.google_profile);
+        console.log('🔢 GBP selected from list:', selectedPlace.mapsUrl);
         responseHandled = true;
         input.innerText = '';
-        await handleMissing({});
+        // Fetch detailed information for selected place
+        await fetchGbpDetails(selectedPlace.mapsUrl);
         return;
       } else if (text.trim() === '0') {
         state.google_profile = 'no';
@@ -850,3 +851,24 @@ window.addEventListener('load', async () => {
   
   sendHeight();
 });
+
+// Complete the wizard and bootstrap the template system
+async function finishWizard() {
+  console.log('🎉 Wizard complete, bootstrapping template system');
+  
+  // Update bootstrap data one final time
+  updateBootstrapData();
+  
+  // Show completion message
+  bubble('ai', 'Perfect! I have all the information needed to create your website. Generating your preview...');
+  
+  // Save final state
+  await saveDraft();
+  
+  // Redirect to template preview after short delay
+  setTimeout(() => {
+    window.bootstrapData = window.bootstrapData || {};
+    console.log('🚀 Redirecting to preview with data:', window.bootstrapData);
+    window.location.href = '/preview';
+  }, 2000);
+}
