@@ -103,7 +103,7 @@
   padding: 8px;
   background: #f9f9f9;
   border-radius: 6px;
-  min-height: 150px;
+  min-height: 50px;
 }
 
 .bubble {
@@ -164,7 +164,7 @@
 }
 
 .chat-input button:hover {
-  background: #0056b3;
+  background: #ffc000;
 }
 
 /* Suggestions Dropdown */
