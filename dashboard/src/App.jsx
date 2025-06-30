@@ -9,6 +9,7 @@ import HomepageV1 from "./templates/homepage/v1/index.jsx";
 import HomepageV2 from "./templates/homepage/v2/index.jsx";
 import HomepageV3 from "./templates/homepage/v3/index.jsx";
 import ServiceInvisalign from "./pages/ServiceInvisalign.jsx";
+import ContactV1 from "./pages/ContactV1.jsx";
 
 export default function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
@@ -62,6 +63,9 @@ export default function App() {
         
         {/* Service template routes */}
         <Route path="/templates/service/v1/index.jsx" element={<ServiceInvisalign />} />
+        
+        {/* Contact template routes */}
+        <Route path="/templates/contact/v1/index.jsx" element={<ContactV1 />} />
         
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact • Your Website</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome (for optional icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-9KSk2qde2+ftXyP42X2u5S/3lfHJjXywcmATgZnKe3gZCfr3HairziO+z965C2Q3VF3Zr5y4V7dejvVlsL5MIg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <style>
+      /* ===== TOKENS (copied from service template) ===== */
+      :root {
+        --primary: #5DD39E;
+        --secondary: #EFD5BD;
+        --text: #3f3f3f;
+        --bg-light: #f9f9f9;
+        --bg-dark: #f5f5f5;
+        --font-sans: 'Roboto', sans-serif;
+        --font-heading: 'Work Sans', sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font: 16px/1.6 var(--font-sans);
+        color: var(--text);
+      }
+      h1, h2, h3, h4 {
+        font-family: var(--font-heading);
+        color: var(--text);
+      }
+      a {
+        text-decoration: none;
+        color: var(--primary);
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      /* ===== NAVIGATION ===== */
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        padding: 1rem;
+        border-bottom: 1px solid #ddd;
+        position: relative;
+        z-index: 100;
+      }
+      nav .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+      nav .hamburger {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.6rem;
+        cursor: pointer;
+      }
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      nav li {
+        position: relative;
+      }
+      nav li:hover > ul {
+        display: block;
+      }
+      nav li > ul {
+        display: none;
+        position: absolute;
+        top: 2.5rem;
+        left: 0;
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 0.5rem 0;
+        min-width: 10rem;
+      }
+      nav li > ul li {
+        padding: 0.5rem 1rem;
+      }
+      nav .nav-links > li > a {
+        padding: 0.5rem;
+        color: #000;
+      }
+      nav .contact-phone {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+      }
+      nav .cta {
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      @media (max-width: 768px) {
+        nav .hamburger {
+          display: block;
+        }
+        nav ul {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background: #fff;
+          border-bottom: 1px solid #ddd;
+        }
+        nav ul.open {
+          display: flex;
+        }
+        nav li {
+          padding: 0.75rem;
+          text-align: center;
+        }
+      }
+
+      /* ===== GENERIC SECTIONS ===== */
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 20px;
+      }
+
+      /* ===== HERO ===== */
+      .hero {
+        text-align: center;
+        padding-top: 110px;
+      }
+      .hero p {
+        max-width: 420px;
+        margin: 0.5rem auto 2rem;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        padding: 0.75rem 1.75rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s ease-in-out;
+        display: inline-block;
+      }
+      .btn-primary:hover {
+        opacity: 0.9;
+      }
+
+      /* ===== CONTACT INFO GRID ===== */
+      .contact-grid-info {
+        display: grid;
+        gap: 1.75rem;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        margin-top: 3rem;
+      }
+      .card {
+        background: #fff;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+      .card i {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 0.6rem;
+      }
+      .card h3 {
+        margin-bottom: 0.25rem;
+        font-size: 1.15rem;
+      }
+      .card p {
+        margin: 0.25rem 0 0;
+        font-size: 0.95rem;
+      }
+
+      /* ===== CONTACT FORM ===== */
+      #contact-form-section {
+        background: #fff;
+        padding: 2.5rem 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        max-width: 720px;
+        margin: 4rem auto;
+      }
+      #contact-form-section h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.4rem;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.25rem;
+      }
+      label {
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+      }
+      input,
+      textarea {
+        padding: 0.75rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font: inherit;
+      }
+      textarea {
+        min-height: 160px;
+        resize: vertical;
+      }
+
+      /* ===== MAP ===== */
+      .map-wrapper {
+        position: relative;
+        width: 100%;
+        margin: 3.5rem 0 0;
+      }
+      .map-wrapper iframe {
+        width: 100%;
+        height: 400px;
+        border: 0;
+      }
+
+      /* ===== OPERATING HOURS ===== */
+      .hours-table {
+        width: 100%;
+        max-width: 480px;
+        margin: 0 auto 4rem;
+        border-collapse: collapse;
+      }
+      .hours-table th,
+      .hours-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+        font-size: 0.95rem;
+      }
+      .hours-table th {
+        background: var(--primary);
+        color: #fff;
+        font-weight: 600;
+      }
+      .hours-table caption {
+        caption-side: top;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        text-align: left;
+      }
+
+      /* ===== SECONDARY CTA ===== */
+      .secondary-cta {
+        text-align: center;
+        margin: 4rem 0 6rem;
+      }
+      .secondary-cta a {
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+
+      /* ===== FOOTER ===== */
+      footer {
+        background: #3f3f3f;
+        color: #eee;
+        padding: 2rem 1rem;
+      }
+      .footer-grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+      footer h4 {
+        color: #fff;
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+      }
+      footer a {
+        color: #ccc;
+        display: block;
+        margin: 0.35rem 0;
+        font-size: 0.9rem;
+      }
+      .footer-social {
+        display: flex;
+        gap: 14px;
+        margin-top: 8px;
+      }
+      .footer-social .icon {
+        display: inline-flex;
+        width: 38px;
+        height: 38px;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+        transition: 0.25s;
+      }
+      .footer-social .icon svg {
+        fill: #fff;
+        width: 20px;
+        height: 20px;
+      }
+      .footer-social .icon:hover {
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+      /* ensure font-awesome icon alignment if used */
+      .footer-social .icon i {
+        color: #fff;
+        font-size: 18px;
+      }
+
+      /* ===== BUTTON FULL-WIDTH ON SMALL ===== */
+      @media (max-width: 600px) {
+        .btn-primary {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVIGATION (from service template) -->
+    <nav>
+      <div class="logo">Your Website</div>
+      <button class="hamburger" aria-label="menu">☰</button>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="#">Services ▾</a>
+          <ul>
+            <li><a href="#">General Dentistry</a></li>
+            <li><a href="#">Cosmetic Veneers</a></li>
+            <li><a href="#">Invisalign®</a></li>
+          </ul>
+        </li>
+        <li><a href="#">About</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li class="contact-phone"><a href="tel:+123456789">📞 +1 234 567 89</a><button class="cta">Schedule Now</button></li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <header class="container hero" id="top">
+      <h1>Let’s Talk</h1>
+      <p>We answer every message within one business day.</p>
+      <a href="#contact-form-section" class="btn-primary">Jump to Form ↓</a>
+    </header>
+
+    <!-- CONTACT INFO GRID -->
+    <section class="container" aria-label="Key contact information">
+      <div class="contact-grid-info">
+        <div class="card">
+          <i class="fa fa-phone"></i>
+          <h3>Call Us</h3>
+          <a href="tel:+123456789">+1&nbsp;234&nbsp;567&nbsp;89</a>
+          <p>Mon–Fri, 08:00–17:00</p>
+        </div>
+        <div class="card">
+          <i class="fa fa-envelope"></i>
+          <h3>Email</h3>
+          <a href="mailto:info@yourwebsite.com">info@yourwebsite.com</a>
+          <p>We reply within 6&nbsp;h</p>
+        </div>
+        <div class="card">
+          <i class="fa fa-map-marker-alt"></i>
+          <h3>Office</h3>
+          <p>123 Dental St.<br />Austin, TX 78701</p>
+          <a href="#map">Get Directions</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT FORM SECTION -->
+    <section class="container" id="contact-form-section" aria-label="Contact form">
+      <h2>Send us an inquiry or a message, we will get back to you soon.</h2>
+      <form action="#" method="post">
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Send Message</button>
+      </form>
+    </section>
+
+    <!-- MAP (full width) -->
+    <section class="map-wrapper" id="map" aria-label="Map and Directions">
+      <iframe
+        loading="lazy"
+        src="https://maps.google.com/maps?q=dental%20clinic%20austin&t=&z=13&ie=UTF8&iwloc=&output=embed"
+        allowfullscreen=""
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </section>
+
+    <!-- OPERATING HOURS -->
+    <section class="container" aria-label="Operating hours">
+      <table class="hours-table">
+        <caption>Operating Hours (GMT+2)</caption>
+        <tbody>
+          <tr><th>Monday</th><td>08:00 – 17:00</td></tr>
+          <tr><th>Tuesday</th><td>08:00 – 17:00</td></tr>
+          <tr><th>Wednesday</th><td>08:00 – 17:00</td></tr>
+          <tr><th>Thursday</th><td>08:00 – 17:00</td></tr>
+          <tr><th>Friday</th><td>08:00 – 17:00</td></tr>
+          <tr><th>Saturday</th><td>Closed</td></tr>
+          <tr><th>Sunday</th><td>Closed</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECONDARY CTA -->
+    <section class="secondary-cta">
+      <p>Not ready? <a href="/kb">Explore our Knowledge Base →</a></p>
+    </section>
+
+    <!-- FOOTER (from service template) -->
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <h4>Your Website</h4>
+          <p>123 Dental St.<br />Austin, TX 78701</p>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <a href="#">General Dentistry</a>
+          <a href="#">Cosmetic Veneers</a>
+          <a href="#">Invisalign®</a>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <a href="/">Home</a>
+          <a href="#">About</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <div class="footer-social">
+            <a class="icon" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M15 3h4V0h-4c-3.9 0-7 3.1-7 7v3H5v4h3v10h4V14h3.1l.9-4H12V7c0-1.1.9-2 2-2z"/></svg></a>
+            <a class="icon" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-1.7-1.3-3-3-3H7zm5 4.5A5.5 5.5 0 1 0 17.5 12 5.51 5.51 0 0 0 12 6.5z"/></svg></a>
+            <a class="icon" href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 8.94 5.78h-8.9v3.44h5.4A5.57 5.57 0 0 1 12 17.56a5.56 5.56 0 0 1 0-11.12"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- MOBILE MENU & FAQ SCRIPT -->
+    <script>
+      /* Mobile nav toggle */
+      document.querySelector('.hamburger').addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('open');
+      });
+    </script>
+  </body>
+</html>
