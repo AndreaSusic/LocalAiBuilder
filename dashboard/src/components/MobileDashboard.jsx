@@ -7,17 +7,24 @@ export default function MobileDashboard() {
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
   const [showVersions, setShowVersions] = useState(false);
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
+  const [previewContent, setPreviewContent] = useState(null);
+
+  const showTemplatePreview = (templateUrl) => {
+    setPreviewContent(templateUrl);
+    setShowPagesDropdown(false);
+    console.log('Showing mobile template preview:', templateUrl);
+  };
 
   return (
     <div className="mobile-dashboard-wireframe">
       {/* Sticky Top Bar */}
       <header className="mobile-header-wireframe">
-        <button className="hamburger-wireframe">☰</button>
-        <button className="icon-btn-wireframe">🔔</button>
-        <button className="small-btn-wireframe">Publish</button>
         <a href="/" className="mobile-logo-link">
           <img src="/logo.svg" alt="LocalAI Builder" className="mobile-dashboard-logo" />
         </a>
+        <button className="hamburger-wireframe">☰</button>
+        <button className="icon-btn-wireframe">🔔</button>
+        <button className="small-btn-wireframe">Publish</button>
         <div className="dropdown-wrapper">
           <button 
             className="small-btn-wireframe"
@@ -28,32 +35,24 @@ export default function MobileDashboard() {
           {showPagesDropdown && (
             <div className="versions-dropdown">
               <div className="version-item" onClick={() => {
-                window.open('/templates/homepage/v1/index.jsx', '_blank');
-                setShowPagesDropdown(false);
+                showTemplatePreview('/templates/homepage/v1/index.jsx');
               }}>
                 Homepage
               </div>
               <div className="version-item" onClick={() => {
-                window.open('/templates/service/v1/index.jsx', '_blank');
-                setShowPagesDropdown(false);
+                showTemplatePreview('/templates/service/v1/index.jsx');
               }}>
                 Service
               </div>
               <div className="version-item" onClick={() => {
-                window.open('/templates/contact/v1/index.jsx', '_blank');
-                setShowPagesDropdown(false);
+                showTemplatePreview('/templates/contact/v1/index.jsx');
               }}>
                 Contact
               </div>
             </div>
           )}
         </div>
-        <button 
-          className="small-btn-wireframe"
-          onClick={() => window.open("about:blank", "_blank")}
-        >
-          View Preview
-        </button>
+
       </header>
 
       {/* Scrollable main content */}
@@ -62,11 +61,19 @@ export default function MobileDashboard() {
         <div className="panel-wireframe">
           <h2>Live Preview</h2>
           <div className="preview-mobile">
-            <iframe title="preview" src="about:blank" />
+            <iframe 
+              title="preview" 
+              src={previewContent || "about:blank"} 
+              style={{
+                width: "100%",
+                height: "100%",
+                border: "none"
+              }}
+            />
           </div>
           <button 
             className="view-live-btn-mobile" 
-            onClick={() => window.open("about:blank", "_blank")}
+            onClick={() => window.open(previewContent || "about:blank", "_blank")}
           >
             View Live Site
           </button>
