@@ -119,20 +119,20 @@ export default function DesktopDashboard() {
                 >
                   Service
                 </div>
-                <a 
-                  href="/templates/contact/v1/index.jsx" 
-                  target="_blank"
+                <div 
+                  onClick={() => showTemplatePreview("/templates/contact/v1/index.jsx")}
                   style={{
                     display: "block",
                     padding: "8px 16px",
                     textDecoration: "none",
-                    color: "#333"
+                    color: "#333",
+                    cursor: "pointer"
                   }}
                   onMouseOver={e => e.target.style.background = "#f5f5f5"}
                   onMouseOut={e => e.target.style.background = "white"}
                 >
                   Contact
-                </a>
+                </div>
               </div>
             )}
           </div>
@@ -168,11 +168,19 @@ export default function DesktopDashboard() {
         <div className="panel">
           <h2>Live Preview - {previewScreen}</h2>
           <div className={`preview preview-${previewScreen}`}>
-            <iframe title="preview" src="about:blank" />
+            <iframe 
+              title="preview" 
+              src={previewContent || "about:blank"} 
+              style={{
+                width: "100%",
+                height: "100%",
+                border: "none"
+              }}
+            />
           </div>
           <button 
             className="view-live-btn" 
-            onClick={() => window.open("about:blank", "_blank")}
+            onClick={() => window.open(previewContent || "about:blank", "_blank")}
           >
             View Live Site
           </button>
