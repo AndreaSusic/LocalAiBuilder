@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Menu({ tokens = {} }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -6,6 +6,11 @@ export default function Menu({ tokens = {} }) {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  // Reset menu state when component mounts
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, []);
 
   return (
     <nav style={{
