@@ -19,11 +19,13 @@ export default function MobileDashboard() {
     <div className="mobile-dashboard-wireframe">
       {/* Sticky Top Bar */}
       <header className="mobile-header-wireframe">
-        <a href="/" className="mobile-logo-link">
-          <img src="/logo.svg" alt="LocalAI Builder" className="mobile-dashboard-logo" />
-        </a>
-        <button className="icon-btn-wireframe">🔔</button>
-        <button className="small-btn-wireframe">Publish</button>
+        <div style={{display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: 'flex-start'}}>
+          <a href="/" className="mobile-logo-link">
+            <img src="/logo.svg" alt="LocalAI Builder" className="mobile-dashboard-logo" />
+          </a>
+          <button className="icon-btn-wireframe">🔔</button>
+          <button className="small-btn-wireframe">Publish</button>
+        </div>
         <div className="dropdown-wrapper">
           <button 
             className="small-btn-wireframe"
