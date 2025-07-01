@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
