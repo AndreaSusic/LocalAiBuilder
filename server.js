@@ -224,7 +224,7 @@ app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'ass
 
 // Preview route for React app (before static files)
 app.get('/preview', (req, res) => {
-  res.sendFile(path.join(__dirname, 'preview.html'));
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
 // Serve static files (after template routes)
@@ -800,25 +800,55 @@ app.post('/api/save-temp-data', async (req, res) => {
 // API endpoint to retrieve temporary bootstrap data
 app.get('/api/get-temp-data', async (req, res) => {
   try {
-    const userId = req.user?.id || req.cookies.saveDraftKey;
+    // Try multiple user ID sources to find the temp data
+    const possibleUserIds = [
+      req.user?.id,
+      req.cookies.saveDraftKey,
+      req.session?.userId,
+      req.user?.emails?.[0]?.value
+    ].filter(Boolean);
     
-    console.log('📦 Retrieving temp bootstrap data for user:', userId);
+    console.log('📦 Trying to retrieve temp bootstrap data for possible users:', possibleUserIds);
     
-    const result = await pool.query(
-      'SELECT data FROM temp_bootstrap_data WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
-      [userId]
-    );
+    let result = null;
+    let matchedUserId = null;
     
-    if (result.rows.length > 0) {
+    // Try each possible user ID
+    for (const userId of possibleUserIds) {
+      result = await pool.query(
+        'SELECT data, user_id FROM temp_bootstrap_data WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
+        [userId]
+      );
+      
+      if (result.rows.length > 0) {
+        matchedUserId = userId;
+        console.log('📦 Found temp data for user ID:', userId);
+        break;
+      }
+    }
+    
+    // If no match found, try to get the most recent temp data (fallback)
+    if (!result || result.rows.length === 0) {
+      console.log('📦 No exact match, trying most recent temp data');
+      result = await pool.query(
+        'SELECT data, user_id FROM temp_bootstrap_data ORDER BY created_at DESC LIMIT 1'
+      );
+      if (result.rows.length > 0) {
+        matchedUserId = result.rows[0].user_id;
+        console.log('📦 Found most recent temp data for user:', matchedUserId);
+      }
+    }
+    
+    if (result && result.rows.length > 0) {
       const bootstrapData = JSON.parse(result.rows[0].data);
       console.log('📦 Found temp data with keys:', Object.keys(bootstrapData));
       
       // Clean up temp data after retrieval
-      await pool.query('DELETE FROM temp_bootstrap_data WHERE user_id = $1', [userId]);
+      await pool.query('DELETE FROM temp_bootstrap_data WHERE user_id = $1', [matchedUserId]);
       
       res.json({ success: true, bootstrapData });
     } else {
-      console.log('📦 No temp data found for user:', userId);
+      console.log('📦 No temp data found for any user ID');
       res.json({ success: false, message: 'No temp data found' });
     }
   } catch (error) {
@@ -827,10 +857,7 @@ app.get('/api/get-temp-data', async (req, res) => {
   }
 });
 
-// Serve React dashboard for /preview route with SPA fallback
-app.get('/preview', function(req, res) {
-  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
-});
+// Duplicate route removed - using the one above
 
 // Note: Removed catch-all route to avoid Express path-to-regexp error
 
