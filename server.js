@@ -629,7 +629,7 @@ app.get('/api/test-data', (req, res) => {
   }
 });
 
-// API endpoint to get user's saved draft data
+// API endpoint to get user's saved website data
 app.get('/api/user-data', async (req, res) => {
   const fs = require('fs');
   const path = require('path');
@@ -637,10 +637,80 @@ app.get('/api/user-data', async (req, res) => {
   try {
     console.log('API /user-data called');
     console.log('User authenticated:', req.isAuthenticated && req.isAuthenticated());
-    console.log('User object:', req.user);
     
-    // Always return test data for demonstration of the template system
-    console.log('Returning test data for demonstration');
+    // Get user ID (Google ID or session ID)
+    const userId = req.user?.id || req.sessionID;
+    console.log('Loading data for user:', userId);
+    
+    if (userId) {
+      // Try to load user's saved website data from database
+      const result = await pool.query(
+        'SELECT * FROM sites WHERE user_id = $1 AND is_draft = FALSE ORDER BY updated_at DESC LIMIT 1',
+        [userId]
+      );
+      
+      if (result.rows.length > 0) {
+        const siteData = result.rows[0];
+        console.log('Found completed website data for user');
+        
+        // Parse the saved state data into the expected format
+        const state = JSON.parse(siteData.state);
+        const websiteData = {
+          company_name: state.company_name,
+          city: state.city,
+          services: state.services,
+          industry: state.industry,
+          language: state.language,
+          colours: state.colours,
+          images: state.images || [],
+          google_profile: state.google_profile || {},
+          ai_customization: state.ai_customization || {},
+          conversation: JSON.parse(siteData.convo || '[]')
+        };
+        
+        return res.json(websiteData);
+      }
+      
+      // If no completed website, check for draft
+      const draftResult = await pool.query(
+        'SELECT * FROM sites WHERE user_id = $1 AND is_draft = TRUE ORDER BY updated_at DESC LIMIT 1',
+        [userId]
+      );
+      
+      if (draftResult.rows.length > 0) {
+        console.log('Found draft data for user, converting to website format');
+        const draftData = draftResult.rows[0];
+        const state = JSON.parse(draftData.state);
+        
+        // Convert draft to basic website format
+        const websiteData = {
+          company_name: state.company_name || 'Your Business',
+          city: state.city || ['Your City'],
+          services: state.services || 'Your Services',
+          industry: state.industry || 'Your Industry',
+          language: state.language || 'English',
+          colours: state.colours || ['#5DD39E', '#EFD5BD'],
+          images: state.images || [],
+          google_profile: state.google_profile || {},
+          ai_customization: {
+            hero_title: `${state.company_name || 'Your Business'} - Professional Services`,
+            hero_subtitle: `Quality services in ${Array.isArray(state.city) ? state.city[0] : state.city || 'your area'}`,
+            services_title: 'Our Services',
+            about_title: `About ${state.company_name || 'Your Business'}`,
+            about_text: `We provide excellent ${state.services || 'services'} to our valued clients.`,
+            reviewer_label: 'Clients',
+            cta_text: 'Contact Us',
+            map_query: `${state.company_name || 'business'} ${Array.isArray(state.city) ? state.city[0] : state.city || ''}`
+          },
+          conversation: JSON.parse(draftData.convo || '[]')
+        };
+        
+        return res.json(websiteData);
+      }
+    }
+    
+    // If no user data found, return test data for demonstration
+    console.log('No user data found, returning test data for demonstration');
     const testDataPath = path.join(__dirname, 'test-data.json');
     const testData = JSON.parse(fs.readFileSync(testDataPath, 'utf8'));
     return res.json(testData);
@@ -736,6 +806,51 @@ app.post('/api/save-draft', async (req, res) => {
   } catch (err) {
     console.error('❌ save-draft error:', err.stack || err);
     return res.status(500).json({ error: 'Could not save draft' });
+  }
+});
+
+// Complete website endpoint - finalizes user's website from chat completion
+app.post('/api/complete-website', async (req, res) => {
+  try {
+    const ownerKey = req.user?.id || req.sessionID;
+    const { state, convo, ai_customization } = req.body;
+    
+    console.log('🎯 Completing website for user:', ownerKey);
+    console.log('📦 Final state received:', Object.keys(state));
+    
+    // Enhance the state with AI customization and any missing data
+    const enhancedState = {
+      ...state,
+      ai_customization: ai_customization || {},
+      completed_at: new Date().toISOString()
+    };
+    
+    // First delete any existing completed website for this user
+    await pool.query(
+      'DELETE FROM sites WHERE user_id = $1 AND is_draft = FALSE',
+      [ownerKey]
+    );
+    
+    // Also delete any drafts
+    await pool.query(
+      'DELETE FROM sites WHERE user_id = $1 AND is_draft = TRUE',
+      [ownerKey]
+    );
+    
+    // Save as completed website (is_draft = FALSE)
+    const result = await pool.query(
+      `INSERT INTO sites (user_id, state, convo, is_draft, updated_at)
+       VALUES ($1, $2, $3, FALSE, NOW())
+       RETURNING *`,
+      [ownerKey, JSON.stringify(enhancedState), JSON.stringify(convo)]
+    );
+    
+    console.log('✅ Website completed and saved for user:', ownerKey);
+    return res.json({ success: true, website_id: result.rows[0].id });
+    
+  } catch (error) {
+    console.error('❌ complete-website error:', error);
+    return res.status(500).json({ error: 'Could not complete website' });
   }
 });
 
