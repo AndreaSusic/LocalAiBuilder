@@ -379,6 +379,39 @@ async function sendUser() {
       }
     }
   }
+  // Check if user pasted a Google Business Profile URL
+  const gbpUrlMatch = text.match(/https:\/\/maps\.google\.com\/[^\s]+/);
+  if (gbpUrlMatch && !responseHandled) {
+    const gbpUrl = gbpUrlMatch[0];
+    console.log('🔗 GBP URL detected, fetching details...');
+    
+    try {
+      const gbp = await fetch('/api/gbp-details', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ placeUrl: gbpUrl })
+      }).then(r => r.json());
+      
+      if (gbp.error) {
+        bubble('ai', `Sorry, I couldn't fetch details from that Google Business Profile link. ${gbp.error}`);
+      } else {
+        state.google = gbp;
+        state.google_profile = 'yes';
+        bubble('ai', `Great! I found your Google Business Profile for **${gbp.name}**. I'll use your business photos and contact details.`);
+        responseHandled = true;
+        clearInput();
+        await handleMissing({});
+        return;
+      }
+    } catch (error) {
+      console.error('GBP fetch error:', error);
+      bubble('ai', 'Sorry, I had trouble accessing that Google Business Profile. Please try again or continue without it.');
+    }
+    responseHandled = true;
+    clearInput();
+    return;
+  }
+
   // If we just asked for a specific key, take reply verbatim
   else if (awaitingKey && text) {
     if (awaitingKey === 'hero_video' && text.toLowerCase().includes('skip')) {
