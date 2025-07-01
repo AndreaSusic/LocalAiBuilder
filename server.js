@@ -351,23 +351,16 @@ app.get('/auth/google/callback',
                 if (data.success && data.bootstrapData) {
                   // Store data in sessionStorage for the React dashboard  
                   sessionStorage.setItem('bootstrap', JSON.stringify(data.bootstrapData));
-                  // Open React dashboard in new window to avoid iframe issues
-                  const dashboardUrl = window.location.origin.replace(':5000', ':3002');
-                  window.open(dashboardUrl, '_blank');
-                  // Also redirect current window to close OAuth popup
-                  window.location.href = '/';
+                  // Redirect to preview dashboard with data
+                  window.location.href = '/preview';
                 } else {
                   console.log("No temp data found, redirecting to dashboard without data");
-                  const dashboardUrl = window.location.origin.replace(':5000', ':3002');
-                  window.open(dashboardUrl, '_blank');
-                  window.location.href = '/';
+                  window.location.href = '/preview';
                 }
               })
               .catch(error => {
                 console.error("Error retrieving temp data:", error);
-                const dashboardUrl = window.location.origin.replace(':5000', ':3002');
-                window.open(dashboardUrl, '_blank');
-                window.location.href = '/';
+                window.location.href = '/preview';
               });
           </script>
         `);
@@ -393,10 +386,8 @@ app.get('/auth/google/callback',
             if (data.success && data.bootstrapData) {
               // Store data in sessionStorage for the React dashboard  
               sessionStorage.setItem('bootstrap', JSON.stringify(data.bootstrapData));
-              // Open React dashboard in new window
-              const dashboardUrl = window.location.origin.replace(':5000', ':3002');
-              window.open(dashboardUrl, '_blank');
-              window.location.href = '/';
+              // Redirect to preview dashboard
+              window.location.href = '/preview';
             } else {
               console.log("No temp data found, redirecting to homepage");
               window.location.href = '/';
