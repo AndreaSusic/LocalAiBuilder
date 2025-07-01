@@ -2,17 +2,24 @@ import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext';
 
 export default function ContactSection() {
-  const { google = {}, company_name } = useContext(SiteDataContext) || {};
+  const { 
+    google_profile = {}, 
+    company_name, 
+    ai_customization = {} 
+  } = useContext(SiteDataContext) || {};
   
-  const phone = google.phone || '+1 234 567 89';
-  const email = google.email || 'info@yourwebsite.com';
-  const address = google.address || '123 Main St, Austin, TX 78701';
+  const phone = google_profile.phone || '+1 234 567 89';
+  const email = google_profile.email || 'info@yourwebsite.com';
+  const address = google_profile.address || '123 Main St, Austin, TX 78701';
+  const mapQuery = ai_customization.mapQuery || `${company_name} ${address}`;
+  const contactTitle = ai_customization.contactTitle || 'Contact Us';
+  const ctaText = ai_customization.ctaText || 'Book Appointment';
   
   return (
     <>
       {/* Contact + Map */}
       <section className="contact-form">
-        <h2>Contact Us</h2>
+        <h2>{contactTitle}</h2>
         <div className="contact-grid">
           <form>
             <input type="text" placeholder="Your Name" required />
@@ -23,7 +30,7 @@ export default function ContactSection() {
           </form>
           <div className="map-container">
             <iframe
-              src="https://maps.google.com/maps?q=dental%20clinic%20austin&t=&z=13&ie=UTF8&iwloc=&output=embed"
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
               width="100%"
               height="300"
               style={{ border: 0, borderRadius: '4px' }}
@@ -38,8 +45,8 @@ export default function ContactSection() {
       {/* Secondary CTA */}
       <section className="secondary-cta">
         <h2>Ready to Schedule Your Visit?</h2>
-        <p>Join thousands of satisfied patients who trust {company_name || 'us'} with their dental care.</p>
-        <button className="btn-accent">Book Appointment</button>
+        <p>Join thousands of satisfied {ai_customization.reviewerLabel?.toLowerCase() || 'clients'} who trust {company_name || 'us'} with their care.</p>
+        <button className="btn-accent">{ctaText}</button>
       </section>
 
       {/* Footer */}

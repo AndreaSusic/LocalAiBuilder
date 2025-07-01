@@ -25,6 +25,20 @@ export default function DesktopDashboard({ bootstrap }) {
   const newSite = () => console.log("New Site");
   const saveSite = () => console.log("Save");
   const publish = () => console.log("Publish");
+  const loadTestData = async () => {
+    try {
+      const response = await fetch('/api/test-data');
+      if (response.ok) {
+        const testData = await response.json();
+        const encoded = encodeURIComponent(JSON.stringify(testData));
+        const testUrl = `/templates/homepage/v1/index.jsx?data=${encoded}`;
+        setPreviewContent(testUrl);
+        console.log('Loaded test data for preview');
+      }
+    } catch (error) {
+      console.error('Failed to load test data:', error);
+    }
+  };
   const openVer = v => {
     let baseUrl = '';
     if (v === "Version 1") {
@@ -93,6 +107,7 @@ export default function DesktopDashboard({ bootstrap }) {
           <button className="btn" onClick={newSite}>New Site</button>
           <button className="btn" onClick={saveSite}>Save</button>
           <button className="btn" onClick={publish}>Publish</button>
+          <button className="btn" onClick={loadTestData} style={{background: '#ff6b6b', color: 'white'}}>Load Test Data</button>
         </div>
 
         <div className="group">

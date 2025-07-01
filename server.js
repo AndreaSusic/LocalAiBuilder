@@ -614,6 +614,82 @@ If input only contains generic terms, set company_name: null and add to missing_
   }
 });
 
+// Load test data endpoint
+app.get('/api/test-data', (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  
+  try {
+    const testDataPath = path.join(__dirname, 'test-data.json');
+    const testData = JSON.parse(fs.readFileSync(testDataPath, 'utf8'));
+    res.json(testData);
+  } catch (error) {
+    console.error('Error loading test data:', error);
+    res.status(500).json({ error: 'Could not load test data' });
+  }
+});
+
+// AI text mapping endpoint for dynamic content generation
+app.post('/api/ai-text-mapping', async (req, res) => {
+  try {
+    const { businessData } = req.body;
+    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+    
+    if (!OPENAI_API_KEY) {
+      return res.status(500).json({ error: 'OpenAI API key not configured' });
+    }
+
+    const systemPrompt = `You are a professional copywriter specializing in business websites. Generate compelling, industry-specific text content that maintains the original layout structure but adapts the messaging to the specific business.
+
+RULES:
+- DO NOT change layout, sections, or structure
+- ONLY modify text content to match the business
+- Use industry-appropriate terminology
+- Keep tone professional but approachable
+- Adapt address/location references to the actual business location
+- Use reviewer labels appropriate to industry (patients/clients/customers)
+- Generate realistic, professional content that sounds authentic
+
+Return JSON with these exact keys:
+{
+  "heroTitle": "Compelling hero headline",
+  "heroSubtitle": "Supporting hero text",
+  "servicesTitle": "Services section title", 
+  "aboutTitle": "About section title",
+  "aboutText": "About section paragraph",
+  "galleryTitle": "Gallery section title",
+  "reviewsTitle": "Reviews section title",
+  "contactTitle": "Contact section title",
+  "ctaText": "Call-to-action button text",
+  "reviewerLabel": "Patients/Clients/Customers",
+  "mapQuery": "Business name + address for Google Maps"
+}`;
+
+    const userPrompt = `Business: ${businessData.company_name}
+Industry: ${businessData.industry}
+Location: ${businessData.city?.join(', ')}
+Services: ${businessData.services}
+Address: ${businessData.google_profile?.address || 'Not provided'}
+
+Generate website text content for this business.`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      max_tokens: 500,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt }
+      ]
+    });
+
+    const textMappings = JSON.parse(completion.choices[0].message.content);
+    res.json({ success: true, textMappings });
+  } catch (error) {
+    console.error('AI text mapping error:', error);
+    res.status(500).json({ error: 'Failed to generate text content' });
+  }
+});
+
 // Save draft endpoint - saves work in progress (no auth required)
 app.post('/api/save-draft', async (req, res) => {
   // Use Google user ID if present, otherwise sessionID
