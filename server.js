@@ -676,63 +676,6 @@ app.post('/api/stock-images', async (req, res) => {
   }
 });
 
-// Google Business Profile details endpoint
-app.post('/api/gbp-details', async (req, res) => {
-  const { placeUrl } = req.body;
-  
-  if (!placeUrl) {
-    return res.status(400).json({ error: 'placeUrl is required' });
-  }
-  
-  const GOOGLE_KEY = process.env.GOOGLE_API_KEY || process.env.GOOGLE_KEY;
-  
-  if (!GOOGLE_KEY) {
-    return res.status(500).json({ error: 'Google API key not configured' });
-  }
-
-  try {
-    // Import fetch dynamically
-    const { default: fetch } = await import('node-fetch');
-    
-    // STEP 1: Get Place ID from URL
-    const idResp = await fetch(
-      `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeUrl)}&inputtype=textquery&fields=place_id&key=${GOOGLE_KEY}`
-    ).then(r => r.json());
-    
-    const place_id = idResp.candidates?.[0]?.place_id;
-    if (!place_id) {
-      return res.status(404).json({ error: 'Place not found' });
-    }
-
-    // STEP 2: Get place details
-    const details = await fetch(
-      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,photo,rating,user_ratings_total&key=${GOOGLE_KEY}`
-    ).then(r => r.json());
-
-    if (details.status !== 'OK') {
-      return res.status(400).json({ error: 'Failed to fetch place details', details: details.error_message });
-    }
-
-    // Build photo URLs (first 3)
-    const photos = (details.result.photos || []).slice(0, 3).map(p =>
-      `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=${p.photo_reference}&key=${GOOGLE_KEY}`
-    );
-
-    res.json({
-      name: details.result.name,
-      address: details.result.formatted_address,
-      phone: details.result.formatted_phone_number,
-      rating: details.result.rating,
-      reviews: details.result.user_ratings_total,
-      photos
-    });
-
-  } catch (error) {
-    console.error('GBP API error:', error);
-    res.status(500).json({ error: 'Failed to fetch Google Business Profile details' });
-  }
-});
-
 // Handle SPA routing - serve index.html for unknown routes
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
