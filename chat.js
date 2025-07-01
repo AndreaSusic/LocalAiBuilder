@@ -809,8 +809,15 @@ async function handleMissing(res){
       sessionStorage.setItem('bootstrap', JSON.stringify(window.bootstrapData));
       
       // Store bootstrap data securely in sessionStorage before OAuth
-      sessionStorage.setItem('chatBootstrapData', JSON.stringify(window.bootstrapData));
+      const dataToStore = JSON.stringify(window.bootstrapData);
+      sessionStorage.setItem('chatBootstrapData', dataToStore);
+      sessionStorage.setItem('bootstrap', dataToStore);
+      
       console.log('💾 Stored bootstrap data in sessionStorage');
+      console.log('💾 Data length:', dataToStore.length);
+      console.log('💾 Data preview:', dataToStore.substring(0, 100));
+      console.log('💾 Verification - chatBootstrapData:', sessionStorage.getItem('chatBootstrapData'));
+      console.log('💾 All sessionStorage keys:', Object.keys(sessionStorage));
       
       // Break out of iframe and redirect parent window to OAuth
       console.log('🚀 Breaking out of iframe for OAuth flow');
