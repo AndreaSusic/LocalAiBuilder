@@ -1,0 +1,75 @@
+
+──────────────────────────────────────────────────────────
+PART B — BACK-END  (/api/gbp-details)
+──────────────────────────────────────────────────────────
+	1.	Install Express & dotenv
+
+npm i express dotenv node-fetch
+
+
+	2.	/server/index.js
+
+import express from 'express';
+import fetch from 'node-fetch';
+import 'dotenv/config';
+
+const app = express();
+app.use(express.json());
+
+app.post('/api/gbp-details', async (req,res) => {
+  const { placeUrl } = req.body;         // full Maps URL
+  if (!placeUrl) return res.status(400).json({error:'no url'});
+  // STEP 1: fetch Place ID
+  const idResp = await fetch(
+    `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeUrl)}&inputtype=textquery&fields=place_id&key=${process.env.GOOGLE_KEY}`
+  ).then(r=>r.json());
+  const place_id = idResp.candidates?.[0]?.place_id;
+  if (!place_id) return res.status(404).json({error:'not found'});
+
+  // STEP 2: details
+  const details = await fetch(
+    `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,photo,rating,user_ratings_total&key=${process.env.GOOGLE_KEY}`
+  ).then(r=>r.json());
+
+  // build photo URLs (first 3)
+  const photos = (details.result.photos||[]).slice(0,3).map(p=>
+    `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=${p.photo_reference}&key=${process.env.GOOGLE_KEY}`
+  );
+
+  res.json({
+    name: details.result.name,
+    address: details.result.formatted_address,
+    phone: details.result.formatted_phone_number,
+    rating: details.result.rating,
+    reviews: details.result.user_ratings_total,
+    photos
+  });
+});
+
+app.listen(3001, () => console.log('API on :3001'));
+
+
+	3.	ENV
+
+GOOGLE_KEY=•••
+
+
+	4.	Front-end fetch
+In chat.js, if the user pastes a GBP URL, call:
+
+const gbp = await fetch('/api/gbp-details',{
+  method:'POST', headers:{'Content-Type':'application/json'},
+  body: JSON.stringify({ placeUrl:url })
+}).then(r=>r.json());
+state.google = gbp;
+
+
+
+──────────────────────────────────────────────────────────
+PART C — STOCK IMAGE MODULE
+──────────────────────────────────────────────────────────
+Assume getStockImages is already exported from /src/stock.ts.
+Each section pulls it only if both state.images and google.photos
+arrays are empty.
+
+──

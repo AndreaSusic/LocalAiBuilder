@@ -13,7 +13,7 @@ export default function HeroSection() {
   
   return (
     <section className="hero" style={{ backgroundImage: `url('${heroImg}')` }}>
-      <h1>{company_name || 'Your Practice Name'}</h1>
+      <h1>{company_name || 'Appealing title for you Website'}</h1>
       <p>{heroTagline}</p>
       <button className="btn-primary">Schedule Now</button>
     </section>
