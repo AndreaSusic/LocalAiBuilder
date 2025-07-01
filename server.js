@@ -173,11 +173,30 @@ app.get('/api/last-draft', (req, res) => {
   }
 });
 
-// Homepage redirect for logged-in users (temporarily disabled to debug GBP flow)
+// Homepage redirect for logged-in users
 app.get('/', async (req, res, next) => {
-  // Temporarily disabled redirect to debug GBP issues
-  // TODO: Re-enable after fixing GBP confirmation flow
   console.log('Homepage accessed, user authenticated:', !!req.user);
+  
+  if (req.user) {
+    // Check if user has existing draft/site data
+    try {
+      const { rows } = await pool.query(
+        'SELECT 1 FROM sites WHERE user_id = $1 AND is_draft = TRUE LIMIT 1',
+        [req.user.id]
+      );
+      
+      if (rows.length > 0) {
+        console.log('Authenticated user with draft, redirecting to preview');
+        return res.redirect('/preview');
+      } else {
+        console.log('Authenticated user without draft, redirecting to chat');
+        return res.redirect('/chat?start=fresh');
+      }
+    } catch (error) {
+      console.error('Error checking user drafts:', error);
+    }
+  }
+  
   next();
 });
 
@@ -244,6 +263,23 @@ app.get('/auth/google',
   },
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
+
+// Logout route
+app.get('/auth/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.error('Logout error:', err);
+      return res.status(500).json({ error: 'Logout failed' });
+    }
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Session destroy error:', err);
+      }
+      res.clearCookie('connect.sid');
+      res.redirect('/');
+    });
+  });
+});
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
@@ -819,16 +855,9 @@ app.get('/api/get-temp-data', async (req, res) => {
       }
     }
     
-    // If no match found, try to get the most recent temp data (fallback)
+    // No fallback - strict user isolation
     if (!result || result.rows.length === 0) {
-      console.log('📦 No exact match, trying most recent temp data');
-      result = await pool.query(
-        'SELECT data, user_id FROM temp_bootstrap_data ORDER BY created_at DESC LIMIT 1'
-      );
-      if (result.rows.length > 0) {
-        matchedUserId = result.rows[0].user_id;
-        console.log('📦 Found most recent temp data for user:', matchedUserId);
-      }
+      console.log('📦 No temp data found for authenticated user');
     }
     
     if (result && result.rows.length > 0) {

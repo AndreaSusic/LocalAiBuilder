@@ -10,6 +10,7 @@ export default function DesktopDashboard() {
   const [draftChat, setChat] = useState("");
   const [previewScreen, setPreviewScreen] = useState("desktop");
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [previewContent, setPreviewContent] = useState('/templates/homepage/v1/index.jsx');
 
   /* HANDLERS */
@@ -41,6 +42,10 @@ export default function DesktopDashboard() {
     setPreviewContent(templateUrl);
     setShowPagesDropdown(false);
     console.log('Showing template preview:', templateUrl);
+  };
+
+  const handleLogout = () => {
+    window.location.href = '/auth/logout';
   };
 
   return (
@@ -136,7 +141,42 @@ export default function DesktopDashboard() {
               </div>
             )}
           </div>
-          <button className="btn">Profile ▼</button>
+          <div style={{ position: "relative" }}>
+            <button 
+              className="btn" 
+              onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+            >
+              Profile ▼
+            </button>
+            {showProfileDropdown && (
+              <div style={{
+                position: "absolute",
+                top: "100%",
+                right: 0,
+                background: "white",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+                minWidth: "120px",
+                zIndex: 1000,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+              }}>
+                <div 
+                  onClick={handleLogout}
+                  style={{
+                    display: "block",
+                    padding: "8px 16px",
+                    textDecoration: "none",
+                    color: "#333",
+                    cursor: "pointer"
+                  }}
+                  onMouseOver={e => e.target.style.background = "#f5f5f5"}
+                  onMouseOut={e => e.target.style.background = "white"}
+                >
+                  Logout
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
