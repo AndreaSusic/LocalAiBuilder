@@ -1,0 +1,98 @@
+Here’s a concise fix-checklist that eliminates all three console errors and—most importantly—lets React read the bootstrap data.
+
+Symptom you see	Root cause	One-shot fix
+Failed to execute 'observe'… in web‐client-content-script.js	Replit browser-extension injects an iframe but your React app crashes before it mounts → extension can’t attach observer.	Disappears automatically once React loads without 404/WS errors.
+WebSocket connection … failed & “vite failed to connect”	Vite dev-server can’t talk to the browser because host/port mismatch.	Run Vite with explicit host and (optional) HMR port.npm run dev -- --host 0.0.0.0 --port 3000 --hmr-port 3000
+HomepageV1 received bootstrap data: {} (or nothing)	URL carries no (or double-encoded) data= param and sessionStorage fallback is empty.	① Fix redirect (no extra host/port).② Parse either ?data= or sessionStorage—but not both.
+
+Below are the exact code edits; copy them in, refresh, and the placeholders will be replaced by your real answers.
+
+⸻
+
+1  Redirect: keep same host, no port, encode once
+
+// src/chat.js  (at the very end)
+const json   = JSON.stringify(state);                 // ONE stringify
+const encoded = encodeURIComponent(json);             // ONE encode
+window.location.assign(`/preview?data=${encoded}`);   // SAME domain
+
+If your JSON string exceeds ~2 KB, switch to sessionStorage instead and
+skip the query param entirely.
+
+⸻
+
+2  Parse bootstrap before React renders
+
+// src/main.jsx  (or wherever you call ReactDOM)
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+let bootstrap = {};
+const p = new URLSearchParams(location.search);
+
+if (p.has("data")) {
+  try {
+    bootstrap = JSON.parse(decodeURIComponent(p.get("data")));
+  } catch (e) {
+    console.error("bootstrap parse error:", e);
+  }
+} else if (sessionStorage.getItem("bootstrap")) {
+  bootstrap = JSON.parse(sessionStorage.getItem("bootstrap"));
+}
+
+console.log("BOOTSTRAP →", bootstrap);   // should print *real* answers
+
+ReactDOM.createRoot(document.getElementById("root"))
+        .render(<App bootstrap={bootstrap} />);
+
+Remove any fallback inline script that sets window.bootstrapData = {…} with
+placeholder text—those overwrite your real object.
+
+⸻
+
+3  Serve the bundle for /preview
+
+If you use Vite only
+
+No extra route needed, just ensure dev server is reachable:
+
+npm run dev -- --host 0.0.0.0 --port 3000 --hmr-port 3000
+
+(Replit proxies HTTPS to whatever port you run; 3000 is fine.)
+
+If you have an Express API
+
+// server/index.js
+import path from "path";
+app.use(express.static("dist"));  // React build
+
+app.get("/preview", (req, res) =>
+  res.sendFile(path.join(process.cwd(), "dist", "index.html"))
+);
+
+
+⸻
+
+4  Quick smoke test
+	1.	Run the wizard → the address bar should become
+
+https://<your-repl>.repl.co/preview?data=%7B%22company_name
+
+(no port, no extra sub-domain).
+
+	2.	DevTools console should log the full bootstrap object.
+	3.	Home page hero H1 now shows “The Grass Outlet” (or whatever you entered).
+	4.	WebSocket error disappears (Vite HMR connects).
+	5.	MutationObserver warning disappears (because the iframe observer can now attach).
+
+⸻
+
+Still seeing empty {}?
+	•	Probably double-encoding: %257B in the URL means the JSON was
+encodeURIComponent-ed twice. Ensure you only encode once.
+	•	Or the parser is running before the ?data= param appears—rare, but if
+you’re using React Router you might need useEffect inside App to load
+bootstrap after mount.
+
+Apply the edits above, refresh, and your data should populate correctly.
