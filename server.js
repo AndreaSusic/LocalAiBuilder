@@ -475,30 +475,10 @@ app.post("/api/analyse", upload.none(), async (req, res) => {
       userPrompt = "No business description provided";
     }
     userPrompt = (userPrompt || "No prompt provided").slice(0, 500);
-    const systemMsg = `
-Extract business data and return ONLY valid JSON:
+    const systemMsg = `Return JSON only:
+{"company_name":string|null,"industry":string|null,"city":string|null,"language":"English"|"Serbian"|"German"|"Spanish","services":string|null,"missing_fields":[]}
 
-{
-  "company_name": string|null,
-  "industry": string|null,
-  "city": string|null,
-  "language": "English"|"Serbian"|"German"|"Spanish",
-  "services": string|null,
-  "missing_fields": []
-}
-
-RULES:
-1. Language (NEVER null):
-   - Belgrade/Beograd/Novi Sad → "Serbian"
-   - Berlin/Munich/Hamburg → "German"
-   - Madrid/Barcelona → "Spanish"
-   - Otherwise → "English"
-
-2. A company_name must be a distinctive brand term—generic descriptors are not valid.
-   If the user's input contains a generic phrase immediately before words like
-   "company", "service", "studio", "clinic", "agency" (for example, "grass sod company",
-   "auto repair service", "design studio"), then set "company_name": null
-   and add "company_name" to missing_fields.
+Belgrade/Beograd→"Serbian", Berlin/Munich→"German", Madrid/Barcelona→"Spanish", Otherwise→"English"`;
 
 3. City detection (scan text for these patterns):
    - "in Austin" → city: "Austin"
