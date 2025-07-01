@@ -801,19 +801,31 @@ async function handleMissing(res){
         conversation: convo
       };
       
-      console.log('🚀 Redirecting to preview with bootstrap data:', window.bootstrapData);
+      console.log('🚀 Preparing Google OAuth with bootstrap data:', window.bootstrapData);
+      console.log('📊 State data:', state);
+      console.log('🎨 Images:', images);
       
-      // Redirect to preview using same-origin relative path (fixes 404 issue)
-      const data = encodeURIComponent(JSON.stringify(window.bootstrapData));
-      const dashboardUrl = `/preview?data=${data}`;
-      
-      console.log('📍 Dashboard redirect URL:', dashboardUrl);
-      console.log('📍 Bootstrap data being sent:', window.bootstrapData);
-      
-      // Also store in sessionStorage as fallback
+      // Store bootstrap data in sessionStorage before OAuth redirect
       sessionStorage.setItem('bootstrap', JSON.stringify(window.bootstrapData));
       
-      window.location.assign(dashboardUrl);
+      // Open Google OAuth in popup window
+      const authWindow = window.open(
+        '/auth/google?returnTo=' + encodeURIComponent('/preview'),
+        'googleAuth',
+        'width=500,height=600,scrollbars=yes,resizable=yes'
+      );
+      
+      // Handle popup completion
+      const checkClosed = setInterval(() => {
+        if (authWindow.closed) {
+          clearInterval(checkClosed);
+          // Redirect to preview with bootstrap data after OAuth
+          const data = encodeURIComponent(JSON.stringify(window.bootstrapData));
+          const dashboardUrl = `/preview?data=${data}`;
+          console.log('📍 OAuth complete, redirecting to:', dashboardUrl);
+          window.location.assign(dashboardUrl);
+        }
+      }, 1000);
     };
 
     // Hide chat footer when sign in button appears
