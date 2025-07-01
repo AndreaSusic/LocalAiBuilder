@@ -232,6 +232,13 @@ app.use(express.static('.'));
 
 // Auth routes
 app.get('/auth/google', 
+  function(req, res, next) {
+    // Store returnTo parameter in session
+    if (req.query.returnTo) {
+      req.session.returnTo = req.query.returnTo;
+    }
+    next();
+  },
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
