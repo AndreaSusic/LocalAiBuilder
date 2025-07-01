@@ -313,17 +313,20 @@ app.get('/auth/google/callback',
                   console.log("Retrieved temp data:", data);
                   
                   if (data.success && data.bootstrapData) {
-                    const dashboardUrl = '/preview?data=' + encodeURIComponent(JSON.stringify(data.bootstrapData));
+                    const json = JSON.stringify(data.bootstrapData);
+                    const encoded = encodeURIComponent(json);
+                    const dashboardUrl = '/preview?data=' + encoded;
                     console.log("Redirecting to dashboard with database data:", dashboardUrl);
-                    window.location.href = dashboardUrl;
+                    console.log("Data preview:", json.substring(0, 100));
+                    window.location.assign(dashboardUrl);
                   } else {
                     console.log("No temp data found, redirecting to empty dashboard");
-                    window.location.href = '/preview?data=%7B%7D';
+                    window.location.assign('/preview?data=%7B%7D');
                   }
                 })
                 .catch(error => {
                   console.error("Error retrieving temp data:", error);
-                  window.location.href = '/preview?data=%7B%7D';
+                  window.location.assign('/preview?data=%7B%7D');
                 });
             </script>
           `);
@@ -354,17 +357,20 @@ app.get('/auth/google/callback',
               console.log("Retrieved temp data:", data);
               
               if (data.success && data.bootstrapData) {
-                const dashboardUrl = '/preview?data=' + encodeURIComponent(JSON.stringify(data.bootstrapData));
+                const json = JSON.stringify(data.bootstrapData);
+                const encoded = encodeURIComponent(json);
+                const dashboardUrl = '/preview?data=' + encoded;
                 console.log("Redirecting to dashboard with database data:", dashboardUrl);
-                window.location.href = dashboardUrl;
+                console.log("Data preview:", json.substring(0, 100));
+                window.location.assign(dashboardUrl);
               } else {
                 console.log("No temp data found, redirecting to empty dashboard");
-                window.location.href = '/preview?data=%7B%7D';
+                window.location.assign('/preview?data=%7B%7D');
               }
             })
             .catch(error => {
               console.error("Error retrieving temp data:", error);
-              window.location.href = '/preview?data=%7B%7D';
+              window.location.assign('/preview?data=%7B%7D');
             });
         </script>
       `);
@@ -823,7 +829,7 @@ app.get('/api/get-temp-data', async (req, res) => {
 
 // Serve React dashboard for /preview route with SPA fallback
 app.get('/preview', function(req, res) {
-  res.redirect('http://localhost:4000/?data=' + (req.query.data || ''));
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
 // Note: Removed catch-all route to avoid Express path-to-regexp error
