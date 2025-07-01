@@ -7,12 +7,25 @@ export default function MobileDashboard({ bootstrap }) {
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
   const [showVersions, setShowVersions] = useState(false);
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
-  const [previewContent, setPreviewContent] = useState('/templates/homepage/v1/index.jsx');
+  const [previewContent, setPreviewContent] = useState(() => {
+    // If bootstrap data exists, encode it for the template URL
+    if (bootstrap && Object.keys(bootstrap).length > 0) {
+      const encoded = encodeURIComponent(JSON.stringify(bootstrap));
+      return `/templates/homepage/v1/index.jsx?data=${encoded}`;
+    }
+    return '/templates/homepage/v1/index.jsx';
+  });
 
   const showTemplatePreview = (templateUrl) => {
-    setPreviewContent(templateUrl);
+    let fullUrl = templateUrl;
+    // Add bootstrap data to URL if available
+    if (bootstrap && Object.keys(bootstrap).length > 0) {
+      const encoded = encodeURIComponent(JSON.stringify(bootstrap));
+      fullUrl += `?data=${encoded}`;
+    }
+    setPreviewContent(fullUrl);
     setShowPagesDropdown(false);
-    console.log('Showing mobile template preview:', templateUrl);
+    console.log('Showing mobile template preview:', fullUrl);
   };
 
   return (
