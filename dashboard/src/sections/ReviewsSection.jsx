@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext';
 
 export default function ReviewsSection() {
-  const { google = {} } = useContext(SiteDataContext) || {};
+  const { google_profile = {}, ai_customization = {} } = useContext(SiteDataContext) || {};
   
   const defaultTestimonials = [
     {
@@ -22,13 +22,22 @@ export default function ReviewsSection() {
     }
   ];
 
-  const testimonials = google.reviews && google.reviews.length > 0 ? google.reviews : defaultTestimonials;
+  // Use GBP reviews if available, with proper star formatting
+  const testimonials = google_profile.reviews && google_profile.reviews.length > 0 
+    ? google_profile.reviews.map(review => ({
+        text: review.text,
+        author: review.author,
+        stars: "★".repeat(review.rating) + "☆".repeat(5 - review.rating)
+      }))
+    : defaultTestimonials;
+
+  const reviewsTitle = ai_customization.reviewsTitle || `What Our ${ai_customization.reviewerLabel || 'Clients'} Say`;
 
   return (
     <>
       {/* Testimonials */}
       <section className="testimonials">
-        <h2>What Our Patients Say</h2>
+        <h2>{reviewsTitle}</h2>
         <div className="testimonials-grid">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="testimonial">
