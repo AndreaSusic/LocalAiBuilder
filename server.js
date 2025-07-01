@@ -300,85 +300,74 @@ app.get('/auth/google/callback',
       );
 
       if (urows.length) {
-        console.log('Draft found, redirecting to preview');
-        // Check if this was from chat completion flow
-        const returnTo = req.query.returnTo || req.session.returnTo;
+        console.log('Draft found, checking for bootstrap data and redirecting to preview');
         
-        if (returnTo === '/preview') {
-          // Get stored bootstrap data and redirect to dashboard
-          res.send(`
-            <script>
-              console.log("OAuth complete, retrieving bootstrap data from database");
-              
-              fetch('/api/get-temp-data')
-                .then(response => response.json())
-                .then(data => {
-                  console.log("Retrieved temp data:", data);
-                  
-                  if (data.success && data.bootstrapData) {
-                    const json = JSON.stringify(data.bootstrapData);
-                    const encoded = encodeURIComponent(json);
-                    const dashboardUrl = '/preview?data=' + encoded;
-                    console.log("Redirecting to dashboard with database data:", dashboardUrl);
-                    console.log("Data preview:", json.substring(0, 100));
-                    window.location.assign(dashboardUrl);
-                  } else {
-                    console.log("No temp data found, redirecting to empty dashboard");
-                    window.location.assign('/preview?data=%7B%7D');
-                  }
-                })
-                .catch(error => {
-                  console.error("Error retrieving temp data:", error);
-                  window.location.assign('/preview?data=%7B%7D');
-                });
-            </script>
-          `);
-          return;
-        }
-        
-        // Otherwise redirect to dashboard via preview route
-        return res.redirect('/preview');
+        // Always try to get stored bootstrap data and redirect to dashboard
+        res.send(`
+          <script>
+            console.log("OAuth complete, retrieving bootstrap data from database");
+            
+            fetch('/api/get-temp-data')
+              .then(response => response.json())
+              .then(data => {
+                console.log("Retrieved temp data:", data);
+                
+                if (data.success && data.bootstrapData) {
+                  const json = JSON.stringify(data.bootstrapData);
+                  const encoded = encodeURIComponent(json);
+                  const dashboardUrl = '/preview?data=' + encoded;
+                  console.log("Redirecting to dashboard with database data:", dashboardUrl);
+                  console.log("Data preview:", json.substring(0, 100));
+                  window.location.assign(dashboardUrl);
+                } else {
+                  console.log("No temp data found, redirecting to dashboard without data");
+                  window.location.assign('/preview');
+                }
+              })
+              .catch(error => {
+                console.error("Error retrieving temp data:", error);
+                window.location.assign('/preview');
+              });
+          </script>
+        `);
+        return;
       }
     } catch (err) {
       console.error('DB error checking draft:', err);
       // on error, default to homepage
     }
 
-    console.log('No draft found, redirecting to preview');
-    // Check if this was from chat completion flow
-    const returnTo = req.query.returnTo || req.session.returnTo;
+    console.log('No draft found, checking for bootstrap data and redirecting to preview');
     
-    if (returnTo === '/preview') {
-      // Get stored bootstrap data and redirect to dashboard (no draft case)
-      res.send(`
-        <script>
-          console.log("OAuth complete (no draft), retrieving bootstrap data from database");
-          
-          fetch('/api/get-temp-data')
-            .then(response => response.json())
-            .then(data => {
-              console.log("Retrieved temp data:", data);
-              
-              if (data.success && data.bootstrapData) {
-                const json = JSON.stringify(data.bootstrapData);
-                const encoded = encodeURIComponent(json);
-                const dashboardUrl = '/preview?data=' + encoded;
-                console.log("Redirecting to dashboard with database data:", dashboardUrl);
-                console.log("Data preview:", json.substring(0, 100));
-                window.location.assign(dashboardUrl);
-              } else {
-                console.log("No temp data found, redirecting to empty dashboard");
-                window.location.assign('/preview?data=%7B%7D');
-              }
-            })
-            .catch(error => {
-              console.error("Error retrieving temp data:", error);
-              window.location.assign('/preview?data=%7B%7D');
-            });
-        </script>
-      `);
-      return;
-    }
+    // Always try to get stored bootstrap data and redirect to dashboard (no draft case)
+    res.send(`
+      <script>
+        console.log("OAuth complete (no draft), retrieving bootstrap data from database");
+        
+        fetch('/api/get-temp-data')
+          .then(response => response.json())
+          .then(data => {
+            console.log("Retrieved temp data:", data);
+            
+            if (data.success && data.bootstrapData) {
+              const json = JSON.stringify(data.bootstrapData);
+              const encoded = encodeURIComponent(json);
+              const dashboardUrl = '/preview?data=' + encoded;
+              console.log("Redirecting to dashboard with database data:", dashboardUrl);
+              console.log("Data preview:", json.substring(0, 100));
+              window.location.assign(dashboardUrl);
+            } else {
+              console.log("No temp data found, redirecting to homepage");
+              window.location.assign('/');
+            }
+          })
+          .catch(error => {
+            console.error("Error retrieving temp data:", error);
+            window.location.assign('/');
+          });
+      </script>
+    `);
+    return;
     
     // Otherwise redirect to dashboard via preview route
     res.redirect('/preview');
