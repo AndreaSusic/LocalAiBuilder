@@ -808,6 +808,11 @@ async function handleMissing(res){
       const dashboardUrl = `/preview?data=${data}`;
       
       console.log('📍 Dashboard redirect URL:', dashboardUrl);
+      console.log('📍 Bootstrap data being sent:', window.bootstrapData);
+      
+      // Also store in sessionStorage as fallback
+      sessionStorage.setItem('bootstrap', JSON.stringify(window.bootstrapData));
+      
       window.location.assign(dashboardUrl);
     };
 

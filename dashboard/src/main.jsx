@@ -4,24 +4,30 @@ import './index.css'
 import App from './App.jsx'
 import { ThemeProvider } from './lib/theme.jsx'
 
-// Get data from URL parameters
-const urlParams = new URLSearchParams(window.location.search);
-const dataParam = urlParams.get('data');
-let bootstrapData = null;
-
-if (dataParam) {
+// --- Load bootstrap from URL or sessionStorage -------------
+let bootstrap = {};
+const params = new URLSearchParams(window.location.search);
+if (params.has('data')) {
   try {
-    bootstrapData = JSON.parse(decodeURIComponent(dataParam));
-    console.log('📦 Received bootstrap data:', bootstrapData);
-  } catch (error) {
-    console.error('Failed to parse bootstrap data:', error);
+    bootstrap = JSON.parse(decodeURIComponent(params.get('data')));
+    console.log('📦 Received bootstrap data from URL:', bootstrap);
+  } catch (e) {
+    console.error('bootstrap decode err', e);
+  }
+} else if (sessionStorage.getItem('bootstrap')) {
+  try {
+    bootstrap = JSON.parse(sessionStorage.getItem('bootstrap'));
+    console.log('📦 Received bootstrap data from sessionStorage:', bootstrap);
+  } catch (e) {
+    console.error('sessionStorage bootstrap decode err', e);
   }
 }
+// -----------------------------------------------------------
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
-      <App bootstrapData={bootstrapData} />
+      <App bootstrap={bootstrap} />
     </ThemeProvider>
   </StrictMode>,
 )

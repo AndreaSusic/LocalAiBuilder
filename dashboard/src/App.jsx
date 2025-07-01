@@ -11,7 +11,7 @@ import HomepageV3 from "./templates/homepage/v3/index.jsx";
 import ServiceInvisalign from "./pages/ServiceInvisalign.jsx";
 import ContactV1 from "./pages/ContactV1.jsx";
 
-export default function App({ bootstrapData }) {
+export default function App({ bootstrap }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
@@ -27,7 +27,7 @@ export default function App({ bootstrapData }) {
         {/* Keep dashboard as default route */}
         <Route path="/" element={
           <>
-            {isMobile ? <MobileDashboard bootstrapData={bootstrapData} /> : <DesktopDashboard bootstrapData={bootstrapData} />}
+            {isMobile ? <MobileDashboard bootstrap={bootstrap} /> : <DesktopDashboard bootstrap={bootstrap} />}
             
             {/* Keep the full-screen preview overlay for both versions */}
             {isPreviewOpen && (
@@ -52,14 +52,14 @@ export default function App({ bootstrapData }) {
         <Route path="/templates" element={<DashboardPage />} />
         
         {/* Exact template routes */}
-        <Route path="/templates/homepage/v1/index.jsx" element={<HomepageV1 bootstrapData={bootstrapData} />} />
-        <Route path="/templates/homepage/v2/index.jsx" element={<HomepageV2 bootstrapData={bootstrapData} />} />
-        <Route path="/templates/homepage/v3/index.jsx" element={<HomepageV3 bootstrapData={bootstrapData} />} />
+        <Route path="/templates/homepage/v1/index.jsx" element={<HomepageV1 bootstrap={bootstrap} />} />
+        <Route path="/templates/homepage/v2/index.jsx" element={<HomepageV2 bootstrap={bootstrap} />} />
+        <Route path="/templates/homepage/v3/index.jsx" element={<HomepageV3 bootstrap={bootstrap} />} />
         
         {/* Alternative template routes for versioned access */}
-        <Route path="/templates/homepage-1" element={<HomepageV1 bootstrapData={bootstrapData} />} />
-        <Route path="/templates/homepage-2" element={<HomepageV2 bootstrapData={bootstrapData} />} />
-        <Route path="/templates/homepage-3" element={<HomepageV3 bootstrapData={bootstrapData} />} />
+        <Route path="/templates/homepage-1" element={<HomepageV1 bootstrap={bootstrap} />} />
+        <Route path="/templates/homepage-2" element={<HomepageV2 bootstrap={bootstrap} />} />
+        <Route path="/templates/homepage-3" element={<HomepageV3 bootstrap={bootstrap} />} />
         
         {/* Service template routes */}
         <Route path="/templates/service/v1/index.jsx" element={<ServiceInvisalign />} />

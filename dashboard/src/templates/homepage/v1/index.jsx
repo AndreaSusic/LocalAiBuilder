@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-export default function HomepageV1({ tokens = {}, bootstrapData = null }) {
+export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   // Use bootstrap data if available, otherwise use tokens
-  const data = bootstrapData || {
+  const data = bootstrap || {
     company_name: tokens.businessName || 'Your Business Name',
     city: tokens.location ? [tokens.location] : ['Your City'],
     services: tokens.services || 'Your Services',
@@ -12,7 +12,7 @@ export default function HomepageV1({ tokens = {}, bootstrapData = null }) {
     industry: tokens.industry || 'Your Industry'
   };
   
-  console.log('HomepageV1 received data:', data);
+  console.log('HomepageV1 received bootstrap data:', data);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
