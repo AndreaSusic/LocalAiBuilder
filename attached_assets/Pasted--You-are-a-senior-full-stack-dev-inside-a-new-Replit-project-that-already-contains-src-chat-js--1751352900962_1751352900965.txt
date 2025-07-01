@@ -1,0 +1,105 @@
+
+You are a senior full-stack dev inside a new Replit project that already
+contains:
+
+• /src/chat.js          – wizard that finishes with a `state` object
+• homepage/v1/index.jsx       – monolithic home-page template (current HP)
+• /src/stock.ts         – getStockImages() (Unsplash → Pexels → filters)
+• styles.css  (or check in which file is css for homepage template)  – existing CSS classes (keep as-is)
+
+### JOB
+Refactor front-end + add a tiny Express API so the wizard answers feed
+dynamic templates.
+
+──────────────────────────────────────────────────────────
+ PART A — FRONT-END REFACTOR
+──────────────────────────────────────────────────────────
+
+1. **Section files**  
+   Create `/src/sections/` and move the JSX blocks from `homepage/v1/index.jsx`
+   into:  
+     • HeroSection.jsx  
+     • ServicesSection.jsx  
+     • AboutSection.jsx  
+     • GallerySection.jsx  
+     • ReviewsSection.jsx  
+     • ContactSection.jsx  
+   Maintain all existing class names & inline styles.
+
+2. **Replace hard-coded text** with props or Context values:<br>
+   • company_name → state.company_name<br>
+   • hero tagline → first item in state.services OR fallback<br>
+   • images → (state.images || gbp.photos || getStockImages())<br>
+   • phone / address → gbp data (if present)<br>
+   • etc.
+
+3. **SiteDataContext**  
+   `/src/context/SiteDataContext.js`
+   ```js
+   import { createContext } from 'react';
+   export const SiteDataContext = createContext(null);
+
+	4.	/templates/HomePageV1.jsx
+/templates/HomePageV1.jsx
+
+import { Hero, Services, About, Gallery, Reviews, Contact } from '../sections';
+export default function HomePage() {
+  return (
+    <>
+      <Hero/>
+      <Services/>
+      <About/>
+      <Gallery/>
+      <Reviews/>
+      <Contact/>
+    </>
+  );
+}
+
+
+	5.	App entry
+Duplicate /src/App.jsx and create /src/App1.jsx in order to preserve all code in App.jsx if there are bugs in the new file
+
+import { SiteDataContext } from './context/SiteDataContext';
+import HomePage from './pages/HomePage';
+export default function App({ bootstrap }) {
+  return (
+    <SiteDataContext.Provider value={bootstrap}>
+      <HomePage/>
+    </SiteDataContext.Provider>
+  );
+}
+
+
+	6.	Wizard → Bootstrap
+At the end of chat.js, after const state = {...} do:
+
+window.bootstrapData = state;      // expose to React
+window.location.href = '/preview'; // or wherever HomePage mounts
+
+In index.html (or your main template) add:
+
+<script>
+  window.bootstrapData = window.bootstrapData || {};
+</script>
+<div id="root"></div>
+<script type="module" src="/src/main.jsx"></script>
+
+Then inside main.jsx
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+ReactDOM.createRoot(document.getElementById('root'))
+  .render(<App bootstrap={window.bootstrapData} />);
+
+
+	7.	Image fallback logic
+In each section (e.g. HeroSection) use:
+
+const { images=[], google={} } = useContext(SiteDataContext);
+const heroImg =
+  images[0] ||
+  google.photos?.[0] ||
+  getStockImages('hero', { services, company_name })[0];
+
