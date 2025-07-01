@@ -8,6 +8,7 @@ import {
   ReviewsSection, 
   ContactSection 
 } from '../../../sections';
+import '../../../styles/template.css';
 
 export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   // Use bootstrap data if available, otherwise use tokens
@@ -26,6 +27,12 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   return (
     <SiteDataContext.Provider value={data}>
       <div>
+        <style>{`
+          :root {
+            --primary: ${data.colours?.[0] || '#5DD39E'};
+            --secondary: ${data.colours?.[1] || '#EFD5BD'};
+          }
+        `}</style>
         <HeroSection />
         <ServicesSection />
         <AboutSection />
