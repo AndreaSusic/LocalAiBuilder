@@ -634,12 +634,47 @@ app.get('/api/user-data', async (req, res) => {
     console.log('API /user-data called');
     console.log('User authenticated:', req.isAuthenticated && req.isAuthenticated());
     
-    // Get user ID (Google ID or session ID)
-    const userId = req.user?.id || req.sessionID;
-    console.log('Loading data for user:', userId);
+    // Try multiple user ID sources to find the data
+    const possibleUserIds = [
+      req.user?.id,
+      req.cookies.saveDraftKey,
+      req.sessionID,
+      req.user?.emails?.[0]?.value
+    ].filter(Boolean);
     
-    if (userId) {
-      // Try to load user's saved website data from database
+    console.log('Loading data for possible users:', possibleUserIds);
+    
+    // First, try to get temp bootstrap data (priority for preview)
+    let tempResult = null;
+    for (const userId of possibleUserIds) {
+      tempResult = await pool.query(
+        'SELECT data FROM temp_bootstrap_data WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
+        [userId]
+      );
+      
+      if (tempResult.rows.length > 0) {
+        console.log('Found temp bootstrap data for user:', userId);
+        let bootstrapData = tempResult.rows[0].data;
+        
+        // Handle both string and object data formats
+        if (typeof bootstrapData === 'string') {
+          try {
+            bootstrapData = JSON.parse(bootstrapData);
+          } catch (e) {
+            console.log('Data parsing error:', e);
+          }
+        }
+        
+        if (bootstrapData && typeof bootstrapData === 'object') {
+          console.log('Returning temp bootstrap data with keys:', Object.keys(bootstrapData));
+          return res.json(bootstrapData);
+        }
+        break;
+      }
+    }
+    
+    // If no temp data, try to load completed website data
+    for (const userId of possibleUserIds) {
       const result = await pool.query(
         'SELECT * FROM sites WHERE user_id = $1 AND is_draft = FALSE ORDER BY updated_at DESC LIMIT 1',
         [userId]
