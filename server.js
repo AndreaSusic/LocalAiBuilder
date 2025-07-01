@@ -247,6 +247,7 @@ app.get('/auth/google/callback',
   async (req, res) => {
     const userId = req.user.id;
     console.log('Google profile:', req.user);
+    console.log('OAuth callback returnTo:', req.session.returnTo);
 
     try {
       // Upsert user into database
@@ -296,20 +297,36 @@ app.get('/auth/google/callback',
       );
 
       if (urows.length) {
-        console.log('Draft found, redirecting to dashboard');
-        // After successful login, send users to the dashboard on port 3002 (mapped from 4000)
-        const dashboardUrl = process.env.DASHBOARD_URL || 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
-        return res.redirect(dashboardUrl);
+        console.log('Draft found, redirecting to preview');
+        // Check if this was from chat completion flow
+        const returnTo = req.query.returnTo || req.session.returnTo;
+        
+        if (returnTo === '/preview') {
+          // Close popup and let parent handle redirect
+          res.send('<script>window.close();</script>');
+          return;
+        }
+        
+        // Otherwise redirect to dashboard via preview route
+        return res.redirect('/preview');
       }
     } catch (err) {
       console.error('DB error checking draft:', err);
       // on error, default to homepage
     }
 
-    console.log('No draft found, redirecting to dashboard');
-    // After successful login, send users to the dashboard on port 3002 (mapped from 4000)
-    const dashboardUrl = process.env.DASHBOARD_URL || 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
-    res.redirect(dashboardUrl);
+    console.log('No draft found, redirecting to preview');
+    // Check if this was from chat completion flow
+    const returnTo = req.query.returnTo || req.session.returnTo;
+    
+    if (returnTo === '/preview') {
+      // Close popup and let parent handle redirect  
+      res.send('<script>window.close();</script>');
+      return;
+    }
+    
+    // Otherwise redirect to dashboard via preview route
+    res.redirect('/preview');
   }
 );
 
