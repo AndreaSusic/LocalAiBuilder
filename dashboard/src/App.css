@@ -101,11 +101,14 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 }
 
 .preview-mobile {
-  width: 40%;
-  height: 300px;
+  width: 100%;
+  height: calc(100vh - 350px);
+  min-height: 400px;
+  max-height: 600px;
   margin: 0 auto;
   border: 2px solid #ddd;
   border-radius: 20px;
+  overflow: hidden;
 }
 
 /* MOBILE DASHBOARD WIREFRAME STYLES */

@@ -28,6 +28,20 @@ export default function MobileDashboard({ bootstrap }) {
     console.log('Showing mobile template preview:', fullUrl);
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/logout', { method: 'GET' });
+      if (response.ok) {
+        window.location.href = '/';
+      } else {
+        window.location.href = '/logout';
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      window.location.href = '/logout';
+    }
+  };
+
   return (
     <div className="mobile-dashboard-wireframe">
       {/* Sticky Top Bar */}
@@ -38,6 +52,7 @@ export default function MobileDashboard({ bootstrap }) {
           </a>
           <button className="icon-btn-wireframe">🔔</button>
           <button className="small-btn-wireframe">Publish</button>
+          <button className="small-btn-wireframe" onClick={handleLogout}>Logout</button>
         </div>
         <div className="dropdown-wrapper">
           <button 
