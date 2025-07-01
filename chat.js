@@ -743,15 +743,40 @@ async function handleMissing(res){
       skipButton.style.borderRadius = '4px';
       skipButton.style.cursor = 'pointer';
       
-      skipButton.onclick = () => {
-        // Mark images as skipped and proceed to completion
-        bubble('ai', 'No problem! I\'ll use stock photos that match your business.');
+      skipButton.onclick = async () => {
+        // Mark images as skipped and fetch real stock photos
+        bubble('ai', 'No problem! I\'ll use professional stock photos that match your business.');
         skipButton.remove();
         const dropZone = document.getElementById('inlineDropZone');
         if (dropZone) dropZone.remove();
         
-        // Mark images as handled to prevent re-showing
-        images.push('stock_photos_placeholder');
+        // Fetch actual stock images from API
+        try {
+          const response = await fetch('/api/stock-images', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              serviceType: state.industry || 'business',
+              country: state.city?.[0] || 'Serbia',
+              minNeeded: 6,
+              userImages: []
+            })
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            // Extract URLs from the API response
+            const stockUrls = result.images.map(img => img.src || img);
+            images.push(...stockUrls);
+            console.log('Fetched stock images:', stockUrls);
+          } else {
+            console.warn('Stock images API failed, using placeholder');
+            images.push('stock_photos_placeholder');
+          }
+        } catch (error) {
+          console.error('Error fetching stock images:', error);
+          images.push('stock_photos_placeholder');
+        }
         
         // Continue to completion
         handleMissing({});
@@ -775,8 +800,34 @@ async function handleMissing(res){
     // If no images uploaded, fetch stock images automatically
     if (images.length === 0) {
       bubble('ai', 'I\'ll use professional stock photos that match your business. Your website is ready!');
-      // Add placeholder to prevent images step from triggering again
-      images.push('stock_photos_placeholder');
+      
+      // Fetch actual stock images from API
+      try {
+        const response = await fetch('/api/stock-images', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            serviceType: state.industry || 'business',
+            country: state.city?.[0] || 'Serbia',
+            minNeeded: 6,
+            userImages: []
+          })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          // Extract URLs from the API response
+          const stockUrls = result.images.map(img => img.src || img);
+          images.push(...stockUrls);
+          console.log('Auto-fetched stock images:', stockUrls);
+        } else {
+          console.warn('Stock images API failed, using placeholder');
+          images.push('stock_photos_placeholder');
+        }
+      } catch (error) {
+        console.error('Error fetching stock images:', error);
+        images.push('stock_photos_placeholder');
+      }
     }
     
     // Show font picker right before completion message
