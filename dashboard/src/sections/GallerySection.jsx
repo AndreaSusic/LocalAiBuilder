@@ -11,8 +11,12 @@ export default function GallerySection() {
     'https://plus.unsplash.com/premium_photo-1674567520651-6e1f0a5a8fd3?w=900&auto=format&fit=crop&q=60'
   ];
   
-  const galleryImages = images.length > 0 ? images : 
-                       google.photos ? google.photos : 
+  // Ensure images is an array of strings (URLs)
+  const imageUrls = Array.isArray(images) ? 
+    images.filter(img => typeof img === 'string' && img.length > 0) : [];
+  
+  const galleryImages = imageUrls.length > 0 ? imageUrls : 
+                       (google.photos && Array.isArray(google.photos)) ? google.photos : 
                        defaultGalleryImages;
 
   return (

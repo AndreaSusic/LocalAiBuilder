@@ -22,10 +22,18 @@ export default function ServicesSection() {
     }
   ];
 
-  const servicesToShow = services.length > 0 ? services.map((service, index) => ({
+  // Handle services as either string or array
+  const servicesList = Array.isArray(services) ? services :
+                      (typeof services === 'string' && services.length > 0) ? [services] : [];
+  
+  // Ensure images is an array of strings
+  const imageUrls = Array.isArray(images) ? 
+    images.filter(img => typeof img === 'string' && img.length > 0) : [];
+
+  const servicesToShow = servicesList.length > 0 ? servicesList.map((service, index) => ({
     title: service,
     description: `Professional ${service.toLowerCase()} services tailored to your needs.`,
-    image: images[index + 1] || defaultServices[index]?.image || defaultServices[0].image
+    image: imageUrls[index + 1] || defaultServices[index]?.image || defaultServices[0].image
   })) : defaultServices;
 
   return (
