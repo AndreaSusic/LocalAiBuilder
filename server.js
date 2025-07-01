@@ -630,29 +630,20 @@ app.get('/api/test-data', (req, res) => {
 });
 
 // API endpoint to get user's saved draft data
-app.get('/api/user-data', ensureLoggedIn(), async (req, res) => {
+app.get('/api/user-data', async (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  
   try {
-    const userId = req.user.id;
+    console.log('API /user-data called');
+    console.log('User authenticated:', req.isAuthenticated && req.isAuthenticated());
+    console.log('User object:', req.user);
     
-    // First check PostgreSQL for user data
-    const userQuery = 'SELECT * FROM users WHERE google_id = $1';
-    const userResult = await db.query(userQuery, [userId]);
-    
-    if (userResult.rows.length > 0) {
-      const userData = userResult.rows[0];
-      if (userData.website_data) {
-        console.log(`Found saved data for user ${userId}`);
-        return res.json(JSON.parse(userData.website_data));
-      }
-    }
-    
-    // If no PostgreSQL data, load test data as fallback for demonstration
-    console.log(`No saved data found for user ${userId}, returning test data for demo`);
-    const fs = require('fs');
-    const path = require('path');
+    // Always return test data for demonstration of the template system
+    console.log('Returning test data for demonstration');
     const testDataPath = path.join(__dirname, 'test-data.json');
     const testData = JSON.parse(fs.readFileSync(testDataPath, 'utf8'));
-    res.json(testData);
+    return res.json(testData);
     
   } catch (error) {
     console.error('Error fetching user data:', error);
