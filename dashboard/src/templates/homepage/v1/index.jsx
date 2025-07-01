@@ -1,7 +1,18 @@
 import React, { useState } from "react";
 
-export default function HomepageV1({ tokens = {} }) {
+export default function HomepageV1({ tokens = {}, bootstrapData = null }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // Use bootstrap data if available, otherwise use tokens
+  const data = bootstrapData || {
+    company_name: tokens.businessName || 'Your Business Name',
+    city: tokens.location ? [tokens.location] : ['Your City'],
+    services: tokens.services || 'Your Services',
+    colours: tokens.primaryColor ? [tokens.primaryColor, tokens.secondaryColor || '#000000'] : ['#5DD39E', '#000000'],
+    industry: tokens.industry || 'Your Industry'
+  };
+  
+  console.log('HomepageV1 received data:', data);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -17,7 +28,7 @@ export default function HomepageV1({ tokens = {} }) {
     }}>
       <style jsx>{`
         :root {
-          --primary: #5DD39E;
+          --primary: ${data.colours?.[0] || '#5DD39E'};
           --secondary: #EFD5BD;
           --text: #3f3f3f;
           --bg-light: #f9f9f9;
@@ -514,7 +525,7 @@ export default function HomepageV1({ tokens = {} }) {
       
       {/* Navigation */}
       <nav className="nav">
-        <div className="logo">YourLogo</div>
+        <div className="logo">{data.company_name || 'YourLogo'}</div>
         <button className="hamburger" onClick={toggleMenu} aria-label="Toggle menu">☰</button>
         <ul className={`nav-links ${isMenuOpen ? 'mobile-open' : ''}`}>
           <li><a href="#">Home</a></li>
@@ -535,8 +546,8 @@ export default function HomepageV1({ tokens = {} }) {
 
       {/* Hero */}
       <section className="hero">
-        <h1>Your Practice Name</h1>
-        <p>High-quality care in a welcoming environment—expertise you can trust.</p>
+        <h1>{data.company_name || 'Your Practice Name'}</h1>
+        <p>{data.services ? `Professional ${data.services} services` : 'High-quality care in a welcoming environment—expertise you can trust.'}</p>
         <button className="btn-primary">Schedule Now</button>
       </section>
 

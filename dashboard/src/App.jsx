@@ -27,7 +27,7 @@ export default function App({ bootstrapData }) {
         {/* Keep dashboard as default route */}
         <Route path="/" element={
           <>
-            {isMobile ? <MobileDashboard /> : <DesktopDashboard />}
+            {isMobile ? <MobileDashboard bootstrapData={bootstrapData} /> : <DesktopDashboard bootstrapData={bootstrapData} />}
             
             {/* Keep the full-screen preview overlay for both versions */}
             {isPreviewOpen && (
