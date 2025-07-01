@@ -224,7 +224,10 @@ app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'ass
 
 // Preview route for React app (before static files)
 app.get('/preview', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+  const filePath = path.join(__dirname, 'dashboard', 'dist', 'index.html');
+  console.log('📂 Serving preview from:', filePath);
+  console.log('📂 File exists:', require('fs').existsSync(filePath));
+  res.sendFile(filePath);
 });
 
 // Serve static files (after template routes)
