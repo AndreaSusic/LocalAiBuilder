@@ -22,6 +22,16 @@ if (params.has('data')) {
   } catch (e) {
     console.error('bootstrap decode err', e);
   }
+} else if (sessionStorage.getItem('chatBootstrapData')) {
+  try {
+    const sessionData = sessionStorage.getItem('chatBootstrapData');
+    console.log('🔍 Raw chatBootstrapData:', sessionData);
+    bootstrap = JSON.parse(sessionData);
+    console.log('📦 Received bootstrap data from chatBootstrapData:', bootstrap);
+    console.log('📦 Bootstrap keys:', Object.keys(bootstrap));
+  } catch (e) {
+    console.error('chatBootstrapData decode err', e);
+  }
 } else if (sessionStorage.getItem('bootstrap')) {
   try {
     const sessionData = sessionStorage.getItem('bootstrap');
