@@ -52,14 +52,14 @@ export default function App({ bootstrapData }) {
         <Route path="/templates" element={<DashboardPage />} />
         
         {/* Exact template routes */}
-        <Route path="/templates/homepage/v1/index.jsx" element={<HomepageV1 />} />
-        <Route path="/templates/homepage/v2/index.jsx" element={<HomepageV2 />} />
-        <Route path="/templates/homepage/v3/index.jsx" element={<HomepageV3 />} />
+        <Route path="/templates/homepage/v1/index.jsx" element={<HomepageV1 bootstrapData={bootstrapData} />} />
+        <Route path="/templates/homepage/v2/index.jsx" element={<HomepageV2 bootstrapData={bootstrapData} />} />
+        <Route path="/templates/homepage/v3/index.jsx" element={<HomepageV3 bootstrapData={bootstrapData} />} />
         
         {/* Alternative template routes for versioned access */}
-        <Route path="/templates/homepage-1" element={<HomepageV1 />} />
-        <Route path="/templates/homepage-2" element={<HomepageV2 />} />
-        <Route path="/templates/homepage-3" element={<HomepageV3 />} />
+        <Route path="/templates/homepage-1" element={<HomepageV1 bootstrapData={bootstrapData} />} />
+        <Route path="/templates/homepage-2" element={<HomepageV2 bootstrapData={bootstrapData} />} />
+        <Route path="/templates/homepage-3" element={<HomepageV3 bootstrapData={bootstrapData} />} />
         
         {/* Service template routes */}
         <Route path="/templates/service/v1/index.jsx" element={<ServiceInvisalign />} />
