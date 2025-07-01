@@ -17,9 +17,26 @@ export default function ContactSection() {
   const contactTitle = ai_customization.contactTitle || 'Contact Us';
   const ctaText = ai_customization.ctaText || 'Book Appointment';
   
-  // Handle services as either string or array
-  const servicesList = Array.isArray(services) ? services :
-                      (typeof services === 'string' && services.length > 0) ? [services] : [];
+  // Parse services to extract individual products/services
+  let servicesList = [];
+  if (Array.isArray(services)) {
+    servicesList = services;
+  } else if (typeof services === 'string' && services.length > 0) {
+    // For landscaping, look for specific grass types mentioned
+    if (isLandscaping) {
+      const grassTypes = [];
+      const lowerServices = services.toLowerCase();
+      if (lowerServices.includes('bermuda')) grassTypes.push('Bermuda Grass');
+      if (lowerServices.includes('zoysia')) grassTypes.push('Zoysia Grass');
+      if (lowerServices.includes('st. august') || lowerServices.includes('st august')) grassTypes.push('St. Augustine Grass');
+      if (lowerServices.includes('buffalo')) grassTypes.push('Buffalo Grass');
+      
+      servicesList = grassTypes.length > 0 ? grassTypes : [services];
+    } else {
+      // For other industries, split by common delimiters
+      servicesList = services.split(/[,&+]/).map(s => s.trim()).filter(s => s.length > 0);
+    }
+  }
   
   const isLandscaping = industry && industry.toLowerCase().includes('landscap');
   const isProduct = isLandscaping;

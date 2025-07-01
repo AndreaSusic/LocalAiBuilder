@@ -7,9 +7,26 @@ export default function NavigationSection() {
   
   const phone = google.phone || '+1 (555) 123-4567';
   
-  // Convert services string to array and determine if it's products or services
-  const servicesList = Array.isArray(services) ? services :
-                      (typeof services === 'string' && services.length > 0) ? [services] : [];
+  // Parse services to extract individual products/services
+  let servicesList = [];
+  if (Array.isArray(services)) {
+    servicesList = services;
+  } else if (typeof services === 'string' && services.length > 0) {
+    // For landscaping, look for specific grass types mentioned
+    if (industry && industry.toLowerCase().includes('landscap')) {
+      const grassTypes = [];
+      const lowerServices = services.toLowerCase();
+      if (lowerServices.includes('bermuda')) grassTypes.push('Bermuda Grass');
+      if (lowerServices.includes('zoysia')) grassTypes.push('Zoysia Grass');
+      if (lowerServices.includes('st. august') || lowerServices.includes('st august')) grassTypes.push('St. Augustine Grass');
+      if (lowerServices.includes('buffalo')) grassTypes.push('Buffalo Grass');
+      
+      servicesList = grassTypes.length > 0 ? grassTypes : [services];
+    } else {
+      // For other industries, split by common delimiters
+      servicesList = services.split(/[,&+]/).map(s => s.trim()).filter(s => s.length > 0);
+    }
+  }
   
   const isProduct = industry && (industry.toLowerCase().includes('landscap') || 
                                  industry.toLowerCase().includes('retail') ||
