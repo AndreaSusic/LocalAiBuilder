@@ -4,6 +4,8 @@ import { SiteDataContext } from '../context/SiteDataContext';
 export default function ServicesSection() {
   const { services = [], images = [], google_profile = {}, industry = '', ai_customization = {} } = useContext(SiteDataContext) || {};
   
+  const isLandscaping = industry && industry.toLowerCase().includes('landscap');
+  
   // Parse services to extract individual products/services
   let servicesList = [];
   if (Array.isArray(services)) {
@@ -46,12 +48,11 @@ export default function ServicesSection() {
     'https://images.unsplash.com/photo-1574423151175-86c268d8a62a?w=900&auto=format&fit=crop&q=60'
   ];
   
-  const isProduct = industry && industry.toLowerCase().includes('landscap');
-  const sectionTitle = isProduct ? 'Our Products' : 'Our Services';
+  const sectionTitle = isLandscaping ? 'Our Products' : 'Our Services';
 
   const servicesToShow = servicesList.length > 0 ? servicesList.map((service, index) => ({
     title: service,
-    description: isProduct ? 
+    description: isLandscaping ? 
       `Premium ${service.toLowerCase()} perfect for your lawn and landscaping needs.` :
       `Professional ${service.toLowerCase()} services tailored to your needs.`,
     image: availableImages[index] || defaultImages[index] || defaultImages[0]
