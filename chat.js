@@ -188,8 +188,11 @@ function createColorPicker() {
     bubble('user', `🎨 Selected colors: ${col1Val}, ${col2Val}`);
     wrapper.remove();
     
-    // Font picker will be shown at the final step
+    // Save the state after color selection
+    await saveDraft();
     
+    // Font picker will be shown at the final step
+    console.log('Colors selected, proceeding to completion...');
     sendHeight();
     await handleMissing({});
   };
