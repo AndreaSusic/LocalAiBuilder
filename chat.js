@@ -803,17 +803,12 @@ async function handleMissing(res){
       
       console.log('🚀 Redirecting to preview with bootstrap data:', window.bootstrapData);
       
-      // Redirect to dashboard with data using proper Replit webview URL
-      // For Replit, port 4000 gets mapped to a new subdomain format
-      const currentDomain = window.location.hostname;
-      const dashboardDomain = currentDomain.replace('-00-2dw3amqh2cngv', '-00-3002-2dw3amqh2cngv');
-      const dashboardUrl = `https://${dashboardDomain}/`;
+      // Redirect to preview using same-origin relative path (fixes 404 issue)
       const data = encodeURIComponent(JSON.stringify(window.bootstrapData));
+      const dashboardUrl = `/preview?data=${data}`;
       
       console.log('📍 Dashboard redirect URL:', dashboardUrl);
-      console.log('📍 Current domain:', currentDomain);
-      console.log('📍 Dashboard domain:', dashboardDomain);
-      window.location.href = dashboardUrl + '?data=' + data;
+      window.location.assign(dashboardUrl);
     };
 
     // Hide chat footer when sign in button appears

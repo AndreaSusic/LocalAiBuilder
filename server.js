@@ -698,6 +698,11 @@ app.get('/chat', function(req, res) {
   res.sendFile(path.join(__dirname, 'chat.html'));
 });
 
+// Serve React dashboard for /preview route
+app.get('/preview', function(req, res) {
+  res.redirect('http://localhost:4000/?data=' + (req.query.data || ''));
+});
+
 app.listen(PORT, '0.0.0.0', function() {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
 });
