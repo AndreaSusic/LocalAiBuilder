@@ -1,6 +1,7 @@
 import React from 'react';
 import { SiteDataContext } from '../../../context/SiteDataContext';
 import { 
+  NavigationSection,
   HeroSection, 
   ServicesSection, 
   AboutSection, 
@@ -33,6 +34,7 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
             --secondary: ${data.colours?.[1] || '#EFD5BD'};
           }
         `}</style>
+        <NavigationSection />
         <HeroSection />
         <ServicesSection />
         <AboutSection />
