@@ -1,0 +1,87 @@
+Below is the surgical fix for the black-screen / 404 problem you’re seeing right now.
+Nothing else in the codebase has to change.
+
+⸻
+
+1 · Why it’s failing
+	•	The redirect URL is being built with a fake sub-domain that appends -3002-…, so the browser asks Replit for a host that doesn’t exist → 404.
+	•	Because React never loads, the chat iframe stays blank and you see the MutationObserver error.
+
+⸻
+
+2 · One-line redirect patch
+
+Open src/chat.js (or wherever the wizard calls redirectToDashboard()).
+
+Replace the host-manipulating logic with a simple, same-domain relative path:
+
+- const redirectHost = window.location.hostname.replace('.replit', '-3002-.replit');
+- const dashboardUrl =
+-   `https://${redirectHost}/?data=${encodeURIComponent(JSON.stringify(state))}`;
++ const dashboardUrl =
++   `/preview?data=${encodeURIComponent(JSON.stringify(state))}`;   // ✅ same origin
+window.location.assign(dashboardUrl);
+
+
+⸻
+
+3 · Parse data inside React
+
+Add the bootstrap loader once in src/main.jsx (or App.jsx if you prefer):
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+const params = new URLSearchParams(window.location.search);
+const bootstrap = params.has('data')
+  ? JSON.parse(decodeURIComponent(params.get('data')))
+  : {};
+
+ReactDOM.createRoot(document.getElementById('root'))
+  .render(<App bootstrap={bootstrap} />);
+
+Everything below App (SiteDataContext, sections, etc.) stays untouched.
+
+⸻
+
+4 · Make sure /preview serves your React bundle
+
+Vite dev (client-only Repl)
+
+Add to vite.config.js:
+
+export default defineConfig({
+  // …
+  server: {
+    host: true,   // Replit needs this
+  },
+  // SPA fallback
+  build: {},
+  preview: {},
+  plugins: [],
+  resolve: {},
+});
+
+And in index.html just leave the usual root div; Vite’s internal fallback will serve it for any path.
+
+Express API + static files
+
+If you also run Express for /api, add one route:
+
+import path from 'path';
+app.use(express.static('dist'));           // your React build
+app.get('/preview', (req, res) =>
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+);
+
+On Replit, run both servers:
+
+npm run server & npm run dev -- --host 0.0.0.0
+
+Or set the .replit run line:
+
+run = ["bash", "-c", "npm run server & npm run dev -- --host 0.0.0.0 --port 3000"]
+
+
+⸻
