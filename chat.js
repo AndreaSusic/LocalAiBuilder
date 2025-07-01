@@ -339,6 +339,10 @@ async function sendUser() {
     console.log('📋 Processing GBP selection with gbpList:', gbpList);
     console.log('📝 User response for GBP confirmation:', text);
     if (gbpList.length === 1 && (text.toLowerCase().includes('yes') || text.toLowerCase().includes('confirm'))) {
+      // Add user response to chat FIRST
+      bubble('user', text);
+      convo.push({role: 'user', content: text});
+      
       // User confirmed the single result
       state.google_profile = gbpList[0].mapsUrl;
       gbpList = []; // Clear the list
@@ -349,6 +353,10 @@ async function sendUser() {
       await handleMissing({});
       return;
     } else if (gbpList.length === 1 && text.toLowerCase().includes('no')) {
+      // Add user response to chat FIRST
+      bubble('user', text);
+      convo.push({role: 'user', content: text});
+      
       // User rejected the single result
       state.google_profile = 'no';
       gbpList = []; // Clear the list
@@ -359,6 +367,10 @@ async function sendUser() {
       await handleMissing({});
       return;
     } else if (/^[0-9]+$/.test(text.trim())) {
+      // Add user response to chat FIRST
+      bubble('user', text);
+      convo.push({role: 'user', content: text});
+      
       // Handle numbered selection for multiple results
       const idx = parseInt(text.trim()) - 1;
       if (idx >= 0 && idx < gbpList.length) {
@@ -371,13 +383,55 @@ async function sendUser() {
         await handleMissing({});
         return;
       } else if (text.trim() === '0') {
-        state.google_profile = 'no';
         gbpList = []; // Clear the list
         awaitingKey = null; // Clear awaiting key
-        console.log('0️⃣ GBP none selected, set to no');
+        console.log('0️⃣ GBP none selected, asking for manual input');
         responseHandled = true;
         input.innerText = '';
-        await handleMissing({});
+        
+        // Show manual GBP input field
+        bubble('ai', 'Could you provide the name of your Google Business Profile or a link to its Google Maps listing?');
+        convo.push({role: 'assistant', content: 'Could you provide the name of your Google Business Profile or a link to its Google Maps listing?'});
+        
+        const manualInput = document.createElement('div');
+        manualInput.innerHTML = `
+          <div style="margin:1rem 0;padding:.8rem;border:1px dashed #bbb;border-radius:8px;">
+            <input type="text" id="manualGbpInput" placeholder="Enter GBP name or Google Maps URL" style="width:100%;padding:0.5rem;border:1px solid #ddd;border-radius:4px;">
+            <button id="submitManualGbp" style="margin-top:0.5rem;padding:0.5rem 1rem;background:#ffc000;border:none;border-radius:4px;cursor:pointer;">Submit</button>
+            <button id="skipManualGbp" style="margin-top:0.5rem;margin-left:0.5rem;padding:0.5rem 1rem;background:#666;color:white;border:none;border-radius:4px;cursor:pointer;">Skip</button>
+          </div>
+        `;
+        thread.appendChild(manualInput);
+        
+        manualInput.querySelector('#submitManualGbp').onclick = async () => {
+          const value = manualInput.querySelector('#manualGbpInput').value.trim();
+          if (value) {
+            manualInput.remove();
+            bubble('user', value);
+            convo.push({role: 'user', content: value});
+            
+            if (value.includes('maps.google.com')) {
+              // Process as GBP URL
+              state.google_profile = value;
+              bubble('ai', 'Thanks! I\'ll use your Google Business Profile information.');
+            } else {
+              // Try to lookup by name
+              state.google_profile = value;
+              bubble('ai', 'Thanks! I\'ll search for your Google Business Profile.');
+            }
+            await handleMissing({});
+          }
+        };
+        
+        manualInput.querySelector('#skipManualGbp').onclick = async () => {
+          manualInput.remove();
+          bubble('user', 'Skip');
+          convo.push({role: 'user', content: 'Skip'});
+          state.google_profile = 'no';
+          bubble('ai', 'No problem! We\'ll continue without Google Business Profile.');
+          await handleMissing({});
+        };
+        
         return;
       }
     }
@@ -426,6 +480,10 @@ async function sendUser() {
         state.social.response = text.trim();
       }
     } else if (awaitingKey === 'google_profile') {
+      // Add user response to chat FIRST
+      bubble('user', text);
+      convo.push({role: 'user', content: text});
+      
       if (text.toLowerCase().includes('yes')) {
         // Search for GBP by company name + city
         awaitingKey = null; // Clear the awaiting key
