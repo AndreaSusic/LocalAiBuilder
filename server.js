@@ -181,11 +181,6 @@ app.get('/', async (req, res, next) => {
   next();
 });
 
-// Preview route for React app
-app.get('/preview', (req, res) => {
-  res.sendFile(path.join(__dirname, 'preview.html'));
-});
-
 // Block template JSX files from being served as static content
 app.use('/templates/homepage', (req, res, next) => {
   if (req.path.endsWith('.jsx')) {
@@ -226,6 +221,11 @@ app.get('/templates/contact/v:ver/index.jsx', (req, res) => {
 
 // Serve dashboard assets (before main static files)
 app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'assets')));
+
+// Preview route for React app (before static files)
+app.get('/preview', (req, res) => {
+  res.sendFile(path.join(__dirname, 'preview.html'));
+});
 
 // Serve static files (after template routes)
 app.use(express.static('.'));
