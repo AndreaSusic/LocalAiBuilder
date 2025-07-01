@@ -4,7 +4,10 @@ import { SiteDataContext } from '../context/SiteDataContext';
 export default function ServicesSection() {
   const { services = [], images = [], google_profile = {}, industry = '', ai_customization = {} } = useContext(SiteDataContext) || {};
   
+  console.log('ServicesSection context data:', { services, industry, images });
+  
   const isLandscaping = industry && industry.toLowerCase().includes('landscap');
+  console.log('isLandscaping:', isLandscaping);
   
   // Parse services to extract individual products/services
   let servicesList = [];
