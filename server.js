@@ -832,7 +832,17 @@ app.get('/api/get-temp-data', async (req, res) => {
     }
     
     if (result && result.rows.length > 0) {
-      const bootstrapData = JSON.parse(result.rows[0].data);
+      let bootstrapData = result.rows[0].data;
+      
+      // Handle both string and object data formats
+      if (typeof bootstrapData === 'string') {
+        try {
+          bootstrapData = JSON.parse(bootstrapData);
+        } catch (e) {
+          console.log('📦 Data is string but not valid JSON, treating as is:', bootstrapData);
+        }
+      }
+      
       console.log('📦 Found temp data with keys:', Object.keys(bootstrapData));
       
       // Clean up temp data after retrieval

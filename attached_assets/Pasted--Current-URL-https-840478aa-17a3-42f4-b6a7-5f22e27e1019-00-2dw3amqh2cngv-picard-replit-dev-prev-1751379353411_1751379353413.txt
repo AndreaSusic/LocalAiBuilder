@@ -1,0 +1,19 @@
+🔍 Current URL: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/preview
+index-fwcOJy1P.js:1012 🔍 URL search params: 
+index-fwcOJy1P.js:1012 🔍 Has data param: false
+index-fwcOJy1P.js:1012 🔍 Raw chatBootstrapData: {"company_name":"Kigen Plastika","city":["Osecina"],"industry":"Landscaping","language":"Serbian","services":"plastic tanks","colours":["#ffc000","#000000"],"social":{"facebook":null,"instagram":null,"tiktok":null,"linkedin":null,"response":"no"},"google_profile":"https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k","payment_plans":"no","hero_video":"skip","images":["stock_photos_placeholder"],"conversation":[{"role":"user","content":"plastic elements producer from osecina"},{"role":"assistant","content":"What's the name of your business?"},{"role":"user","content":"kigen plastika"},{"role":"assistant","content":"List your most important services or products."},{"role":"user","content":"plastic tanks"},{"role":"assistant","content":"Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other."},{"role":"user","content":"no"},{"role":"assistant","content":"Do you have a Google Business Profile? (Reply \"yes\" or \"no\")"},{"role":"user","content":"yes"},{"role":"assistant","content":"Can you confirm that this is your business address?\nKIGEN PLASTIKA – Svetog Save bb, Osečina 14253, Serbia\n\nReply \"yes\" to confirm or \"no\" if this isn't your business."},{"role":"user","content":"yes"},{"role":"assistant","content":"Do you offer payment plans or financing options? Please describe them and provide the prices."},{"role":"user","content":"no"},{"role":"assistant","content":"If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say \"skip\")."},{"role":"user","content":"skip"},{"role":"assistant","content":"Please pick two brand colours."},{"role":"assistant","content":"Please upload images or logo."}]}
+index-fwcOJy1P.js:1012 📦 Received bootstrap data from chatBootstrapData: {company_name: 'Kigen Plastika', city: Array(1), industry: 'Landscaping', language: 'Serbian', services: 'plastic tanks', …}
+index-fwcOJy1P.js:1012 📦 Bootstrap keys: (12) ['company_name', 'city', 'industry', 'language', 'services', 'colours', 'social', 'google_profile', 'payment_plans', 'hero_video', 'images', 'conversation']0: "company_name"1: "city"2: "industry"3: "language"4: "services"5: "colours"6: "social"7: "google_profile"8: "payment_plans"9: "hero_video"10: "images"11: "conversation"length: 12[[Prototype]]: Array(0)
+vite.svg:1 
+            
+            
+           GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/vite.svg 404 (Not Found)
+Image
+(anonymous) @ inpage.js:1
+c @ inpage.js:1
+a @ inpage.js:1
+(anonymous) @ inpage.js:1
+r.sendSiteMetadata @ inpage.js:1
+e @ inpage.js:1
+content.js:48 request OK
+extension_content.js:1 recalculate_head_data
