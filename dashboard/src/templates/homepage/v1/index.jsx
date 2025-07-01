@@ -14,6 +14,43 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   
   console.log('HomepageV1 received bootstrap data:', data);
 
+  // State for AI-generated text content
+  const [textContent, setTextContent] = useState({
+    heroTitle: `Welcome to ${data.company_name || 'Your Business'}`,
+    heroSubtitle: `Professional ${data.services || 'services'} in ${data.city?.[0] || 'your area'}`,
+    servicesTitle: isSingleItem ? `Our ${itemLabel}` : `Our ${itemsLabel}`,
+    aboutTitle: `About ${data.company_name || 'Our Business'}`,
+    aboutText: `We provide professional ${data.services?.toLowerCase() || 'services'} with a focus on quality and customer satisfaction.`,
+    ctaText: 'Schedule Consultation',
+    contactTitle: 'Get in Touch'
+  });
+
+  // Generate AI-adapted content on mount
+  useEffect(() => {
+    if (data.company_name && data.industry) {
+      const generateContent = async () => {
+        try {
+          const response = await fetch('/api/ai-text-mapping', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ businessData: data })
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              setTextContent(prev => ({ ...prev, ...result.textMappings }));
+            }
+          }
+        } catch (error) {
+          console.error('Failed to generate AI content:', error);
+        }
+      };
+      
+      generateContent();
+    }
+  }, [data.company_name, data.industry]);
+
   // Determine if this is products or services based on industry and content
   const hasProducts = data.industry && (
     data.industry.toLowerCase().includes('retail') ||
@@ -30,6 +67,27 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   // Parse services/products into array
   const servicesList = data.services ? data.services.split(',').map(s => s.trim()).filter(s => s) : [];
   const isSingleItem = servicesList.length === 1;
+  
+  // Helper functions for industry-specific labels
+  const getGalleryTitle = (industry) => {
+    if (!industry) return 'Our Gallery';
+    const ind = industry.toLowerCase();
+    if (ind.includes('landscaping') || ind.includes('sod') || ind.includes('grass')) return 'Our Grass';
+    if (ind.includes('dental') || ind.includes('medical') || ind.includes('clinic')) return 'Our Office';
+    if (ind.includes('restaurant') || ind.includes('food')) return 'Our Restaurant';
+    if (ind.includes('salon') || ind.includes('spa')) return 'Our Salon';
+    if (ind.includes('gym') || ind.includes('fitness')) return 'Our Facility';
+    return 'Our Space';
+  };
+  
+  const getReviewerLabel = (industry) => {
+    if (!industry) return 'Clients';
+    const ind = industry.toLowerCase();
+    if (ind.includes('dental') || ind.includes('medical') || ind.includes('clinic')) return 'Patients';
+    if (ind.includes('restaurant') || ind.includes('food')) return 'Customers';
+    if (ind.includes('retail') || ind.includes('shop') || ind.includes('store')) return 'Customers';
+    return 'Clients';
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -646,54 +704,73 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
 
       {/* Testimonials */}
       <section className="testimonials">
-        <h2>What Patients Say</h2>
+        <h2>What Our {getReviewerLabel(data.industry)} Say</h2>
         <div className="testimonials-grid">
-          <div className="testimonial">
-            <p>"Fantastic experience—couldn't be happier with my new smile and the care I received."</p>
-            <div className="stars">★★★★★</div>
-          </div>
-          <div className="testimonial">
-            <p>"Professional, friendly staff—every visit exceeded my expectations. Highly recommend!"</p>
-            <div className="stars">★★★★☆</div>
-          </div>
-          <div className="testimonial">
-            <p>"Top-quality care in a comfortable environment. My family and I trust them completely."</p>
-            <div className="stars">★★★★★</div>
-          </div>
+          {data.google_profile && data.google_profile.reviews && data.google_profile.reviews.length > 0 ? (
+            // Use GBP reviews if available
+            data.google_profile.reviews.slice(0, 3).map((review, index) => (
+              <div key={index} className="testimonial">
+                <h4 style={{ marginBottom: '8px', fontSize: '16px' }}>{review.author_name}</h4>
+                <p>"{review.text}"</p>
+                <div className="stars">{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</div>
+              </div>
+            ))
+          ) : (
+            // Fallback testimonials
+            [
+              {
+                text: "Fantastic experience—couldn't be happier with the service and care I received.",
+                author: "Sarah M.",
+                stars: "★★★★★"
+              },
+              {
+                text: "Professional, friendly staff—every visit exceeded my expectations. Highly recommend!",
+                author: "Michael R.",
+                stars: "★★★★☆"
+              },
+              {
+                text: "Top-quality care in a comfortable environment. My family and I trust them completely.",
+                author: "Lisa K.",
+                stars: "★★★★★"
+              }
+            ].map((testimonial, index) => (
+              <div key={index} className="testimonial">
+                <h4 style={{ marginBottom: '8px', fontSize: '16px' }}>{testimonial.author}</h4>
+                <p>"{testimonial.text}"</p>
+                <div className="stars">{testimonial.stars}</div>
+              </div>
+            ))
+          )}
         </div>
       </section>
 
-      {/* Team */}
-      <section className="team">
-        <h2>Meet the Team</h2>
-        <div className="team-grid">
-          <div className="team-member">
-            <img src="https://images.unsplash.com/photo-1665080954352-5a12ef53017a?w=900&auto=format&fit=crop&q=60" alt="" />
-            <h4>Dr. Smith</h4>
-            <p>DDS, Founder</p>
+      {/* Team - Optional Section */}
+      {data.team_members && data.team_members.length > 0 && (
+        <section className="team">
+          <h2>Meet the Team</h2>
+          <div className="team-grid">
+            {data.team_members.map((member, index) => (
+              <div key={index} className="team-member">
+                <img src={member.photo || "https://images.unsplash.com/photo-1665080954352-5a12ef53017a?w=900&auto=format&fit=crop&q=60"} alt={member.name} />
+                <h4>{member.name}</h4>
+                <p>{member.role}</p>
+              </div>
+            ))}
           </div>
-          <div className="team-member">
-            <img src="https://images.unsplash.com/photo-1620928269189-dc4ee9d981c0?w=900&auto=format&fit=crop&q=60" alt="" />
-            <h4>Dr. Jones</h4>
-            <p>Orthodontist</p>
-          </div>
-          <div className="team-member">
-            <img src="https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=900&auto=format&fit=crop&q=60" alt="" />
-            <h4>Dr. Lee</h4>
-            <p>Oral Surgeon</p>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Gallery */}
-      <section className="gallery">
-        <h2>Our Office</h2>
-        <div className="gallery-grid">
-          <img src={data.images && data.images[3] !== 'stock_photos_placeholder' ? data.images[3] : "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&auto=format&fit=crop&q=60"} alt="" />
-          <img src={data.images && data.images[4] !== 'stock_photos_placeholder' ? data.images[4] : "https://images.unsplash.com/photo-1616391182219-e080b4d1043a?w=900&auto=format&fit=crop&q=60"} alt="" />
-          <img src={data.images && data.images[5] !== 'stock_photos_placeholder' ? data.images[5] : "https://plus.unsplash.com/premium_photo-1672922646298-3afc6c6397c9?w=900&auto=format&fit=crop&q=60"} alt="" />
-        </div>
-      </section>
+      {/* Gallery - Optional Section */}
+      {data.gallery_images && data.gallery_images.length > 0 && (
+        <section className="gallery">
+          <h2>{data.gallery_title || getGalleryTitle(data.industry)}</h2>
+          <div className="gallery-grid">
+            {data.gallery_images.slice(0, 6).map((image, index) => (
+              <img key={index} src={image} alt={`Gallery image ${index + 1}`} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Contact + Map */}
       <section className="contact-form">
@@ -708,7 +785,11 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
           </form>
           <div className="map-container">
             <iframe
-              src="https://maps.google.com/maps?q=your%20location&t=&z=13&ie=UTF8&iwloc=&output=embed"
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                data.google_profile?.formatted_address || 
+                data.google_profile?.vicinity || 
+                `${data.company_name || 'Business'} ${data.city?.[0] || 'City'}`
+              )}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
               allowFullScreen
               title="Location Map"
             ></iframe>
