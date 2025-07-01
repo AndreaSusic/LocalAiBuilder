@@ -2,43 +2,43 @@ import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext';
 
 export default function ServicesSection() {
-  const { services = [], images = [] } = useContext(SiteDataContext) || {};
+  const { services = [], images = [], google_profile = {}, industry = '', ai_customization = {} } = useContext(SiteDataContext) || {};
   
-  const defaultServices = [
-    {
-      title: 'General Dentistry',
-      description: 'Complete check-ups, cleanings, and preventive treatments for all ages.',
-      image: 'https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60'
-    },
-    {
-      title: 'Cosmetic Veneers',
-      description: 'Transform your smile with custom-crafted porcelain veneers.',
-      image: 'https://plus.unsplash.com/premium_photo-1674567520651-6e1f0a5a8fd3?w=900&auto=format&fit=crop&q=60'
-    },
-    {
-      title: 'Invisalign®',
-      description: 'Straighten your teeth discreetly with clear aligners.',
-      image: 'https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60'
-    }
-  ];
-
   // Handle services as either string or array
   const servicesList = Array.isArray(services) ? services :
                       (typeof services === 'string' && services.length > 0) ? [services] : [];
   
-  // Ensure images is an array of strings
-  const imageUrls = Array.isArray(images) ? 
+  // Use GBP photos first, then provided images, then default stock images
+  const gbpPhotos = google_profile.photos || [];
+  const providedImages = Array.isArray(images) ? 
     images.filter(img => typeof img === 'string' && img.length > 0) : [];
+  
+  const availableImages = [...gbpPhotos, ...providedImages];
+  
+  // Default images for landscaping business
+  const defaultImages = [
+    'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=900&auto=format&fit=crop&q=60',
+    'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&auto=format&fit=crop&q=60',
+    'https://images.unsplash.com/photo-1574423151175-86c268d8a62a?w=900&auto=format&fit=crop&q=60'
+  ];
+  
+  const isProduct = industry && industry.toLowerCase().includes('landscap');
+  const sectionTitle = isProduct ? 'Our Products' : 'Our Services';
 
   const servicesToShow = servicesList.length > 0 ? servicesList.map((service, index) => ({
     title: service,
-    description: `Professional ${service.toLowerCase()} services tailored to your needs.`,
-    image: imageUrls[index + 1] || defaultServices[index]?.image || defaultServices[0].image
-  })) : defaultServices;
+    description: isProduct ? 
+      `Premium ${service.toLowerCase()} perfect for your lawn and landscaping needs.` :
+      `Professional ${service.toLowerCase()} services tailored to your needs.`,
+    image: availableImages[index] || defaultImages[index] || defaultImages[0]
+  })) : [];
+
+  // Don't show section if no services
+  if (servicesToShow.length === 0) return null;
 
   return (
     <section className="services">
-      <h2>Our Services</h2>
+      <h2>{sectionTitle}</h2>
       <div className="services-grid">
         {servicesToShow.map((service, index) => (
           <div key={index} className="service-card">
