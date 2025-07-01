@@ -34,6 +34,10 @@ export default function MobileDashboard({ bootstrap }) {
           }
         } catch (error) {
           console.log('Could not auto-load user data:', error.message);
+          // Load demo data as fallback
+          const demoUrl = `/templates/homepage/v1/index.jsx`;
+          setPreviewContent(demoUrl);
+          console.log('Loaded demo template as fallback');
         }
       };
       
