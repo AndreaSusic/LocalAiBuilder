@@ -606,18 +606,18 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
         <h2>Our Services</h2>
         <div className="services-grid">
           <div className="service-card">
-            <img src="https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60" alt="" />
-            <h4>General Dentistry</h4>
+            <img src={data.images && data.images[0] !== 'stock_photos_placeholder' ? data.images[0] : "https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60"} alt="" />
+            <h4>{data.services ? data.services.split(',')[0] || 'General Dentistry' : 'General Dentistry'}</h4>
             <p>Complete check-ups, cleanings, and preventive treatments for all ages.</p>
           </div>
           <div className="service-card">
-            <img src="https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=60" alt="" />
-            <h4>Cosmetic Veneers</h4>
+            <img src={data.images && data.images[1] !== 'stock_photos_placeholder' ? data.images[1] : "https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=60"} alt="" />
+            <h4>{data.services ? data.services.split(',')[1] || 'Cosmetic Veneers' : 'Cosmetic Veneers'}</h4>
             <p>Thin, custom-made shells to improve the color, shape, and size of your teeth.</p>
           </div>
           <div className="service-card">
-            <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&auto=format&fit=crop&q=60" alt="" />
-            <h4>Invisalign®</h4>
+            <img src={data.images && data.images[2] !== 'stock_photos_placeholder' ? data.images[2] : "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&auto=format&fit=crop&q=60"} alt="" />
+            <h4>{data.services ? data.services.split(',')[2] || 'Invisalign®' : 'Invisalign®'}</h4>
             <p>Clear aligners to straighten teeth discreetly without traditional braces.</p>
           </div>
         </div>
@@ -668,9 +668,9 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
       <section className="gallery">
         <h2>Our Office</h2>
         <div className="gallery-grid">
-          <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&auto=format&fit=crop&q=60" alt="" />
-          <img src="https://images.unsplash.com/photo-1616391182219-e080b4d1043a?w=900&auto=format&fit=crop&q=60" alt="" />
-          <img src="https://plus.unsplash.com/premium_photo-1672922646298-3afc6c6397c9?w=900&auto=format&fit=crop&q=60" alt="" />
+          <img src={data.images && data.images[3] !== 'stock_photos_placeholder' ? data.images[3] : "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&auto=format&fit=crop&q=60"} alt="" />
+          <img src={data.images && data.images[4] !== 'stock_photos_placeholder' ? data.images[4] : "https://images.unsplash.com/photo-1616391182219-e080b4d1043a?w=900&auto=format&fit=crop&q=60"} alt="" />
+          <img src={data.images && data.images[5] !== 'stock_photos_placeholder' ? data.images[5] : "https://plus.unsplash.com/premium_photo-1672922646298-3afc6c6397c9?w=900&auto=format&fit=crop&q=60"} alt="" />
         </div>
       </section>
 

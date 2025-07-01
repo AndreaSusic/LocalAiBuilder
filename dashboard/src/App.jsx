@@ -86,10 +86,12 @@ export default function App({ bootstrap }) {
         <Route path="/templates/homepage-3" element={<HomepageV3 bootstrap={bootstrap} />} />
         
         {/* Service template routes */}
-        <Route path="/templates/service/v1/index.jsx" element={<ServiceInvisalign />} />
+        <Route path="/templates/service/v1/index.jsx" element={<ServiceInvisalign bootstrap={bootstrap} />} />
+        <Route path="/service" element={<ServiceInvisalign bootstrap={bootstrap} />} />
         
         {/* Contact template routes */}
-        <Route path="/templates/contact/v1/index.jsx" element={<ContactV1 />} />
+        <Route path="/templates/contact/v1/index.jsx" element={<ContactV1 bootstrap={bootstrap} />} />
+        <Route path="/contact" element={<ContactV1 bootstrap={bootstrap} />} />
         
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />
