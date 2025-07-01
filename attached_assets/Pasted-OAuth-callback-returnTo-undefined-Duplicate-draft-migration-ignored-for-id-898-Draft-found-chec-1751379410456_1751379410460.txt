@@ -1,0 +1,39 @@
+OAuth callback returnTo: undefined
+⚠️ Duplicate draft migration ignored for id=898
+Draft found, checking for bootstrap data and redirecting to preview
+📦 Trying to retrieve temp bootstrap data for possible users: [
+  '110795423852052644529',
+  'z3AHVqAyRn24j3kqBeTbOe5YjYq7C6Jy',
+  'andrea.susic29@gmail.com'
+]
+📦 Found temp data for user ID: z3AHVqAyRn24j3kqBeTbOe5YjYq7C6Jy
+❌ Error retrieving temp data: SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at /home/runner/workspace/server.js:835:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+TokenError: Bad Request
+    at OAuth2Strategy.parseErrorResponse (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:373:12)
+    at OAuth2Strategy._createOAuthError (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:420:16)
+    at /home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:177:45
+    at /home/runner/workspace/node_modules/oauth/lib/oauth2.js:196:18
+    at passBackControl (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:132:9)
+    at IncomingMessage.<anonymous> (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:157:7)
+    at IncomingMessage.emit (node:events:530:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+📂 Serving preview from: /home/runner/workspace/dashboard/dist/index.html
+📂 File exists: true
+TokenError: Bad Request
+    at OAuth2Strategy.parseErrorResponse (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:373:12)
+    at OAuth2Strategy._createOAuthError (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:420:16)
+    at /home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:177:45
+    at /home/runner/workspace/node_modules/oauth/lib/oauth2.js:196:18
+    at passBackControl (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:132:9)
+    at IncomingMessage.<anonymous> (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:157:7)
+    at IncomingMessage.emit (node:events:530:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+📂 Serving preview from: /home/runner/workspace/dashboard/dist/index.html
+📂 File exists: true
+📂 Serving preview from: /home/runner/workspace/dashboard/dist/index.html
+📂 File exists: true
