@@ -42,6 +42,21 @@ export default function MobileDashboard({ bootstrap }) {
     }
   };
 
+  const loadTestData = async () => {
+    try {
+      const response = await fetch('/api/test-data');
+      if (response.ok) {
+        const testData = await response.json();
+        const encoded = encodeURIComponent(JSON.stringify(testData));
+        const testUrl = `/templates/homepage/v1/index.jsx?data=${encoded}`;
+        setPreviewContent(testUrl);
+        console.log('Loaded test data for mobile preview');
+      }
+    } catch (error) {
+      console.error('Failed to load test data:', error);
+    }
+  };
+
   return (
     <div className="mobile-dashboard-wireframe">
       {/* Sticky Top Bar */}
@@ -52,6 +67,7 @@ export default function MobileDashboard({ bootstrap }) {
           </a>
           <button className="icon-btn-wireframe">🔔</button>
           <button className="small-btn-wireframe">Publish</button>
+          <button className="small-btn-wireframe" onClick={loadTestData} style={{background: '#ff6b6b', color: 'white'}}>Test Data</button>
           <button className="small-btn-wireframe" onClick={handleLogout}>Logout</button>
         </div>
         <div className="dropdown-wrapper">
