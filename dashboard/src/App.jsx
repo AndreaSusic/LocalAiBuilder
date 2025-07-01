@@ -11,7 +11,7 @@ import HomepageV3 from "./templates/homepage/v3/index.jsx";
 import ServiceInvisalign from "./pages/ServiceInvisalign.jsx";
 import ContactV1 from "./pages/ContactV1.jsx";
 
-export default function App() {
+export default function App({ bootstrapData }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
