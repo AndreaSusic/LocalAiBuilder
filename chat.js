@@ -815,17 +815,22 @@ async function handleMissing(res){
         'width=500,height=600,scrollbars=yes,resizable=yes'
       );
       
-      // Handle popup completion
+      // Handle popup completion and redirect in main window
       const checkClosed = setInterval(() => {
         if (authWindow.closed) {
           clearInterval(checkClosed);
-          // Redirect to preview with bootstrap data after OAuth
+          console.log('🔄 OAuth popup closed, redirecting main window to dashboard');
+          
+          // Redirect main window to preview with bootstrap data
           const data = encodeURIComponent(JSON.stringify(window.bootstrapData));
           const dashboardUrl = `/preview?data=${data}`;
-          console.log('📍 OAuth complete, redirecting to:', dashboardUrl);
-          window.location.assign(dashboardUrl);
+          console.log('📍 Redirecting main window to:', dashboardUrl);
+          console.log('📊 Bootstrap data for redirect:', window.bootstrapData);
+          
+          // Use window.location.href for full page navigation
+          window.location.href = dashboardUrl;
         }
-      }, 1000);
+      }, 500);
     };
 
     // Hide chat footer when sign in button appears

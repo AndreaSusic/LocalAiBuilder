@@ -303,7 +303,7 @@ app.get('/auth/google/callback',
         
         if (returnTo === '/preview') {
           // Close popup and let parent handle redirect
-          res.send('<script>window.close();</script>');
+          res.send('<script>console.log("Closing OAuth popup"); window.close();</script>');
           return;
         }
         
@@ -321,7 +321,7 @@ app.get('/auth/google/callback',
     
     if (returnTo === '/preview') {
       // Close popup and let parent handle redirect  
-      res.send('<script>window.close();</script>');
+      res.send('<script>console.log("Closing OAuth popup - no draft"); window.close();</script>');
       return;
     }
     
