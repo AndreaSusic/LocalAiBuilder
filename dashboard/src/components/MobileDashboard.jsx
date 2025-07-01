@@ -55,15 +55,11 @@ export default function MobileDashboard({ bootstrap }) {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('/logout', { method: 'GET' });
-      if (response.ok) {
-        window.location.href = '/';
-      } else {
-        window.location.href = '/logout';
-      }
+      // Use the correct logout endpoint
+      window.location.href = '/auth/logout';
     } catch (error) {
       console.error('Logout error:', error);
-      window.location.href = '/logout';
+      window.location.href = '/auth/logout';
     }
   };
 

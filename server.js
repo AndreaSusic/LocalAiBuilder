@@ -349,15 +349,13 @@ app.get('/auth/google/callback',
                 console.log("Retrieved temp data:", data);
                 
                 if (data.success && data.bootstrapData) {
-                  const json = JSON.stringify(data.bootstrapData);
-                  const encoded = encodeURIComponent(json);
-                  const dashboardUrl = '/preview?data=' + encoded;
-                  console.log("Redirecting to dashboard with database data:", dashboardUrl);
-                  console.log("Data preview:", json.substring(0, 100));
-                  window.location.assign(dashboardUrl);
+                  // Store data in sessionStorage for the React dashboard  
+                  sessionStorage.setItem('bootstrap', JSON.stringify(data.bootstrapData));
+                  // Redirect to clean dashboard URL
+                  window.location.href = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
                 } else {
                   console.log("No temp data found, redirecting to dashboard without data");
-                  window.location.assign('/preview');
+                  window.location.href = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
                 }
               })
               .catch(error => {
@@ -386,15 +384,13 @@ app.get('/auth/google/callback',
             console.log("Retrieved temp data:", data);
             
             if (data.success && data.bootstrapData) {
-              const json = JSON.stringify(data.bootstrapData);
-              const encoded = encodeURIComponent(json);
-              const dashboardUrl = '/preview?data=' + encoded;
-              console.log("Redirecting to dashboard with database data:", dashboardUrl);
-              console.log("Data preview:", json.substring(0, 100));
-              window.location.assign(dashboardUrl);
+              // Store data in sessionStorage for the React dashboard  
+              sessionStorage.setItem('bootstrap', JSON.stringify(data.bootstrapData));
+              // Redirect to clean dashboard URL
+              window.location.href = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
             } else {
               console.log("No temp data found, redirecting to homepage");
-              window.location.assign('/');
+              window.location.href = '/';
             }
           })
           .catch(error => {
