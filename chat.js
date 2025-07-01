@@ -632,7 +632,35 @@ async function handleMissing(res){
     convo.push({role:'assistant',content:'Please upload images or logo.'});
     createDropZone();
     
-    // Font picker will be shown at the end when all steps are complete
+    // Add a "Continue without images" button
+    setTimeout(() => {
+      const skipButton = document.createElement('button');
+      skipButton.textContent = 'Continue without images';
+      skipButton.className = 'skip-images-btn';
+      skipButton.style.marginTop = '10px';
+      skipButton.style.background = '#6c757d';
+      skipButton.style.color = 'white';
+      skipButton.style.border = 'none';
+      skipButton.style.padding = '8px 16px';
+      skipButton.style.borderRadius = '4px';
+      skipButton.style.cursor = 'pointer';
+      
+      skipButton.onclick = () => {
+        // Mark images as skipped and proceed to completion
+        bubble('ai', 'No problem! I\'ll use stock photos that match your business.');
+        skipButton.remove();
+        const dropZone = document.getElementById('inlineDropZone');
+        if (dropZone) dropZone.remove();
+        
+        // Continue to completion
+        handleMissing({});
+      };
+      
+      const dropZone = document.getElementById('inlineDropZone');
+      if (dropZone) {
+        dropZone.parentNode.insertBefore(skipButton, dropZone.nextSibling);
+      }
+    }, 100);
     
     // Auto-save draft after each AI response
     saveDraft();
@@ -643,6 +671,11 @@ async function handleMissing(res){
   // Check if sign in button already exists to avoid duplicates
   const existingSignIn = document.querySelector('.sign-in-btn');
   if (!existingSignIn) {
+    // If no images uploaded, fetch stock images automatically
+    if (images.length === 0) {
+      bubble('ai', 'I\'ll use professional stock photos that match your business. Your website is ready!');
+    }
+    
     // Show font picker right before completion message
     showFontPickerInline();
     

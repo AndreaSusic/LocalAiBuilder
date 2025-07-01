@@ -1,0 +1,933 @@
+OPENAI_API_KEY length: 164
+Server running on http://0.0.0.0:5000
+Database tables initialized
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+Service template route hit: v1
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+Full request body: [Object: null prototype] {
+  prompt: '[{"role":"user","content":"digital agency"}]'
+}
+Request body type: object
+GPT raw -> {
+  "company_name": null,
+  "industry": null,
+  "city": null,
+  "language": "English",
+  "services": null,
+  "missing_fields": ["company_name", "industry", "services"]
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: null,
+    social: { tiktok: null, facebook: null, linkedin: null, instagram: null },
+    colours: null,
+    industry: 'IT & Software',
+    language: 'English',
+    services: null,
+    hero_video: null,
+    company_name: null,
+    payment_plans: null,
+    google_profile: null
+  },
+  convo: [ { role: 'user', content: 'digital agency' } ],
+  is_draft: true,
+  updated_at: 2025-07-01T07:59:31.187Z
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: null,
+    social: { tiktok: null, facebook: null, linkedin: null, instagram: null },
+    colours: null,
+    industry: 'IT & Software',
+    language: 'English',
+    services: null,
+    hero_video: null,
+    company_name: null,
+    payment_plans: null,
+    google_profile: null
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T07:59:31.438Z
+}
+Full request body: [Object: null prototype] {
+  prompt: `[{"role":"user","content":"digital agency"},{"role":"assistant","content":"What's the name of your business?"},{"role":"user","content":"asymmetric digital"}]`
+}
+Request body type: object
+GPT raw -> {
+  "company_name": "asymmetric digital",
+  "industry": null,
+  "city": null,
+  "language": "English",
+  "services": null,
+  "missing_fields": [
+    "industry",
+    "services"
+  ]
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: null,
+    social: { tiktok: null, facebook: null, linkedin: null, instagram: null },
+    colours: null,
+    industry: 'IT & Software',
+    language: 'English',
+    services: null,
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: null,
+    google_profile: null
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T07:59:40.418Z
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: null,
+    social: { tiktok: null, facebook: null, linkedin: null, instagram: null },
+    colours: null,
+    industry: 'IT & Software',
+    language: 'English',
+    services: null,
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: null,
+    google_profile: null
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T07:59:40.617Z
+}
+Full request body: [Object: null prototype] {
+  prompt: `[{"role":"user","content":"digital agency"},{"role":"assistant","content":"What's the name of your business?"},{"role":"user","content":"asymmetric digital"},{"role":"assistant","content":"In which city is your business located?"},{"role":"user","content":"belgrade"}]`
+}
+Request body type: object
+GPT raw -> {
+  "company_name": "asymmetric digital",
+  "industry": "Advertising & Marketing",
+  "city": "Belgrade",
+  "language": "Serbian",
+  "services": null,
+  "missing_fields": [
+    "services"
+  ]
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: { tiktok: null, facebook: null, linkedin: null, instagram: null },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: null,
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: null,
+    google_profile: null
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T07:59:45.905Z
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: { tiktok: null, facebook: null, linkedin: null, instagram: null },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: null,
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: null,
+    google_profile: null
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T07:59:46.108Z
+}
+Full request body: [Object: null prototype] {
+  prompt: `[{"role":"user","content":"digital agency"},{"role":"assistant","content":"What's the name of your business?"},{"role":"user","content":"asymmetric digital"},{"role":"assistant","content":"In which city is your business located?"},{"role":"user","content":"belgrade"},{"role":"assistant","content":"List your most important services or products."},{"role":"user","content":"seo, google ads"}]`
+}
+Request body type: object
+GPT raw -> {
+  "company_name": "asymmetric digital",
+  "industry": "Advertising & Marketing",
+  "city": "Belgrade",
+  "language": "Serbian",
+  "services": "seo, google ads",
+  "missing_fields": []
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: { tiktok: null, facebook: null, linkedin: null, instagram: null },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: null,
+    google_profile: null
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T07:59:53.653Z
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: { tiktok: null, facebook: null, linkedin: null, instagram: null },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: null,
+    google_profile: null
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T07:59:53.858Z
+}
+Full request body: [Object: null prototype] {
+  prompt: `[{"role":"user","content":"digital agency"},{"role":"assistant","content":"What's the name of your business?"},{"role":"user","content":"asymmetric digital"},{"role":"assistant","content":"In which city is your business located?"},{"role":"user","content":"belgrade"},{"role":"assistant","content":"List your most important services or products."},{"role":"user","content":"seo, google ads"},{"role":"assistant","content":"Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other."},{"role":"user","content":"https://www.linkedin.com/company/97906562/"}]`
+}
+Request body type: object
+GPT raw -> {
+  "company_name": "asymmetric digital",
+  "industry": "Advertising & Marketing",
+  "city": "Belgrade",
+  "language": "Serbian",
+  "services": "seo, google ads",
+  "missing_fields": []
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: {
+      tiktok: null,
+      facebook: null,
+      linkedin: 'https://www.linkedin.com/company/97906562/',
+      instagram: null
+    },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: null,
+    google_profile: null
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    },
+    {
+      role: 'user',
+      content: 'https://www.linkedin.com/company/97906562/'
+    }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T08:00:35.268Z
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: {
+      tiktok: null,
+      facebook: null,
+      linkedin: 'https://www.linkedin.com/company/97906562/',
+      instagram: null
+    },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: null,
+    google_profile: null
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    },
+    {
+      role: 'user',
+      content: 'https://www.linkedin.com/company/97906562/'
+    },
+    {
+      role: 'assistant',
+      content: 'Do you have a Google Business Profile? (Reply "yes" or "no")'
+    }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T08:00:35.479Z
+}
+Full request body: [Object: null prototype] {
+  prompt: `[{"role":"user","content":"digital agency"},{"role":"assistant","content":"What's the name of your business?"},{"role":"user","content":"asymmetric digital"},{"role":"assistant","content":"In which city is your business located?"},{"role":"user","content":"belgrade"},{"role":"assistant","content":"List your most important services or products."},{"role":"user","content":"seo, google ads"},{"role":"assistant","content":"Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other."},{"role":"user","content":"https://www.linkedin.com/company/97906562/"},{"role":"assistant","content":"Do you have a Google Business Profile? (Reply \\"yes\\" or \\"no\\")"},{"role":"user","content":"no"}]`
+}
+Request body type: object
+GPT raw -> {
+  "company_name": "asymmetric digital",
+  "industry": "Advertising & Marketing",
+  "city": "Belgrade",
+  "language": "Serbian",
+  "services": "seo, google ads",
+  "missing_fields": []
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: {
+      tiktok: null,
+      facebook: null,
+      linkedin: 'https://www.linkedin.com/company/97906562/',
+      instagram: null
+    },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: null,
+    google_profile: 'no'
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    },
+    {
+      role: 'user',
+      content: 'https://www.linkedin.com/company/97906562/'
+    },
+    {
+      role: 'assistant',
+      content: 'Do you have a Google Business Profile? (Reply "yes" or "no")'
+    },
+    { role: 'user', content: 'no' }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T08:00:42.911Z
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: {
+      tiktok: null,
+      facebook: null,
+      linkedin: 'https://www.linkedin.com/company/97906562/',
+      instagram: null
+    },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: null,
+    google_profile: 'no'
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    },
+    {
+      role: 'user',
+      content: 'https://www.linkedin.com/company/97906562/'
+    },
+    {
+      role: 'assistant',
+      content: 'Do you have a Google Business Profile? (Reply "yes" or "no")'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'Do you offer payment plans or financing options?'
+    }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T08:00:43.122Z
+}
+Full request body: [Object: null prototype] {
+  prompt: `[{"role":"user","content":"digital agency"},{"role":"assistant","content":"What's the name of your business?"},{"role":"user","content":"asymmetric digital"},{"role":"assistant","content":"In which city is your business located?"},{"role":"user","content":"belgrade"},{"role":"assistant","content":"List your most important services or products."},{"role":"user","content":"seo, google ads"},{"role":"assistant","content":"Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other."},{"role":"user","content":"https://www.linkedin.com/company/97906562/"},{"role":"assistant","content":"Do you have a Google Business Profile? (Reply \\"yes\\" or \\"no\\")"},{"role":"user","content":"no"},{"role":"assistant","content":"Do you offer payment plans or financing options?"},{"role":"user","content":"no"}]`
+}
+Request body type: object
+GPT raw -> {
+  "company_name": "asymmetric digital",
+  "industry": "Advertising & Marketing",
+  "city": "Belgrade",
+  "language": "Serbian",
+  "services": "seo, google ads",
+  "missing_fields": []
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: {
+      tiktok: null,
+      facebook: null,
+      linkedin: 'https://www.linkedin.com/company/97906562/',
+      instagram: null
+    },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: 'no',
+    google_profile: 'no'
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    },
+    {
+      role: 'user',
+      content: 'https://www.linkedin.com/company/97906562/'
+    },
+    {
+      role: 'assistant',
+      content: 'Do you have a Google Business Profile? (Reply "yes" or "no")'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'Do you offer payment plans or financing options?'
+    },
+    { role: 'user', content: 'no' }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T08:00:46.889Z
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: {
+      tiktok: null,
+      facebook: null,
+      linkedin: 'https://www.linkedin.com/company/97906562/',
+      instagram: null
+    },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: null,
+    company_name: 'asymmetric digital',
+    payment_plans: 'no',
+    google_profile: 'no'
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    },
+    {
+      role: 'user',
+      content: 'https://www.linkedin.com/company/97906562/'
+    },
+    {
+      role: 'assistant',
+      content: 'Do you have a Google Business Profile? (Reply "yes" or "no")'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'Do you offer payment plans or financing options?'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say "skip").'
+    }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T08:00:47.102Z
+}
+Full request body: [Object: null prototype] {
+  prompt: `[{"role":"user","content":"digital agency"},{"role":"assistant","content":"What's the name of your business?"},{"role":"user","content":"asymmetric digital"},{"role":"assistant","content":"In which city is your business located?"},{"role":"user","content":"belgrade"},{"role":"assistant","content":"List your most important services or products."},{"role":"user","content":"seo, google ads"},{"role":"assistant","content":"Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other."},{"role":"user","content":"https://www.linkedin.com/company/97906562/"},{"role":"assistant","content":"Do you have a Google Business Profile? (Reply \\"yes\\" or \\"no\\")"},{"role":"user","content":"no"},{"role":"assistant","content":"Do you offer payment plans or financing options?"},{"role":"user","content":"no"},{"role":"assistant","content":"If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say \\"skip\\")."},{"role":"user","content":"skip"}]`
+}
+Request body type: object
+GPT raw -> {
+  "company_name": "asymmetric digital",
+  "industry": "Advertising & Marketing",
+  "city": "Belgrade",
+  "language": "Serbian",
+  "services": "seo, google ads",
+  "missing_fields": []
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: {
+      tiktok: null,
+      facebook: null,
+      linkedin: 'https://www.linkedin.com/company/97906562/',
+      instagram: null
+    },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: 'skip',
+    company_name: 'asymmetric digital',
+    payment_plans: 'no',
+    google_profile: 'no'
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    },
+    {
+      role: 'user',
+      content: 'https://www.linkedin.com/company/97906562/'
+    },
+    {
+      role: 'assistant',
+      content: 'Do you have a Google Business Profile? (Reply "yes" or "no")'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'Do you offer payment plans or financing options?'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say "skip").'
+    },
+    { role: 'user', content: 'skip' }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T08:00:51.801Z
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: {
+      tiktok: null,
+      facebook: null,
+      linkedin: 'https://www.linkedin.com/company/97906562/',
+      instagram: null
+    },
+    colours: null,
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: 'skip',
+    company_name: 'asymmetric digital',
+    payment_plans: 'no',
+    google_profile: 'no'
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    },
+    {
+      role: 'user',
+      content: 'https://www.linkedin.com/company/97906562/'
+    },
+    {
+      role: 'assistant',
+      content: 'Do you have a Google Business Profile? (Reply "yes" or "no")'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'Do you offer payment plans or financing options?'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say "skip").'
+    },
+    { role: 'user', content: 'skip' },
+    { role: 'assistant', content: 'Please pick two brand colours.' }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T08:00:52.111Z
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: {
+      tiktok: null,
+      facebook: null,
+      linkedin: 'https://www.linkedin.com/company/97906562/',
+      instagram: null
+    },
+    colours: [ '#ffc000', '#000000' ],
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: 'skip',
+    company_name: 'asymmetric digital',
+    payment_plans: 'no',
+    google_profile: 'no'
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    },
+    {
+      role: 'user',
+      content: 'https://www.linkedin.com/company/97906562/'
+    },
+    {
+      role: 'assistant',
+      content: 'Do you have a Google Business Profile? (Reply "yes" or "no")'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'Do you offer payment plans or financing options?'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say "skip").'
+    },
+    { role: 'user', content: 'skip' },
+    { role: 'assistant', content: 'Please pick two brand colours.' },
+    { role: 'assistant', content: 'Please upload images or logo.' }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T08:00:53.672Z
+}
+🎯 save-draft for ownerKey= fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c
+📦 state type: object convo type: object
+✅ save-draft upserted: {
+  id: 520,
+  user_id: 'fsO4HWsrj-4IAxEQ-kkNPJBgB0c6qp7c',
+  state: {
+    city: [ 'Belgrade' ],
+    social: {
+      tiktok: null,
+      facebook: null,
+      linkedin: 'https://www.linkedin.com/company/97906562/',
+      instagram: null
+    },
+    colours: [ '#ffc000', '#000000' ],
+    industry: 'Advertising & Marketing',
+    language: 'Serbian',
+    services: 'seo, google ads',
+    hero_video: 'skip',
+    company_name: 'asymmetric digital',
+    payment_plans: 'no',
+    google_profile: 'no'
+  },
+  convo: [
+    { role: 'user', content: 'digital agency' },
+    { role: 'assistant', content: "What's the name of your business?" },
+    { role: 'user', content: 'asymmetric digital' },
+    {
+      role: 'assistant',
+      content: 'In which city is your business located?'
+    },
+    { role: 'user', content: 'belgrade' },
+    {
+      role: 'assistant',
+      content: 'List your most important services or products.'
+    },
+    { role: 'user', content: 'seo, google ads' },
+    {
+      role: 'assistant',
+      content: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.'
+    },
+    {
+      role: 'user',
+      content: 'https://www.linkedin.com/company/97906562/'
+    },
+    {
+      role: 'assistant',
+      content: 'Do you have a Google Business Profile? (Reply "yes" or "no")'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'Do you offer payment plans or financing options?'
+    },
+    { role: 'user', content: 'no' },
+    {
+      role: 'assistant',
+      content: 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say "skip").'
+    },
+    { role: 'user', content: 'skip' },
+    { role: 'assistant', content: 'Please pick two brand colours.' },
+    { role: 'assistant', content: 'Please upload images or logo.' }
+  ],
+  is_draft: true,
+  updated_at: 2025-07-01T08:01:11.964Z
+}
