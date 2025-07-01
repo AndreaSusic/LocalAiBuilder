@@ -26,7 +26,7 @@ export default function HomepageV1({ tokens = {}, bootstrapData = null }) {
       margin: 0,
       padding: 0
     }}>
-      <style jsx>{`
+      <style>{`
         :root {
           --primary: ${data.colours?.[0] || '#5DD39E'};
           --secondary: #EFD5BD;

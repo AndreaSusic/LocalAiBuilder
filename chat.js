@@ -667,7 +667,44 @@ async function handleMissing(res){
     const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
     if(lastAI!==Q){
       bubble('ai',Q); convo.push({role:'assistant',content:Q});
-      awaitingKey=next;
+      
+      // Add Yes/No buttons specifically for Google Business Profile question
+      if(next === 'google_profile') {
+        const buttonContainer = document.createElement('div');
+        buttonContainer.innerHTML = `
+          <div style="margin:1rem 0;display:flex;gap:10px;">
+            <button id="gbpYes" style="background:#28a745;color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;">Yes</button>
+            <button id="gbpNo" style="background:#dc3545;color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;">No</button>
+          </div>
+        `;
+        thread.appendChild(buttonContainer);
+        
+        buttonContainer.querySelector('#gbpYes').onclick = () => {
+          buttonContainer.remove();
+          bubble('user', 'yes');
+          convo.push({role: 'user', content: 'yes'});
+          awaitingKey = null;
+          setTimeout(async () => {
+            await performGbpLookup();
+          }, 100);
+        };
+        
+        buttonContainer.querySelector('#gbpNo').onclick = () => {
+          buttonContainer.remove();
+          bubble('user', 'no');
+          convo.push({role: 'user', content: 'no'});
+          state.google_profile = 'no';
+          awaitingKey = null;
+          setTimeout(async () => {
+            await handleMissing({});
+          }, 100);
+        };
+        
+        awaitingKey = null; // Clear since buttons handle the response
+      } else {
+        awaitingKey = next;
+      }
+      
       // Auto-save draft after each AI response
       saveDraft();
     }
@@ -767,7 +804,7 @@ async function handleMissing(res){
       console.log('🚀 Redirecting to preview with bootstrap data:', window.bootstrapData);
       
       // Redirect to dashboard with data
-      const dashboardUrl = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
+      const dashboardUrl = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:4000/';
       const data = encodeURIComponent(JSON.stringify(window.bootstrapData));
       window.location.href = dashboardUrl + '?data=' + data;
     };
