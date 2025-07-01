@@ -305,27 +305,26 @@ app.get('/auth/google/callback',
           // Get stored bootstrap data and redirect to dashboard
           res.send(`
             <script>
-              console.log("OAuth complete, checking sessionStorage");
-              console.log("All sessionStorage keys:", Object.keys(sessionStorage));
+              console.log("OAuth complete, retrieving bootstrap data from database");
               
-              const chatData = sessionStorage.getItem('chatBootstrapData');
-              const bootstrapData = sessionStorage.getItem('bootstrap');
-              
-              console.log("chatBootstrapData:", chatData);
-              console.log("bootstrap:", bootstrapData);
-              
-              const storedData = chatData || bootstrapData;
-              
-              if (storedData && storedData !== '{}' && storedData !== 'null') {
-                const dashboardUrl = '/preview?data=' + encodeURIComponent(storedData);
-                console.log("Redirecting to dashboard with data:", dashboardUrl);
-                console.log("Data length:", storedData.length);
-                window.location.href = dashboardUrl;
-              } else {
-                console.log("No valid bootstrap data found, redirecting to empty dashboard");
-                console.log("Using fallback redirect");
-                window.location.href = '/preview?data=%7B%7D';
-              }
+              fetch('/api/get-temp-data')
+                .then(response => response.json())
+                .then(data => {
+                  console.log("Retrieved temp data:", data);
+                  
+                  if (data.success && data.bootstrapData) {
+                    const dashboardUrl = '/preview?data=' + encodeURIComponent(JSON.stringify(data.bootstrapData));
+                    console.log("Redirecting to dashboard with database data:", dashboardUrl);
+                    window.location.href = dashboardUrl;
+                  } else {
+                    console.log("No temp data found, redirecting to empty dashboard");
+                    window.location.href = '/preview?data=%7B%7D';
+                  }
+                })
+                .catch(error => {
+                  console.error("Error retrieving temp data:", error);
+                  window.location.href = '/preview?data=%7B%7D';
+                });
             </script>
           `);
           return;
@@ -347,27 +346,26 @@ app.get('/auth/google/callback',
       // Get stored bootstrap data and redirect to dashboard (no draft case)
       res.send(`
         <script>
-          console.log("OAuth complete (no draft), checking sessionStorage");
-          console.log("All sessionStorage keys:", Object.keys(sessionStorage));
+          console.log("OAuth complete (no draft), retrieving bootstrap data from database");
           
-          const chatData = sessionStorage.getItem('chatBootstrapData');
-          const bootstrapData = sessionStorage.getItem('bootstrap');
-          
-          console.log("chatBootstrapData:", chatData);
-          console.log("bootstrap:", bootstrapData);
-          
-          const storedData = chatData || bootstrapData;
-          
-          if (storedData && storedData !== '{}' && storedData !== 'null') {
-            const dashboardUrl = '/preview?data=' + encodeURIComponent(storedData);
-            console.log("Redirecting to dashboard with data:", dashboardUrl);
-            console.log("Data length:", storedData.length);
-            window.location.href = dashboardUrl;
-          } else {
-            console.log("No valid bootstrap data found, redirecting to empty dashboard");
-            console.log("Using fallback redirect");
-            window.location.href = '/preview?data=%7B%7D';
-          }
+          fetch('/api/get-temp-data')
+            .then(response => response.json())
+            .then(data => {
+              console.log("Retrieved temp data:", data);
+              
+              if (data.success && data.bootstrapData) {
+                const dashboardUrl = '/preview?data=' + encodeURIComponent(JSON.stringify(data.bootstrapData));
+                console.log("Redirecting to dashboard with database data:", dashboardUrl);
+                window.location.href = dashboardUrl;
+              } else {
+                console.log("No temp data found, redirecting to empty dashboard");
+                window.location.href = '/preview?data=%7B%7D';
+              }
+            })
+            .catch(error => {
+              console.error("Error retrieving temp data:", error);
+              window.location.href = '/preview?data=%7B%7D';
+            });
         </script>
       `);
       return;
@@ -768,6 +766,59 @@ app.get('/', function(req, res) {
 
 app.get('/chat', function(req, res) {
   res.sendFile(path.join(__dirname, 'chat.html'));
+});
+
+// API endpoint to save temporary bootstrap data
+app.post('/api/save-temp-data', async (req, res) => {
+  try {
+    const { bootstrapData, sessionId } = req.body;
+    const userId = req.user?.id || sessionId;
+    
+    console.log('💾 Saving temp bootstrap data for user:', userId);
+    console.log('💾 Data keys:', Object.keys(bootstrapData || {}));
+    
+    await pool.query(
+      `INSERT INTO temp_bootstrap_data (user_id, data, created_at)
+       VALUES ($1, $2, NOW())
+       ON CONFLICT (user_id) DO UPDATE SET data = EXCLUDED.data, created_at = NOW()`,
+      [userId, JSON.stringify(bootstrapData)]
+    );
+    
+    res.json({ success: true, message: 'Bootstrap data saved' });
+  } catch (error) {
+    console.error('❌ Error saving temp data:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// API endpoint to retrieve temporary bootstrap data
+app.get('/api/get-temp-data', async (req, res) => {
+  try {
+    const userId = req.user?.id || req.cookies.saveDraftKey;
+    
+    console.log('📦 Retrieving temp bootstrap data for user:', userId);
+    
+    const result = await pool.query(
+      'SELECT data FROM temp_bootstrap_data WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
+      [userId]
+    );
+    
+    if (result.rows.length > 0) {
+      const bootstrapData = JSON.parse(result.rows[0].data);
+      console.log('📦 Found temp data with keys:', Object.keys(bootstrapData));
+      
+      // Clean up temp data after retrieval
+      await pool.query('DELETE FROM temp_bootstrap_data WHERE user_id = $1', [userId]);
+      
+      res.json({ success: true, bootstrapData });
+    } else {
+      console.log('📦 No temp data found for user:', userId);
+      res.json({ success: false, message: 'No temp data found' });
+    }
+  } catch (error) {
+    console.error('❌ Error retrieving temp data:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 // Serve React dashboard for /preview route with SPA fallback

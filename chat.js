@@ -793,7 +793,7 @@ async function handleMissing(res){
     thread.appendChild(signInBtn);
 
     // wire it to trigger login and redirect to preview
-    signInBtn.onclick = () => {
+    signInBtn.onclick = async () => {
       // Set up bootstrap data for React app
       window.bootstrapData = {
         ...state,
@@ -808,26 +808,35 @@ async function handleMissing(res){
       // Store bootstrap data in sessionStorage before OAuth redirect
       sessionStorage.setItem('bootstrap', JSON.stringify(window.bootstrapData));
       
-      // Store bootstrap data securely in sessionStorage before OAuth
-      const dataToStore = JSON.stringify(window.bootstrapData);
-      sessionStorage.setItem('chatBootstrapData', dataToStore);
-      sessionStorage.setItem('bootstrap', dataToStore);
+      // Store bootstrap data in database before OAuth redirect
+      console.log('💾 Saving bootstrap data to database before OAuth');
       
-      console.log('💾 Stored bootstrap data in sessionStorage');
-      console.log('💾 Data length:', dataToStore.length);
-      console.log('💾 Data preview:', dataToStore.substring(0, 100));
-      console.log('💾 Verification - chatBootstrapData:', sessionStorage.getItem('chatBootstrapData'));
-      console.log('💾 All sessionStorage keys:', Object.keys(sessionStorage));
-      
-      // Break out of iframe and redirect parent window to OAuth
-      console.log('🚀 Breaking out of iframe for OAuth flow');
-      
-      if (window.parent !== window) {
-        // We're in an iframe, break out to parent
-        window.parent.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
-      } else {
-        // We're in the main window
-        window.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
+      try {
+        const response = await fetch('/api/save-temp-data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bootstrapData: window.bootstrapData,
+            sessionId: document.cookie.match(/(?:^|; )saveDraftKey=([^;]*)/)?.[1] || 'anonymous'
+          })
+        });
+        
+        const result = await response.json();
+        console.log('💾 Bootstrap data saved to database:', result);
+        
+        // Break out of iframe and redirect parent window to OAuth
+        console.log('🚀 Breaking out of iframe for OAuth flow');
+        
+        if (window.parent !== window) {
+          // We're in an iframe, break out to parent
+          window.parent.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
+        } else {
+          // We're in the main window
+          window.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
+        }
+      } catch (error) {
+        console.error('❌ Failed to save bootstrap data:', error);
+        alert('Failed to save data. Please try again.');
       }
     };
 
