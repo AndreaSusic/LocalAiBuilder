@@ -10,6 +10,11 @@
 </head>
 <body>
   <div id="root"></div>
-  <script type="module" src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/src/main1.jsx"></script>
+  <script type="module">
+    // Redirect to dashboard with bootstrap data
+    const dashboardUrl = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
+    const data = encodeURIComponent(JSON.stringify(window.bootstrapData || {}));
+    window.location.href = dashboardUrl + '?data=' + data;
+  </script>
 </body>
 </html>
