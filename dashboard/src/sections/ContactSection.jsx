@@ -5,7 +5,9 @@ export default function ContactSection() {
   const { 
     google_profile = {}, 
     company_name, 
-    ai_customization = {} 
+    ai_customization = {},
+    services = [],
+    industry = ''
   } = useContext(SiteDataContext) || {};
   
   const phone = google_profile.phone || '+1 234 567 89';
@@ -14,6 +16,14 @@ export default function ContactSection() {
   const mapQuery = ai_customization.mapQuery || `${company_name} ${address}`;
   const contactTitle = ai_customization.contactTitle || 'Contact Us';
   const ctaText = ai_customization.ctaText || 'Book Appointment';
+  
+  // Handle services as either string or array
+  const servicesList = Array.isArray(services) ? services :
+                      (typeof services === 'string' && services.length > 0) ? [services] : [];
+  
+  const isLandscaping = industry && industry.toLowerCase().includes('landscap');
+  const isProduct = isLandscaping;
+  const sectionLabel = isProduct ? 'Products' : 'Services';
   
   return (
     <>
@@ -59,18 +69,26 @@ export default function ContactSection() {
             <p style={{ color: '#ccc', fontSize: '0.9rem', marginTop: '0.5rem' }}>{address}</p>
           </div>
           <div>
-            <h4>Services</h4>
-            <a href="#">General Dentistry</a>
-            <a href="#">Cosmetic Veneers</a>
-            <a href="#">Invisalign®</a>
-            <a href="#">Emergency Care</a>
+            <h4>{sectionLabel}</h4>
+            {servicesList.map((service, index) => (
+              <a key={index} href={`#${service.toLowerCase().replace(/\s+/g, '-')}`}>{service}</a>
+            ))}
           </div>
           <div>
             <h4>Quick Links</h4>
-            <a href="#">About Us</a>
-            <a href="#">Patient Forms</a>
-            <a href="#">Insurance</a>
-            <a href="#">Reviews</a>
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact</a>
+            {isLandscaping ? (
+              <>
+                <a href="#installation">Installation Guide</a>
+                <a href="#maintenance">Lawn Care Tips</a>
+              </>
+            ) : (
+              <>
+                <a href="#reviews">Reviews</a>
+                <a href="#testimonials">Testimonials</a>
+              </>
+            )}
           </div>
           <div>
             <h4>Follow Us</h4>
