@@ -305,15 +305,26 @@ app.get('/auth/google/callback',
           // Get stored bootstrap data and redirect to dashboard
           res.send(`
             <script>
-              console.log("OAuth complete, retrieving bootstrap data");
-              const storedData = sessionStorage.getItem('chatBootstrapData');
-              if (storedData) {
+              console.log("OAuth complete, checking sessionStorage");
+              console.log("All sessionStorage keys:", Object.keys(sessionStorage));
+              
+              const chatData = sessionStorage.getItem('chatBootstrapData');
+              const bootstrapData = sessionStorage.getItem('bootstrap');
+              
+              console.log("chatBootstrapData:", chatData);
+              console.log("bootstrap:", bootstrapData);
+              
+              const storedData = chatData || bootstrapData;
+              
+              if (storedData && storedData !== '{}' && storedData !== 'null') {
                 const dashboardUrl = '/preview?data=' + encodeURIComponent(storedData);
                 console.log("Redirecting to dashboard with data:", dashboardUrl);
+                console.log("Data length:", storedData.length);
                 window.location.href = dashboardUrl;
               } else {
-                console.log("No bootstrap data found, redirecting to empty dashboard");
-                window.location.href = '/preview';
+                console.log("No valid bootstrap data found, redirecting to empty dashboard");
+                console.log("Using fallback redirect");
+                window.location.href = '/preview?data=%7B%7D';
               }
             </script>
           `);
@@ -336,15 +347,26 @@ app.get('/auth/google/callback',
       // Get stored bootstrap data and redirect to dashboard (no draft case)
       res.send(`
         <script>
-          console.log("OAuth complete (no draft), retrieving bootstrap data");
-          const storedData = sessionStorage.getItem('chatBootstrapData');
-          if (storedData) {
+          console.log("OAuth complete (no draft), checking sessionStorage");
+          console.log("All sessionStorage keys:", Object.keys(sessionStorage));
+          
+          const chatData = sessionStorage.getItem('chatBootstrapData');
+          const bootstrapData = sessionStorage.getItem('bootstrap');
+          
+          console.log("chatBootstrapData:", chatData);
+          console.log("bootstrap:", bootstrapData);
+          
+          const storedData = chatData || bootstrapData;
+          
+          if (storedData && storedData !== '{}' && storedData !== 'null') {
             const dashboardUrl = '/preview?data=' + encodeURIComponent(storedData);
             console.log("Redirecting to dashboard with data:", dashboardUrl);
+            console.log("Data length:", storedData.length);
             window.location.href = dashboardUrl;
           } else {
-            console.log("No bootstrap data found, redirecting to empty dashboard");
-            window.location.href = '/preview';
+            console.log("No valid bootstrap data found, redirecting to empty dashboard");
+            console.log("Using fallback redirect");
+            window.location.href = '/preview?data=%7B%7D';
           }
         </script>
       `);
