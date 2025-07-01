@@ -1,0 +1,53 @@
+🔍 Current URL: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/?data=%7B%7D
+main.jsx:12 🔍 URL search params: ?data=%7B%7D
+main.jsx:13 🔍 Has data param: true
+main.jsx:18 🔍 Raw data param: {}
+main.jsx:20 📦 Received bootstrap data from URL: {}
+main.jsx:21 📦 Bootstrap keys: []
+client:802 WebSocket connection to 'wss://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/?token=nO3sTCGznoso' failed: 
+createConnection @ client:802
+connect @ client:437
+connect @ client:811
+connect @ client:290
+connect @ client:383
+(anonymous) @ client:908
+client:841 [vite] failed to connect to websocket (Error: WebSocket closed without opened.). 
+overrideMethod @ hook.js:608
+connect @ client:841
+await in connect
+connect @ client:290
+connect @ client:383
+(anonymous) @ client:908
+client:454 Uncaught (in promise) Error: WebSocket closed without opened.
+    at WebSocket.<anonymous> (client:454:22)
+(anonymous) @ client:454
+extension_content.js:1 recalculate_head_data
+content.js:48 request OK
+client:802 WebSocket connection to 'wss://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/?token=nO3sTCGznoso' failed: 
+t @ Network.js:227
+createConnection @ client:802
+connect @ client:437
+connect @ client:811
+connect @ client:290
+connect @ client:383
+(anonymous) @ client:908
+Console.js:61 [vite] failed to connect to websocket (Error: WebSocket closed without opened.). 
+Mt.forEach.n.<computed> @ Console.js:61
+connect @ client:841
+await in connect
+connect @ client:290
+connect @ client:383
+(anonymous) @ client:908
+client:454 Uncaught (in promise) Error: WebSocket closed without opened.
+    at WebSocket.<anonymous> (client:454:22)
+(anonymous) @ client:454
+Console.js:61 🔍 Current URL: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/templates/homepage/v1/index.jsx
+Console.js:61 🔍 URL search params: 
+Console.js:61 🔍 Has data param: false
+Console.js:61 ⚠️ No bootstrap data found in URL or sessionStorage
+Console.js:61 HomepageV1 received bootstrap data: {}
+Console.js:61 HomepageV1 received bootstrap data: {}[[Prototype]]: Object
+web-client-content-script.js:2 Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.
+    at HTMLIFrameElement.<anonymous> (web-client-content-script.js:2:400799)
+(anonymous) @ web-client-content-script.js:2
+extension_content.js:1 recalculate_head_data
