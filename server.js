@@ -351,16 +351,23 @@ app.get('/auth/google/callback',
                 if (data.success && data.bootstrapData) {
                   // Store data in sessionStorage for the React dashboard  
                   sessionStorage.setItem('bootstrap', JSON.stringify(data.bootstrapData));
-                  // Redirect to clean dashboard URL
-                  window.location.href = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
+                  // Open React dashboard in new window to avoid iframe issues
+                  const dashboardUrl = window.location.origin.replace(':5000', ':3002');
+                  window.open(dashboardUrl, '_blank');
+                  // Also redirect current window to close OAuth popup
+                  window.location.href = '/';
                 } else {
                   console.log("No temp data found, redirecting to dashboard without data");
-                  window.location.href = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
+                  const dashboardUrl = window.location.origin.replace(':5000', ':3002');
+                  window.open(dashboardUrl, '_blank');
+                  window.location.href = '/';
                 }
               })
               .catch(error => {
                 console.error("Error retrieving temp data:", error);
-                window.location.assign('/preview');
+                const dashboardUrl = window.location.origin.replace(':5000', ':3002');
+                window.open(dashboardUrl, '_blank');
+                window.location.href = '/';
               });
           </script>
         `);
@@ -386,8 +393,10 @@ app.get('/auth/google/callback',
             if (data.success && data.bootstrapData) {
               // Store data in sessionStorage for the React dashboard  
               sessionStorage.setItem('bootstrap', JSON.stringify(data.bootstrapData));
-              // Redirect to clean dashboard URL
-              window.location.href = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
+              // Open React dashboard in new window
+              const dashboardUrl = window.location.origin.replace(':5000', ':3002');
+              window.open(dashboardUrl, '_blank');
+              window.location.href = '/';
             } else {
               console.log("No temp data found, redirecting to homepage");
               window.location.href = '/';
