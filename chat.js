@@ -894,11 +894,18 @@ async function handleMissing(res){
 
     // wire it to trigger login and redirect to preview
     signInBtn.onclick = async () => {
-      // Set up bootstrap data for React app
+      // Set up bootstrap data for React app with GBP data integration
       window.bootstrapData = {
         ...state,
         images: images,
-        conversation: convo
+        conversation: convo,
+        // Include GBP data fields for template integration
+        gbp_photos: state.google?.photos || [],
+        gbp_address: state.google?.formatted_address || state.google?.address || '',
+        gbp_phone: state.google?.formatted_phone_number || state.google?.phone || '',
+        gbp_reviews: state.google?.reviews || [],
+        gbp_map_url: state.google?.url || state.google?.maps_url || '',
+        stock_images: images.filter(img => typeof img === 'string' && img.startsWith('http'))
       };
       
       console.log('🚀 Preparing Google OAuth with bootstrap data:', window.bootstrapData);
