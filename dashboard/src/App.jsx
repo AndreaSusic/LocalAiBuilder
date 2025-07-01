@@ -10,6 +10,7 @@ import HomepageV2 from "./templates/homepage/v2/index.jsx";
 import HomepageV3 from "./templates/homepage/v3/index.jsx";
 import ServiceInvisalign from "./pages/ServiceInvisalign.jsx";
 import ContactV1 from "./pages/ContactV1.jsx";
+import TemplateWrapper from "./components/TemplateWrapper.jsx";
 
 export default function App({ bootstrap }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
@@ -76,14 +77,38 @@ export default function App({ bootstrap }) {
         <Route path="/templates" element={<DashboardPage />} />
         
         {/* Exact template routes */}
-        <Route path="/templates/homepage/v1/index.jsx" element={<HomepageV1 bootstrap={bootstrap} />} />
-        <Route path="/templates/homepage/v2/index.jsx" element={<HomepageV2 bootstrap={bootstrap} />} />
-        <Route path="/templates/homepage/v3/index.jsx" element={<HomepageV3 bootstrap={bootstrap} />} />
+        <Route path="/templates/homepage/v1/index.jsx" element={
+          <TemplateWrapper bootstrap={bootstrap}>
+            <HomepageV1 />
+          </TemplateWrapper>
+        } />
+        <Route path="/templates/homepage/v2/index.jsx" element={
+          <TemplateWrapper bootstrap={bootstrap}>
+            <HomepageV2 />
+          </TemplateWrapper>
+        } />
+        <Route path="/templates/homepage/v3/index.jsx" element={
+          <TemplateWrapper bootstrap={bootstrap}>
+            <HomepageV3 />
+          </TemplateWrapper>
+        } />
         
         {/* Alternative template routes for versioned access */}
-        <Route path="/templates/homepage-1" element={<HomepageV1 bootstrap={bootstrap} />} />
-        <Route path="/templates/homepage-2" element={<HomepageV2 bootstrap={bootstrap} />} />
-        <Route path="/templates/homepage-3" element={<HomepageV3 bootstrap={bootstrap} />} />
+        <Route path="/templates/homepage-1" element={
+          <TemplateWrapper bootstrap={bootstrap}>
+            <HomepageV1 />
+          </TemplateWrapper>
+        } />
+        <Route path="/templates/homepage-2" element={
+          <TemplateWrapper bootstrap={bootstrap}>
+            <HomepageV2 />
+          </TemplateWrapper>
+        } />
+        <Route path="/templates/homepage-3" element={
+          <TemplateWrapper bootstrap={bootstrap}>
+            <HomepageV3 />
+          </TemplateWrapper>
+        } />
         
         {/* Service template routes */}
         <Route path="/templates/service/v1/index.jsx" element={<ServiceInvisalign bootstrap={bootstrap} />} />

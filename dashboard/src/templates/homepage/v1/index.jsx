@@ -14,6 +14,23 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   
   console.log('HomepageV1 received bootstrap data:', data);
 
+  // Determine if this is products or services based on industry and content
+  const hasProducts = data.industry && (
+    data.industry.toLowerCase().includes('retail') ||
+    data.industry.toLowerCase().includes('shop') ||
+    data.industry.toLowerCase().includes('store') ||
+    data.industry.toLowerCase().includes('ecommerce') ||
+    data.industry.toLowerCase().includes('manufacturing') ||
+    (data.services && data.services.toLowerCase().includes('product'))
+  );
+  
+  const itemLabel = hasProducts ? 'Product' : 'Service';
+  const itemsLabel = hasProducts ? 'Products' : 'Services';
+  
+  // Parse services/products into array
+  const servicesList = data.services ? data.services.split(',').map(s => s.trim()).filter(s => s) : [];
+  const isSingleItem = servicesList.length === 1;
+
   // State for AI-generated text content
   const [textContent, setTextContent] = useState({
     heroTitle: `Welcome to ${data.company_name || 'Your Business'}`,
