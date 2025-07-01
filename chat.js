@@ -532,6 +532,24 @@ async function sendUser() {
         clearInput(); // Clear the input field
         console.log('🚫 User said no to having GBP');
       }
+    } else if (awaitingKey === 'additionalOfferings') {
+      // Handle additional products/services response
+      console.log('📝 Processing additional offerings response:', text);
+      
+      // Add user response to chat FIRST
+      bubble('user', text);
+      convo.push({role: 'user', content: text});
+      
+      state.additionalOfferings = text.trim();
+      awaitingKey = null;
+      responseHandled = true;
+      clearInput();
+      
+      // Continue to next step
+      setTimeout(async () => {
+        await handleMissing({});
+      }, 100);
+      return;
     } else {
       state[awaitingKey] = text.trim();
       awaitingKey = null;

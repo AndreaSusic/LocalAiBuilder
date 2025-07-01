@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
-export default function DesktopDashboard() {
+export default function DesktopDashboard({ bootstrap }) {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
@@ -11,7 +11,14 @@ export default function DesktopDashboard() {
   const [previewScreen, setPreviewScreen] = useState("desktop");
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [previewContent, setPreviewContent] = useState('/templates/homepage/v1/index.jsx');
+  const [previewContent, setPreviewContent] = useState(() => {
+    // If bootstrap data exists, encode it for the template URL
+    if (bootstrap && Object.keys(bootstrap).length > 0) {
+      const encoded = encodeURIComponent(JSON.stringify(bootstrap));
+      return `/templates/homepage/v1/index.jsx?data=${encoded}`;
+    }
+    return '/templates/homepage/v1/index.jsx';
+  });
 
   /* HANDLERS */
   const sendChat = () => { console.log("Chat:", draftChat); setChat(""); };
@@ -19,13 +26,22 @@ export default function DesktopDashboard() {
   const saveSite = () => console.log("Save");
   const publish = () => console.log("Publish");
   const openVer = v => {
+    let baseUrl = '';
     if (v === "Version 1") {
-      window.open('/templates/homepage/v1/index.jsx', '_blank');
+      baseUrl = '/templates/homepage/v1/index.jsx';
     } else if (v === "Version 2") {
-      window.open('/templates/homepage/v2/index.jsx', '_blank'); 
+      baseUrl = '/templates/homepage/v2/index.jsx'; 
     } else if (v === "Version 3") {
-      window.open('/templates/homepage/v3/index.jsx', '_blank');
+      baseUrl = '/templates/homepage/v3/index.jsx';
     }
+    
+    // Add bootstrap data to URL if available
+    if (bootstrap && Object.keys(bootstrap).length > 0) {
+      const encoded = encodeURIComponent(JSON.stringify(bootstrap));
+      baseUrl += `?data=${encoded}`;
+    }
+    
+    window.open(baseUrl, '_blank');
   };
   const handleEditorAction = (action) => {
     console.log('Toolbar action:', action);
@@ -39,9 +55,15 @@ export default function DesktopDashboard() {
   };
 
   const showTemplatePreview = (templateUrl) => {
-    setPreviewContent(templateUrl);
+    let fullUrl = templateUrl;
+    // Add bootstrap data to URL if available
+    if (bootstrap && Object.keys(bootstrap).length > 0) {
+      const encoded = encodeURIComponent(JSON.stringify(bootstrap));
+      fullUrl += `?data=${encoded}`;
+    }
+    setPreviewContent(fullUrl);
     setShowPagesDropdown(false);
-    console.log('Showing template preview:', templateUrl);
+    console.log('Showing template preview:', fullUrl);
   };
 
   const handleLogout = () => {
