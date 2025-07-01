@@ -623,9 +623,22 @@ async function handleMissing(res){
     signInBtn.className = 'sign-in-btn';
     thread.appendChild(signInBtn);
 
-    // wire it to trigger login in parent window
+    // wire it to trigger login and redirect to preview
     signInBtn.onclick = () => {
-      window.parent.postMessage({type: 'trigger-login'}, '*');
+      // Set up bootstrap data for React app
+      window.bootstrapData = {
+        ...state,
+        images: images,
+        google: state.google_profile === 'yes' ? { 
+          phone: '+1 234 567 89',
+          email: 'info@yourwebsite.com',
+          address: '123 Main St, Austin, TX 78701',
+          photos: images.slice(0, 4)
+        } : {}
+      };
+      
+      // Redirect to preview page
+      window.location.href = '/preview';
     };
 
     // Hide chat footer when sign in button appears
@@ -637,6 +650,18 @@ async function handleMissing(res){
     if (fontSelector) {
       fontSelector.classList.add('hidden');
     }
+    
+    // Set up bootstrap data for React app
+    window.bootstrapData = {
+      ...state,
+      images: images,
+      google: state.google_profile === 'yes' ? { 
+        phone: '+1 234 567 89',
+        email: 'info@yourwebsite.com',
+        address: '123 Main St, Austin, TX 78701',
+        photos: images.slice(0, 4)
+      } : {}
+    };
     
     // Auto-save draft when conversation is complete
     setTimeout(() => saveDraft(), 100);
