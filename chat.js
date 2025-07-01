@@ -894,35 +894,86 @@ async function handleMissing(res){
 
     // wire it to trigger login and redirect to preview
     signInBtn.onclick = async () => {
-      // Set up bootstrap data for React app
-      window.bootstrapData = {
-        ...state,
-        images: images,
-        conversation: convo
-      };
-      
-      console.log('🚀 Preparing Google OAuth with bootstrap data:', window.bootstrapData);
-      console.log('📊 State data:', state);
-      console.log('🎨 Images:', images);
-      
-      // Store bootstrap data in sessionStorage before OAuth redirect
-      sessionStorage.setItem('bootstrap', JSON.stringify(window.bootstrapData));
-      
-      // Store bootstrap data in database before OAuth redirect
-      console.log('💾 Saving bootstrap data to database before OAuth');
-      
+      // Generate AI customization data for the final website
+      let aiCustomization = {};
       try {
-        const response = await fetch('/api/save-temp-data', {
+        const aiResponse = await fetch('/api/ai-text-mapping', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            bootstrapData: window.bootstrapData,
+            businessData: {
+              company_name: state.company_name,
+              industry: state.industry,
+              city: state.city,
+              services: state.services,
+              google_profile: state.google_profile
+            }
+          })
+        });
+        
+        if (aiResponse.ok) {
+          const aiResult = await aiResponse.json();
+          aiCustomization = aiResult.textMappings || {};
+          console.log('🤖 Generated AI customization:', aiCustomization);
+        }
+      } catch (error) {
+        console.warn('AI customization failed, using defaults:', error);
+        aiCustomization = {
+          hero_title: `${state.company_name || 'Your Business'} - Professional Services`,
+          hero_subtitle: `Quality services in ${Array.isArray(state.city) ? state.city[0] : state.city || 'your area'}`,
+          reviewer_label: 'Clients',
+          cta_text: 'Contact Us'
+        };
+      }
+      
+      // Set up complete website data
+      const websiteData = {
+        ...state,
+        images: images,
+        conversation: convo,
+        ai_customization: aiCustomization,
+        completed_at: new Date().toISOString()
+      };
+      
+      window.bootstrapData = websiteData;
+      
+      console.log('🚀 Completing website with final data:', websiteData);
+      
+      // Store bootstrap data in sessionStorage for immediate use
+      sessionStorage.setItem('bootstrap', JSON.stringify(websiteData));
+      
+      // Save completed website to user's account and temp storage
+      console.log('💾 Saving completed website to database');
+      
+      try {
+        // Save as completed website
+        const completeResponse = await fetch('/api/complete-website', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            state: websiteData,
+            convo: convo,
+            ai_customization: aiCustomization
+          }),
+          credentials: 'include'
+        });
+        
+        if (completeResponse.ok) {
+          console.log('✅ Website saved to user account');
+        }
+        
+        // Also save to temp storage for OAuth flow
+        const tempResponse = await fetch('/api/save-temp-data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bootstrapData: websiteData,
             sessionId: document.cookie.match(/(?:^|; )saveDraftKey=([^;]*)/)?.[1] || 'anonymous'
           })
         });
         
-        const result = await response.json();
-        console.log('💾 Bootstrap data saved to database:', result);
+        const tempResult = await tempResponse.json();
+        console.log('💾 Bootstrap data saved to temp storage:', tempResult);
         
         // Break out of iframe and redirect parent window to OAuth
         console.log('🚀 Breaking out of iframe for OAuth flow');
@@ -935,7 +986,7 @@ async function handleMissing(res){
           window.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
         }
       } catch (error) {
-        console.error('❌ Failed to save bootstrap data:', error);
+        console.error('❌ Failed to save website data:', error);
         alert('Failed to save data. Please try again.');
       }
     };
