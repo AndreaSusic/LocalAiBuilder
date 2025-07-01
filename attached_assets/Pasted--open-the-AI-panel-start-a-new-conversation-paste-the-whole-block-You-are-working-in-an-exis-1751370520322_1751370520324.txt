@@ -1,0 +1,85 @@
+
+
+(open the AI panel → start a new conversation → paste the whole block)
+
+You are working in an existing Repl that already has:
+
+• src/chat.js            – wizard that collects `state`
+• src/main.jsx + App1.jsx – React entry
+• src/pages/HomePage.jsx – already split into sections
+• server/index.js        – Express API (optional)
+• vite.config.js         – Vite dev server
+• public/index.html      – root HTML
+
+Bug today
+---------
+When the wizard finishes, it redirects to a host with “-3002-…”, causing 404s
+and the HomePage shows placeholder data (“Your Business Name”). We need an
+SPA-safe redirect and reliable bootstrap of the user answers.
+
+TASKS
+=====
+
+A. Redirect fix
+---------------
+1. **src/chat.js**
+   ```diff
+   - const newHost = window.location.hostname.replace('.replit', '-3002-.replit');
+   - const url = `https://${newHost}/preview?data=${encodeURIComponent(JSON.stringify(state))}`;
+   + const url = `/preview?data=${encodeURIComponent(JSON.stringify(state))}`;   // same host
+     window.location.assign(url);
+
+Alternate fallback (if query string too long):
+
+sessionStorage.setItem('bootstrap', JSON.stringify(state));
+window.location.assign('/preview');
+
+B. Bootstrap loader
+	2.	src/main.jsx
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App'; 
+
+// --- Load bootstrap from URL or sessionStorage -------------
+let bootstrap = {};
+const params = new URLSearchParams(window.location.search);
+if (params.has('data')) {
+  try {
+    bootstrap = JSON.parse(decodeURIComponent(params.get('data')));
+  } catch (e) {
+    console.error('bootstrap decode err', e);
+  }
+} else if (sessionStorage.getItem('bootstrap')) {
+  bootstrap = JSON.parse(sessionStorage.getItem('bootstrap'));
+}
+// -----------------------------------------------------------
+
+ReactDOM.createRoot(document.getElementById('root'))
+  .render(<App bootstrap={bootstrap} />);
+
+IMPORTANT: delete any script in public/index.html that sets
+window.bootstrapData placeholders.
+
+C. SPA fallback route
+	3.	If you run Express (server/index.js)
+
+import path from 'path';
+const dist = path.resolve('dist');        // adjust if build dir differs
+app.use(express.static(dist));
+
+// Serve React bundle for SPA paths
+app.get(['/preview', '/'], (req, res) =>
+  res.sendFile(path.join(dist, 'index.html'))
+);
+
+// catch-all (optional)
+// app.get('*', (req,res)=>res.sendFile(path.join(dist,'index.html')));
+
+
+	4.	If you run only Vite
+No extra code needed. Just ensure dev runs with host open:
+
+npm run dev -- --host 0.0.0.0
+
+
