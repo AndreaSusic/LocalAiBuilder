@@ -144,30 +144,16 @@
                                     </select>
                                 </label>
                             </div>
-                              </div>
-                        <button id="btnStart" class="btn-primary" data-lang="ctaStart">Start Building →</button>
-                        <!-- sr: Počni gradnju → -->
+                            
+                            <div class="chat-input">
+                                <input type="text" id="chatInput" placeholder="Type your message..." />
+                                <button type="button" id="sendBtn">Send</button>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             </div>
-            </section>
-            
-            <iframe src="/chat" class="chatPane" title="Builder Chat"></iframe>
-        </div>
-        
-        <script>
-        window.addEventListener('message', event => {
-            if (event.data?.type === 'chat-height') {
-                const iframe = document.querySelector('iframe.chatPane');
-                if (iframe) iframe.style.height = (event.data.height + 20) + 'px';
-            }
-            if (event.data?.type === 'trigger-login') {
-                const loginBtn = document.getElementById('loginBtn');
-                if (loginBtn) loginBtn.click();
-            }
-        });
-        </script>
+        </section>
 
         <!-- Benefits Section -->
         <section class="benefits">
@@ -529,6 +515,7 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="chat.js"></script>
     
     <script>
 (async()=>{
