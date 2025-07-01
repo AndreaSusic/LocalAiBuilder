@@ -12,10 +12,7 @@ import {
 import '../../../styles/template.css';
 
 export default function HomepageV1({ tokens = {}, bootstrap = null }) {
-  console.log('HomepageV1 rendered with bootstrap:', bootstrap);
-  console.log('HomepageV1 tokens:', tokens);
-  
-  const [data, setData] = useState(bootstrap || {
+  const initialData = bootstrap || {
     company_name: tokens.businessName || 'Your Business Name',
     city: tokens.location ? [tokens.location] : ['Your City'],
     services: tokens.services || 'Your Services',
@@ -23,9 +20,9 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
     industry: tokens.industry || 'Your Industry',
     images: tokens.images || [],
     google_profile: tokens.google || {}
-  });
+  };
   
-  console.log('HomepageV1 using data:', data);
+  const [data, setData] = useState(initialData);
 
   // Load demo data if no bootstrap provided
   useEffect(() => {
