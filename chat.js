@@ -270,13 +270,39 @@ function createDropZone() {
     }
   });
   
-  // Skip button handler
+  // Skip button handler - fetch stock images instead
   skipBtn.onclick = async () => {
     bubble('user', 'No images');
     convo.push({ role: 'user', content: 'No images' });
+    bubble('ai', 'No problem! I\'ll use professional stock photos that match your business.');
     wrapper.remove();
     
-    // Font picker will be shown at the final step
+    // Fetch actual stock images from API
+    try {
+      const response = await fetch('/api/stock-images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          serviceType: state.industry || 'business',
+          country: state.city?.[0] || 'Serbia',
+          minNeeded: 6,
+          userImages: []
+        })
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        const stockUrls = result.images.map(img => img.src || img);
+        images.push(...stockUrls);
+        console.log('Fetched stock images:', stockUrls);
+      } else {
+        console.warn('Stock images API failed, using placeholder');
+        images.push('stock_photos_placeholder');
+      }
+    } catch (error) {
+      console.error('Error fetching stock images:', error);
+      images.push('stock_photos_placeholder');
+    }
     
     sendHeight();
     await handleMissing({});
@@ -743,49 +769,7 @@ async function handleMissing(res){
       skipButton.style.borderRadius = '4px';
       skipButton.style.cursor = 'pointer';
       
-      skipButton.onclick = async () => {
-        // Mark images as skipped and fetch real stock photos
-        bubble('ai', 'No problem! I\'ll use professional stock photos that match your business.');
-        skipButton.remove();
-        const dropZone = document.getElementById('inlineDropZone');
-        if (dropZone) dropZone.remove();
-        
-        // Fetch actual stock images from API
-        try {
-          const response = await fetch('/api/stock-images', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              serviceType: state.industry || 'business',
-              country: state.city?.[0] || 'Serbia',
-              minNeeded: 6,
-              userImages: []
-            })
-          });
-          
-          if (response.ok) {
-            const result = await response.json();
-            // Extract URLs from the API response
-            const stockUrls = result.images.map(img => img.src || img);
-            images.push(...stockUrls);
-            console.log('Fetched stock images:', stockUrls);
-          } else {
-            console.warn('Stock images API failed, using placeholder');
-            images.push('stock_photos_placeholder');
-          }
-        } catch (error) {
-          console.error('Error fetching stock images:', error);
-          images.push('stock_photos_placeholder');
-        }
-        
-        // Continue to completion
-        handleMissing({});
-      };
-      
-      const dropZone = document.getElementById('inlineDropZone');
-      if (dropZone) {
-        dropZone.parentNode.insertBefore(skipButton, dropZone.nextSibling);
-      }
+      // This duplicate button is removed - functionality handled by the main "No images" button in createDropZone()
     }, 100);
     
     // Auto-save draft after each AI response
