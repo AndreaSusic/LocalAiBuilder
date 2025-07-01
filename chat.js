@@ -598,7 +598,7 @@ async function handleMissing(res){
       services:'List your most important services or products.',
       social: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.',
       google_profile: 'Do you have a Google Business Profile? (Reply "yes" or "no")',
-      payment_plans: 'Do you offer payment plans or financing options?',
+      payment_plans: 'Do you offer payment plans or financing options? Please describe them and provide the prices.',
       hero_video: 'If you have a promo / intro video (YouTube/Vimeo URL), please paste it (or say "skip").'
     }[next];
     const lastAI=convo.filter(m=>m.role==='assistant').pop()?.content;
@@ -627,7 +627,7 @@ async function handleMissing(res){
   // Font picker will be shown at the final step before sign-in
 
   // Step 3: If images missing, show drop-zone inline and wait for file
-  if(images.length===0 && !document.getElementById('inlineDropZone')){
+  if(images.length===0 && !document.getElementById('inlineDropZone') && !document.querySelector('.skip-images-btn')){
     bubble('ai','Can you upload images and a logo for me to use on your website?');
     convo.push({role:'assistant',content:'Please upload images or logo.'});
     createDropZone();
@@ -651,6 +651,9 @@ async function handleMissing(res){
         skipButton.remove();
         const dropZone = document.getElementById('inlineDropZone');
         if (dropZone) dropZone.remove();
+        
+        // Mark images as handled to prevent re-showing
+        images.push('stock_photos_placeholder');
         
         // Continue to completion
         handleMissing({});
