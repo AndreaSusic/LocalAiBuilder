@@ -16,6 +16,31 @@ export default function MobileDashboard({ bootstrap }) {
     return '/templates/homepage/v1/index.jsx';
   });
 
+  /* AUTO-LOAD USER DATA ON MOUNT */
+  useEffect(() => {
+    // Only auto-load if no bootstrap data was provided
+    if (!bootstrap || Object.keys(bootstrap).length === 0) {
+      const loadUserData = async () => {
+        try {
+          const response = await fetch('/api/user-data', {
+            credentials: 'include'
+          });
+          if (response.ok) {
+            const userData = await response.json();
+            const encoded = encodeURIComponent(JSON.stringify(userData));
+            const userDataUrl = `/templates/homepage/v1/index.jsx?data=${encoded}`;
+            setPreviewContent(userDataUrl);
+            console.log('Auto-loaded user data for mobile preview');
+          }
+        } catch (error) {
+          console.log('Could not auto-load user data:', error.message);
+        }
+      };
+      
+      loadUserData();
+    }
+  }, [bootstrap]);
+
   const showTemplatePreview = (templateUrl) => {
     let fullUrl = templateUrl;
     // Add bootstrap data to URL if available
