@@ -478,60 +478,21 @@ app.post("/api/analyse", upload.none(), async (req, res) => {
     const systemMsg = `Return JSON only:
 {"company_name":string|null,"industry":string|null,"city":string|null,"language":"English"|"Serbian"|"German"|"Spanish","services":string|null,"missing_fields":[]}
 
-Belgrade/Beograd→"Serbian", Berlin/Munich→"German", Madrid/Barcelona→"Spanish", Otherwise→"English"`;
+Language: Belgrade/Beograd→"Serbian", Berlin/Munich→"German", Madrid/Barcelona→"Spanish", Otherwise→"English"
+Industry: lawn care→"Landscaping", dentist→"Dental", lawyer→"Legal", restaurant→"Food & Beverage"
+Company name must be distinctive brand, not generic descriptor.`;
 
-3. City detection (scan text for these patterns):
-   - "in Austin" → city: "Austin"
-   - "based in Chicago" → city: "Chicago"  
-   - "dental clinic Austin" → city: "Austin" (standalone city name)
-   - "law firm Berlin" → city: "Berlin"
-   - "restaurant Belgrade" → city: "Belgrade"
-   - Known cities: Austin, Chicago, London, Berlin, Belgrade, Paris, New York, Los Angeles, Sydney, Toronto, Madrid, Barcelona, Munich, Hamburg, Novi Sad
-   - "just restaurant" → city: null (no location)
-   
-   If the user lists more than one city, return "city" as an array of strings.
-   Example: "Austin, New York" → "city":["Austin","New York"]
-
-4. Services:
-   - Extract main services/products offered by the business
-   - If not mentioned, set services: null and add "services" to missing_fields
-
-4. "industry" must be one of these 25 categories  
-   ["Accounting & Finance","Advertising & Marketing","Automotive",
-    "Beauty & Wellness","Construction","Consulting","Dental",
-    "Education","Food & Beverage","Healthcare","Hospitality",
-    "IT & Software","Landscaping","Legal","Manufacturing",
-    "Pets","Plumbing","Real Estate","Retail","Roofing",
-    "Shoes & Apparel","Sports & Fitness","Transportation & Logistics",
-    "Travel","Other"]
-
-   • If user text clearly maps to one, set it and  
-     **industry_confidence** to 100.  
-   • If unsure, guess the best match and include  
-     industry_confidence (0-100).  
-   • If confidence < 60, set "industry":"Other" and  
-     add "industry" to missing_fields.
-
-   Do NOT ask about industry again once it is set by either the model
-   or the user.
-
-5. Missing fields:
-   - Add key to missing_fields only if truly cannot determine
-   - Apply all inference rules first
-
-5. **Mandatory rule**:  
-   For every key whose value is \`null\`, you MUST include that key
-   in \`missing_fields\`.  
-   If a value is not \`null\`, its key MUST NOT appear in
-   \`missing_fields\`.  The two lists must always stay in sync.
-`;
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-3.5-turbo",
       temperature: 0,
-      response_format: { type: "json_object" },
+      max_tokens: 100,
       messages: [
-        { role: "system", content: systemMsg.trim() },
-        { role: "user",   content: userPrompt }
+        { role: "system", content: systemMsg },
+        { role: "user", content: userPrompt }
       ]
     });
     
