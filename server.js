@@ -793,6 +793,135 @@ app.post('/api/stock-images', async (req, res) => {
   }
 });
 
+// AI text mapping endpoint
+app.post('/api/ai-text-mapping', async (req, res) => {
+  try {
+    const { businessData, templateType = 'homepage' } = req.body;
+    
+    if (!businessData) {
+      return res.status(400).json({ error: 'Business data is required' });
+    }
+
+    const prompt = `You are a website content specialist. Given this business data, generate appropriate text content for a ${templateType} template.
+
+Business Data:
+- Company: ${businessData.company_name || 'Business Name'}
+- Industry: ${businessData.industry || 'General Business'}
+- Services: ${businessData.services || 'Professional Services'}
+- City: ${businessData.city ? businessData.city[0] : 'Local Area'}
+- Language: ${businessData.language || 'English'}
+
+Generate content mappings in JSON format with these fields:
+{
+  "heroTitle": "Main headline for hero section",
+  "heroSubtitle": "Supporting text for hero section", 
+  "servicesTitle": "${businessData.services ? (businessData.services.includes(',') ? 'Our Services' : 'Our Service') : 'Our Services'}",
+  "aboutTitle": "About section headline",
+  "aboutText": "About section paragraph",
+  "ctaText": "Call-to-action button text",
+  "contactTitle": "Contact section headline"
+}
+
+Make content specific to the business industry and location. Use ${businessData.language || 'English'} language.`;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      messages: [{ role: "user", content: prompt }],
+      response_format: { type: "json_object" },
+      max_tokens: 500
+    });
+
+    const textMappings = JSON.parse(response.choices[0].message.content);
+    res.json({ success: true, textMappings });
+  } catch (error) {
+    console.error('AI text mapping error:', error);
+    res.status(500).json({ error: 'Failed to generate text mappings' });
+  }
+});
+
+// Dynamic page generation endpoint
+app.post('/api/generate-pages', async (req, res) => {
+  try {
+    const { businessData } = req.body;
+    
+    if (!businessData || !businessData.services) {
+      return res.status(400).json({ error: 'Business data with services is required' });
+    }
+
+    const servicesList = businessData.services.split(',').map(s => s.trim()).filter(s => s);
+    const hasProducts = businessData.industry && (
+      businessData.industry.toLowerCase().includes('retail') ||
+      businessData.industry.toLowerCase().includes('shop') ||
+      businessData.industry.toLowerCase().includes('store') ||
+      businessData.industry.toLowerCase().includes('ecommerce') ||
+      businessData.industry.toLowerCase().includes('manufacturing') ||
+      businessData.services.toLowerCase().includes('product')
+    );
+
+    const itemType = hasProducts ? 'product' : 'service';
+    const itemsType = hasProducts ? 'products' : 'services';
+    
+    const pages = [
+      {
+        type: 'homepage',
+        path: '/',
+        title: businessData.company_name || 'Business Homepage',
+        template: 'homepage/v1'
+      },
+      {
+        type: 'contact',
+        path: '/contact',
+        title: 'Contact Us',
+        template: 'contact/v1'
+      }
+    ];
+
+    // Generate individual service/product pages
+    servicesList.forEach((service, index) => {
+      const slug = service.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      pages.push({
+        type: itemType,
+        path: `/${itemType}/${slug}`,
+        title: service,
+        template: 'service/v1',
+        data: {
+          serviceName: service,
+          serviceIndex: index,
+          isProduct: hasProducts
+        }
+      });
+    });
+
+    // If multiple services, create services overview page
+    if (servicesList.length > 1) {
+      pages.push({
+        type: 'services-overview',
+        path: `/${itemsType}`,
+        title: hasProducts ? 'Our Products' : 'Our Services',
+        template: 'services/overview',
+        data: {
+          services: servicesList,
+          isProducts: hasProducts
+        }
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      pages,
+      siteStructure: {
+        totalPages: pages.length,
+        hasMultipleServices: servicesList.length > 1,
+        itemType,
+        itemsType
+      }
+    });
+  } catch (error) {
+    console.error('Page generation error:', error);
+    res.status(500).json({ error: 'Failed to generate pages' });
+  }
+});
+
 // Handle SPA routing - serve index.html for unknown routes
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));

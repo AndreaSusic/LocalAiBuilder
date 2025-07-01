@@ -14,6 +14,23 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   
   console.log('HomepageV1 received bootstrap data:', data);
 
+  // Determine if this is products or services based on industry and content
+  const hasProducts = data.industry && (
+    data.industry.toLowerCase().includes('retail') ||
+    data.industry.toLowerCase().includes('shop') ||
+    data.industry.toLowerCase().includes('store') ||
+    data.industry.toLowerCase().includes('ecommerce') ||
+    data.industry.toLowerCase().includes('manufacturing') ||
+    (data.services && data.services.toLowerCase().includes('product'))
+  );
+  
+  const itemLabel = hasProducts ? 'Product' : 'Service';
+  const itemsLabel = hasProducts ? 'Products' : 'Services';
+  
+  // Parse services/products into array
+  const servicesList = data.services ? data.services.split(',').map(s => s.trim()).filter(s => s) : [];
+  const isSingleItem = servicesList.length === 1;
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -601,26 +618,30 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
         </div>
       </section>
 
-      {/* Services */}
+      {/* Services/Products Section */}
       <section className="services">
-        <h2>Our Services</h2>
-        <div className="services-grid">
-          <div className="service-card">
-            <img src={data.images && data.images[0] !== 'stock_photos_placeholder' ? data.images[0] : "https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60"} alt="" />
-            <h4>{data.services ? data.services.split(',')[0] || 'General Dentistry' : 'General Dentistry'}</h4>
-            <p>Complete check-ups, cleanings, and preventive treatments for all ages.</p>
+        <h2>{isSingleItem ? `Our ${itemLabel}` : `Our ${itemsLabel}`}</h2>
+        {isSingleItem ? (
+          // Single service/product layout
+          <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
+            <div className="service-card" style={{ display: 'inline-block', maxWidth: '400px' }}>
+              <img src={data.images && data.images[0] !== 'stock_photos_placeholder' ? data.images[0] : "https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60"} alt="" />
+              <h4>{servicesList[0]}</h4>
+              <p>Professional {servicesList[0].toLowerCase()} {hasProducts ? 'solutions' : 'services'} tailored to your needs.</p>
+            </div>
           </div>
-          <div className="service-card">
-            <img src={data.images && data.images[1] !== 'stock_photos_placeholder' ? data.images[1] : "https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=60"} alt="" />
-            <h4>{data.services ? data.services.split(',')[1] || 'Cosmetic Veneers' : 'Cosmetic Veneers'}</h4>
-            <p>Thin, custom-made shells to improve the color, shape, and size of your teeth.</p>
+        ) : (
+          // Multiple services/products grid
+          <div className="services-grid">
+            {servicesList.slice(0, 3).map((service, index) => (
+              <div key={index} className="service-card">
+                <img src={data.images && data.images[index] !== 'stock_photos_placeholder' ? data.images[index] : `https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60`} alt="" />
+                <h4>{service}</h4>
+                <p>Professional {service.toLowerCase()} {hasProducts ? 'solutions' : 'services'} designed for excellence.</p>
+              </div>
+            ))}
           </div>
-          <div className="service-card">
-            <img src={data.images && data.images[2] !== 'stock_photos_placeholder' ? data.images[2] : "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&auto=format&fit=crop&q=60"} alt="" />
-            <h4>{data.services ? data.services.split(',')[2] || 'Invisalign®' : 'Invisalign®'}</h4>
-            <p>Clear aligners to straighten teeth discreetly without traditional braces.</p>
-          </div>
-        </div>
+        )}
       </section>
 
       {/* Testimonials */}
