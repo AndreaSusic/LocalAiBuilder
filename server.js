@@ -480,7 +480,11 @@ app.post("/api/analyse", upload.none(), async (req, res) => {
 
 Language: Belgrade/Beograd→"Serbian", Berlin/Munich→"German", Madrid/Barcelona→"Spanish", Otherwise→"English"
 Industry: lawn care→"Landscaping", dentist→"Dental", lawyer→"Legal", restaurant→"Food & Beverage"
-Company name must be distinctive brand, not generic descriptor.`;
+
+CRITICAL: Company name must be distinctive brand, NOT generic descriptors. 
+Examples of INVALID company names: "plastic elements", "grass sod", "dental clinic", "auto repair", "law firm"
+Only extract actual business names like "Smith & Associates", "Joe's Pizza", "Bright Smile Dental"
+If input only contains generic terms, set company_name: null and add to missing_fields.`;
 
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
