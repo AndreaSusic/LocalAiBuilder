@@ -11,8 +11,7 @@ export const serviceTokens = {
   heroText: [
     "Discreet, removable and digitally-planned orthodontics tailored for busy adults.",
     "No brackets, no wires — just comfortable, crystal-clear trays that fit your lifestyle.",
-    "Eat what you love, brush normally, and watch your smile transform week by week.",
-    "Start your journey today with Austin's most trusted Invisalign® provider."
+    "Eat what you love, brush normally, and watch your smile transform week by week."
   ],
   ctaLabel: "Schedule Now",
 

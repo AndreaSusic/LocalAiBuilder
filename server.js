@@ -592,6 +592,49 @@ app.post('/api/save-draft', async (req, res) => {
   }
 });
 
+// GBP Details API
+app.post('/api/gbp-details', async (req, res) => {
+  try {
+    const { placeUrl } = req.body;
+    if (!placeUrl) return res.status(400).json({ error: 'no url' });
+    
+    const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+    if (!GOOGLE_API_KEY) {
+      return res.status(500).json({ error: 'Google API key not configured' });
+    }
+    
+    // STEP 1: fetch Place ID
+    const idResp = await fetch(
+      `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeUrl)}&inputtype=textquery&fields=place_id&key=${GOOGLE_API_KEY}`
+    ).then(r => r.json());
+    
+    const place_id = idResp.candidates?.[0]?.place_id;
+    if (!place_id) return res.status(404).json({ error: 'not found' });
+
+    // STEP 2: details
+    const details = await fetch(
+      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,photo,rating,user_ratings_total&key=${GOOGLE_API_KEY}`
+    ).then(r => r.json());
+
+    // build photo URLs (first 3)
+    const photos = (details.result.photos || []).slice(0, 3).map(p =>
+      `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=${p.photo_reference}&key=${GOOGLE_API_KEY}`
+    );
+
+    res.json({
+      name: details.result.name,
+      address: details.result.formatted_address,
+      phone: details.result.formatted_phone_number,
+      rating: details.result.rating,
+      reviews: details.result.user_ratings_total,
+      photos
+    });
+  } catch (error) {
+    console.error('GBP details error:', error);
+    res.status(500).json({ error: 'Failed to fetch GBP details' });
+  }
+});
+
 // API for dynamic template generation
 app.post('/api/generate-template', async (req, res) => {
   try {
