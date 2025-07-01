@@ -181,6 +181,11 @@ app.get('/', async (req, res, next) => {
   next();
 });
 
+// Preview route for React app
+app.get('/preview', (req, res) => {
+  res.sendFile(path.join(__dirname, 'preview.html'));
+});
+
 // Block template JSX files from being served as static content
 app.use('/templates/homepage', (req, res, next) => {
   if (req.path.endsWith('.jsx')) {
@@ -584,6 +589,26 @@ app.post('/api/save-draft', async (req, res) => {
   } catch (err) {
     console.error('❌ save-draft error:', err.stack || err);
     return res.status(500).json({ error: 'Could not save draft' });
+  }
+});
+
+// API for dynamic template generation
+app.post('/api/generate-template', async (req, res) => {
+  try {
+    const { state, templateType = 'homepage' } = req.body;
+    
+    // For now, return the refactored template structure
+    // In future, this could generate different templates based on industry/preferences
+    const templateData = {
+      templateType: 'homepage-v1',
+      state: state,
+      success: true
+    };
+    
+    res.json(templateData);
+  } catch (error) {
+    console.error('Template generation error:', error);
+    res.status(500).json({ error: 'Failed to generate template' });
   }
 });
 

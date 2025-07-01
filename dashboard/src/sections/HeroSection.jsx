@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext';
-import { getStockImages } from '../../../stock.js';
+// import { getStockImages } from '../../../stock.js'; // Removed to fix import in browser
 
 export default function HeroSection() {
   const { company_name, services = [], images = [], google = {} } = useContext(SiteDataContext) || {};
