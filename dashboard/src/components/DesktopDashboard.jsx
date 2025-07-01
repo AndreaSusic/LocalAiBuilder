@@ -66,8 +66,19 @@ export default function DesktopDashboard({ bootstrap }) {
     console.log('Showing template preview:', fullUrl);
   };
 
-  const handleLogout = () => {
-    window.location.href = '/auth/logout';
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/logout', { method: 'GET' });
+      if (response.ok) {
+        window.location.href = '/';
+      } else {
+        // Fallback to direct redirect
+        window.location.href = '/logout';
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      window.location.href = '/logout';
+    }
   };
 
   return (
