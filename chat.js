@@ -812,24 +812,16 @@ async function handleMissing(res){
       sessionStorage.setItem('chatBootstrapData', JSON.stringify(window.bootstrapData));
       console.log('💾 Stored bootstrap data in sessionStorage');
       
-      // Set up OAuth completion listener using postMessage
-      window.addEventListener('message', function(event) {
-        if (event.data === 'OAUTH_COMPLETE') {
-          console.log('✅ OAuth completion message received');
-          // Get stored bootstrap data and redirect
-          const storedData = sessionStorage.getItem('chatBootstrapData');
-          if (storedData) {
-            const data = encodeURIComponent(storedData);
-            const dashboardUrl = `/preview?data=${data}`;
-            console.log('📍 Redirecting to dashboard with stored data:', dashboardUrl);
-            window.location.href = dashboardUrl;
-          }
-        }
-      });
+      // Break out of iframe and redirect parent window to OAuth
+      console.log('🚀 Breaking out of iframe for OAuth flow');
       
-      // Open OAuth in full window redirect instead of popup
-      console.log('🚀 Starting OAuth flow with full page redirect');
-      window.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
+      if (window.parent !== window) {
+        // We're in an iframe, break out to parent
+        window.parent.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
+      } else {
+        // We're in the main window
+        window.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
+      }
     };
 
     // Hide chat footer when sign in button appears
