@@ -67,23 +67,6 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
       generateContent();
     }
   }, [data.company_name, data.industry]);
-
-  // Determine if this is products or services based on industry and content
-  const hasProducts = data.industry && (
-    data.industry.toLowerCase().includes('retail') ||
-    data.industry.toLowerCase().includes('shop') ||
-    data.industry.toLowerCase().includes('store') ||
-    data.industry.toLowerCase().includes('ecommerce') ||
-    data.industry.toLowerCase().includes('manufacturing') ||
-    (data.services && data.services.toLowerCase().includes('product'))
-  );
-  
-  const itemLabel = hasProducts ? 'Product' : 'Service';
-  const itemsLabel = hasProducts ? 'Products' : 'Services';
-  
-  // Parse services/products into array
-  const servicesList = data.services ? data.services.split(',').map(s => s.trim()).filter(s => s) : [];
-  const isSingleItem = servicesList.length === 1;
   
   // Helper functions for industry-specific labels
   const getGalleryTitle = (industry) => {
@@ -135,725 +118,297 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
         }
         h1, h2, h3, h4 {
           font-family: 'Work Sans', sans-serif;
-          color: var(--text);
+          font-weight: 600;
+          line-height: 1.2;
         }
-        a {
-          color: var(--primary);
-          text-decoration: none;
-        }
-        img {
-          max-width: 100%;
+        body {
           display: block;
         }
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+        }
+        .btn {
+          background: var(--primary);
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 25px;
+          cursor: pointer;
+          font-size: 16px;
+          font-weight: 500;
+          text-decoration: none;
+          display: inline-block;
+          transition: all 0.3s ease;
+        }
+        .btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
         
-        /* Navigation */
+        /* Header Styles */
+        .header {
+          background: white;
+          padding: 10px 0;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
         .nav {
           display: flex;
-          align-items: center;
           justify-content: space-between;
-          background: white;
-          padding: 1rem;
-          border-bottom: 1px solid #ddd;
-          position: relative;
-        }
-        .nav a {
-          color: #000;
+          align-items: center;
         }
         .logo {
-          font-size: 1.5rem;
-          font-weight: 700;
-          font-family: 'Work Sans', sans-serif;
+          font-size: 24px;
+          font-weight: bold;
+          color: var(--primary);
+        }
+        .nav-menu {
+          display: flex;
+          list-style: none;
+          gap: 30px;
+        }
+        .nav-menu a {
+          color: var(--text);
+          text-decoration: none;
+          font-weight: 500;
         }
         .hamburger {
           display: none;
-          background: none;
-          border: none;
-          font-size: 1.5rem;
+          flex-direction: column;
           cursor: pointer;
+          gap: 3px;
         }
-        .nav-links {
-          list-style: none;
-          display: flex;
-          gap: 1rem;
-          align-items: center;
-        }
-        .nav-links li {
-          position: relative;
-        }
-        .nav-links li:hover > ul {
-          display: block;
-        }
-        .nav-links li > ul {
-          display: none;
-          position: absolute;
-          top: 2.5rem;
-          left: 0;
-          background: white;
-          border: 1px solid #ddd;
-          padding: 0.5rem 0;
-          min-width: 10rem;
-          z-index: 1000;
-        }
-        .nav-links li > ul li {
-          padding: 0.5rem 1rem;
-        }
-        .nav-links > li > a {
-          padding: 0.5rem;
-        }
-        .contact-phone {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          font-weight: 500;
-        }
-        .cta {
-          background: var(--primary);
-          color: white !important;
-          border: none;
-          padding: 0.5rem 1.25rem;
-          border-radius: 4px;
-          font-weight: 500;
-          cursor: pointer;
-          text-decoration: none;
+        .hamburger span {
+          width: 25px;
+          height: 3px;
+          background: var(--text);
+          transition: 0.3s;
         }
         
-        /* Hero */
+        /* Hero Section */
         .hero {
-          position: relative;
-          background-image: url('https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-          background-size: cover;
-          background-position: center;
+          background: linear-gradient(135deg, var(--bg-light) 0%, white 100%);
+          padding: 80px 0;
           text-align: center;
-          padding: 6rem 1rem;
-          color: white;
-        }
-        .hero::before {
-          content: "";
-          position: absolute;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.4);
-        }
-        .hero * {
-          position: relative;
         }
         .hero h1 {
-          font-size: 3.5rem;
-          margin-bottom: 3.5rem;
-          color: white;
+          font-size: 3rem;
+          color: var(--text);
+          margin-bottom: 20px;
         }
         .hero p {
-          font-size: 1.1rem;
-          margin-bottom: 4.5rem;
-        }
-        .btn-primary {
-          background: var(--secondary);
-          color: var(--text);
-          border: none;
-          padding: 0.75rem 1.5rem;
-          border-radius: 4px;
-          font-size: 1rem;
-          font-weight: 500;
-          cursor: pointer;
+          font-size: 1.2rem;
+          color: #666;
+          margin-bottom: 30px;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
         }
         
-        /* Location Section */
-        .location-section {
-          background: #fff;
-          padding: 40px 20px;
-        }
-        .location-content {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          max-width: 900px;
-          gap: 50px;
-          margin: 0 auto;
-        }
-        .location-image {
-          flex: 1 1 300px;
-        }
-        .location-image img {
-          width: 100%;
-          height: auto;
-          border-radius: 10px;
-        }
-        .location-text {
-          flex: 2 1 400px;
-        }
-        .location-text h2 {
-          font-size: 2rem;
-          margin-bottom: 16px;
-        }
-        .location-text p {
-          font-size: 1rem;
-          line-height: 1.6;
-          margin-bottom: 16px;
-          color: #444;
-        }
-        
-        /* Features */
-        .features {
-          display: flex;
-          justify-content: space-between;
-          gap: 20px;
-          background: white;
-          padding: 3rem 1rem;
-          text-align: center;
-          border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .feature {
-          flex: 1;
-          padding: 1rem;
-        }
-        .feature .icon {
-          font-size: 2.5rem;
-          margin-bottom: 0.75rem;
-          color: var(--primary);
-        }
-        .feature h3 {
-          margin-bottom: 0.5rem;
-          font-size: 1.1rem;
-        }
-        .feature p {
-          font-size: 0.95rem;
-          color: #555;
-        }
-        
-        /* Services */
+        /* Services Section */
         .services {
+          padding: 80px 0;
           background: white;
-          padding: 3rem 1rem;
         }
         .services h2 {
           text-align: center;
-          font-size: 2.75rem;
-          margin-bottom: 3rem;
+          font-size: 2.5rem;
+          margin-bottom: 50px;
+          color: var(--text);
         }
         .services-grid {
           display: grid;
-          gap: 1rem;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 30px;
         }
         .service-card {
-          background: white;
-          border-radius: 6px;
-          overflow: hidden;
-          text-align: center;
-        }
-        .service-card img {
-          width: 100%;
-          aspect-ratio: 1/1;
-          object-fit: cover;
-        }
-        .service-card h4 {
-          padding: 0.75rem;
-          font-size: 1rem;
-          font-weight: 600;
-        }
-        .service-card p {
-          padding: 0 0.75rem 1rem;
-          font-size: 0.9rem;
-          color: #555;
-        }
-        
-        /* Testimonials */
-        .testimonials {
-          background: white;
-          padding: 3rem 1rem;
-          text-align: center;
-        }
-        .testimonials h2 {
-          margin-bottom: 2.5rem;
-          font-size: 2.75rem;
-        }
-        .testimonials-grid {
-          display: grid;
-          gap: 1rem;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        }
-        .testimonial {
           background: var(--bg-light);
-          border-left: 4px solid var(--primary);
-          padding: 1rem;
-          border-radius: 4px;
-          font-style: italic;
-          position: relative;
-        }
-        .testimonial p {
-          margin-bottom: 0.75rem;
-        }
-        .stars {
-          color: gold;
-          font-size: 1.1rem;
-        }
-        
-        /* Team */
-        .team {
-          background: var(--bg-dark);
-          padding: 3rem 1rem;
+          padding: 30px;
+          border-radius: 10px;
           text-align: center;
+          transition: transform 0.3s ease;
         }
-        .team h2 {
-          margin-bottom: 2.5rem;
-          font-size: 2.75rem;
+        .service-card:hover {
+          transform: translateY(-5px);
         }
-        .team-grid {
-          display: grid;
-          gap: 1rem;
-          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        }
-        .team-member img {
-          border-radius: 50%;
-          width: 200px;
-          height: 200px;
-          object-fit: cover;
-          margin: 0 auto 0.5rem;
-        }
-        .team-member h4 {
-          font-size: 1rem;
-          margin-bottom: 0.25rem;
-        }
-        .team-member p {
-          font-size: 0.9rem;
-          color: #555;
-        }
-        
-        /* Gallery */
-        .gallery {
-          background: white;
-          padding: 3rem 1rem;
-        }
-        .gallery h2 {
-          text-align: center;
-          margin-bottom: 2.5rem;
-          font-size: 2.75rem;
-        }
-        .gallery-grid {
-          display: flex;
-          gap: 0.5rem;
-          overflow-x: auto;
-          padding-bottom: 1rem;
-        }
-        .gallery-grid img {
-          flex: 0 0 auto;
-          width: 200px;
-          height: 150px;
-          object-fit: cover;
-          border-radius: 6px;
-        }
-        
-        /* Contact + Map */
-        .contact-form {
-          background: var(--bg-light);
-          padding: 3rem 1rem;
-        }
-        .contact-form h2 {
-          text-align: center;
-          margin-bottom: 2.5rem;
-          font-size: 2.75rem;
-        }
-        .contact-grid {
-          display: grid;
-          gap: 2rem;
-          grid-template-columns: 1fr 1fr;
-        }
-        .contact-grid form {
-          display: grid;
-          gap: 1rem;
-        }
-        .contact-grid input,
-        .contact-grid textarea {
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          font-family: inherit;
-        }
-        .contact-grid button {
-          background: var(--primary);
-          color: white;
-          border: none;
-          padding: 0.75rem;
-          border-radius: 4px;
-          font-size: 1rem;
-          cursor: pointer;
-        }
-        .contact-grid .map-container iframe {
-          width: 100%;
-          height: 100%;
-          border: 0;
-          border-radius: 4px;
-        }
-        
-        /* Secondary CTA */
-        .secondary-cta {
-          background: var(--secondary);
-          padding: 4rem 1rem;
-          text-align: center;
-        }
-        .secondary-cta h2 {
-          font-size: 2.75rem;
-          margin-bottom: 2.5rem;
-        }
-        .secondary-cta p {
-          font-size: 1rem;
-          margin-bottom: 3rem;
+        .service-card h3 {
+          font-size: 1.5rem;
+          margin-bottom: 15px;
           color: var(--text);
         }
-        .btn-accent {
-          background: var(--primary);
-          color: white;
-          border: none;
-          padding: 0.75rem 1.5rem;
-          border-radius: 4px;
-          font-size: 1rem;
-          cursor: pointer;
+        
+        /* About Section */
+        .about {
+          padding: 80px 0;
+          background: var(--bg-light);
+        }
+        .about-content {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 50px;
+          align-items: center;
+        }
+        .about h2 {
+          font-size: 2.5rem;
+          margin-bottom: 20px;
+          color: var(--text);
+        }
+        .about p {
+          font-size: 1.1rem;
+          line-height: 1.8;
+          color: #666;
+        }
+        
+        /* Contact Section */
+        .contact {
+          padding: 80px 0;
+          background: white;
+          text-align: center;
+        }
+        .contact h2 {
+          font-size: 2.5rem;
+          margin-bottom: 20px;
+          color: var(--text);
+        }
+        .contact p {
+          font-size: 1.2rem;
+          color: #666;
+          margin-bottom: 30px;
         }
         
         /* Footer */
-        footer {
-          background: #3f3f3f;
-          color: #eee;
-          padding: 2rem 1rem;
-        }
-        .footer-grid {
-          display: grid;
-          gap: 1.5rem;
-          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        }
-        footer h4 {
-          margin-bottom: 0.75rem;
-          font-size: 1rem;
+        .footer {
+          background: var(--text);
           color: white;
-        }
-        footer a {
-          color: #ccc;
-          display: block;
-          margin-bottom: 0.5rem;
-          font-size: 0.9rem;
-        }
-        .footer-social {
-          display: flex;
-          gap: 14px;
-          align-items: center;
-          margin-top: 8px;
-        }
-        .footer-social .icon {
-          display: inline-flex;
-          width: 38px;
-          height: 38px;
-          border: 1px solid #fff;
-          border-radius: 50%;
-          justify-content: center;
-          align-items: center;
-          transition: background .25s, border-color .25s;
-        }
-        .footer-social .icon svg {
-          width: 20px;
-          height: 20px;
-          fill: #fff;
-        }
-        .footer-social .icon:hover {
-          background: #5DD39E;
-          border-color: #5DD39E;
+          padding: 40px 0;
+          text-align: center;
         }
         
-        /* Mobile Responsive */
-        @media (max-width: 800px) {
+        /* Mobile Styles */
+        @media (max-width: 768px) {
           .hamburger {
-            display: block;
+            display: flex;
           }
-          .nav-links {
-            display: none;
+          .nav-menu {
+            position: fixed;
+            left: -100%;
+            top: 70px;
             flex-direction: column;
-            position: absolute;
-            top: 100%;
-            left: 0;
+            background-color: white;
             width: 100%;
-            background: #fff;
-            border-bottom: 1px solid #ddd;
-            z-index: 1000;
-          }
-          .nav-links.mobile-open {
-            display: flex;
-          }
-          .nav-links li {
-            padding: 0.75rem;
             text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+            padding: 20px 0;
           }
-          .location-content {
-            flex-direction: column;
+          .nav-menu.active {
+            left: 0;
           }
-          .features {
-            flex-direction: column;
-            align-items: stretch;
-            max-width: 900px;
-            margin: 0 auto;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+          .hero h1 {
+            font-size: 2rem;
           }
-          .team-grid {
-            display: flex;
-            overflow-x: auto;
-            gap: 1rem;
-            padding-bottom: 0.5rem;
-          }
-          .team-member {
-            flex: 0 0 auto;
-            margin-bottom: 0;
-          }
-          .contact-grid {
+          .about-content {
             grid-template-columns: 1fr;
+            gap: 30px;
           }
-          .gallery-grid img {
-            width: 150px;
-            height: 100px;
+          .services-grid {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>
-
-      {/* Google Fonts */}
-      <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
       
-      {/* Navigation */}
-      <nav className="nav">
-        <div className="logo">{data.company_name || 'YourLogo'}</div>
-        <button className="hamburger" onClick={toggleMenu} aria-label="Toggle menu">☰</button>
-        <ul className={`nav-links ${isMenuOpen ? 'mobile-open' : ''}`}>
-          <li><a href="#">Home</a></li>
-          <li>
-            <a href="#">Services ▾</a>
-            <ul>
-              <li><a href="#">General Dentistry</a></li>
-              <li><a href="#">Cosmetic Veneers</a></li>
-              <li><a href="#">Invisalign®</a></li>
+      {/* Header */}
+      <header className="header">
+        <div className="container">
+          <nav className="nav">
+            <div className="logo">{data.company_name || 'YourLogo'}</div>
+            <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#services">{itemsLabel}</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+              <li><a href="#" className="btn">Schedule now</a></li>
             </ul>
-          </li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="tel:+123456789" className="contact-phone">📞 +1 234 567 89</a></li>
-          <li><a href="#" className="cta">Schedule now</a></li>
-        </ul>
-      </nav>
+            <div className="hamburger" onClick={toggleMenu}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </nav>
+        </div>
+      </header>
 
-      {/* Hero */}
-      <section className="hero">
-        <h1>{data.company_name || 'Your Practice Name'}</h1>
-        <p>{data.services ? `Professional ${data.services} services` : 'High-quality care in a welcoming environment—expertise you can trust.'}</p>
-        <button className="btn-primary">Schedule Now</button>
-      </section>
-
-      {/* Location & Expertise */}
-      <section className="location-section">
-        <div className="location-content">
-          <div className="location-image">
-            <img src="https://plus.unsplash.com/premium_photo-1674575134867-cb7623d39bdb?w=900&auto=format&fit=crop&q=60" alt="Dentistry Services" />
-          </div>
-          <div className="location-text">
-            <h2>Serving Austin's Smiles with Excellence</h2>
-            <p>At Your Practice, we're proud to be part of the Austin community. From our state-of-the-art facilities in downtown Austin to our friendly, highly trained staff, every element is designed to put you at ease and deliver world-class care.</p>
-            <p>We combine the latest minimally invasive techniques with a warm, inviting atmosphere so you feel relaxed from the moment you walk in.</p>
-            <p>Whether it's a routine cleaning or a complex cosmetic procedure, our team takes the time to listen to your needs, explain every step, and ensure you leave with a healthier, more confident smile.</p>
-          </div>
+      {/* Hero Section */}
+      <section className="hero" id="home">
+        <div className="container">
+          <h1>{textContent.heroTitle}</h1>
+          <p>{textContent.heroSubtitle}</p>
+          <a href="#contact" className="btn">{textContent.ctaText}</a>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="features">
-        <div className="feature">
-          <div className="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M9 7a4 4 0 1 1 6 0v1H9V7z"/>
-              <path d="M21 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/>
-            </svg>
+      {/* Services Section */}
+      <section className="services" id="services">
+        <div className="container">
+          <h2>{textContent.servicesTitle}</h2>
+          <div className="services-grid">
+            {servicesList.map((service, index) => (
+              <div key={index} className="service-card">
+                <h3>{service}</h3>
+                <p>Professional {service.toLowerCase()} services tailored to your needs.</p>
+              </div>
+            ))}
+            {servicesList.length === 0 && (
+              <div className="service-card">
+                <h3>Our {itemLabel}</h3>
+                <p>Professional {data.services?.toLowerCase() || 'services'} tailored to your needs.</p>
+              </div>
+            )}
           </div>
-          <h3>Experienced Dentists</h3>
-          <p>Our highly skilled dentists provide compassionate and personalized care to each patient.</p>
-        </div>
-
-        <div className="feature">
-          <div className="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" strokeWidth="2" viewBox="0 0 24 24">
-              <rect x="3" y="11" width="18" height="10" rx="2"/>
-              <path d="M3 11V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5"/>
-            </svg>
-          </div>
-          <h3>State-of-the-Art Facility</h3>
-          <p>We use advanced technology to ensure accurate diagnoses and effective treatments.</p>
-        </div>
-
-        <div className="feature">
-          <div className="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </div>
-          <h3>Patient-Centered Care</h3>
-          <p>Our friendly team is dedicated to making your visit comfortable and stress-free.</p>
         </div>
       </section>
 
-      {/* Services/Products Section */}
-      <section className="services">
-        <h2>{isSingleItem ? `Our ${itemLabel}` : `Our ${itemsLabel}`}</h2>
-        {isSingleItem ? (
-          // Single service/product layout
-          <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
-            <div className="service-card" style={{ display: 'inline-block', maxWidth: '400px' }}>
-              <img src={data.images && data.images[0] !== 'stock_photos_placeholder' ? data.images[0] : "https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60"} alt="" />
-              <h4>{servicesList[0]}</h4>
-              <p>Professional {servicesList[0].toLowerCase()} {hasProducts ? 'solutions' : 'services'} tailored to your needs.</p>
+      {/* About Section */}
+      <section className="about" id="about">
+        <div className="container">
+          <div className="about-content">
+            <div>
+              <h2>{textContent.aboutTitle}</h2>
+              <p>{textContent.aboutText}</p>
+              <p>Located in {data.city?.[0] || 'your area'}, we're committed to delivering exceptional results for our {getReviewerLabel(data.industry).toLowerCase()}.</p>
+            </div>
+            <div>
+              <div style={{
+                width: '100%',
+                height: '300px',
+                background: 'var(--bg-dark)',
+                borderRadius: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#666'
+              }}>
+                {getGalleryTitle(data.industry)} Image
+              </div>
             </div>
           </div>
-        ) : (
-          // Multiple services/products grid
-          <div className="services-grid">
-            {servicesList.slice(0, 3).map((service, index) => (
-              <div key={index} className="service-card">
-                <img src={data.images && data.images[index] !== 'stock_photos_placeholder' ? data.images[index] : `https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60`} alt="" />
-                <h4>{service}</h4>
-                <p>Professional {service.toLowerCase()} {hasProducts ? 'solutions' : 'services'} designed for excellence.</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Testimonials */}
-      <section className="testimonials">
-        <h2>What Our {getReviewerLabel(data.industry)} Say</h2>
-        <div className="testimonials-grid">
-          {data.google_profile && data.google_profile.reviews && data.google_profile.reviews.length > 0 ? (
-            // Use GBP reviews if available
-            data.google_profile.reviews.slice(0, 3).map((review, index) => (
-              <div key={index} className="testimonial">
-                <h4 style={{ marginBottom: '8px', fontSize: '16px' }}>{review.author_name}</h4>
-                <p>"{review.text}"</p>
-                <div className="stars">{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</div>
-              </div>
-            ))
-          ) : (
-            // Fallback testimonials
-            [
-              {
-                text: "Fantastic experience—couldn't be happier with the service and care I received.",
-                author: "Sarah M.",
-                stars: "★★★★★"
-              },
-              {
-                text: "Professional, friendly staff—every visit exceeded my expectations. Highly recommend!",
-                author: "Michael R.",
-                stars: "★★★★☆"
-              },
-              {
-                text: "Top-quality care in a comfortable environment. My family and I trust them completely.",
-                author: "Lisa K.",
-                stars: "★★★★★"
-              }
-            ].map((testimonial, index) => (
-              <div key={index} className="testimonial">
-                <h4 style={{ marginBottom: '8px', fontSize: '16px' }}>{testimonial.author}</h4>
-                <p>"{testimonial.text}"</p>
-                <div className="stars">{testimonial.stars}</div>
-              </div>
-            ))
-          )}
         </div>
       </section>
 
-      {/* Team - Optional Section */}
-      {data.team_members && data.team_members.length > 0 && (
-        <section className="team">
-          <h2>Meet the Team</h2>
-          <div className="team-grid">
-            {data.team_members.map((member, index) => (
-              <div key={index} className="team-member">
-                <img src={member.photo || "https://images.unsplash.com/photo-1665080954352-5a12ef53017a?w=900&auto=format&fit=crop&q=60"} alt={member.name} />
-                <h4>{member.name}</h4>
-                <p>{member.role}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Gallery - Optional Section */}
-      {data.gallery_images && data.gallery_images.length > 0 && (
-        <section className="gallery">
-          <h2>{data.gallery_title || getGalleryTitle(data.industry)}</h2>
-          <div className="gallery-grid">
-            {data.gallery_images.slice(0, 6).map((image, index) => (
-              <img key={index} src={image} alt={`Gallery image ${index + 1}`} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Contact + Map */}
-      <section className="contact-form">
-        <h2>Get in Touch</h2>
-        <div className="contact-grid">
-          <form>
-            <input type="text" placeholder="Your Name" required />
-            <input type="email" placeholder="Email Address" required />
-            <input type="tel" placeholder="Phone Number" required />
-            <textarea placeholder="How can we help?" rows="4"></textarea>
-            <button type="submit">Submit</button>
-          </form>
-          <div className="map-container">
-            <iframe
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(
-                data.google_profile?.formatted_address || 
-                data.google_profile?.vicinity || 
-                `${data.company_name || 'Business'} ${data.city?.[0] || 'City'}`
-              )}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-              allowFullScreen
-              title="Location Map"
-            ></iframe>
-          </div>
+      {/* Contact Section */}
+      <section className="contact" id="contact">
+        <div className="container">
+          <h2>{textContent.contactTitle}</h2>
+          <p>Ready to get started? Contact us today for a consultation.</p>
+          <a href="#" className="btn">{textContent.ctaText}</a>
         </div>
-      </section>
-
-      {/* Secondary CTA */}
-      <section className="secondary-cta">
-        <h2>Ready to Transform Your Smile?</h2>
-        <p>View available appointments and enjoy dentistry done right.</p>
-        <button className="btn-accent">Contact Us Today</button>
       </section>
 
       {/* Footer */}
-      <footer>
-        <div className="footer-grid">
-          <div>
-            <h4>YourPractice</h4>
-            <p>123 Dental St.<br/>City, State ZIP</p>
-          </div>
-          <div>
-            <h4>Services</h4>
-            <a href="#">General Dentistry</a>
-            <a href="#">Cosmetic Veneers</a>
-            <a href="#">Invisalign®</a>
-          </div>
-          <div>
-            <h4>Quick Links</h4>
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-          </div>
-          <div>
-            <h4>Connect</h4>
-            <div className="footer-social">
-              <a href="#" aria-label="Facebook" className="icon">
-                <svg viewBox="0 0 24 24"><path d="M15 3h4V0h-4c-3.9 0-7 3.1-7 7v3H5v4h3v10h4V14h3.1l.9-4H12V7c0-1.1.9-2 2-2z"/></svg>
-              </a>
-              <a href="#" aria-label="Instagram" className="icon">
-                <svg viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-1.7-1.3-3-3-3H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 12 5.51 5.51 0 0 0 12 7.5zm0 9A3.5 3.5 0 1 1 15.5 13 3.5 3.5 0 0 1 12 16.5zm5.9-10.1a1.3 1.3 0 1 1-1.3-1.3 1.3 1.3 0 0 1 1.3 1.3z"/></svg>
-              </a>
-              <a href="#" aria-label="Google Reviews" className="icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 8.94 5.78h-8.9v3.44h5.4A5.57 5.57 0 0 1 12 17.56a5.56 5.56 0 0 1 0-11.12c1.5 0 2.85.57 3.88 1.5l2.73-2.73A9.92 9.92 0 0 0 12 2z"/></svg>
-              </a>
-            </div>
-          </div>
+      <footer className="footer">
+        <div className="container">
+          <p>&copy; 2024 {data.company_name || 'Your Business'}. All rights reserved.</p>
         </div>
       </footer>
     </div>
