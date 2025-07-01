@@ -195,11 +195,7 @@ function createColorPicker() {
     console.log('Colors selected, proceeding to completion...');
     sendHeight();
     
-    // Force completion by ensuring images are handled
-    if (images.length === 0) {
-      images.push('stock_photos_placeholder');
-    }
-    
+    // Continue to images step (don't force completion here)
     await handleMissing({});
   };
 }
@@ -344,7 +340,7 @@ async function sendUser() {
   if (gbpList.length > 0) {
     console.log('📋 Processing GBP selection with gbpList:', gbpList);
     console.log('📝 User response for GBP confirmation:', text);
-    if (gbpList.length === 1 && (text.toLowerCase().includes('yes') || text.toLowerCase().includes('confirm'))) {
+    if (gbpList.length === 1 && (text.toLowerCase().includes('yes') || text.toLowerCase().includes('ys') || text.toLowerCase().includes('confirm'))) {
       // Add user response to chat FIRST
       bubble('user', text);
       convo.push({role: 'user', content: text});
@@ -490,7 +486,7 @@ async function sendUser() {
       bubble('user', text);
       convo.push({role: 'user', content: text});
       
-      if (text.toLowerCase().includes('yes')) {
+      if (text.toLowerCase().includes('yes') || text.toLowerCase().includes('ys')) {
         // Search for GBP by company name + city
         awaitingKey = null; // Clear the awaiting key
         responseHandled = true; // Mark response as handled
@@ -691,8 +687,6 @@ async function handleMissing(res){
     return;  // wait for Done
   }
 
-  // Font picker will be shown at the final step before sign-in
-
   // Step 3: If images missing, show drop-zone inline and wait for file
   if(images.length===0 && !document.getElementById('inlineDropZone') && !document.querySelector('.skip-images-btn')){
     bubble('ai','Can you upload images and a logo for me to use on your website?');
@@ -772,8 +766,10 @@ async function handleMissing(res){
       
       console.log('🚀 Redirecting to preview with bootstrap data:', window.bootstrapData);
       
-      // Force redirect to preview page
-      window.location.href = '/preview';
+      // Redirect to dashboard with data
+      const dashboardUrl = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:3002/';
+      const data = encodeURIComponent(JSON.stringify(window.bootstrapData));
+      window.location.href = dashboardUrl + '?data=' + data;
     };
 
     // Hide chat footer when sign in button appears
