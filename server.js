@@ -776,6 +776,55 @@ app.get('/api/last-draft', async (req, res) => {
   }
 });
 
+// Additional services/products AI decision endpoint
+app.post('/api/ai-additional-decision', async (req, res) => {
+  try {
+    const { businessData } = req.body;
+    
+    if (!businessData || !businessData.company_name || !businessData.services) {
+      return res.status(400).json({ error: 'Business data with company name and services is required' });
+    }
+
+    const aiDecisionResponse = await openai.chat.completions.create({
+      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      messages: [
+        {
+          role: "system",
+          content: `You are analyzing a business to determine if we should ask about additional products/services. 
+          
+Rules:
+- If the business clearly has ONE main offering (like "grass sod production", "wedding photography", "house cleaning"), respond "no"
+- If the business mentions something broad that typically includes multiple items (like "dental services", "restaurant", "marketing agency"), respond "yes"
+- If the business name suggests specialization (contains words like "specialized", "custom", "boutique" for one thing), respond "no"
+- If uncertain, lean towards "no" to avoid over-questioning
+
+Respond with only "yes" or "no".`
+        },
+        {
+          role: "user", 
+          content: `Business: ${businessData.company_name}
+Industry: ${businessData.industry}
+Services: ${Array.isArray(businessData.services) ? businessData.services.join(', ') : businessData.services}
+City: ${Array.isArray(businessData.city) ? businessData.city[0] : businessData.city}`
+        }
+      ],
+      max_tokens: 10,
+      temperature: 0.3
+    });
+
+    const shouldAsk = aiDecisionResponse.choices[0].message.content.trim().toLowerCase() === 'yes';
+    
+    res.json({ 
+      success: true, 
+      shouldAsk,
+      reasoning: `AI decided ${shouldAsk ? 'to ask' : 'not to ask'} for additional offerings based on business analysis`
+    });
+  } catch (error) {
+    console.error('AI additional decision error:', error);
+    res.status(500).json({ error: 'Failed to make AI decision' });
+  }
+});
+
 // Stock images API endpoint
 app.post('/api/stock-images', async (req, res) => {
   try {

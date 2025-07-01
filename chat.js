@@ -50,7 +50,9 @@ let convo = [], state = {
   },
   google_profile: null,    // NEW  : full "https://goo.gl/maps/…" or business.site url
   payment_plans: null,     // NEW  : "Yes" / "No" / details
-  hero_video: null         // NEW  : YouTube/Vimeo URL or uploaded File
+  hero_video: null,        // NEW  : YouTube/Vimeo URL or uploaded File
+  askedAdditional: false,  // NEW  : tracks if we asked about additional products/services
+  additionalOfferings: null // NEW  : user's response to additional offerings question
 }, images = [],
     turns = 0, MAX_FREE = 15;
 
@@ -775,6 +777,51 @@ async function handleMissing(res){
     // Auto-save draft after each AI response
     saveDraft();
     return;
+  }
+
+  // Step 3.5: Check if we should ask about additional products/services
+  if (!state.askedAdditional && state.services && state.company_name && state.industry) {
+    try {
+      const response = await fetch('/api/ai-additional-decision', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessData: state })
+      });
+      
+      const decision = await response.json();
+      console.log('🤖 AI decision for additional offerings:', decision);
+      
+      if (decision.success && decision.shouldAsk) {
+        // Determine if this is products or services
+        const hasProducts = state.industry && (
+          state.industry.toLowerCase().includes('retail') ||
+          state.industry.toLowerCase().includes('shop') ||
+          state.industry.toLowerCase().includes('store') ||
+          state.industry.toLowerCase().includes('ecommerce') ||
+          state.industry.toLowerCase().includes('manufacturing') ||
+          state.services.toLowerCase().includes('product')
+        );
+        
+        const itemType = hasProducts ? 'products' : 'services';
+        const firstItem = Array.isArray(state.services) ? state.services[0] : state.services;
+        
+        state.askedAdditional = true;
+        const question = `Do you offer any other ${itemType} besides ${firstItem}?`;
+        
+        bubble('ai', question);
+        convo.push({role: 'assistant', content: question});
+        awaitingKey = 'additionalOfferings';
+        saveDraft();
+        return;
+      } else {
+        // AI decided not to ask, mark as asked to continue
+        state.askedAdditional = true;
+      }
+    } catch (error) {
+      console.error('Error making AI decision:', error);
+      // Fallback: don't ask if there's an error
+      state.askedAdditional = true;
+    }
   }
 
   // Step 4: Done – show font picker then prompt and Sign In button
