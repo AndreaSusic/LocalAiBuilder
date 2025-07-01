@@ -194,6 +194,12 @@ function createColorPicker() {
     // Font picker will be shown at the final step
     console.log('Colors selected, proceeding to completion...');
     sendHeight();
+    
+    // Force completion by ensuring images are handled
+    if (images.length === 0) {
+      images.push('stock_photos_placeholder');
+    }
+    
     await handleMissing({});
   };
 }
@@ -738,6 +744,8 @@ async function handleMissing(res){
     // If no images uploaded, fetch stock images automatically
     if (images.length === 0) {
       bubble('ai', 'I\'ll use professional stock photos that match your business. Your website is ready!');
+      // Add placeholder to prevent images step from triggering again
+      images.push('stock_photos_placeholder');
     }
     
     // Show font picker right before completion message
@@ -759,15 +767,12 @@ async function handleMissing(res){
       window.bootstrapData = {
         ...state,
         images: images,
-        google: state.google_profile === 'yes' ? { 
-          phone: '+1 234 567 89',
-          email: 'info@yourwebsite.com',
-          address: '123 Main St, Austin, TX 78701',
-          photos: images.slice(0, 4)
-        } : {}
+        conversation: convo
       };
       
-      // Redirect to preview page
+      console.log('🚀 Redirecting to preview with bootstrap data:', window.bootstrapData);
+      
+      // Force redirect to preview page
       window.location.href = '/preview';
     };
 
