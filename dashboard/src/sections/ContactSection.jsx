@@ -22,14 +22,21 @@ export default function ContactSection() {
   if (Array.isArray(services)) {
     servicesList = services;
   } else if (typeof services === 'string' && services.length > 0) {
-    // For landscaping, look for specific grass types mentioned
+    // For landscaping, look for specific grass types mentioned or extract from context
     if (isLandscaping) {
       const grassTypes = [];
       const lowerServices = services.toLowerCase();
+      
+      // Check for explicit mentions
       if (lowerServices.includes('bermuda')) grassTypes.push('Bermuda Grass');
       if (lowerServices.includes('zoysia')) grassTypes.push('Zoysia Grass');
       if (lowerServices.includes('st. august') || lowerServices.includes('st august')) grassTypes.push('St. Augustine Grass');
       if (lowerServices.includes('buffalo')) grassTypes.push('Buffalo Grass');
+      
+      // If no specific types found but it's a general sod producer, add common Texas grasses
+      if (grassTypes.length === 0 && (lowerServices.includes('sod') || lowerServices.includes('grass'))) {
+        grassTypes.push('Bermuda Grass', 'Zoysia Grass');
+      }
       
       servicesList = grassTypes.length > 0 ? grassTypes : [services];
     } else {
