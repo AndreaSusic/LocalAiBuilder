@@ -51,28 +51,40 @@
     </header>
 
     <main>
-        <!-- Hero Section with Chat Interface -->
-        <section class="hero">
-            <div class="container">
+        <div id="chatContainer">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container">
                 <div class="hero-grid">
                     <div class="hero-content">
-                        <h1 data-lang="heroHead">Appealing title for your Website</h1>
+                        <h1 data-lang="heroHead">Create Your Website in Minutes</h1>
                         <!-- sr: Kreirajte sajt za nekoliko minuta -->
                         <p data-lang="heroUSP">AI-powered website builder that transforms your ideas into professional websites instantly</p>
                         <!-- sr: AI graditelj sajtova koji trenutno pretvara vaše ideje u profesionalne sajtove -->
                     </div>
-                    <div class="chat-pane">
-                        <div id="chatThread">
-                            <!-- AI messages will appear here -->
-                        </div>
-                        <div class="chat-input-container">
-                            <div id="dropArea" class="drop-zone hidden">
+                    <div class="hero-form">
+                        <div class="prompt-container">
+                            <label for="aiPrompt" data-lang="promptLabel">Describe your business or website idea:</label>
+                            <!-- sr: Opišite vašu ideju za posao ili sajt: -->
+                            <textarea id="aiPrompt" rows="4" placeholder="Be as specific as possible: &quot;A modern dental clinic, My Dents, in Chicago offering ceramic veneers, Invisalign, whitening, Botox…&quot;" data-lang="promptPlaceholder"></textarea>
+                            <!-- sr placeholder: Npr., Moderna stomatološka ordinacija u Beogradu koja pruža porodičnu stomatologiju i kozmetičke tretmane... -->
+                            <div class="word-count">
+                                <span id="wordCount">0</span> <span data-lang="wordsLabel">words</span>
+                                <!-- sr: reči -->
+                            </div>
+                            
+                            <p class="prompt-help">
+                                Optional: add company images (logo, team photos).
+                            </p>
+                            
+                            <div id="dropArea" class="drop-zone">
                                 <p>📷 Drop images here or
                                    <label class="file-label">browse
                                      <input type="file" id="promptImages" accept="image/*" multiple hidden>
                                    </label>
                                 </p>
                             </div>
+                            
                             <div id="thumbs"></div>
                             
                             <!-- Follow-up panel for additional inputs -->
@@ -86,11 +98,12 @@
                                     <div class="color-picker">
                                         <label for="col2">Secondary Color:</label>
                                         <input type="color" id="col2" value="#000000">
-                                    </div>
-                                </fieldset>
+ </div>
+  </fieldset>
                                
-                                <label id="wrapFont" class="hidden">
-                                    Choose your font
+
+ <label id="wrapFont" class="hidden">
+Choose your font
                                     <select id="fontSelect">
                                         <option value="Roboto, sans-serif">Roboto</option>
                                         <option value="Open Sans, sans-serif">Open Sans</option>
@@ -144,16 +157,30 @@
                                     </select>
                                 </label>
                             </div>
-                            
-                            <div class="chat-input">
-                                <input type="text" id="chatInput" placeholder="Type your message..." />
-                                <button type="button" id="sendBtn">Send</button>
-                            </div>
-                        </div>
+                              </div>
+                        <button id="btnStart" class="btn-primary" data-lang="ctaStart">Start Building →</button>
+                        <!-- sr: Počni gradnju → -->
                     </div>
+
                 </div>
             </div>
-        </section>
+            </section>
+            
+            <iframe src="/chat" class="chatPane" title="Builder Chat"></iframe>
+        </div>
+        
+        <script>
+        window.addEventListener('message', event => {
+            if (event.data?.type === 'chat-height') {
+                const iframe = document.querySelector('iframe.chatPane');
+                if (iframe) iframe.style.height = (event.data.height + 20) + 'px';
+            }
+            if (event.data?.type === 'trigger-login') {
+                const loginBtn = document.getElementById('loginBtn');
+                if (loginBtn) loginBtn.click();
+            }
+        });
+        </script>
 
         <!-- Benefits Section -->
         <section class="benefits">
@@ -515,7 +542,6 @@
     </footer>
 
     <script src="script.js"></script>
-    <script src="chat.js"></script>
     
     <script>
 (async()=>{
