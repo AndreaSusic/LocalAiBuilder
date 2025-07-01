@@ -803,9 +803,13 @@ async function handleMissing(res){
       
       console.log('🚀 Redirecting to preview with bootstrap data:', window.bootstrapData);
       
-      // Redirect to dashboard with data
-      const dashboardUrl = 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:4000/';
+      // Redirect to dashboard with data using proper Replit URL format
+      // In Replit, port 4000 maps to port 3002 externally
+      const currentDomain = window.location.hostname;
+      const dashboardUrl = `https://${currentDomain}:3002/`;
       const data = encodeURIComponent(JSON.stringify(window.bootstrapData));
+      
+      console.log('📍 Dashboard redirect URL:', dashboardUrl);
       window.location.href = dashboardUrl + '?data=' + data;
     };
 
