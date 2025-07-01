@@ -808,29 +808,28 @@ async function handleMissing(res){
       // Store bootstrap data in sessionStorage before OAuth redirect
       sessionStorage.setItem('bootstrap', JSON.stringify(window.bootstrapData));
       
-      // Open Google OAuth in popup window
-      const authWindow = window.open(
-        '/auth/google?returnTo=' + encodeURIComponent('/preview'),
-        'googleAuth',
-        'width=500,height=600,scrollbars=yes,resizable=yes'
-      );
+      // Store bootstrap data securely in sessionStorage before OAuth
+      sessionStorage.setItem('chatBootstrapData', JSON.stringify(window.bootstrapData));
+      console.log('💾 Stored bootstrap data in sessionStorage');
       
-      // Handle popup completion and redirect in main window
-      const checkClosed = setInterval(() => {
-        if (authWindow.closed) {
-          clearInterval(checkClosed);
-          console.log('🔄 OAuth popup closed, redirecting main window to dashboard');
-          
-          // Redirect main window to preview with bootstrap data
-          const data = encodeURIComponent(JSON.stringify(window.bootstrapData));
-          const dashboardUrl = `/preview?data=${data}`;
-          console.log('📍 Redirecting main window to:', dashboardUrl);
-          console.log('📊 Bootstrap data for redirect:', window.bootstrapData);
-          
-          // Use window.location.href for full page navigation
-          window.location.href = dashboardUrl;
+      // Set up OAuth completion listener using postMessage
+      window.addEventListener('message', function(event) {
+        if (event.data === 'OAUTH_COMPLETE') {
+          console.log('✅ OAuth completion message received');
+          // Get stored bootstrap data and redirect
+          const storedData = sessionStorage.getItem('chatBootstrapData');
+          if (storedData) {
+            const data = encodeURIComponent(storedData);
+            const dashboardUrl = `/preview?data=${data}`;
+            console.log('📍 Redirecting to dashboard with stored data:', dashboardUrl);
+            window.location.href = dashboardUrl;
+          }
         }
-      }, 500);
+      });
+      
+      // Open OAuth in full window redirect instead of popup
+      console.log('🚀 Starting OAuth flow with full page redirect');
+      window.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
     };
 
     // Hide chat footer when sign in button appears

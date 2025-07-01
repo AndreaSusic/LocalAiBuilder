@@ -302,8 +302,21 @@ app.get('/auth/google/callback',
         const returnTo = req.query.returnTo || req.session.returnTo;
         
         if (returnTo === '/preview') {
-          // Close popup and let parent handle redirect
-          res.send('<script>console.log("Closing OAuth popup"); window.close();</script>');
+          // Get stored bootstrap data and redirect to dashboard
+          res.send(`
+            <script>
+              console.log("OAuth complete, retrieving bootstrap data");
+              const storedData = sessionStorage.getItem('chatBootstrapData');
+              if (storedData) {
+                const dashboardUrl = '/preview?data=' + encodeURIComponent(storedData);
+                console.log("Redirecting to dashboard with data:", dashboardUrl);
+                window.location.href = dashboardUrl;
+              } else {
+                console.log("No bootstrap data found, redirecting to empty dashboard");
+                window.location.href = '/preview';
+              }
+            </script>
+          `);
           return;
         }
         
@@ -320,8 +333,21 @@ app.get('/auth/google/callback',
     const returnTo = req.query.returnTo || req.session.returnTo;
     
     if (returnTo === '/preview') {
-      // Close popup and let parent handle redirect  
-      res.send('<script>console.log("Closing OAuth popup - no draft"); window.close();</script>');
+      // Get stored bootstrap data and redirect to dashboard (no draft case)
+      res.send(`
+        <script>
+          console.log("OAuth complete (no draft), retrieving bootstrap data");
+          const storedData = sessionStorage.getItem('chatBootstrapData');
+          if (storedData) {
+            const dashboardUrl = '/preview?data=' + encodeURIComponent(storedData);
+            console.log("Redirecting to dashboard with data:", dashboardUrl);
+            window.location.href = dashboardUrl;
+          } else {
+            console.log("No bootstrap data found, redirecting to empty dashboard");
+            window.location.href = '/preview';
+          }
+        </script>
+      `);
       return;
     }
     
