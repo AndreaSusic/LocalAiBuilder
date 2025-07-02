@@ -211,13 +211,17 @@ app.use('/templates/homepage', (req, res, next) => {
   }
 });
 
-// Template routing - proxy to dashboard for direct URL access
+// Template routing - proxy to development server since production build has issues
 app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
   const ver = req.params.ver;
   console.log(`Template route hit: v${ver}`);
   
-  // Serve the dashboard index.html to handle React Router for this route
-  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+  // Redirect to development server with query params preserved
+  const queryString = req.url.includes('?') ? req.url.split('?')[1] : '';
+  const redirectUrl = `http://localhost:4000/templates/homepage/v${ver}/index.jsx${queryString ? '?' + queryString : ''}`;
+  
+  console.log(`Redirecting to development server: ${redirectUrl}`);
+  res.redirect(302, redirectUrl);
 });
 
 // Service template routing - proxy to dashboard for React Router
@@ -243,10 +247,10 @@ app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'ass
 
 // Preview route for React app (before static files)
 app.get('/preview', (req, res) => {
-  const filePath = path.join(__dirname, 'dashboard', 'dist', 'index.html');
-  console.log('📂 Serving preview from:', filePath);
-  console.log('📂 File exists:', require('fs').existsSync(filePath));
-  res.sendFile(filePath);
+  console.log('📂 Preview route accessed, redirecting to development server');
+  
+  // Redirect to development server since production build has white screen issues
+  res.redirect(302, 'http://localhost:4000/preview');
 });
 
 // Serve static files (after template routes)
