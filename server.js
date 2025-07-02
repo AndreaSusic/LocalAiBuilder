@@ -776,14 +776,22 @@ app.get('/api/user-data', async (req, res) => {
           industry: bootstrapData.industry || 'Your Industry',
           language: bootstrapData.language || 'English',
           colours: bootstrapData.colours || ['#5DD39E', '#EFD5BD'],
-          images: gbpData?.photos ? gbpData.photos.slice(0, 6).map(photo => 
-            `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${photo.photo_reference}&key=${process.env.GOOGLE_PLACES_API_KEY}`
-          ) : (bootstrapData.images || []),
+          images: gbpData?.photos ? gbpData.photos.slice(0, 6).map(photo => {
+            console.log('🖼️ Processing GBP photo:', photo);
+            return photo.photo_reference ? 
+              `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${photo.photo_reference}&key=${process.env.GOOGLE_PLACES_API_KEY}` :
+              photo.url || photo;
+          }) : (bootstrapData.images || []),
           google_profile: gbpData ? {
             name: gbpData.name,
             rating: gbpData.rating,
             user_ratings_total: gbpData.user_ratings_total,
-            photos: gbpData.photos || [],
+            photos: gbpData.photos ? gbpData.photos.map(photo => ({
+              ...photo,
+              url: photo.photo_reference ? 
+                `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=${photo.photo_reference}&key=${process.env.GOOGLE_PLACES_API_KEY}` :
+                photo.url || photo
+            })) : [],
             products: gbpData.products || []
           } : {},
           gbpCid: gbpData?.place_id || null,
