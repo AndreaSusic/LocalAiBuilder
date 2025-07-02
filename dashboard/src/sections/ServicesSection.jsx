@@ -3,7 +3,7 @@ import { SiteDataContext } from '../context/SiteDataContext';
 
 export default function ServicesSection() {
   const contextData = useContext(SiteDataContext) || {};
-  const { services = [], images = [], google_profile = {}, industry = '', ai_customization = {} } = contextData;
+  const { services = [], images = [], google_profile = {}, industry = '', ai_customization = {}, safeImg } = contextData;
   
   const isLandscaping = industry && industry.toLowerCase().includes('landscap');
   
@@ -73,7 +73,7 @@ export default function ServicesSection() {
       <div className="services-grid">
         {servicesToShow.map((service, index) => (
           <div key={index} className="service-card">
-            <img src={service.image} alt={service.title} />
+            <img src={safeImg ? safeImg(service.image) : service.image} alt={service.title} />
             <h4>{service.title}</h4>
             <p>{service.description}</p>
           </div>

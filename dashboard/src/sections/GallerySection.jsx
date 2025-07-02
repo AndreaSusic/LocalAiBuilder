@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext';
 
 export default function GallerySection() {
-  const { images = [], google_profile = {} } = useContext(SiteDataContext) || {};
+  const { images = [], google_profile = {}, safeImg } = useContext(SiteDataContext) || {};
   
   // Use GBP photos first, then provided images
   const gbpPhotos = google_profile.photos || [];
@@ -24,7 +24,7 @@ export default function GallerySection() {
       <h2>Gallery</h2>
       <div className="gallery-grid">
         {galleryImages.map((image, index) => (
-          <img key={index} src={image} alt={`Gallery image ${index + 1}`} />
+          <img key={index} src={safeImg ? safeImg(image) : image} alt={`Gallery image ${index + 1}`} />
         ))}
       </div>
     </section>
