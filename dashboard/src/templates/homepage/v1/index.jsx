@@ -3,6 +3,7 @@ import { SiteDataContext } from '../../../context/SiteDataContext';
 import NavigationSection from '../../../sections/NavigationSection.jsx';
 import HeroSection from '../../../sections/HeroSection.jsx';
 import ServicesSection from '../../../sections/ServicesSection.jsx';
+import ProductsSection from '../../../sections/ProductsSection.jsx';
 import AboutSection from '../../../sections/AboutSection.jsx';
 import GallerySection from '../../../sections/GallerySection.jsx';
 import ReviewsSection from '../../../sections/ReviewsSection.jsx';
@@ -60,6 +61,7 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
         <NavigationSection />
         <HeroSection />
         <ServicesSection />
+        <ProductsSection />
         <AboutSection />
         <GallerySection />
         <ReviewsSection />
