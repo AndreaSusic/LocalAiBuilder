@@ -297,7 +297,30 @@ export default function DesktopDashboard({ bootstrap }) {
           </div>
           <button 
             className="view-live-btn" 
-            onClick={() => window.open(previewContent || "about:blank", "_blank")}
+            onClick={async () => {
+              // Generate a short URL with cached data
+              if (bootstrap && Object.keys(bootstrap).length > 0) {
+                try {
+                  const shortId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+                  
+                  const response = await fetch('/api/cache-preview', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: shortId, data: bootstrap })
+                  });
+                  
+                  if (response.ok) {
+                    window.open(`/t/v1/${shortId}`, '_blank');
+                    return;
+                  }
+                } catch (error) {
+                  console.error('Error creating short URL:', error);
+                }
+              }
+              
+              // Fallback
+              window.open('/t/v1/demo', '_blank');
+            }}
           >
             View Live Site
           </button>
