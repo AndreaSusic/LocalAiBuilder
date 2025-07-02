@@ -47,7 +47,7 @@ export default function HomepageV2({ tokens = {} }) {
               borderRadius: "4px", 
               fontWeight: "500" 
             }}>
-              Schedule now
+              Contact Us
             </a>
           </nav>
 

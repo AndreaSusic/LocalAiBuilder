@@ -59,7 +59,7 @@ export default function HomepageV3({ tokens = {} }) {
               fontSize: "16px",
               boxShadow: "0 4px 15px rgba(102, 126, 234, 0.4)"
             }}>
-              Schedule now
+              Contact Us
             </a>
           </nav>
 
