@@ -44,37 +44,6 @@ if (params.has('data')) {
   }
 } else {
   console.log('⚠️ No bootstrap data found in URL or sessionStorage');
-  
-  // If this is a template URL being accessed directly, try to fetch user data
-  if (window.location.pathname.includes('/templates/') && window.location.pathname.includes('index.jsx')) {
-    console.log('🔧 Template URL detected, attempting to fetch user data...');
-    
-    // Use a promise to handle async loading
-    fetch('/api/user-data', { credentials: 'include' })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error('Could not fetch user data');
-      })
-      .then(userData => {
-        console.log('📦 Fetched user data for template:', userData);
-        bootstrap = userData;
-        
-        // Re-render the app with the new bootstrap data
-        createRoot(document.getElementById('root')).render(
-          <StrictMode>
-            <ThemeProvider>
-              <App bootstrap={bootstrap} />
-            </ThemeProvider>
-          </StrictMode>
-        );
-      })
-      .catch(error => {
-        console.log('❌ Could not fetch user data for template:', error.message);
-        // Continue with empty bootstrap
-      });
-  }
 }
 // -----------------------------------------------------------
 
