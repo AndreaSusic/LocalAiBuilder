@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { SiteDataContext } from '../../../context/SiteDataContext';
+import { validateBeforeRender } from '../../../utils/dataValidation.js';
 import NavigationSection from '../../../sections/NavigationSection.jsx';
 import HeroSection from '../../../sections/HeroSection.jsx';
 import ServicesSection from '../../../sections/ServicesSection.jsx';
-import ProductsSection from '../../../sections/ProductsSection.jsx';
 import AboutSection from '../../../sections/AboutSection.jsx';
 import GallerySection from '../../../sections/GallerySection.jsx';
 import ReviewsSection from '../../../sections/ReviewsSection.jsx';
@@ -41,11 +41,30 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
         .then(response => response.json())
         .then(userData => {
           console.log('Template loaded demo data:', userData);
-          setData(userData);
+          
+          // Run data validation before setting data
+          try {
+            validateBeforeRender(userData);
+            setData(userData);
+          } catch (validationError) {
+            console.error('Data validation failed:', validationError);
+            // Use only safe fallback data if validation fails
+            setData(initialData);
+          }
         })
         .catch(error => {
           console.log('Template using fallback data:', error);
+          setData(initialData);
         });
+    } else {
+      // Validate bootstrap data as well
+      try {
+        validateBeforeRender(bootstrap);
+        setData(bootstrap);
+      } catch (validationError) {
+        console.error('Bootstrap data validation failed:', validationError);
+        setData(initialData);
+      }
     }
   }, [bootstrap]);
   
@@ -63,7 +82,6 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
         <NavigationSection />
         <HeroSection />
         <ServicesSection />
-        <ProductsSection />
         <AboutSection />
         <GallerySection />
         <ReviewsSection />
