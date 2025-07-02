@@ -78,7 +78,7 @@ export default function NavigationSection() {
             <a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a>
           </li>
           <li>
-            <a href="#schedule" className="cta">Schedule Now</a>
+            <a href="#schedule" className="cta">Contact Us</a>
           </li>
         </ul>
       </div>

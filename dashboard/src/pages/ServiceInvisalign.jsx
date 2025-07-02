@@ -13,7 +13,7 @@ export const serviceTokens = {
     "No brackets, no wires — just comfortable, crystal-clear trays that fit your lifestyle.",
     "Eat what you love, brush normally, and watch your smile transform week by week."
   ],
-  ctaLabel: "Schedule Now",
+  ctaLabel: "Contact Us",
 
   problemTitle: "Your Smile Struggles",
   problemImage: "https://plus.unsplash.com/premium_photo-1661774814529-071787053b8e?w=900&auto=format&fit=crop&q=60",
@@ -562,7 +562,7 @@ export default function ServiceInvisalign() {
           color: "var(--text)",
           textDecoration: "none"
         }}>
-          Schedule now
+          Contact Us
         </a>
       </div>
     </div>

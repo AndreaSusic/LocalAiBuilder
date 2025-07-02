@@ -526,7 +526,7 @@ export default function HomepageV1({ tokens = {} }) {
       <section className="hero">
         <h1>Your Practice Name</h1>
         <p>High-quality care in a welcoming environment—expertise you can trust.</p>
-        <button className="btn-primary">Schedule Now</button>
+        <button className="btn-primary">Contact Us</button>
       </section>
 
       {/* Location & Expertise */}

@@ -119,7 +119,6 @@ export default function ContactSection() {
             ) : (
               <>
                 <a href="#reviews">Reviews</a>
-                <a href="#testimonials">Testimonials</a>
               </>
             )}
           </div>

@@ -13,8 +13,9 @@ export default function HeroSection() {
   
   // Use images in priority order: user uploaded, GBP photos, stock images
   const heroImg = images[0] || 
-                  google_profile.photos?.[0] || 
-                  'https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+                  (google_profile.photos?.[0] ? 
+                    `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=${google_profile.photos[0].photo_reference}&key=${process.env.GOOGLE_PLACES_API_KEY}` :
+                    'https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
   
   // Use AI-generated content or fallbacks
   const heroTitle = ai_customization.heroTitle || 
@@ -29,7 +30,7 @@ export default function HeroSection() {
     <section className="hero" style={{ backgroundImage: `url('${heroImg}')` }}>
       <h1>{heroTitle}</h1>
       <p>{heroSubtitle}</p>
-      <button className="btn-primary">{ctaText}</button>
+      <button className="btn-cta">{ctaText}</button>
     </section>
   );
 }
