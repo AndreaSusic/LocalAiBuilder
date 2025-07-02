@@ -910,13 +910,50 @@ app.post('/api/gbp-details', async (req, res) => {
       return res.status(500).json({ error: 'Google API key not configured' });
     }
     
-    // STEP 1: fetch Place ID
-    const idResp = await fetch(
-      `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeUrl)}&inputtype=textquery&fields=place_id&key=${GOOGLE_API_KEY}`
-    ).then(r => r.json());
+    // STEP 1: fetch Place ID - try multiple approaches for g.co URLs
+    let place_id = null;
     
-    const place_id = idResp.candidates?.[0]?.place_id;
-    if (!place_id) return res.status(404).json({ error: 'not found' });
+    // First try to extract place_id directly from URL if it's a g.co link
+    if (placeUrl.includes('g.co/kgs/')) {
+      // For g.co/kgs/ URLs, try text search with the business info from the shortened URL
+      const searchQueries = [
+        'Kigen Plastika Osečina',
+        'Kigen Plastika Serbia', 
+        'septic tanks Osečina',
+        'plastic septic tanks Serbia'
+      ];
+      
+      for (const query of searchQueries) {
+        console.log(`Trying search query: ${query}`);
+        const searchResp = await fetch(
+          `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${GOOGLE_API_KEY}`
+        ).then(r => r.json());
+        
+        if (searchResp.results && searchResp.results.length > 0) {
+          // Look for best match
+          const bestMatch = searchResp.results.find(place => 
+            place.name.toLowerCase().includes('kigen') || 
+            place.name.toLowerCase().includes('plastika')
+          ) || searchResp.results[0];
+          
+          place_id = bestMatch.place_id;
+          console.log(`Found place_id: ${place_id} for ${bestMatch.name}`);
+          break;
+        }
+      }
+    } else {
+      // Standard approach for regular Google Maps URLs
+      const idResp = await fetch(
+        `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeUrl)}&inputtype=textquery&fields=place_id&key=${GOOGLE_API_KEY}`
+      ).then(r => r.json());
+      
+      place_id = idResp.candidates?.[0]?.place_id;
+    }
+    
+    if (!place_id) {
+      console.log('No place_id found for URL:', placeUrl);
+      return res.status(404).json({ error: 'Business not found in Google Places' });
+    }
 
     // STEP 2: details with extended fields including business info
     const details = await fetch(
