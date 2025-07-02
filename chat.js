@@ -40,6 +40,7 @@ let convo = [], state = {
   city: null,
   industry: null,
   language: null,
+  offering_type: null,
   services: null,
   colours: null,
   social: {                // NEW  : fb / ig / tt / li etc.
@@ -672,7 +673,7 @@ async function sendUser() {
 }
 
 function mergeState(obj) {
-  ['company_name', 'industry', 'language', 'services'].forEach(k => {
+  ['company_name', 'industry', 'language', 'offering_type', 'services'].forEach(k => {
     if (obj[k]) state[k] = obj[k];
   });
   
@@ -718,6 +719,7 @@ async function handleMissing(res){
       city:'In which city is your business located?',
       industry:'What industry best describes your business?',
       language:'What primary language should the website use?',
+      offering_type:'Do you primarily offer physical products or services? (Reply "products" or "services")',
       services:'List your most important services or products.',
       social: 'Could you share any business social-media profile links (Facebook, Instagram, TikTok, LinkedIn)? Paste links one below other.',
       google_profile: 'Do you have a Google Business Profile? (Reply "yes" or "no")',
