@@ -8,6 +8,7 @@ import AboutSection from '../../../sections/AboutSection.jsx';
 import GallerySection from '../../../sections/GallerySection.jsx';
 import ReviewsSection from '../../../sections/ReviewsSection.jsx';
 import ContactSection from '../../../sections/ContactSection.jsx';
+import ColorContrastAnalyzer from '../../../components/ColorContrastAnalyzer.jsx';
 import '../../../styles/template.css';
 
 // Helper function to handle placeholder images
@@ -31,6 +32,7 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   };
   
   const [data, setData] = useState(initialData);
+  const [showContrastAnalyzer, setShowContrastAnalyzer] = useState(false);
 
   // Load demo data if no bootstrap provided
   useEffect(() => {
@@ -66,6 +68,47 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
         <GallerySection />
         <ReviewsSection />
         <ContactSection />
+        
+        {/* Floating Color Contrast Analyzer Button */}
+        <button
+          onClick={() => setShowContrastAnalyzer(true)}
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            backgroundColor: 'var(--primary)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '50%',
+            width: '60px',
+            height: '60px',
+            fontSize: '24px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+            zIndex: 100,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.1)';
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+          }}
+          title="Check Color Accessibility"
+        >
+          🎨
+        </button>
+        
+        {/* Color Contrast Analyzer Modal */}
+        <ColorContrastAnalyzer 
+          isVisible={showContrastAnalyzer}
+          onClose={() => setShowContrastAnalyzer(false)}
+        />
       </div>
     </SiteDataContext.Provider>
   );

@@ -13,6 +13,10 @@ export default function ContactSection() {
   const phone = google_profile.phone || '+1 234 567 89';
   const email = google_profile.email || 'info@yourwebsite.com';
   const address = google_profile.address || '123 Main St, Austin, TX 78701';
+  const website = google_profile.website || '';
+  const businessHours = google_profile.business_hours || {};
+  const rating = google_profile.rating || null;
+  const totalReviews = google_profile.total_reviews || 0;
   const mapQuery = ai_customization.mapQuery || `${company_name} ${address}`;
   const contactTitle = ai_customization.contactTitle || 'Contact Us';
   const ctaText = ai_customization.ctaText || 'Book Appointment';
