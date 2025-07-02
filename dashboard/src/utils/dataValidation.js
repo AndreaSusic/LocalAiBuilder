@@ -11,7 +11,14 @@ export const DATA_VALIDATION_CHECKPOINTS = [
   'GBP_ASSOCIATION',
   'USER_ISOLATION',
   'TEMPLATE_DATA_PURITY',
-  'AI_CUSTOMIZATION_COHERENCE'
+  'AI_CUSTOMIZATION_COHERENCE',
+  'MENU_TERMINOLOGY',
+  'INDIVIDUAL_SERVICE_PAGES',
+  'PHONE_NUMBER_VALIDATION',
+  'CONTACT_INFO_CONSISTENCY',
+  'BUSINESS_HOURS_VALIDATION',
+  'REVIEW_AUTHENTICITY',
+  'IMAGE_SOURCE_VALIDATION'
 ];
 
 /**
@@ -82,6 +89,52 @@ export function validateDataIntegrity(siteData, expectedBusinessId = null) {
   if (!results.checkpoints.AI_CUSTOMIZATION_COHERENCE.passed) {
     results.passed = false;
     results.errors.push('AI-generated content does not match business context');
+  }
+
+  // CHECKPOINT 9: Menu Terminology
+  results.checkpoints.MENU_TERMINOLOGY = validateMenuTerminology(siteData);
+  if (!results.checkpoints.MENU_TERMINOLOGY.passed) {
+    results.passed = false;
+    results.errors.push('Menu uses incorrect terminology (Products vs Services)');
+  }
+
+  // CHECKPOINT 10: Individual Service Pages
+  results.checkpoints.INDIVIDUAL_SERVICE_PAGES = validateIndividualServicePages(siteData);
+  if (!results.checkpoints.INDIVIDUAL_SERVICE_PAGES.passed) {
+    results.warnings.push('Individual service pages may need to be created');
+  }
+
+  // CHECKPOINT 11: Phone Number Validation
+  results.checkpoints.PHONE_NUMBER_VALIDATION = validatePhoneNumber(siteData);
+  if (!results.checkpoints.PHONE_NUMBER_VALIDATION.passed) {
+    results.passed = false;
+    results.errors.push('Phone number inconsistency detected');
+  }
+
+  // CHECKPOINT 12: Contact Info Consistency
+  results.checkpoints.CONTACT_INFO_CONSISTENCY = validateContactInfoConsistency(siteData);
+  if (!results.checkpoints.CONTACT_INFO_CONSISTENCY.passed) {
+    results.passed = false;
+    results.errors.push('Contact information inconsistency detected');
+  }
+
+  // CHECKPOINT 13: Business Hours Validation
+  results.checkpoints.BUSINESS_HOURS_VALIDATION = validateBusinessHours(siteData);
+  if (!results.checkpoints.BUSINESS_HOURS_VALIDATION.passed) {
+    results.warnings.push('Business hours may need verification');
+  }
+
+  // CHECKPOINT 14: Review Authenticity
+  results.checkpoints.REVIEW_AUTHENTICITY = validateReviewAuthenticity(siteData);
+  if (!results.checkpoints.REVIEW_AUTHENTICITY.passed) {
+    results.passed = false;
+    results.errors.push('Review authenticity issues detected');
+  }
+
+  // CHECKPOINT 15: Image Source Validation
+  results.checkpoints.IMAGE_SOURCE_VALIDATION = validateImageSources(siteData);
+  if (!results.checkpoints.IMAGE_SOURCE_VALIDATION.passed) {
+    results.warnings.push('Image sources may need verification');
   }
 
   return results;
@@ -392,6 +445,255 @@ function isExpectedBusiness(siteData, businessType) {
     default:
       return false;
   }
+}
+
+/**
+ * CHECKPOINT 9: Validates menu terminology (Products vs Services)
+ */
+function validateMenuTerminology(siteData) {
+  const { services, industry, company_name } = siteData;
+  
+  if (!services) {
+    return { passed: true, reason: 'No services data to validate terminology' };
+  }
+
+  const servicesText = typeof services === 'string' ? services.toLowerCase() : (services || []).join(' ').toLowerCase();
+  const industryText = industry ? industry.toLowerCase() : '';
+  const companyText = company_name ? company_name.toLowerCase() : '';
+  
+  // Determine if business sells products or provides services
+  const productIndicators = ['products', 'goods', 'items', 'merchandise', 'equipment', 'materials', 'supplies', 'septic tanks', 'plastic elements'];
+  const serviceIndicators = ['services', 'consultation', 'treatment', 'repair', 'maintenance', 'installation', 'cleaning', 'dental care'];
+  
+  const hasProductKeywords = productIndicators.some(indicator => 
+    servicesText.includes(indicator) || companyText.includes(indicator)
+  );
+  const hasServiceKeywords = serviceIndicators.some(indicator => 
+    servicesText.includes(indicator) || industryText.includes(indicator)
+  );
+
+  // For businesses like Kigen Plastika (septic tanks), they sell products
+  if (hasProductKeywords && !hasServiceKeywords) {
+    return { 
+      passed: true, 
+      reason: 'Business sells products - menu should use "Products" terminology',
+      recommendation: 'Use "Products" in navigation menu'
+    };
+  }
+  
+  if (hasServiceKeywords && !hasProductKeywords) {
+    return { 
+      passed: true, 
+      reason: 'Business provides services - menu should use "Services" terminology',
+      recommendation: 'Use "Services" in navigation menu'
+    };
+  }
+
+  return { 
+    passed: true, 
+    reason: 'Mixed products/services business - terminology flexible',
+    recommendation: 'Consider using "Products & Services" in menu'
+  };
+}
+
+/**
+ * CHECKPOINT 10: Validates individual service/product pages
+ */
+function validateIndividualServicePages(siteData) {
+  const { services, google_profile = {} } = siteData;
+  
+  if (!services) {
+    return { passed: true, reason: 'No services data to create individual pages' };
+  }
+
+  const servicesList = typeof services === 'string' ? [services] : services;
+  const gbpServices = google_profile.services || [];
+  
+  // Check if multiple distinct services/products are offered
+  const allServices = [...servicesList, ...gbpServices];
+  const distinctServices = [...new Set(allServices.filter(s => s && s.trim().length > 0))];
+  
+  if (distinctServices.length > 1) {
+    return { 
+      passed: false, 
+      reason: `Multiple services detected: ${distinctServices.join(', ')} - individual pages recommended`,
+      recommendation: `Create separate pages for: ${distinctServices.join(', ')}`
+    };
+  }
+
+  return { passed: true, reason: 'Single service/product - individual pages not required' };
+}
+
+/**
+ * CHECKPOINT 11: Validates phone number consistency
+ */
+function validatePhoneNumber(siteData) {
+  const { google_profile = {}, ai_customization = {} } = siteData;
+  
+  const gbpPhone = google_profile.phone;
+  const contactPhone = ai_customization.phone || google_profile.formatted_phone_number;
+  
+  if (!gbpPhone && !contactPhone) {
+    return { passed: true, reason: 'No phone numbers provided - validation skipped' };
+  }
+
+  if (gbpPhone && contactPhone) {
+    // Normalize phone numbers for comparison (remove spaces, dashes, parentheses)
+    const normalizePhone = (phone) => phone.replace(/[\s\-\(\)]/g, '');
+    const normalizedGbp = normalizePhone(gbpPhone);
+    const normalizedContact = normalizePhone(contactPhone);
+    
+    if (normalizedGbp !== normalizedContact) {
+      return { 
+        passed: false, 
+        reason: `Phone number mismatch: GBP(${gbpPhone}) vs Contact(${contactPhone})` 
+      };
+    }
+  }
+
+  return { passed: true, reason: 'Phone numbers are consistent' };
+}
+
+/**
+ * CHECKPOINT 12: Validates contact information consistency
+ */
+function validateContactInfoConsistency(siteData) {
+  const { google_profile = {}, ai_customization = {}, city } = siteData;
+  
+  const gbpAddress = google_profile.address;
+  const gbpEmail = google_profile.email;
+  const contactEmail = ai_customization.email;
+  
+  // Validate email consistency
+  if (gbpEmail && contactEmail && gbpEmail !== contactEmail) {
+    return { 
+      passed: false, 
+      reason: `Email mismatch: GBP(${gbpEmail}) vs Contact(${contactEmail})` 
+    };
+  }
+
+  // Validate address consistency with city
+  if (gbpAddress && city) {
+    const cityList = Array.isArray(city) ? city : [city];
+    const addressLower = gbpAddress.toLowerCase();
+    const cityMatch = cityList.some(c => addressLower.includes(c.toLowerCase()));
+    
+    if (!cityMatch) {
+      return { 
+        passed: false, 
+        reason: `Address city mismatch: Address(${gbpAddress}) vs City(${city})` 
+      };
+    }
+  }
+
+  return { passed: true, reason: 'Contact information is consistent' };
+}
+
+/**
+ * CHECKPOINT 13: Validates business hours
+ */
+function validateBusinessHours(siteData) {
+  const { google_profile = {} } = siteData;
+  
+  const businessHours = google_profile.hours || google_profile.opening_hours;
+  
+  if (!businessHours) {
+    return { 
+      passed: false, 
+      reason: 'No business hours provided - may need to be added',
+      recommendation: 'Add business hours from Google Business Profile'
+    };
+  }
+
+  // Basic validation of hours format
+  if (typeof businessHours === 'object') {
+    const daysWithHours = Object.keys(businessHours).length;
+    if (daysWithHours === 0) {
+      return { 
+        passed: false, 
+        reason: 'Business hours object is empty',
+        recommendation: 'Populate business hours data'
+      };
+    }
+  }
+
+  return { passed: true, reason: 'Business hours are provided' };
+}
+
+/**
+ * CHECKPOINT 14: Validates review authenticity
+ */
+function validateReviewAuthenticity(siteData) {
+  const { google_profile = {} } = siteData;
+  
+  const reviews = google_profile.reviews || [];
+  
+  if (reviews.length === 0) {
+    return { passed: true, reason: 'No reviews to validate' };
+  }
+
+  // Check for suspicious review patterns
+  for (const review of reviews) {
+    if (!review.author_name || !review.text) {
+      return { 
+        passed: false, 
+        reason: 'Review missing required fields (author_name or text)' 
+      };
+    }
+
+    // Check for generic/template reviews
+    const genericPhrases = ['great service', 'highly recommend', 'excellent work', 'very professional'];
+    const reviewText = review.text.toLowerCase();
+    const genericCount = genericPhrases.filter(phrase => reviewText.includes(phrase)).length;
+    
+    if (genericCount > 2 && reviewText.length < 50) {
+      return { 
+        passed: false, 
+        reason: `Potentially generic review detected: "${review.text}"` 
+      };
+    }
+  }
+
+  return { passed: true, reason: 'Reviews appear authentic' };
+}
+
+/**
+ * CHECKPOINT 15: Validates image sources
+ */
+function validateImageSources(siteData) {
+  const { images = [], google_profile = {} } = siteData;
+  
+  const gbpPhotos = google_profile.photos || [];
+  const providedImages = Array.isArray(images) ? images : [];
+  
+  // Check for placeholder images
+  const placeholderPatterns = ['placeholder', 'stock_photos_placeholder', 'example.com', 'lorem'];
+  const hasPlaceholders = [...providedImages, ...gbpPhotos].some(img => 
+    typeof img === 'string' && placeholderPatterns.some(pattern => img.includes(pattern))
+  );
+
+  if (hasPlaceholders) {
+    return { 
+      passed: false, 
+      reason: 'Placeholder images detected - need authentic business photos',
+      recommendation: 'Replace with authentic business photos from GBP or user uploads'
+    };
+  }
+
+  // Check for sufficient image variety
+  const totalImages = gbpPhotos.length + providedImages.filter(img => 
+    typeof img === 'string' && img.length > 0 && !placeholderPatterns.some(p => img.includes(p))
+  ).length;
+
+  if (totalImages < 3) {
+    return { 
+      passed: false, 
+      reason: `Only ${totalImages} images available - more images recommended for better presentation`,
+      recommendation: 'Add more authentic business photos'
+    };
+  }
+
+  return { passed: true, reason: 'Image sources are adequate and authentic' };
 }
 
 /**
