@@ -199,8 +199,12 @@ app.use('/templates/homepage', (req, res, next) => {
 // Serve main static files first (homepage, etc.)
 app.use(express.static('.'));
 
-// Serve dashboard assets only for specific paths
+// Serve dashboard assets for preview routes
+app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'assets')));
 app.use('/dashboard/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'assets')));
+
+// Serve dashboard static files (vite.svg, etc.)
+app.use('/vite.svg', express.static(path.join(__dirname, 'dashboard', 'dist', 'vite.svg')));
 
 // Serve SPA for dashboard routes only
 const dist = path.join(__dirname, 'dashboard', 'dist');

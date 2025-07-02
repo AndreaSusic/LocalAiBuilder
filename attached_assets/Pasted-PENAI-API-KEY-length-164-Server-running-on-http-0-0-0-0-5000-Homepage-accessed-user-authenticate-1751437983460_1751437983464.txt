@@ -1,0 +1,76 @@
+PENAI_API_KEY length: 164
+Server running on http://0.0.0.0:5000
+Homepage accessed, user authenticated: false
+📂 Serving SPA from production build
+📂 Serving SPA from production build
+📂 Serving SPA from production build
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+OAuth state parameter: /preview
+Google profile: {
+  "id": "110795423852052644529",
+  "displayName": "Andrea Susic",
+  "name": {
+    "familyName": "Susic",
+    "givenName": "Andrea"
+  },
+  "emails": [
+    {
+      "value": "andrea.susic29@gmail.com",
+      "verified": true
+    }
+  ],
+  "photos": [
+    {
+      "value": "https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa=s96-c"
+    }
+  ],
+  "provider": "google",
+  "_raw": "{\n  \"sub\": \"110795423852052644529\",\n  \"name\": \"Andrea Susic\",\n  \"given_name\": \"Andrea\",\n  \"family_name\": \"Susic\",\n  \"picture\": \"https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa\\u003ds96-c\",\n  \"email\": \"andrea.susic29@gmail.com\",\n  \"email_verified\": true\n}",
+  "_json": {
+    "sub": "110795423852052644529",
+    "name": "Andrea Susic",
+    "given_name": "Andrea",
+    "family_name": "Susic",
+    "picture": "https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa=s96-c",
+    "email": "andrea.susic29@gmail.com",
+    "email_verified": true
+  }
+}
+Google profile: {
+  id: '110795423852052644529',
+  displayName: 'Andrea Susic',
+  name: { familyName: 'Susic', givenName: 'Andrea' },
+  emails: [ { value: 'andrea.susic29@gmail.com', verified: true } ],
+  photos: [
+    {
+      value: 'https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa=s96-c'
+    }
+  ],
+  provider: 'google',
+  _raw: '{\n' +
+    '  "sub": "110795423852052644529",\n' +
+    '  "name": "Andrea Susic",\n' +
+    '  "given_name": "Andrea",\n' +
+    '  "family_name": "Susic",\n' +
+    '  "picture": "https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa\\u003ds96-c",\n' +
+    '  "email": "andrea.susic29@gmail.com",\n' +
+    '  "email_verified": true\n' +
+    '}',
+  _json: {
+    sub: '110795423852052644529',
+    name: 'Andrea Susic',
+    given_name: 'Andrea',
+    family_name: 'Susic',
+    picture: 'https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa=s96-c',
+    email: 'andrea.susic29@gmail.com',
+    email_verified: true
+  }
+}
+OAuth callback complete, state returnTo: /preview
+✅ User saved to database, redirecting to: /preview
+📂 Serving SPA from production build
+📂 Serving SPA from production build
+📂 Serving SPA from production build
