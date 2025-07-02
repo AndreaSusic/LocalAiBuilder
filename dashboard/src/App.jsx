@@ -38,6 +38,12 @@ export default function App({ bootstrap }) {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  // Check if we're on a short URL path (/t/v1/:id) - show template directly
+  const currentPath = window.location.pathname;
+  if (currentPath.match(/^\/t\/v1\/[a-zA-Z0-9]+$/)) {
+    return <HomepageV1 bootstrap={bootstrap} />;
+  }
+
   return (
     <BrowserRouter>
       <Routes>
