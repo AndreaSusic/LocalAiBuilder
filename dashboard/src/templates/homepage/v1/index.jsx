@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { SiteDataContext } from '../../../context/SiteDataContext';
-import { 
-  NavigationSection,
-  HeroSection, 
-  ServicesSection, 
-  AboutSection, 
-  GallerySection, 
-  ReviewsSection, 
-  ContactSection 
-} from '../../../sections';
+import NavigationSection from '../../../sections/NavigationSection.jsx';
+import HeroSection from '../../../sections/HeroSection.jsx';
+import ServicesSection from '../../../sections/ServicesSection.jsx';
+import AboutSection from '../../../sections/AboutSection.jsx';
+import GallerySection from '../../../sections/GallerySection.jsx';
+import ReviewsSection from '../../../sections/ReviewsSection.jsx';
+import ContactSection from '../../../sections/ContactSection.jsx';
 import '../../../styles/template.css';
 
 // Helper function to handle placeholder images
