@@ -46,24 +46,34 @@ export default function MobileDashboard({ bootstrap }) {
   }, [bootstrap]);
 
   const showTemplatePreview = async (templateUrl) => {
-    // Convert long URLs to short format
-    let shortUrl = templateUrl;
-    if (templateUrl.includes('/templates/homepage/v1/')) shortUrl = '/t/v1';
-    else if (templateUrl.includes('/templates/homepage/v2/')) shortUrl = '/t/v2';
-    else if (templateUrl.includes('/templates/homepage/v3/')) shortUrl = '/t/v3';
-    else if (templateUrl.includes('/templates/service/v1/')) shortUrl = '/s/v1';
-    else if (templateUrl.includes('/templates/contact/v1/')) shortUrl = '/c/v1';
-    
-    // Add bootstrap data to URL if available - but let the server handle session storage
+    // Generate a short URL with cached data
     if (bootstrap && Object.keys(bootstrap).length > 0) {
-      const encoded = encodeURIComponent(JSON.stringify(bootstrap));
-      shortUrl += `?data=${encoded}`;
+      try {
+        // Generate short code for the bootstrap data
+        const shortId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+        
+        // Cache the data on the server
+        const response = await fetch('/api/cache-preview', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: shortId, data: bootstrap })
+        });
+        
+        if (response.ok) {
+          const shortUrl = `/t/v1/${shortId}`;
+          window.open(shortUrl, '_blank');
+          setShowPagesDropdown(false);
+          console.log('Opening template with short URL:', shortUrl);
+          return;
+        }
+      } catch (error) {
+        console.error('Error creating short URL:', error);
+      }
     }
     
-    // Navigate to the short URL which will redirect properly
-    window.open(shortUrl, '_blank');
+    // Fallback: open without data
+    window.open('/t/v1/demo', '_blank');
     setShowPagesDropdown(false);
-    console.log('Opening template in new tab:', shortUrl);
   };
 
   const handleLogout = async () => {
@@ -138,14 +148,29 @@ export default function MobileDashboard({ bootstrap }) {
           </div>
           <button 
             className="view-live-btn-mobile" 
-            onClick={() => {
-              // Use the homepage template with bootstrap data
-              let shortUrl = '/t/v1';
+            onClick={async () => {
+              // Generate a short URL with cached data
               if (bootstrap && Object.keys(bootstrap).length > 0) {
-                const encoded = encodeURIComponent(JSON.stringify(bootstrap));
-                shortUrl += `?data=${encoded}`;
+                try {
+                  const shortId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+                  
+                  const response = await fetch('/api/cache-preview', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: shortId, data: bootstrap })
+                  });
+                  
+                  if (response.ok) {
+                    window.open(`/t/v1/${shortId}`, '_blank');
+                    return;
+                  }
+                } catch (error) {
+                  console.error('Error creating short URL:', error);
+                }
               }
-              window.open(shortUrl, '_blank');
+              
+              // Fallback
+              window.open('/t/v1/demo', '_blank');
             }}
           >
             View Live Site

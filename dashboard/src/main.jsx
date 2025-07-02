@@ -49,7 +49,23 @@ async function loadBootstrap(){
     return window.bootstrapData;
   }
   
-  // Check if we have a dataId parameter (from short URL system)
+  // Check if we're on a short URL path (/t/v1/:id)
+  const pathMatch = window.location.pathname.match(/^\/t\/v1\/(.+)$/);
+  if (pathMatch) {
+    const shortId = pathMatch[1];
+    try {
+      const response = await fetch(`/api/preview/${shortId}`);
+      if (response.ok) {
+        const bootstrap = await response.json();
+        console.log('🔄 Loaded bootstrap data from short URL:', bootstrap.company_name);
+        return bootstrap;
+      }
+    } catch (error) {
+      console.error('Error loading preview data:', error);
+    }
+  }
+  
+  // Check if we have a dataId parameter (legacy support)
   const urlParams = new URLSearchParams(window.location.search);
   const dataId = urlParams.get('dataId');
   
