@@ -218,14 +218,19 @@ app.get('/t/:id', (req, res) => {
   const { data } = req.query;
   const id = req.params.id;
   
+  // Get the proper domain from the request
+  const protocol = req.secure ? 'https' : 'http';
+  const host = req.get('host');
+  const port = host.includes('replit.dev') ? ':3002' : '';
+  
   if (data) {
     // Store data in session to avoid URL length issues
     const dataId = Date.now().toString(36) + Math.random().toString(36).substr(2);
     req.session[`template_data_${dataId}`] = data;
-    const targetUrl = `http://localhost:4000/templates/homepage/${id}/index.jsx?dataId=${dataId}`;
+    const targetUrl = `${protocol}://${host}${port}/templates/homepage/${id}/index.jsx?dataId=${dataId}`;
     res.redirect(302, targetUrl);
   } else {
-    const targetUrl = `http://localhost:4000/templates/homepage/${id}/index.jsx`;
+    const targetUrl = `${protocol}://${host}${port}/templates/homepage/${id}/index.jsx`;
     res.redirect(302, targetUrl);
   }
 });
@@ -234,13 +239,18 @@ app.get('/s/:id', (req, res) => {
   const { data } = req.query;
   const id = req.params.id;
   
+  // Get the proper domain from the request
+  const protocol = req.secure ? 'https' : 'http';
+  const host = req.get('host');
+  const port = host.includes('replit.dev') ? ':3002' : '';
+  
   if (data) {
     const dataId = Date.now().toString(36) + Math.random().toString(36).substr(2);
     req.session[`template_data_${dataId}`] = data;
-    const targetUrl = `http://localhost:4000/templates/service/${id}/index.jsx?dataId=${dataId}`;
+    const targetUrl = `${protocol}://${host}${port}/templates/service/${id}/index.jsx?dataId=${dataId}`;
     res.redirect(302, targetUrl);
   } else {
-    const targetUrl = `http://localhost:4000/templates/service/${id}/index.jsx`;
+    const targetUrl = `${protocol}://${host}${port}/templates/service/${id}/index.jsx`;
     res.redirect(302, targetUrl);
   }
 });
@@ -249,13 +259,18 @@ app.get('/c/:id', (req, res) => {
   const { data } = req.query;
   const id = req.params.id;
   
+  // Get the proper domain from the request
+  const protocol = req.secure ? 'https' : 'http';
+  const host = req.get('host');
+  const port = host.includes('replit.dev') ? ':3002' : '';
+  
   if (data) {
     const dataId = Date.now().toString(36) + Math.random().toString(36).substr(2);
     req.session[`template_data_${dataId}`] = data;
-    const targetUrl = `http://localhost:4000/templates/contact/${id}/index.jsx?dataId=${dataId}`;
+    const targetUrl = `${protocol}://${host}${port}/templates/contact/${id}/index.jsx?dataId=${dataId}`;
     res.redirect(302, targetUrl);
   } else {
-    const targetUrl = `http://localhost:4000/templates/contact/${id}/index.jsx`;
+    const targetUrl = `${protocol}://${host}${port}/templates/contact/${id}/index.jsx`;
     res.redirect(302, targetUrl);
   }
 });
