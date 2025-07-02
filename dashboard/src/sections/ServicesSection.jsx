@@ -19,8 +19,11 @@ export default function ServicesSection() {
   const gbpProducts = google_profile.products || [];
   
   if (gbpProducts.length > 0) {
-    // Use authentic GBP products data
-    servicesList = gbpProducts.slice(0, 3); // Limit to 3 for 3-column layout
+    // Use authentic GBP products data - extract names from objects
+    servicesList = gbpProducts.slice(0, 3).map(product => {
+      if (typeof product === 'string') return product;
+      return product.name || product.title || String(product);
+    });
   } else if (Array.isArray(services)) {
     servicesList = services.slice(0, 3);
   } else if (typeof services === 'string' && services.length > 0) {
