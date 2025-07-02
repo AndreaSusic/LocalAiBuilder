@@ -17,6 +17,9 @@ export default function ContactSection() {
   const contactTitle = ai_customization.contactTitle || 'Contact Us';
   const ctaText = ai_customization.ctaText || 'Book Appointment';
   
+  // Define industry-specific variables before use
+  const isLandscaping = industry && industry.toLowerCase().includes('landscap');
+  
   // Parse services to extract individual products/services
   let servicesList = [];
   if (Array.isArray(services)) {
@@ -45,7 +48,6 @@ export default function ContactSection() {
     }
   }
   
-  const isLandscaping = industry && industry.toLowerCase().includes('landscap');
   const isProduct = isLandscaping;
   const sectionLabel = isProduct ? 'Products' : 'Services';
   
