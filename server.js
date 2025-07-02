@@ -211,21 +211,15 @@ app.use('/templates/homepage', (req, res, next) => {
   }
 });
 
-// Template routing - proxy to development server since production build has issues
+// Template routing - serve production build directly
 app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
   const ver = req.params.ver;
   console.log(`Template route hit: v${ver}`);
   
-  // Get the current host and construct the port 4000 URL
-  const host = req.get('host');
-  const devHost = host.replace('-5000', '-4000').replace(':5000', ':4000');
-  
-  // Redirect to development server with query params preserved
-  const queryString = req.url.includes('?') ? req.url.split('?')[1] : '';
-  const redirectUrl = `https://${devHost}/templates/homepage/v${ver}/index.jsx${queryString ? '?' + queryString : ''}`;
-  
-  console.log(`Redirecting to development server: ${redirectUrl}`);
-  res.redirect(302, redirectUrl);
+  // Serve the dashboard index.html to handle React Router for this route
+  const filePath = path.join(__dirname, 'dashboard', 'dist', 'index.html');
+  console.log(`📂 Serving template from production build: ${filePath}`);
+  res.sendFile(filePath);
 });
 
 // Service template routing - proxy to dashboard for React Router
@@ -735,7 +729,19 @@ app.get('/api/user-data', async (req, res) => {
       if (draftResult.rows.length > 0) {
         console.log('Found draft data for user, converting to website format');
         const draftData = draftResult.rows[0];
-        const state = JSON.parse(draftData.state);
+        let state;
+        
+        // Handle both string and object state formats
+        if (typeof draftData.state === 'string') {
+          try {
+            state = JSON.parse(draftData.state);
+          } catch (e) {
+            console.error('Error parsing draft state:', e);
+            state = {};
+          }
+        } else {
+          state = draftData.state || {};
+        }
         
         // Convert draft to basic website format
         const websiteData = {
