@@ -11,6 +11,16 @@ const upload = multer();
 const path = require('path');
 const fs = require('fs');
 
+// Simple ID generator function
+function generateId(length = 10) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
 const { OpenAI } = require("openai");           // ← ONE import
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY            // ← ONE client
@@ -214,32 +224,51 @@ app.use('/vite.svg', express.static(path.join(__dirname, 'dashboard', 'dist', 'v
 // Serve SPA for dashboard routes only
 const dist = path.join(__dirname, 'dashboard', 'dist');
 
-// Short URL serving for templates with data injection
-app.get('/t/:id', (req, res) => {
-  const { data } = req.query;
-  const id = req.params.id;
+// In-memory cache for preview data (in production, use Redis)
+const previewCache = new Map();
+
+// Short-code template serving
+app.get('/t/v1/:id', async (req, res) => {
+  const { id } = req.params;
+  const cachedData = previewCache.get(id);
   
-  if (data) {
-    try {
-      // Parse and inject bootstrap data directly into the HTML
-      const bootstrapData = JSON.parse(decodeURIComponent(data));
-      
-      // Read the dashboard index.html and inject bootstrap data
-      const htmlPath = path.join(__dirname, 'dashboard', 'dist', 'index.html');
-      let html = fs.readFileSync(htmlPath, 'utf8');
-      
-      // Inject bootstrap data into the HTML
-      const scriptTag = `<script>window.bootstrapData = ${JSON.stringify(bootstrapData)};</script>`;
-      html = html.replace('</head>', `${scriptTag}</head>`);
-      
-      res.send(html);
-    } catch (error) {
-      console.error('Error parsing bootstrap data:', error);
-      res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
-    }
-  } else {
-    res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+  if (!cachedData) {
+    return res.status(404).send('Preview expired or not found');
   }
+  
+  // Serve the dashboard HTML - React will fetch data via API
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
+
+// API endpoint for React to fetch preview data
+app.get('/api/preview/:id', async (req, res) => {
+  const { id } = req.params;
+  const cachedData = previewCache.get(id);
+  
+  if (!cachedData) {
+    return res.status(404).json({ error: 'Preview data not found' });
+  }
+  
+  res.json(cachedData);
+});
+
+// API endpoint to cache preview data from dashboard
+app.post('/api/cache-preview', (req, res) => {
+  const { id, data } = req.body;
+  
+  if (!id || !data) {
+    return res.status(400).json({ error: 'Missing id or data' });
+  }
+  
+  // Cache the data
+  previewCache.set(id, data);
+  
+  // Set TTL - remove after 1 hour
+  setTimeout(() => {
+    previewCache.delete(id);
+  }, 3600000); // 1 hour
+  
+  res.json({ success: true, shortUrl: `/t/v1/${id}` });
 });
 
 app.get('/s/:id', (req, res) => {
@@ -908,8 +937,17 @@ app.get('/api/user-data', async (req, res) => {
           conversation: bootstrapData.conversation || []
         };
         
+        // Generate short code and cache the data
+        const shortId = generateId(10);
+        previewCache.set(shortId, websiteData);
+        
+        // Set TTL - remove after 1 hour
+        setTimeout(() => {
+          previewCache.delete(shortId);
+        }, 3600000); // 1 hour
+        
         console.log('Returning bootstrap data for:', bootstrapData.company_name);
-        return res.json({ ok: true, bootstrap: websiteData });
+        return res.json({ ok: true, bootstrap: websiteData, shortUrl: `/t/v1/${shortId}` });
       }
     }
     
