@@ -754,8 +754,8 @@ app.get('/api/user-data', async (req, res) => {
             user_ratings_total: gbpData.user_ratings_total
           } : {},
           contact: {
-            phone: gbpData?.formatted_phone_number || gbpData?.international_phone_number || null,
-            address: gbpData?.formatted_address || null,
+            phone: gbpData?.formatted_phone_number || gbpData?.international_phone_number || gbpData?.phone_number || null,
+            address: gbpData?.formatted_address || gbpData?.vicinity || gbpData?.address || null,
             website: gbpData?.website || null,
             business_hours: gbpData?.opening_hours?.weekday_text || null
           },
