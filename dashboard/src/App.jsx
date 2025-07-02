@@ -14,6 +14,10 @@ import ContactV1 from "./pages/ContactV1.jsx";
 export default function App({ bootstrap }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  
+  // Debug info
+  console.log('App rendering with bootstrap:', bootstrap);
+  console.log('isMobile:', isMobile);
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 800);

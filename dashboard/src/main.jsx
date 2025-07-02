@@ -62,9 +62,25 @@ async function loadBootstrap(){
 
 loadBootstrap().then(bootstrap=>{
   console.log('BOOTSTRAP >>', bootstrap);
-  createRoot(document.getElementById('root')).render(
-    <ThemeProvider>
-      <App bootstrap={bootstrap} />
-    </ThemeProvider>
-  );
+  console.log('Current path:', window.location.pathname);
+  console.log('Root element exists:', !!document.getElementById('root'));
+  
+  const root = document.getElementById('root');
+  if (!root) {
+    console.error('Root element not found!');
+    return;
+  }
+  
+  try {
+    createRoot(root).render(
+      <ThemeProvider>
+        <App bootstrap={bootstrap} />
+      </ThemeProvider>
+    );
+    console.log('React app rendered successfully');
+  } catch (error) {
+    console.error('Error rendering React app:', error);
+  }
+}).catch(error => {
+  console.error('Error loading bootstrap:', error);
 });
