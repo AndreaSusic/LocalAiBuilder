@@ -209,7 +209,7 @@ app.use('/vite.svg', express.static(path.join(__dirname, 'dashboard', 'dist', 'v
 // Serve SPA for dashboard routes only
 const dist = path.join(__dirname, 'dashboard', 'dist');
 
-app.get(['/preview', '/template/:id'], (_req, res) => {
+app.get(['/preview', '/template/:id', '/templates/homepage/v1/index.jsx', '/templates/homepage/v2/index.jsx', '/templates/homepage/v3/index.jsx'], (_req, res) => {
   console.log('📂 Serving SPA from production build');
   res.sendFile(path.join(dist, 'index.html'));
 });
