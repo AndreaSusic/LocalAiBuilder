@@ -28,14 +28,14 @@ export default function MobileDashboard({ bootstrap }) {
           if (response.ok) {
             const userData = await response.json();
             const encoded = encodeURIComponent(JSON.stringify(userData));
-            const userDataUrl = `/templates/homepage/v1/index.jsx?data=${encoded}`;
+            const userDataUrl = `/t/v1?data=${encoded}`;
             setPreviewContent(userDataUrl);
             console.log('Auto-loaded user data for mobile preview');
           }
         } catch (error) {
           console.log('Could not auto-load user data:', error.message);
           // Load demo data as fallback
-          const demoUrl = `/templates/homepage/v1/index.jsx`;
+          const demoUrl = `/t/v1`;
           setPreviewContent(demoUrl);
           console.log('Loaded demo template as fallback');
         }
@@ -46,15 +46,22 @@ export default function MobileDashboard({ bootstrap }) {
   }, [bootstrap]);
 
   const showTemplatePreview = (templateUrl) => {
-    let fullUrl = templateUrl;
+    // Convert long URLs to short format
+    let shortUrl = templateUrl;
+    if (templateUrl.includes('/templates/homepage/v1/')) shortUrl = '/t/v1';
+    else if (templateUrl.includes('/templates/homepage/v2/')) shortUrl = '/t/v2';
+    else if (templateUrl.includes('/templates/homepage/v3/')) shortUrl = '/t/v3';
+    else if (templateUrl.includes('/templates/service/v1/')) shortUrl = '/s/v1';
+    else if (templateUrl.includes('/templates/contact/v1/')) shortUrl = '/c/v1';
+    
     // Add bootstrap data to URL if available
     if (bootstrap && Object.keys(bootstrap).length > 0) {
       const encoded = encodeURIComponent(JSON.stringify(bootstrap));
-      fullUrl += `?data=${encoded}`;
+      shortUrl += `?data=${encoded}`;
     }
-    setPreviewContent(fullUrl);
+    setPreviewContent(shortUrl);
     setShowPagesDropdown(false);
-    console.log('Showing mobile template preview:', fullUrl);
+    console.log('Showing mobile template preview:', shortUrl);
   };
 
   const handleLogout = async () => {
