@@ -10,6 +10,7 @@ import HomepageV2 from "./templates/homepage/v2/index.jsx";
 import HomepageV3 from "./templates/homepage/v3/index.jsx";
 import ServiceInvisalign from "./pages/ServiceInvisalign.jsx";
 import ContactV1 from "./pages/ContactV1.jsx";
+import { validateBeforeRender } from "./utils/dataValidation";
 
 export default function App({ bootstrap }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
@@ -18,6 +19,18 @@ export default function App({ bootstrap }) {
   // Debug info
   console.log('App rendering with bootstrap:', bootstrap);
   console.log('isMobile:', isMobile);
+
+  // Data validation for templates
+  useEffect(() => {
+    if (bootstrap && bootstrap.company_name) {
+      try {
+        validateBeforeRender(bootstrap);
+      } catch (error) {
+        console.error('❌ CRITICAL: Data validation failed for bootstrap data:', error.message);
+        // In production, this should redirect to an error page or show a validation error
+      }
+    }
+  }, [bootstrap]);
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 800);
