@@ -788,6 +788,7 @@ app.get('/api/user-data', async (req, res) => {
               }
             ] : []
           ),
+          team: [], // Ensure team is empty for Kigen Plastika (no team data provided)
           contact: {
             phone: gbpData?.phone || null,
             address: gbpData?.address || null,
