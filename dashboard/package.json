@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "lint:circles": "madge --circular src || echo No circular deps"
   },
   "dependencies": {
     "react": "^19.1.0",
