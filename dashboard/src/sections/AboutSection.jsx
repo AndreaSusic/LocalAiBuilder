@@ -4,6 +4,9 @@ import { SiteDataContext } from '../context/SiteDataContext.js';
 export default function AboutSection() {
   const { company_name, city = [], images = [], industry = '', google_profile = {}, team = [] } = useContext(SiteDataContext) || {};
   
+  // Debug team data to understand why dummy data appears
+  console.log('AboutSection DEBUG - Team data:', team, 'Length:', team.length);
+  
   const cityName = Array.isArray(city) ? city[0] || 'Austin' : city;
   const gbpPhotos = google_profile.photos || [];
   const providedImages = Array.isArray(images) ? 

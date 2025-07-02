@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { ThemeProvider } from './lib/theme.jsx'
+import { initColorGuard } from './utils/colorGuard.js'
 import { renderProducts } from './utils/renderProducts.js'
 
 // 3-tier product loading system
@@ -118,6 +119,11 @@ loadBootstrap().then(bootstrap=>{
     
     // Load products after React app is rendered
     loadProducts(bootstrap);
+    
+    // Initialize Color Guard after React mounts
+    setTimeout(() => {
+      initColorGuard();
+    }, 100);
   } catch (error) {
     console.error('Error rendering React app:', error);
   }
