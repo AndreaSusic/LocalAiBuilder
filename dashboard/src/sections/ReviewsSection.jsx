@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext';
 
 export default function ReviewsSection() {
-  const { google_profile = {}, ai_customization = {} } = useContext(SiteDataContext) || {};
+  const { google_profile = {}, reviews = [], rating = null, ai_customization = {} } = useContext(SiteDataContext) || {};
   
   const defaultTestimonials = [
     {
@@ -22,11 +22,11 @@ export default function ReviewsSection() {
     }
   ];
 
-  // Use GBP reviews if available, with proper star formatting
-  const testimonials = google_profile.reviews && google_profile.reviews.length > 0 
-    ? google_profile.reviews.map(review => ({
+  // Use authentic GBP reviews if available, with proper star formatting
+  const testimonials = reviews && reviews.length > 0 
+    ? reviews.map(review => ({
         text: review.text,
-        author: review.author,
+        author: review.author_name,
         stars: "★".repeat(review.rating) + "☆".repeat(5 - review.rating)
       }))
     : defaultTestimonials;
