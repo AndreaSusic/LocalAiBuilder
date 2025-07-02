@@ -219,20 +219,19 @@ app.get('/templates/contact/v:ver/index.jsx', (req, res) => {
   res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
-// Serve dashboard assets (before main static files)
-app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'assets')));
+// Serve main static files first (homepage, etc.)
+app.use(express.static('.'));
 
-// Serve SPA for every non-API route
+// Serve dashboard assets only for specific paths
+app.use('/dashboard/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'assets')));
+
+// Serve SPA for dashboard routes only
 const dist = path.join(__dirname, 'dashboard', 'dist');
-app.use(express.static(dist));
 
 app.get(['/preview', '/template/:id'], (_req, res) => {
   console.log('📂 Serving SPA from production build');
   res.sendFile(path.join(dist, 'index.html'));
 });
-
-// Serve static files (after template routes)
-app.use(express.static('.'));
 
 // Auth routes
 app.get('/auth/google', 
