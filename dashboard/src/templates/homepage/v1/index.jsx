@@ -39,8 +39,9 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
     if (!bootstrap || Object.keys(bootstrap).length === 0) {
       fetch('/api/user-data', { credentials: 'include' })
         .then(response => response.json())
-        .then(userData => {
-          console.log('Template loaded demo data:', userData);
+        .then(apiResponse => {
+          console.log('Template loaded demo data:', apiResponse);
+          const userData = apiResponse.bootstrap || apiResponse;
           
           // Run data validation before setting data
           try {
