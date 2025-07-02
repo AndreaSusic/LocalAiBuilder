@@ -1,0 +1,72 @@
+recalculate_head_data
+main.jsx:64 BOOTSTRAP >> {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+main.jsx:65 Current path: /preview
+main.jsx:66 Root element exists: true
+main.jsx:80 React app rendered successfully
+App.jsx:20 App rendering with bootstrap: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+App.jsx:21 isMobile: false
+dataValidation.js:703 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:707 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(2)}
+dataValidation.js:723 ✅ DATA VALIDATION PASSED - Safe to render template
+logo.svg:1 
+            
+            
+           GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/logo.svg 404 (Not Found)
+Image
+vf @ react-dom-client.production.js:8427
+jf @ react-dom-client.production.js:8776
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8775
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8775
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8775
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8775
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8711
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8819
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8711
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8711
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8819
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8819
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8711
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8711
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8711
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8819
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8711
+ol @ react-dom-client.production.js:9559
+jf @ react-dom-client.production.js:8747
+Qf @ react-dom-client.production.js:11210
+Vf @ react-dom-client.production.js:11070
+Bf @ react-dom-client.production.js:10490
+Uf @ react-dom-client.production.js:10419
+Pf @ react-dom-client.production.js:11626
+$e @ scheduler.production.js:151
+Console.js:61 BOOTSTRAP >> {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 Current path: /templates/homepage/v1/index.jsx
+Console.js:61 Root element exists: true
+Console.js:61 React app rendered successfully
+Console.js:61 App rendering with bootstrap: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 isMobile: false
+Console.js:61 HomepageV1 using data: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(2)}
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+[object%20Object]:1 
+            
+            
+           GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/[object%20Object] 404 (Not Found)
+web-client-content-script.js:2 Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.
+    at HTMLIFrameElement.<anonymous> (web-client-content-script.js:2:402720)
+(anonymous) @ web-client-content-script.js:2
