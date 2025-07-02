@@ -1,0 +1,75 @@
+dataValidation.js:707 📊 VALIDATION RESULTS: 
+{passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(2)}
+checkpoints
+: 
+Array(15)
+0
+: 
+{checkpoint: 'COMPANY_NAME_MATCH', passed: true, reason: 'Company name is consistent across all data sources'}
+1
+: 
+{checkpoint: 'SERVICES_CONSISTENCY', passed: true, reason: 'Non-grass landscaping services validated'}
+2
+: 
+{checkpoint: 'INDUSTRY_ALIGNMENT', passed: true, reason: 'Industry classification aligns with services'}
+3
+: 
+{checkpoint: 'LOCATION_ACCURACY', passed: true, reason: 'Location data is consistent across all sources'}
+4
+: 
+{checkpoint: 'GBP_ASSOCIATION', passed: true, reason: 'No GBP data provided - validation skipped'}
+5
+: 
+{checkpoint: 'USER_ISOLATION', passed: true, reason: 'User data isolation maintained'}
+6
+: 
+{checkpoint: 'TEMPLATE_DATA_PURITY', passed: true, reason: 'Template data is pure and business-specific'}
+7
+: 
+{checkpoint: 'AI_CUSTOMIZATION_COHERENCE', passed: true, reason: 'AI customization is coherent with business data'}
+8
+: 
+{checkpoint: 'MENU_TERMINOLOGY', passed: true, reason: 'Business sells products - menu should use "Products" terminology'}
+9
+: 
+{checkpoint: 'INDIVIDUAL_SERVICE_PAGES', passed: true, reason: 'Single service/product - individual pages not required'}
+10
+: 
+{checkpoint: 'PHONE_NUMBER_VALIDATION', passed: true, reason: 'No phone numbers provided - validation skipped'}
+11
+: 
+{checkpoint: 'CONTACT_INFO_CONSISTENCY', passed: true, reason: 'Contact information is consistent'}
+12
+: 
+{checkpoint: 'BUSINESS_HOURS_VALIDATION', passed: false, reason: 'No business hours provided - may need to be added'}
+13
+: 
+{checkpoint: 'REVIEW_AUTHENTICITY', passed: true, reason: 'No reviews to validate'}
+14
+: 
+{checkpoint: 'IMAGE_SOURCE_VALIDATION', passed: false, reason: 'Placeholder images detected - need authentic business photos'}
+length
+: 
+15
+[[Prototype]]
+: 
+Array(0)
+errors
+: 
+[]
+passed
+: 
+true
+warnings
+: 
+(2) ['Business hours may need verification', 'Image sources may need verification']
+[[Prototype]]
+: 
+Object
+dataValidation.js:723 ✅ DATA VALIDATION PASSED - Safe to render template
+stock_photos_placeholder:1 
+ GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/stock_photos_placeholder 404 (Not Found)
+2
+extension_content.js:1 recalculate_head_data
+﻿
+

@@ -11,8 +11,15 @@ export default function ServicesSection() {
   
   // Parse services to extract individual products/services
   let servicesList = [];
-  if (Array.isArray(services)) {
-    servicesList = services;
+  
+  // Check if GBP has specific products data
+  const gbpProducts = google_profile.products || [];
+  
+  if (gbpProducts.length > 0) {
+    // Use authentic GBP products data
+    servicesList = gbpProducts.slice(0, 3); // Limit to 3 for 3-column layout
+  } else if (Array.isArray(services)) {
+    servicesList = services.slice(0, 3);
   } else if (typeof services === 'string' && services.length > 0) {
     // For landscaping, look for specific grass types mentioned or extract from context
     if (isLandscaping) {
@@ -30,10 +37,15 @@ export default function ServicesSection() {
         grassTypes.push('Bermuda Grass', 'Zoysia Grass');
       }
       
-      servicesList = grassTypes.length > 0 ? grassTypes : [services];
+      servicesList = grassTypes.length > 0 ? grassTypes.slice(0, 3) : [services];
     } else {
-      // For other industries, split by common delimiters
-      servicesList = services.split(/[,&+]/).map(s => s.trim()).filter(s => s.length > 0);
+      // For septic tanks and other industries, create specific product list
+      if (services.toLowerCase().includes('septic')) {
+        servicesList = ['Septic Tanks', 'Plastic Components', 'Installation Services'];
+      } else {
+        // For other industries, split by common delimiters
+        servicesList = services.split(/[,&+]/).map(s => s.trim()).filter(s => s.length > 0).slice(0, 3);
+      }
     }
   }
   
@@ -72,7 +84,7 @@ export default function ServicesSection() {
   return (
     <section className="services">
       <h2>{sectionTitle}</h2>
-      <div className="services-grid">
+      <div className="services-grid three-columns">
         {servicesToShow.map((service, index) => (
           <div key={index} className="service-card">
             <img src={safeImg ? safeImg(service.image) : service.image} alt={service.title} />
