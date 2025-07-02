@@ -714,7 +714,7 @@ app.get('/api/user-data', async (req, res) => {
           images: state.images || [],
           google_profile: state.google_profile || {},
           ai_customization: state.ai_customization || {},
-          conversation: JSON.parse(siteData.convo || '[]')
+          conversation: typeof siteData.convo === 'string' ? JSON.parse(siteData.convo || '[]') : (siteData.convo || [])
         };
         
         return res.json(websiteData);
@@ -763,7 +763,7 @@ app.get('/api/user-data', async (req, res) => {
             cta_text: 'Contact Us',
             map_query: `${state.company_name || 'business'} ${Array.isArray(state.city) ? state.city[0] : state.city || ''}`
           },
-          conversation: JSON.parse(draftData.convo || '[]')
+          conversation: typeof draftData.convo === 'string' ? JSON.parse(draftData.convo || '[]') : (draftData.convo || [])
         };
         
         return res.json(websiteData);
