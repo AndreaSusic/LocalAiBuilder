@@ -1,0 +1,115 @@
+
+
+
+🏳️‍⚠️  RUNTIME BUG: “Cannot access 'R' before initialization”
+=============================================================
+Rollup/Vite throws this when there is a circular ES-module import.  
+We also see 404s for `/logo.svg` and `/stock_photos_placeholder`.
+
+GOALS (single commit)
+---------------------
+1.  Find & break the circular import so React mounts.
+2.  Add sourcemaps + a `madge` script for future detection.
+3.  Serve static assets from `/public/assets` and update paths.
+4.  Add a default `/public/robots.txt`.
+
+──────────────────────────────────────────────
+STEP 1 · enable source-maps & madge
+──────────────────────────────────────────────
+🔸 **vite.config.js**
+
+```diff
+ export default defineConfig({
+   plugins:[react()],
+-  base:'/',
++  base:'/',
++  build:{ sourcemap:true }
+ });
+
+🔸 package.json
+
+ "dev":"vite",
+ "build":"vite build",
++ "lint:circles":"madge --circular src || echo No circular deps"
+
+Add dev-dependency:
+
+npm i -D madge
+
+──────────────────────────────────────────────
+STEP 2 · locate the circular pair
+──────────────────────────────────────────────
+	1.	Run: npm run lint:circles
+Expect something like
+Circular dependencies: HomePage.jsx -> sections/index.js -> HomePage.jsx
+	2.	Open those files.
+
+──────────────────────────────────────────────
+STEP 3 · break the circle (example fix)
+──────────────────────────────────────────────
+Before
+
+// HomePage.jsx
+import { Hero } from './sections';
+...
+export const PageContext = createContext();  // <-- export AND define here
+
+// sections/index.js
+export { default as Hero } from './Hero';
+import { PageContext } from '../HomePage';   // <-- circular
+
+After
+
+// context/PageContext.js          <-- NEW
+import { createContext } from 'react';
+export const PageContext = createContext(null);
+
+// HomePage.jsx
+-import { Hero } from './sections';
+-import { PageContext } from './HomePage';
++import { Hero } from './sections';
++import { PageContext } from '../context/PageContext';
+
+// sections/index.js
+-export { default as Hero } from './Hero';
+-import { PageContext } from '../HomePage';
++export { default as Hero } from './Hero';
+
+Remove all cross-imports between sections/index.js and page components.
+
+Run npm run lint:circles again — should output “No circular deps”.
+
+──────────────────────────────────────────────
+STEP 4 · fix 404 assets
+──────────────────────────────────────────────
+	1.	Move logo.svg to /public/assets/logo.svg.
+	2.	Update imports/<img> to /assets/logo.svg (absolute path).
+	3.	Replace "stock_photos_placeholder" with a real fallback in HomePageV1:
+
+const safeImg = (url)=> url.includes('placeholder')
+  ? '/assets/placeholder.jpg'
+  : url;
+
+──────────────────────────────────────────────
+STEP 5 · robots.txt
+──────────────────────────────────────────────
+Create /public/robots.txt:
+
+User-agent: *
+Allow: /
+Sitemap: https://goaisite.com/sitemap.xml
+
+──────────────────────────────────────────────
+STEP 6 · test
+──────────────────────────────────────────────
+	1.	npm run build  ➜ Should succeed, no Rollup errors.
+	2.	Click Run ➜ Visit /preview?...
+	3.	DevTools Console ➜ no red errors, React renders Kigen Plastika homepage.
+	4.	Network ➜ /logo.svg and /placeholder.jpg return 200, not 404.
+
+Make these edits in one commit.  Confirm npm run lint:circles passes and the page no longer white-screens.
+
+---
+
+Ask Ghostwriter to apply the steps; rebuild & run.  
+You should land on `/preview` with your generated homepage instead of a blank screen.
