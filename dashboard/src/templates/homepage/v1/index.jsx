@@ -58,6 +58,9 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
           }
           body { background: white !important; color: #333 !important; }
         `}</style>
+        <div style={{ padding: '20px', background: '#f0f0f0', textAlign: 'center', fontSize: '18px', color: '#333' }}>
+          DEBUG: {data.company_name || 'No Company'} - Enhanced Data: {data.google_profile?.products ? 'YES' : 'NO'}
+        </div>
         <NavigationSection />
         <HeroSection />
         <ServicesSection />
