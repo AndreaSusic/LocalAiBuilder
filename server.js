@@ -216,10 +216,9 @@ app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
   const ver = req.params.ver;
   console.log(`Template route hit: v${ver}`);
   
-  // Get the current host but change port to 4000 for development server
+  // Get the current host and construct the port 4000 URL
   const host = req.get('host');
-  const baseHost = host.replace(':5000', '').replace('-5000', '');
-  const devHost = `${baseHost}-4000.${host.split('.').slice(1).join('.')}`;
+  const devHost = host.replace('-5000', '-4000').replace(':5000', ':4000');
   
   // Redirect to development server with query params preserved
   const queryString = req.url.includes('?') ? req.url.split('?')[1] : '';
@@ -254,13 +253,24 @@ app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'ass
 app.get('/preview', (req, res) => {
   console.log('📂 Preview route accessed, redirecting to development server');
   
-  // Get the current host but change port to 4000 for development server
+  // For Replit, port 4000 maps to a different subdomain
+  // Current: 840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev (port 5000)
+  // Port 4000: should be similar but with different mapping
   const host = req.get('host');
-  const baseHost = host.replace(':5000', '').replace('-5000', '');
-  const devUrl = `https://${baseHost}-4000.${host.split('.').slice(1).join('.')}/preview`;
   
-  console.log(`Redirecting to development server: ${devUrl}`);
-  res.redirect(302, devUrl);
+  // Check if this is a standard replit domain
+  if (host.includes('.picard.replit.dev')) {
+    // For Replit, we need to access port 4000 via the external URL
+    // Since we don't know the exact mapping, let's try the production build instead
+    const filePath = path.join(__dirname, 'dashboard', 'dist', 'index.html');
+    console.log('📂 Serving preview from production build:', filePath);
+    res.sendFile(filePath);
+  } else {
+    // Local development
+    const devUrl = `https://${host.replace(':5000', ':4000')}/preview`;
+    console.log(`Redirecting to development server: ${devUrl}`);
+    res.redirect(302, devUrl);
+  }
 });
 
 // Serve static files (after template routes)
