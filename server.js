@@ -243,28 +243,13 @@ app.get('/templates/contact/v:ver/index.jsx', (req, res) => {
 // Serve dashboard assets (before main static files)
 app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'assets')));
 
-// Preview route for React app (before static files)
-app.get('/preview', (req, res) => {
-  console.log('📂 Preview route accessed, redirecting to development server');
-  
-  // For Replit, port 4000 maps to a different subdomain
-  // Current: 840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev (port 5000)
-  // Port 4000: should be similar but with different mapping
-  const host = req.get('host');
-  
-  // Check if this is a standard replit domain
-  if (host.includes('.picard.replit.dev')) {
-    // For Replit, we need to access port 4000 via the external URL
-    // Since we don't know the exact mapping, let's try the production build instead
-    const filePath = path.join(__dirname, 'dashboard', 'dist', 'index.html');
-    console.log('📂 Serving preview from production build:', filePath);
-    res.sendFile(filePath);
-  } else {
-    // Local development
-    const devUrl = `https://${host.replace(':5000', ':4000')}/preview`;
-    console.log(`Redirecting to development server: ${devUrl}`);
-    res.redirect(302, devUrl);
-  }
+// Serve SPA for every non-API route
+const dist = path.join(__dirname, 'dashboard', 'dist');
+app.use(express.static(dist));
+
+app.get(['/', '/preview', '/template/:id'], (_req, res) => {
+  console.log('📂 Serving SPA from production build');
+  res.sendFile(path.join(dist, 'index.html'));
 });
 
 // Serve static files (after template routes)
@@ -654,6 +639,11 @@ app.get('/api/user-data', async (req, res) => {
     console.log('User object:', req.user);
     console.log('Session ID:', req.sessionID);
     
+    // Return 401 if no authenticated user and no session data
+    if (!req.isAuthenticated() && !req.sessionID) {
+      return res.status(401).json({ ok: false, reason: 'unauth' });
+    }
+    
     // Try multiple user ID sources to find the data
     const possibleUserIds = [
       req.user?.id,
@@ -817,7 +807,7 @@ app.get('/api/user-data', async (req, res) => {
         };
         
         console.log('Returning bootstrap data for:', bootstrapData.company_name);
-        return res.json(websiteData);
+        return res.json({ ok: true, bootstrap: websiteData });
       }
     }
     
