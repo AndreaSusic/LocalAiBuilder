@@ -213,6 +213,28 @@ app.use('/vite.svg', express.static(path.join(__dirname, 'dashboard', 'dist', 'v
 // Serve SPA for dashboard routes only
 const dist = path.join(__dirname, 'dashboard', 'dist');
 
+// Short URL redirects for templates
+app.get('/t/:id', (req, res) => {
+  const { data } = req.query;
+  const id = req.params.id;
+  const targetUrl = `http://localhost:4000/templates/homepage/${id}/index.jsx${data ? `?data=${data}` : ''}`;
+  res.redirect(302, targetUrl);
+});
+
+app.get('/s/:id', (req, res) => {
+  const { data } = req.query;
+  const id = req.params.id;
+  const targetUrl = `http://localhost:4000/templates/service/${id}/index.jsx${data ? `?data=${data}` : ''}`;
+  res.redirect(302, targetUrl);
+});
+
+app.get('/c/:id', (req, res) => {
+  const { data } = req.query;
+  const id = req.params.id;
+  const targetUrl = `http://localhost:4000/templates/contact/${id}/index.jsx${data ? `?data=${data}` : ''}`;
+  res.redirect(302, targetUrl);
+});
+
 app.get(['/preview', '/template/:id', '/templates/homepage/v1/index.jsx', '/templates/homepage/v2/index.jsx', '/templates/homepage/v3/index.jsx'], (_req, res) => {
   console.log('📂 Serving SPA from production build');
   res.sendFile(path.join(dist, 'index.html'));
