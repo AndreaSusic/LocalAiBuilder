@@ -758,6 +758,15 @@ app.post('/api/ai-text-mapping', async (req, res) => {
     if (!OPENAI_API_KEY) {
       return res.status(500).json({ error: 'OpenAI API key not configured' });
     }
+    
+    // Import color contrast analysis
+    const { analyzeColorScheme } = require('./colorContrast.js');
+    
+    // Analyze color scheme if colors are provided
+    let colorAnalysis = null;
+    if (businessData.colours && businessData.colours.length >= 2) {
+      colorAnalysis = analyzeColorScheme(businessData.colours);
+    }
 
     const systemPrompt = `You are a professional copywriter specializing in business websites. Generate compelling, industry-specific text content that maintains the original layout structure but adapts the messaging to the specific business.
 
@@ -803,7 +812,15 @@ Generate website text content for this business.`;
     });
 
     const textMappings = JSON.parse(completion.choices[0].message.content);
-    res.json({ success: true, textMappings });
+    
+    // Include color analysis in response
+    const response = { 
+      success: true, 
+      textMappings,
+      colorAnalysis: colorAnalysis || null
+    };
+    
+    res.json(response);
   } catch (error) {
     console.error('AI text mapping error:', error);
     res.status(500).json({ error: 'Failed to generate text content' });
@@ -901,23 +918,64 @@ app.post('/api/gbp-details', async (req, res) => {
     const place_id = idResp.candidates?.[0]?.place_id;
     if (!place_id) return res.status(404).json({ error: 'not found' });
 
-    // STEP 2: details
+    // STEP 2: details with extended fields including business info
     const details = await fetch(
-      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,photo,rating,user_ratings_total&key=${GOOGLE_API_KEY}`
+      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,international_phone_number,website,opening_hours,business_status,photo,rating,user_ratings_total,reviews,editorial_summary,types,url&key=${GOOGLE_API_KEY}`
     ).then(r => r.json());
 
-    // build photo URLs (first 3)
-    const photos = (details.result.photos || []).slice(0, 3).map(p =>
+    // build photo URLs (up to 10 for products/gallery)
+    const photos = (details.result.photos || []).slice(0, 10).map(p =>
       `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=${p.photo_reference}&key=${GOOGLE_API_KEY}`
     );
 
+    // Extract business hours
+    const business_hours = {};
+    if (details.result.opening_hours?.weekday_text) {
+      const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+      details.result.opening_hours.weekday_text.forEach((dayText, index) => {
+        const day = days[index];
+        const timeMatch = dayText.match(/:\s*(.+)$/);
+        business_hours[day] = timeMatch ? timeMatch[1] : 'Closed';
+      });
+    }
+
+    // Extract reviews with author names
+    const reviewsData = (details.result.reviews || []).slice(0, 5).map(review => ({
+      author_name: review.author_name,
+      rating: review.rating,
+      text: review.text,
+      time: review.time,
+      relative_time_description: review.relative_time_description
+    }));
+
+    // For products, we'll use photos with descriptive analysis
+    // Since Google Places API doesn't directly provide product info, 
+    // we'll structure the photos as potential products
+    const products = photos.slice(0, 6).map((photo, index) => ({
+      id: `product_${index + 1}`,
+      name: `Product ${index + 1}`,
+      image: photo,
+      description: `High-quality product from ${details.result.name}`,
+      category: details.result.types?.[0] || 'product'
+    }));
+
     res.json({
+      place_id,
       name: details.result.name,
       address: details.result.formatted_address,
-      phone: details.result.formatted_phone_number,
+      phone: details.result.formatted_phone_number || details.result.international_phone_number,
+      website: details.result.website,
+      email: `info@${details.result.name.toLowerCase().replace(/\s+/g, '')}.com`, // Generated placeholder
+      business_hours,
+      business_status: details.result.business_status,
       rating: details.result.rating,
-      reviews: details.result.user_ratings_total,
-      photos
+      total_reviews: details.result.user_ratings_total,
+      reviews: reviewsData,
+      photos,
+      products,
+      types: details.result.types,
+      editorial_summary: details.result.editorial_summary?.overview,
+      maps_url: details.result.url || placeUrl
     });
   } catch (error) {
     console.error('GBP details error:', error);
