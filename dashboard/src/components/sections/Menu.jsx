@@ -113,7 +113,7 @@ export default function Menu({ tokens = {} }) {
             fontWeight: "500",
             textDecoration: "none"
           }}>
-            Schedule now
+            Contact Us
           </a>
         </li>
       </ul>

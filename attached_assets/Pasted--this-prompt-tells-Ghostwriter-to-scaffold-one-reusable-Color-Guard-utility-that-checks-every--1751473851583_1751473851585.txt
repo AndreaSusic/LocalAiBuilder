@@ -1,0 +1,91 @@
+
+this prompt tells Ghostwriter to scaffold one reusable “Color-Guard” utility that:
+	•	checks every section’s background + text pair with WCAG contrast (≥ 4.5 : 1), auto-inverts or lightens the text if needed;
+	•	warns (and can auto-tweak) when two touching sections share almost-the-same dark shade (ΔL* < 10);
+	•	forces every .btn-cta to a single CSS custom-property for background + text color (--cta-bg, --cta-fg).
+
+⸻
+
+
+🎨  COLOR-GUARD RULES
+============================================================
+
+1.  Text ↔ background contrast  
+    • If contrast < 4.5:1 → choose white (`#fff`) if bg is dark (L* < 50),  
+      otherwise choose `#000`.
+
+2.  Adjacent-section clash  
+    • In the DOM, find `.section` siblings.  
+    • Compute ΔL* between their bg colors.  
+    • If both L* < 25 (very dark) or ΔL* < 10, lighten the **lower** section’s bg by +7 L*.
+
+3.  Uniform CTA buttons  
+    • All buttons meant as calls-to-action must carry `.btn-cta`.  
+    • New CSS vars on root:  
+      ```css
+      :root{ --cta-bg:#ffc000; --cta-fg:#fff }
+      .btn-cta{ background:var(--cta-bg); color:var(--cta-fg); }
+      ```
+
+============================================================
+FILES / SNIPPETS TO CREATE
+============================================================
+
+A.  **src/utils/colorGuard.js**
+```js
+import tinycolor from 'tinycolor2';
+
+export function enforceColors(){
+  /* 1 — Fix text contrast */
+  document.querySelectorAll('.section').forEach(sec=>{
+    const bg = tinycolor(getComputedStyle(sec).backgroundColor);
+    sec.querySelectorAll('h1,h2,h3,p,li,a,span').forEach(el=>{
+      const fg = tinycolor(getComputedStyle(el).color);
+      if( tinycolor.readability(bg, fg) < 4.5 ){
+        el.style.color = bg.isDark() ? '#ffffff' : '#000000';
+      }
+    });
+  });
+
+  /* 2 — Avoid near-black neighbours */
+  const sections = Array.from(document.querySelectorAll('.section'));
+  sections.forEach((sec,i)=>{
+     const next = sections[i+1];
+     if(!next) return;
+     const c1 = tinycolor(getComputedStyle(sec).backgroundColor);
+     const c2 = tinycolor(getComputedStyle(next).backgroundColor);
+     const dL = Math.abs(c1.toHsl().l*100 - c2.toHsl().l*100);
+     if(c1.isDark() && c2.isDark() && dL < 10){
+         next.style.backgroundColor = tinycolor(c2).lighten(7).toHexString();
+     }
+  });
+}
+
+B.  package.json  (add tinycolor)
+
+"dependencies": {
+  "tinycolor2":"^1.6.0"
+}
+
+C.  src/main.jsx  (after React mounts)
+
+import { enforceColors } from './utils/colorGuard';
+enforceColors();            // run once
+
+D.  global.css additions
+
+:root{
+  --cta-bg:#ffc000;      /* one source of truth */
+  --cta-fg:#ffffff;
+}
+.btn-cta{
+  background:var(--cta-bg);
+  color:var(--cta-fg);
+  border:none; border-radius:4px;
+  padding:12px 28px; font-weight:700;
+}
+
+E.  Mark every real CTA button
+
+<a href="#start" class="btn-cta">Start Building →</a>
+

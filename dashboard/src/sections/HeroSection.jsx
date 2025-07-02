@@ -23,7 +23,7 @@ export default function HeroSection() {
   const heroSubtitle = ai_customization.heroSubtitle || 
                       `Professional ${services[0]?.toLowerCase() || 'services'} in ${google_profile.address ? google_profile.address.split(',')[1]?.trim() : 'your area'}`;
   
-  const ctaText = ai_customization.ctaText || 'Schedule Now';
+  const ctaText = ai_customization.ctaText || 'Contact Us';
   
   return (
     <section className="hero" style={{ backgroundImage: `url('${heroImg}')` }}>
