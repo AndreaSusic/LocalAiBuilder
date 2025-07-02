@@ -12,7 +12,11 @@ export default function AboutSection() {
   const availableImages = [...gbpPhotos, ...providedImages];
   const aboutImage = availableImages[1] || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=900&auto=format&fit=crop&q=60';
   
-  const isLandscaping = industry && industry.toLowerCase().includes('landscap');
+  // Only treat as grass/sod landscaping if services actually mention grass or sod
+  const contextData = useContext(SiteDataContext) || {};
+  const { services = '' } = contextData;
+  const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
+    (typeof services === 'string' && (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod')));
   
   return (
     <>
