@@ -5,6 +5,9 @@ export default function ServicesSection() {
   const contextData = useContext(SiteDataContext) || {};
   const { services = [], images = [], google_profile = {}, industry = '', ai_customization = {}, safeImg } = contextData;
   
+  console.log('ServicesSection DEBUG - Services data:', services, typeof services);
+  console.log('ServicesSection DEBUG - GBP products:', google_profile.products);
+  
   // Only treat as grass/sod landscaping if services actually mention grass or sod
   const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
     (typeof services === 'string' && (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod')));
@@ -70,7 +73,10 @@ export default function ServicesSection() {
   
   const sectionTitle = isLandscaping ? 'Our Products' : 'Our Services';
 
+  console.log('ServicesSection DEBUG - ServicesList:', servicesList, 'Type:', typeof servicesList);
+  
   const servicesToShow = servicesList.length > 0 ? servicesList.map((service, index) => {
+    console.log('ServicesSection DEBUG - Processing service:', service, 'Type:', typeof service, 'Index:', index);
     const serviceText = typeof service === 'string' ? service : String(service || '');
     return {
       title: serviceText,
@@ -80,6 +86,8 @@ export default function ServicesSection() {
       image: availableImages[index] || defaultImages[index] || defaultImages[0]
     };
   }) : [];
+  
+  console.log('ServicesSection DEBUG - ServicesToShow:', servicesToShow);
 
   // Don't show section if no services
   if (servicesToShow.length === 0) return null;
