@@ -725,8 +725,10 @@ app.get('/api/user-data', async (req, res) => {
             const gbpResult = await gbpResponse.json();
             console.log('GBP API Response:', gbpResult.status || 'no status', gbpResult.name || 'no name');
             console.log('GBP Fields available:', Object.keys(gbpResult));
-            console.log('GBP Phone field:', gbpResult.formatted_phone_number || gbpResult.international_phone_number || 'no phone');
-            console.log('GBP Address field:', gbpResult.formatted_address || gbpResult.vicinity || 'no address');
+            console.log('GBP Phone field:', gbpResult.phone || gbpResult.formatted_phone_number || gbpResult.international_phone_number || 'no phone');
+            console.log('GBP Address field:', gbpResult.address || gbpResult.formatted_address || gbpResult.vicinity || 'no address');
+            console.log('Raw phone value:', gbpResult.phone);
+            console.log('Raw address value:', gbpResult.address);
             if (!gbpResult.error && gbpResult.name) {
               gbpData = gbpResult;
               console.log('✅ GBP data integrated for', gbpResult.name);
@@ -757,8 +759,8 @@ app.get('/api/user-data', async (req, res) => {
             user_ratings_total: gbpData.user_ratings_total
           } : {},
           contact: {
-            phone: gbpData?.formatted_phone_number || gbpData?.international_phone_number || gbpData?.phone_number || null,
-            address: gbpData?.formatted_address || gbpData?.vicinity || gbpData?.address || null,
+            phone: gbpData?.phone || gbpData?.formatted_phone_number || gbpData?.international_phone_number || null,
+            address: gbpData?.address || gbpData?.formatted_address || gbpData?.vicinity || null,
             website: gbpData?.website || null,
             business_hours: gbpData?.opening_hours?.weekday_text || null
           },
