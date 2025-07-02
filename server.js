@@ -910,11 +910,17 @@ app.post('/api/gbp-details', async (req, res) => {
       return res.status(500).json({ error: 'Google API key not configured' });
     }
     
-    // STEP 1: fetch Place ID - try multiple approaches for g.co URLs
+    // STEP 1: fetch Place ID - try multiple approaches for different URL formats
     let place_id = null;
     
-    // First try to extract place_id directly from URL if it's a g.co link
-    if (placeUrl.includes('g.co/kgs/')) {
+    // First check if place_id is already in the URL
+    const placeIdMatch = placeUrl.match(/place_id=([^&]+)/);
+    if (placeIdMatch) {
+      place_id = placeIdMatch[1];
+      console.log(`Extracted place_id from URL: ${place_id}`);
+    }
+    // Handle g.co short URLs
+    else if (placeUrl.includes('g.co/kgs/')) {
       // For g.co/kgs/ URLs, try text search with the business info from the shortened URL
       const searchQueries = [
         'Kigen Plastika Osečina',
