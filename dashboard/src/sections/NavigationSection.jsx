@@ -12,8 +12,9 @@ export default function NavigationSection() {
   if (Array.isArray(services)) {
     servicesList = services;
   } else if (typeof services === 'string' && services.length > 0) {
-    // For landscaping, look for specific grass types mentioned or extract from context
-    if (industry && industry.toLowerCase().includes('landscap')) {
+    // For grass/sod landscaping, look for specific grass types mentioned or extract from context
+    if (industry && industry.toLowerCase().includes('landscap') && 
+        (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod'))) {
       const grassTypes = [];
       const lowerServices = services.toLowerCase();
       
