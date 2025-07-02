@@ -522,6 +522,18 @@ app.get('/api/test-data', (req, res) => {
   }
 });
 
+// Save session draft for OAuth migration
+app.post('/api/save-session-draft', (req, res) => {
+  try {
+    req.session.draft = JSON.stringify(req.body);
+    console.log('💾 Session draft saved for OAuth migration');
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error saving session draft:', error);
+    res.status(500).json({ error: 'Could not save session draft' });
+  }
+});
+
 // API endpoint to get user's saved website data
 app.get('/api/user-data', async (req, res) => {
   const fs = require('fs');
