@@ -1,0 +1,53 @@
+OAuth callback returnTo: undefined
+ℹ️  No session‐draft to migrate for M-1KdTKehtAQ98nGFlxR1dU-sm3EBg2c
+Draft found, checking for bootstrap data and redirecting to preview
+📦 Trying to retrieve temp bootstrap data for possible users: [
+  '110795423852052644529',
+  'M-1KdTKehtAQ98nGFlxR1dU-sm3EBg2c',
+  'andrea.susic29@gmail.com'
+]
+📦 Found temp data for user ID: M-1KdTKehtAQ98nGFlxR1dU-sm3EBg2c
+📦 Found temp data with keys: [
+  'city',             'images',
+  'social',           'colours',
+  'industry',         'language',
+  'services',         'hero_video',
+  'company_name',     'completed_at',
+  'conversation',     'payment_plans',
+  'google_profile',   'askedAdditional',
+  'ai_customization', 'additionalOfferings'
+]
+TokenError: Bad Request
+    at OAuth2Strategy.parseErrorResponse (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:373:12)
+    at OAuth2Strategy._createOAuthError (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:420:16)
+    at /home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:177:45
+    at /home/runner/workspace/node_modules/oauth/lib/oauth2.js:196:18
+    at passBackControl (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:132:9)
+    at IncomingMessage.<anonymous> (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:157:7)
+    at IncomingMessage.emit (node:events:530:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+📂 Serving preview from: /home/runner/workspace/dashboard/dist/index.html
+📂 File exists: true
+TokenError: Bad Request
+    at OAuth2Strategy.parseErrorResponse (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:373:12)
+    at OAuth2Strategy._createOAuthError (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:420:16)
+    at /home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:177:45
+    at /home/runner/workspace/node_modules/oauth/lib/oauth2.js:196:18
+    at passBackControl (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:132:9)
+    at IncomingMessage.<anonymous> (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:157:7)
+    at IncomingMessage.emit (node:events:530:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+Template route hit: v1
+📂 Serving preview from: /home/runner/workspace/dashboard/dist/index.html
+📂 File exists: true
+📂 Serving preview from: /home/runner/workspace/dashboard/dist/index.html
+📂 File exists: true
+Template route hit: v1
+Template route hit: v1
+Template route hit: v1
+Template route hit: v1
+Template route hit: v1
+Template route hit: v1
+Template route hit: v1
