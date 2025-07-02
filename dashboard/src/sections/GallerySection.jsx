@@ -7,7 +7,12 @@ export default function GallerySection() {
   // Use GBP photos first, then provided images
   const gbpPhotos = google_profile.photos || [];
   const providedImages = Array.isArray(images) ? 
-    images.filter(img => typeof img === 'string' && img.length > 0) : [];
+    images.filter(img => 
+      typeof img === 'string' && 
+      img.length > 0 && 
+      !img.includes('placeholder') &&
+      (img.startsWith('http://') || img.startsWith('https://'))
+    ) : [];
   
   const galleryImages = [...gbpPhotos, ...providedImages];
   
