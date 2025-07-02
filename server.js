@@ -709,26 +709,9 @@ app.get('/api/user-data', async (req, res) => {
       }
       
       if (bootstrapData && typeof bootstrapData === 'object') {
-        // Check if we need to fetch GBP data for this bootstrap
+        // Don't fetch GBP data during bootstrap to avoid large response headers
+        // GBP data should be fetched separately when needed
         let gbpData = null;
-        if (typeof bootstrapData.google_profile === 'string' && bootstrapData.google_profile.includes('place_id')) {
-          try {
-            console.log('🔄 Fetching GBP data for bootstrap...');
-            const gbpResponse = await fetch(`http://localhost:5000/api/gbp-details`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ placeUrl: bootstrapData.google_profile })
-            });
-            
-            const gbpResult = await gbpResponse.json();
-            if (!gbpResult.error) {
-              gbpData = gbpResult;
-              console.log('✅ GBP data fetched successfully for', gbpResult.name);
-            }
-          } catch (error) {
-            console.log('⚠️ Could not fetch GBP data:', error.message);
-          }
-        }
         
         // Transform the bootstrap data to match expected format
         const websiteData = {
