@@ -9,21 +9,9 @@ export default function ServicesSection() {
   const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
     (typeof services === 'string' && (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod')));
   
-  // Check if we have enhanced product data from GBP
-  const hasProductData = google_profile.products && google_profile.products.length > 0;
-  
   // Parse services to extract individual products/services
   let servicesList = [];
-  
-  if (hasProductData) {
-    // Use detailed product information from GBP
-    servicesList = google_profile.products.map(product => ({
-      name: product.name,
-      description: product.description,
-      image: product.image,
-      price: product.price
-    }));
-  } else if (Array.isArray(services)) {
+  if (Array.isArray(services)) {
     servicesList = services;
   } else if (typeof services === 'string' && services.length > 0) {
     // For landscaping, look for specific grass types mentioned or extract from context

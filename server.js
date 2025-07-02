@@ -709,21 +709,6 @@ app.get('/api/user-data', async (req, res) => {
       }
       
       if (bootstrapData && typeof bootstrapData === 'object') {
-        // Check if this is Kigen Plastika and use enhanced data
-        if (bootstrapData.company_name && bootstrapData.company_name.toLowerCase().includes('kigen')) {
-          console.log('Detected Kigen Plastika - loading enhanced GBP data');
-          
-          try {
-            const enhancedDataPath = path.join(__dirname, 'kigen_plastika_enhanced.json');
-            const enhancedData = JSON.parse(fs.readFileSync(enhancedDataPath, 'utf8'));
-            
-            console.log('Returning enhanced Kigen Plastika data with products and GBP info');
-            return res.json({ ok: true, bootstrap: enhancedData });
-          } catch (error) {
-            console.log('Could not load enhanced data, falling back to basic data');
-          }
-        }
-        
         // Transform the bootstrap data to match expected format
         const websiteData = {
           company_name: bootstrapData.company_name || 'Your Business',
