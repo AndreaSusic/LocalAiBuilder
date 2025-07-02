@@ -711,9 +711,11 @@ app.get('/api/user-data', async (req, res) => {
       if (bootstrapData && typeof bootstrapData === 'object') {
         // Check if we need to fetch GBP data for this bootstrap
         let gbpData = null;
-        if (typeof bootstrapData.google_profile === 'string' && bootstrapData.google_profile.includes('g.co/kgs/')) {
+        if (typeof bootstrapData.google_profile === 'string' && 
+            (bootstrapData.google_profile.includes('g.co/kgs/') || 
+             bootstrapData.google_profile.includes('place_id='))) {
           try {
-            console.log('🔄 Fetching GBP data for bootstrap integration...');
+            console.log('🔄 Fetching GBP data for bootstrap integration...', bootstrapData.google_profile);
             const gbpResponse = await fetch(`http://localhost:5000/api/gbp-details`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -721,9 +723,12 @@ app.get('/api/user-data', async (req, res) => {
             });
             
             const gbpResult = await gbpResponse.json();
+            console.log('GBP API Response:', gbpResult.status || 'no status', gbpResult.name || 'no name');
             if (!gbpResult.error && gbpResult.name) {
               gbpData = gbpResult;
               console.log('✅ GBP data integrated for', gbpResult.name);
+            } else {
+              console.log('⚠️ GBP fetch failed:', gbpResult.error || 'Unknown error');
             }
           } catch (error) {
             console.log('⚠️ Could not fetch GBP data:', error.message);
