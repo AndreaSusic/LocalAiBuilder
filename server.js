@@ -709,6 +709,27 @@ app.get('/api/user-data', async (req, res) => {
       }
       
       if (bootstrapData && typeof bootstrapData === 'object') {
+        // Check if we need to fetch GBP data for this bootstrap
+        let gbpData = null;
+        if (typeof bootstrapData.google_profile === 'string' && bootstrapData.google_profile.includes('place_id')) {
+          try {
+            console.log('🔄 Fetching GBP data for bootstrap...');
+            const gbpResponse = await fetch(`http://localhost:5000/api/gbp-details`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ placeUrl: bootstrapData.google_profile })
+            });
+            
+            const gbpResult = await gbpResponse.json();
+            if (!gbpResult.error) {
+              gbpData = gbpResult;
+              console.log('✅ GBP data fetched successfully for', gbpResult.name);
+            }
+          } catch (error) {
+            console.log('⚠️ Could not fetch GBP data:', error.message);
+          }
+        }
+        
         // Transform the bootstrap data to match expected format
         const websiteData = {
           company_name: bootstrapData.company_name || 'Your Business',
@@ -717,8 +738,8 @@ app.get('/api/user-data', async (req, res) => {
           industry: bootstrapData.industry || 'Your Industry',
           language: bootstrapData.language || 'English',
           colours: bootstrapData.colours || ['#5DD39E', '#EFD5BD'],
-          images: bootstrapData.images || [],
-          google_profile: bootstrapData.google_profile || {},
+          images: gbpData?.photos || bootstrapData.images || [],
+          google_profile: gbpData || (typeof bootstrapData.google_profile === 'object' ? bootstrapData.google_profile : {}),
           ai_customization: {
             hero_title: `${bootstrapData.company_name || 'Your Business'} - Professional Services`,
             hero_subtitle: `Quality services in ${Array.isArray(bootstrapData.city) ? bootstrapData.city[0] : bootstrapData.city || 'your area'}`,
@@ -962,9 +983,11 @@ app.post('/api/gbp-details', async (req, res) => {
     }
 
     // STEP 2: details with extended fields including business info
-    const details = await fetch(
-      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,international_phone_number,website,opening_hours,business_status,photo,rating,user_ratings_total,reviews,editorial_summary,types,url&key=${GOOGLE_API_KEY}`
-    ).then(r => r.json());
+    const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,international_phone_number,website,opening_hours,business_status,photo,rating,user_ratings_total,reviews,editorial_summary,types,url&key=${GOOGLE_API_KEY}`;
+    console.log(`Fetching details from: ${detailsUrl}`);
+    
+    const details = await fetch(detailsUrl).then(r => r.json());
+    console.log('Google API response:', JSON.stringify(details, null, 2));
 
     // build photo URLs (up to 10 for products/gallery)
     const photos = (details.result.photos || []).slice(0, 10).map(p =>
@@ -1023,6 +1046,71 @@ app.post('/api/gbp-details', async (req, res) => {
   } catch (error) {
     console.error('GBP details error:', error);
     res.status(500).json({ error: 'Failed to fetch GBP details' });
+  }
+});
+
+// Refresh GBP data for existing user data
+app.post('/api/refresh-gbp-data', async (req, res) => {
+  try {
+    const ownerKey = req.user?.id || req.sessionID;
+    
+    // Get current user data
+    const userDataQuery = await pool.query(
+      'SELECT state FROM sites WHERE user_id = $1 AND is_draft = FALSE ORDER BY updated_at DESC LIMIT 1',
+      [ownerKey]
+    );
+    
+    if (userDataQuery.rows.length === 0) {
+      return res.status(404).json({ error: 'No user data found' });
+    }
+    
+    const currentData = JSON.parse(userDataQuery.rows[0].state);
+    
+    // Check if there's a google_profile URL to refresh
+    if (!currentData.google_profile || typeof currentData.google_profile !== 'string') {
+      return res.status(400).json({ error: 'No Google Business Profile URL found' });
+    }
+    
+    // Fetch fresh GBP data
+    const gbpResponse = await fetch(`${req.protocol}://${req.get('host')}/api/gbp-details`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ placeUrl: currentData.google_profile })
+    });
+    
+    const gbpData = await gbpResponse.json();
+    
+    if (gbpData.error) {
+      return res.status(400).json({ error: `Failed to fetch GBP data: ${gbpData.error}` });
+    }
+    
+    // Update the data with fresh GBP information
+    const updatedData = {
+      ...currentData,
+      google_profile: gbpData,
+      images: gbpData.photos || currentData.images,
+      products: gbpData.products || [],
+      contact: {
+        phone: gbpData.phone,
+        email: gbpData.email,
+        address: gbpData.address,
+        website: gbpData.website,
+        business_hours: gbpData.business_hours
+      }
+    };
+    
+    // Save updated data
+    await pool.query(
+      'UPDATE sites SET state = $1, updated_at = NOW() WHERE user_id = $2 AND is_draft = FALSE',
+      [JSON.stringify(updatedData), ownerKey]
+    );
+    
+    console.log('✅ Refreshed GBP data for user:', ownerKey);
+    res.json({ success: true, data: updatedData });
+    
+  } catch (error) {
+    console.error('❌ refresh-gbp-data error:', error);
+    res.status(500).json({ error: 'Failed to refresh GBP data' });
   }
 });
 
