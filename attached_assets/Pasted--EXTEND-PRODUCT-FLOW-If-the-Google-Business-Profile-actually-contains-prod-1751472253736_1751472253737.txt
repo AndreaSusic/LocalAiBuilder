@@ -1,0 +1,67 @@
+🎯  EXTEND PRODUCT FLOW
+----------------------
+If the Google Business Profile actually contains products:
+  • Replace the hard-coded placeholder cards inside
+    <div class="services-grid three-columns"> … </div>
+    with real cards.
+  • Keep the same HTML structure and CSS classes.
+
+If there are **no** products:
+  • Leave the existing markup untouched (fallback services
+    or upload prompt stays visible).
+
+========================================
+Implementation details
+========================================
+1.  In **fetchGbpProducts.ts** return [] if nothing found.
+
+2.  New client util  **src/utils/renderProducts.js**
+    ```js
+    export function renderProducts(products){
+      if(!products?.length) return;           // nothing to do
+
+      const grid = document.querySelector('.services-grid.three-columns');
+      if(!grid) return;
+
+      grid.innerHTML = '';                    // clear placeholders
+      products.forEach(p => {
+        grid.insertAdjacentHTML('beforeend', `
+          <div class="service-card">
+            <img src="${p.image}" alt="${p.name}">
+            <h4>${p.name}</h4>
+            <p>${p.description || ''}</p>
+          </div>
+        `);
+      });
+    }
+    ```
+
+3.  Add a small loader in **src/main.jsx** (or appropriate file)
+    ```js
+    import { renderProducts } from './utils/renderProducts';
+
+    fetch('/api/gbp-products?cid=' + gbpCid)
+      .then(r => r.json())
+      .then(renderProducts)
+      .catch(console.error);
+    ```
+
+   *Only call this if `bootstrap.gbpCid` exists.*
+
+4.  Server route already exists (`/api/gbp-products`).  
+    No change except return `[]` when scrape empty.
+
+5.  No CSS edits needed—cards use existing `.service-card` styling.
+
+========================================
+TEST
+========================================
+* CID with products → placeholder grid cleared, real cards appear.
+* CID without products → page remains unchanged.
+
+Commit all files:
+  • src/utils/renderProducts.js
+  • modified fetchGbpProducts.ts (return [])
+  • updated main.jsx
+
+Run ➜ Preview ➜ verify cards swap in only when GBP provides products.

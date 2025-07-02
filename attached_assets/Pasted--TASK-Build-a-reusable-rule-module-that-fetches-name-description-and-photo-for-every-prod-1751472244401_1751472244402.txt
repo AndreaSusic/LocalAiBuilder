@@ -1,0 +1,96 @@
+🎯  TASK
+Build a reusable rule / module that fetches **name, description, and photo**
+for every product listed in a Google Business Profile.
+
+Use this sample HTML structure as guide:
+
+<div class="J8zyUd" data-id="1954281829120195152">
+ <a class="pooVf" data-href="/local/place/products/product?ludocid=9887445968323294476&amp;entry_id=1954…" …>
+   <div class="LFhsDb" style="background-image:url(https://lh3.googleusercontent.com/...w336-h252…)"></div>
+   <div class="t3RpAe">Plastične kace</div>
+ </a>
+</div>
+
+────────────────────────────────────────
+DELIVERABLES
+1.  src/gbp/fetchProducts.ts
+    - async function fetchGbpProducts(cid: string): Promise<Product[]>
+      interface Product {
+        id: string;              // entry_id
+        name: string;
+        description: string|null;
+        image: string;
+        url: string;             // https://www.google.com/local/place/products/product…
+      }
+
+    Implementation details:
+    • Use Puppeteer (headless:true, args:['--no-sandbox']).
+    • Open `https://www.google.com/local/place/products/product?ludocid=${cid}&hl=en`.
+    • Wait for `.J8zyUd` nodes.
+    • For every `.J8zyUd`:
+        id          = el.dataset.id
+        name        = el.querySelector('.t3RpAe').innerText.trim()
+        image       = background-image URL (strip `url(` + `)` + quotes)
+        link        = 'https://www.google.com' + el.querySelector('a').dataset.href.replace(/amp;/g,'')
+        description = await page.evaluate(() => {
+           // open in new page with ?entry_id=… & read .Y89TQc (GB text) if exists
+        })
+    • Close browser; return array.
+
+2.  server/routes/products.js
+    ```js
+    router.get('/api/gbp-products', async (req,res)=>{
+       const { cid } = req.query;
+       if(!cid) return res.status(400).json({ error:'cid required'});
+       try{
+         const data = await fetchGbpProducts(cid);
+         res.json(data);
+       }catch(e){
+         res.status(500).json({ error:'scrape-failed', detail:e.message });
+       }
+    });
+    ```
+
+3.  Add environment var `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true` and use
+    `puppeteer-core` + `chromium` (Replit already has chromium).
+
+4.  Update package.json
+    ```json
+    "dependencies":{
+      "puppeteer-core":"^22.0.0",
+      "cheerio":"^1.0.0-rc.12",
+      "express":"^4.18.2"
+    },
+    "scripts":{
+      "scrape":"node demoScrape.js"
+    }
+    ```
+
+5.  demoScrape.js prints first 3 products for CID passed via CLI.
+
+────────────────────────────────────────
+RULES FOR LINK CLEAN-UP
+• product.url = 'https://www.google.com' + data-href (prepend if missing)
+• remove every literal 'amp;' substring
+  `str.replace(/amp;/g,'')`
+
+────────────────────────────────────────
+BONUS
+• Cache results in a simple in-memory Map<cid,stringifiedJSON> for 6h.
+• Use a random UA string and `--lang=en` to avoid captcha.
+
+────────────────────────────────────────
+TEST
+Run:
+   node demoScrape.js 9887445968323294476
+Expect JSON with objects like:
+{
+  "id":"1954281829120195152",
+  "name":"Plastične kace",
+  "description":null,
+  "image":"https://lh3.googleusercontent.com/…w336-h252…",
+  "url":"https://www.google.com/local/place/products/product?ludocid=9887445968323294476&entry_id=1954281829120195152&hl=en"
+}
+Then hit     /api/gbp-products?cid=9887445968323294476  in the browser.
+
+Implement in TypeScript; compile target ES2020.

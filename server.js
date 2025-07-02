@@ -90,6 +90,10 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Routes
+const productsRouter = require('./server/routes/products');
+app.use(productsRouter);
+
 // Set persistent draft key cookie for chat sessions
 app.get('/chat', (req, res, next) => {
   // Ensure a session exists
