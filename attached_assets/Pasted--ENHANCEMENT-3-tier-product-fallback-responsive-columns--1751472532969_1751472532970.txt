@@ -1,0 +1,82 @@
+
+
+
+🔧  ENHANCEMENT: 3-tier product fallback + responsive columns
+================================================================
+Priority order to populate <div class="services-grid three-columns">:
+
+  1. Products scraped from Google Business Profile (GBP).
+  2. Products the user supplied in the wizard (`bootstrap.userProducts`
+     array – each { name, description, image }).
+  3. Keep placeholders if both sources are empty.
+
+Grid must adapt:
+  • 3 products  → `three-columns`
+  • 2 products  → `two-columns`
+  • 1 product   → `one-column`
+
+----------------------------------------------------------------
+FILES TO EDIT / ADD
+----------------------------------------------------------------
+
+1.  **src/utils/renderProducts.js**  – replace content
+```js
+export function renderProducts(products = []) {
+  const grid = document.querySelector('.services-grid');
+  if (!grid || !products.length) return;
+
+  // adjust column class
+  grid.classList.remove('one-column','two-columns','three-columns');
+  grid.classList.add(
+    products.length === 1 ? 'one-column' :
+    products.length === 2 ? 'two-columns' : 'three-columns'
+  );
+
+  grid.innerHTML = '';  // clear placeholders
+  products.forEach(p => {
+    grid.insertAdjacentHTML(
+      'beforeend',
+      `<div class="service-card">
+         <img src="${p.image}" alt="${p.name}">
+         <h4>${p.name}</h4>
+         <p>${p.description || ''}</p>
+       </div>`
+    );
+  });
+}
+
+	2.	src/main.jsx  – load products with fallback
+
+import { renderProducts } from './utils/renderProducts';
+
+async function loadProducts() {
+  let prod = [];
+  if (bootstrap.gbpCid) {
+    prod = await fetch('/api/gbp-products?cid='+bootstrap.gbpCid)
+            .then(r=>r.json()).catch(()=>[]);
+  }
+  if (!prod.length && bootstrap.userProducts?.length) {
+    prod = bootstrap.userProducts;
+  }
+  renderProducts(prod);
+}
+
+loadProducts();
+
+	3.	CSS  – add responsive column modifiers
+
+.services-grid { display:grid; gap:1.5rem }
+.services-grid.one-column  { grid-template-columns:1fr }
+.services-grid.two-columns { grid-template-columns:repeat(2,1fr) }
+.services-grid.three-columns{grid-template-columns:repeat(3,1fr)}
+@media(max-width:600px){
+  .services-grid.two-columns,
+  .services-grid.three-columns { grid-template-columns:1fr }
+}
+
+	4.	Ensure bootstrap.userProducts is filled in chat wizard:
+
+// state.userProducts = [{name, description, image}, …]
+sessionStorage.setItem('draft', JSON.stringify(state));
+
+
