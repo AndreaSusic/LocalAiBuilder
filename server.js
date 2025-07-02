@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const upload = multer();
 const path = require('path');
+const fs = require('fs');
 
 const { OpenAI } = require("openai");           // ← ONE import
 const openai = new OpenAI({
@@ -213,25 +214,31 @@ app.use('/vite.svg', express.static(path.join(__dirname, 'dashboard', 'dist', 'v
 // Serve SPA for dashboard routes only
 const dist = path.join(__dirname, 'dashboard', 'dist');
 
-// Short URL redirects for templates with session data storage
+// Short URL serving for templates with data injection
 app.get('/t/:id', (req, res) => {
   const { data } = req.query;
   const id = req.params.id;
   
-  // Get the proper domain from the request
-  const protocol = req.secure ? 'https' : 'http';
-  const host = req.get('host');
-  const port = host.includes('replit.dev') ? ':3002' : '';
-  
   if (data) {
-    // Store data in session to avoid URL length issues
-    const dataId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-    req.session[`template_data_${dataId}`] = data;
-    const targetUrl = `${protocol}://${host}${port}/templates/homepage/${id}/index.jsx?dataId=${dataId}`;
-    res.redirect(302, targetUrl);
+    try {
+      // Parse and inject bootstrap data directly into the HTML
+      const bootstrapData = JSON.parse(decodeURIComponent(data));
+      
+      // Read the dashboard index.html and inject bootstrap data
+      const htmlPath = path.join(__dirname, 'dashboard', 'dist', 'index.html');
+      let html = fs.readFileSync(htmlPath, 'utf8');
+      
+      // Inject bootstrap data into the HTML
+      const scriptTag = `<script>window.bootstrapData = ${JSON.stringify(bootstrapData)};</script>`;
+      html = html.replace('</head>', `${scriptTag}</head>`);
+      
+      res.send(html);
+    } catch (error) {
+      console.error('Error parsing bootstrap data:', error);
+      res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+    }
   } else {
-    const targetUrl = `${protocol}://${host}${port}/templates/homepage/${id}/index.jsx`;
-    res.redirect(302, targetUrl);
+    res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
   }
 });
 
@@ -239,19 +246,20 @@ app.get('/s/:id', (req, res) => {
   const { data } = req.query;
   const id = req.params.id;
   
-  // Get the proper domain from the request
-  const protocol = req.secure ? 'https' : 'http';
-  const host = req.get('host');
-  const port = host.includes('replit.dev') ? ':3002' : '';
-  
   if (data) {
-    const dataId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-    req.session[`template_data_${dataId}`] = data;
-    const targetUrl = `${protocol}://${host}${port}/templates/service/${id}/index.jsx?dataId=${dataId}`;
-    res.redirect(302, targetUrl);
+    try {
+      const bootstrapData = JSON.parse(decodeURIComponent(data));
+      const htmlPath = path.join(__dirname, 'dashboard', 'dist', 'index.html');
+      let html = fs.readFileSync(htmlPath, 'utf8');
+      const scriptTag = `<script>window.bootstrapData = ${JSON.stringify(bootstrapData)};</script>`;
+      html = html.replace('</head>', `${scriptTag}</head>`);
+      res.send(html);
+    } catch (error) {
+      console.error('Error parsing bootstrap data:', error);
+      res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+    }
   } else {
-    const targetUrl = `${protocol}://${host}${port}/templates/service/${id}/index.jsx`;
-    res.redirect(302, targetUrl);
+    res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
   }
 });
 
@@ -259,19 +267,20 @@ app.get('/c/:id', (req, res) => {
   const { data } = req.query;
   const id = req.params.id;
   
-  // Get the proper domain from the request
-  const protocol = req.secure ? 'https' : 'http';
-  const host = req.get('host');
-  const port = host.includes('replit.dev') ? ':3002' : '';
-  
   if (data) {
-    const dataId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-    req.session[`template_data_${dataId}`] = data;
-    const targetUrl = `${protocol}://${host}${port}/templates/contact/${id}/index.jsx?dataId=${dataId}`;
-    res.redirect(302, targetUrl);
+    try {
+      const bootstrapData = JSON.parse(decodeURIComponent(data));
+      const htmlPath = path.join(__dirname, 'dashboard', 'dist', 'index.html');
+      let html = fs.readFileSync(htmlPath, 'utf8');
+      const scriptTag = `<script>window.bootstrapData = ${JSON.stringify(bootstrapData)};</script>`;
+      html = html.replace('</head>', `${scriptTag}</head>`);
+      res.send(html);
+    } catch (error) {
+      console.error('Error parsing bootstrap data:', error);
+      res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+    }
   } else {
-    const targetUrl = `${protocol}://${host}${port}/templates/contact/${id}/index.jsx`;
-    res.redirect(302, targetUrl);
+    res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
   }
 });
 

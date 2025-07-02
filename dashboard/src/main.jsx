@@ -43,6 +43,12 @@ async function loadProducts(bootstrap) {
 }
 
 async function loadBootstrap(){
+  // First check if bootstrap data was injected directly into the page
+  if (window.bootstrapData) {
+    console.log('🔄 Using injected bootstrap data:', window.bootstrapData.company_name);
+    return window.bootstrapData;
+  }
+  
   // Check if we have a dataId parameter (from short URL system)
   const urlParams = new URLSearchParams(window.location.search);
   const dataId = urlParams.get('dataId');
