@@ -1,0 +1,15 @@
+0: {checkpoint: 'COMPANY_NAME_MATCH', passed: true, reason: 'Company name is consistent across all data sources'}
+1: {checkpoint: 'SERVICES_CONSISTENCY', passed: true, reason: 'Non-grass landscaping services validated'} my comment: can we formulate it a bit differently, check services/products user added in questionnarie and these listed in gbp
+2: {checkpoint: 'INDUSTRY_ALIGNMENT', passed: true, reason: 'Industry classification aligns with services'}
+3: {checkpoint: 'LOCATION_ACCURACY', passed: true, reason: 'Location data is consistent across all sources'}
+4: {checkpoint: 'GBP_ASSOCIATION', passed: true, reason: 'No GBP data provided - validation skipped'} my comment: there is gbp profile, here it is https://g.co/kgs/PebYjSp, i provided it already
+5: {checkpoint: 'USER_ISOLATION', passed: true, reason: 'User data isolation maintained'}
+6: {checkpoint: 'TEMPLATE_DATA_PURITY', passed: true, reason: 'Template data is pure and business-specific'}
+7: {checkpoint: 'AI_CUSTOMIZATION_COHERENCE', passed: true, reason: 'AI customization is coherent with business data'} my comment: we need to reevaluate that logic.
+8: {checkpoint: 'MENU_TERMINOLOGY', passed: true, reason: 'Business sells products - menu should use "Products" terminology'}
+9: {checkpoint: 'INDIVIDUAL_SERVICE_PAGES', passed: true, reason: 'Single service/product - individual pages not required'}
+10: {checkpoint: 'PHONE_NUMBER_VALIDATION', passed: true, reason: 'No phone numbers provided - validation skipped'} my comment: there is phone number in gbp, can you look for again. also, if you are sure there isnt, a phone number in top bar should not appear. 
+11: {checkpoint: 'CONTACT_INFO_CONSISTENCY', passed: true, reason: 'Contact information is consistent'} my comment: which contact info you compare?
+12: {checkpoint: 'BUSINESS_HOURS_VALIDATION', passed: false, reason: 'No business hours provided - may need to be added'} my comment: there are business hours in gbp, did you have an issue to recognize them?
+13: {checkpoint: 'REVIEW_AUTHENTICITY', passed: true, reason: 'No reviews to validate'} my comment: there are reviews, did you have an issue to recognize them?
+14: {checkpoint: 'IMAGE_SOURCE_VALIDATION', passed: false, reason: 'Placeholder images detected - need authentic business photos'}

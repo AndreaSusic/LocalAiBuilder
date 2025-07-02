@@ -4,22 +4,24 @@ import { SiteDataContext } from '../context/SiteDataContext.js';
 export default function ContactSection() {
   const { 
     google_profile = {}, 
+    contact = {},
     company_name, 
     ai_customization = {},
     services = [],
     industry = ''
   } = useContext(SiteDataContext) || {};
   
-  const phone = google_profile.phone || '+1 234 567 89';
-  const email = google_profile.email || 'info@yourwebsite.com';
-  const address = google_profile.address || '123 Main St, Austin, TX 78701';
-  const website = google_profile.website || '';
-  const businessHours = google_profile.business_hours || {};
+  // Use contact data structure that includes authentic GBP information
+  const phone = contact.phone || google_profile.formatted_phone_number || null;
+  const email = contact.email || 'info@yourwebsite.com';
+  const address = contact.address || google_profile.formatted_address || null;
+  const website = contact.website || google_profile.website || '';
+  const businessHours = contact.business_hours || google_profile.opening_hours?.weekday_text || {};
   const rating = google_profile.rating || null;
-  const totalReviews = google_profile.total_reviews || 0;
-  const mapQuery = ai_customization.mapQuery || `${company_name} ${address}`;
+  const totalReviews = google_profile.user_ratings_total || 0;
+  const mapQuery = ai_customization.map_query || `${company_name} ${address}`;
   const contactTitle = ai_customization.contactTitle || 'Contact Us';
-  const ctaText = ai_customization.ctaText || 'Book Appointment';
+  const ctaText = ai_customization.cta_text || 'Book Appointment';
   
   // Only treat as grass/sod landscaping if services actually mention grass or sod
   const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
@@ -95,9 +97,9 @@ export default function ContactSection() {
         <div className="footer-grid">
           <div>
             <h4>Contact Info</h4>
-            <a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a>
+            {phone && <a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a>}
             <a href={`mailto:${email}`}>{email}</a>
-            <p style={{ color: '#ccc', fontSize: '0.9rem', marginTop: '0.5rem' }}>{address}</p>
+            {address && <p style={{ color: '#ccc', fontSize: '0.9rem', marginTop: '0.5rem' }}>{address}</p>}
           </div>
           <div>
             <h4>{sectionLabel}</h4>

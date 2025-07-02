@@ -709,11 +709,28 @@ app.get('/api/user-data', async (req, res) => {
       }
       
       if (bootstrapData && typeof bootstrapData === 'object') {
-        // Don't fetch GBP data during bootstrap to avoid large response headers
-        // GBP data should be fetched separately when needed
+        // Check if we need to fetch GBP data for this bootstrap
         let gbpData = null;
+        if (typeof bootstrapData.google_profile === 'string' && bootstrapData.google_profile.includes('g.co/kgs/')) {
+          try {
+            console.log('🔄 Fetching GBP data for bootstrap integration...');
+            const gbpResponse = await fetch(`http://localhost:5000/api/gbp-details`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ placeUrl: bootstrapData.google_profile })
+            });
+            
+            const gbpResult = await gbpResponse.json();
+            if (!gbpResult.error && gbpResult.name) {
+              gbpData = gbpResult;
+              console.log('✅ GBP data integrated for', gbpResult.name);
+            }
+          } catch (error) {
+            console.log('⚠️ Could not fetch GBP data:', error.message);
+          }
+        }
         
-        // Transform the bootstrap data to match expected format
+        // Transform the bootstrap data to match expected format with GBP integration
         const websiteData = {
           company_name: bootstrapData.company_name || 'Your Business',
           city: bootstrapData.city || ['Your City'],
@@ -721,8 +738,20 @@ app.get('/api/user-data', async (req, res) => {
           industry: bootstrapData.industry || 'Your Industry',
           language: bootstrapData.language || 'English',
           colours: bootstrapData.colours || ['#5DD39E', '#EFD5BD'],
-          images: gbpData?.photos || bootstrapData.images || [],
+          images: gbpData?.photos ? gbpData.photos.map(photo => ({
+            url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${process.env.GOOGLE_PLACES_API_KEY}`,
+            alt: `${bootstrapData.company_name} photo`,
+            source: 'google_business_profile'
+          })) : (bootstrapData.images || []),
           google_profile: gbpData || (typeof bootstrapData.google_profile === 'object' ? bootstrapData.google_profile : {}),
+          contact: {
+            phone: gbpData?.formatted_phone_number || gbpData?.international_phone_number || null,
+            address: gbpData?.formatted_address || null,
+            website: gbpData?.website || null,
+            business_hours: gbpData?.opening_hours?.weekday_text || null
+          },
+          reviews: gbpData?.reviews || [],
+          rating: gbpData?.rating || null,
           ai_customization: {
             hero_title: `${bootstrapData.company_name || 'Your Business'} - Professional Services`,
             hero_subtitle: `Quality services in ${Array.isArray(bootstrapData.city) ? bootstrapData.city[0] : bootstrapData.city || 'your area'}`,
@@ -731,7 +760,7 @@ app.get('/api/user-data', async (req, res) => {
             about_text: `We provide excellent ${bootstrapData.services || 'services'} to our valued clients.`,
             reviewer_label: 'Clients',
             cta_text: 'Contact Us',
-            map_query: `${bootstrapData.company_name || 'business'} ${Array.isArray(bootstrapData.city) ? bootstrapData.city[0] : bootstrapData.city || ''}`
+            map_query: gbpData?.formatted_address || `${bootstrapData.company_name || 'business'} ${Array.isArray(bootstrapData.city) ? bootstrapData.city[0] : bootstrapData.city || ''}`
           },
           conversation: bootstrapData.conversation || []
         };
