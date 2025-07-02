@@ -173,30 +173,9 @@ app.get('/api/last-draft', (req, res) => {
   }
 });
 
-// Homepage redirect for logged-in users
-app.get('/', async (req, res, next) => {
+// Homepage - serve the regular landing page for everyone
+app.get('/', (req, res, next) => {
   console.log('Homepage accessed, user authenticated:', !!req.user);
-  
-  if (req.user) {
-    // Check if user has existing draft/site data
-    try {
-      const { rows } = await pool.query(
-        'SELECT 1 FROM sites WHERE user_id = $1 AND is_draft = TRUE LIMIT 1',
-        [req.user.id]
-      );
-      
-      if (rows.length > 0) {
-        console.log('Authenticated user with draft, redirecting to preview');
-        return res.redirect('/preview');
-      } else {
-        console.log('Authenticated user without draft, redirecting to chat');
-        return res.redirect('/chat?start=fresh');
-      }
-    } catch (error) {
-      console.error('Error checking user drafts:', error);
-    }
-  }
-  
   next();
 });
 
@@ -247,7 +226,7 @@ app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'ass
 const dist = path.join(__dirname, 'dashboard', 'dist');
 app.use(express.static(dist));
 
-app.get(['/', '/preview', '/template/:id'], (_req, res) => {
+app.get(['/preview', '/template/:id'], (_req, res) => {
   console.log('📂 Serving SPA from production build');
   res.sendFile(path.join(dist, 'index.html'));
 });
@@ -695,7 +674,17 @@ app.get('/api/user-data', async (req, res) => {
         console.log('Found completed website data for user');
         
         // Parse the saved state data into the expected format
-        const state = JSON.parse(siteData.state);
+        let state;
+        if (typeof siteData.state === 'string') {
+          try {
+            state = JSON.parse(siteData.state);
+          } catch (e) {
+            console.error('Error parsing site state:', e);
+            state = {};
+          }
+        } else {
+          state = siteData.state || {};
+        }
         const websiteData = {
           company_name: state.company_name,
           city: state.city,
