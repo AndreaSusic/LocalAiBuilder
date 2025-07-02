@@ -87,9 +87,17 @@ export default function ServicesSection() {
       <div className="services-grid">
         {servicesToShow.map((service, index) => (
           <div key={index} className="service-card">
-            <img src={safeImg ? safeImg(service.image) : service.image} alt={service.title} />
-            <h4>{service.title}</h4>
+            <img 
+              src={safeImg ? safeImg(service.image) : service.image} 
+              alt={service.title || service.name} 
+            />
+            <h4>{service.title || service.name}</h4>
             <p>{service.description}</p>
+            {service.price && (
+              <div className="service-price">
+                <strong>{service.price}</strong>
+              </div>
+            )}
           </div>
         ))}
       </div>

@@ -10,10 +10,12 @@ export default function ContactSection() {
     industry = ''
   } = useContext(SiteDataContext) || {};
   
-  const phone = google_profile.phone || '+1 234 567 89';
-  const email = google_profile.email || 'info@yourwebsite.com';
+  const phone = google_profile.phone || ai_customization.phone || '+1 234 567 89';
+  const email = google_profile.email || ai_customization.email || 'info@yourwebsite.com';
   const address = google_profile.address || '123 Main St, Austin, TX 78701';
-  const mapQuery = ai_customization.mapQuery || `${company_name} ${address}`;
+  const businessHours = google_profile.business_hours || {};
+  const website = google_profile.website || null;
+  const mapQuery = ai_customization.map_query || ai_customization.mapQuery || `${company_name} ${address}`;
   const contactTitle = ai_customization.contactTitle || 'Contact Us';
   const ctaText = ai_customization.ctaText || 'Book Appointment';
   
@@ -93,8 +95,20 @@ export default function ContactSection() {
             <h4>Contact Info</h4>
             <a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a>
             <a href={`mailto:${email}`}>{email}</a>
+            {website && <a href={`https://${website}`} target="_blank" rel="noopener noreferrer">{website}</a>}
             <p style={{ color: '#ccc', fontSize: '0.9rem', marginTop: '0.5rem' }}>{address}</p>
           </div>
+          {Object.keys(businessHours).length > 0 && (
+            <div>
+              <h4>Business Hours</h4>
+              {Object.entries(businessHours).map(([day, hours]) => (
+                <div key={day} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
+                  <span style={{ textTransform: 'capitalize' }}>{day}:</span>
+                  <span>{hours}</span>
+                </div>
+              ))}
+            </div>
+          )}
           <div>
             <h4>{sectionLabel}</h4>
             {servicesList.map((service, index) => (
