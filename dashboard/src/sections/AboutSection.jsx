@@ -80,12 +80,12 @@ export default function AboutSection() {
         </div>
       </section>
 
-      {/* Team Section - Only show if team data exists */}
-      {team && team.length > 0 && (
+      {/* Team Section - Only show if team data exists and has actual member information */}
+      {team && team.length > 0 && team.some(member => member.name && member.name.trim() !== '') && (
         <section className="team">
           <h2>Meet Our Team</h2>
           <div className="team-grid">
-            {team.map((member, index) => (
+            {team.filter(member => member.name && member.name.trim() !== '').map((member, index) => (
               <div key={index} className="team-member">
                 <img src={member.image || '/api/placeholder/200/200'} alt={member.name} />
                 <h4>{member.name}</h4>

@@ -92,34 +92,7 @@ export default function GallerySection() {
             ))}
           </div>
 
-          {galleryImages.length > 8 && (
-            <div style={{
-              textAlign: 'center',
-              marginTop: '3rem'
-            }}>
-              <button style={{
-                backgroundColor: 'transparent',
-                color: 'var(--primary)',
-                border: '2px solid var(--primary)',
-                padding: '1rem 2rem',
-                borderRadius: '6px',
-                fontSize: '1rem',
-                fontWeight: '500',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--primary)';
-                e.currentTarget.style.color = 'white';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'var(--primary)';
-              }}>
-                View All Photos
-              </button>
-            </div>
-          )}
+
         </div>
 
         <style jsx>{`

@@ -86,7 +86,9 @@ export default function ServicesSection() {
       description: isLandscaping ? 
         `Premium ${serviceText.toLowerCase()} perfect for your lawn and landscaping needs.` :
         `Professional ${serviceText.toLowerCase()} services tailored to your needs.`,
-      image: availableImages[index] || defaultImages[index] || defaultImages[0]
+      image: (gbpPhotos[index] ? 
+        `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${gbpPhotos[index].photo_reference}&key=${process.env.GOOGLE_PLACES_API_KEY}` :
+        availableImages[index]) || defaultImages[index] || defaultImages[0]
     };
   }) : [];
   

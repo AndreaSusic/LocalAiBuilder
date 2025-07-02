@@ -534,7 +534,7 @@ export default function HomePageV1() {
           <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
           <li><a href="tel:+123456789" className="contact-phone">📞 +1 234 567 89</a></li>
-          <li><a href="#" className="cta">Schedule now</a></li>
+          <li><a href="#" className="cta">Contact Us</a></li>
         </ul>
       </nav>
 
