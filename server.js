@@ -68,17 +68,21 @@ function ensureLoggedIn() {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Configure session middleware
-app.use(session({
+// Configure session middleware with memory store
+const sessionConfig = {
   secret: process.env.SESSION_SECRET || 'your-random-secret-key-here',
-  resave: false,
-  saveUninitialized: false,
+  resave: true,  // Save session even if not modified  
+  saveUninitialized: true,  // Create session before auth
   cookie: {
-    secure: true,  // Replit HTTPS proxy
+    secure: false,  // Set to false for development
     sameSite: 'lax',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }
-}));
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    httpOnly: true
+  },
+  name: 'connect.sid'  // Explicit session name
+};
+
+app.use(session(sessionConfig));
 
 app.use(cookieParser());
 
@@ -212,7 +216,17 @@ app.get('/auth/google',
     // remember path to come back to
     req.session.returnTo = req.query.returnTo || req.headers.referer || '/preview';
     console.log('Setting returnTo:', req.session.returnTo);
-    next();
+    console.log('Session ID:', req.session.id);
+    console.log('Session:', req.session);
+    // Force session save before redirect
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+      } else {
+        console.log('Session saved successfully');
+      }
+      next();
+    });
   },
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
@@ -238,6 +252,8 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   async (req, res) => {
     console.log('Google profile:', req.user);
+    console.log('OAuth callback session ID:', req.session.id);
+    console.log('OAuth callback full session:', req.session);
     console.log('OAuth callback returnTo:', req.session.returnTo);
 
     try {
