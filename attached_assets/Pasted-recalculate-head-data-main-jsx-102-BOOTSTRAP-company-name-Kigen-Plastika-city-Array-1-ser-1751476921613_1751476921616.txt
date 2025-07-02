@@ -1,0 +1,99 @@
+recalculate_head_data
+main.jsx:102 BOOTSTRAP >> {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+main.jsx:103 Current path: /templates/homepage/v1/index.jsx
+main.jsx:104 Root element exists: true
+main.jsx:118 React app rendered successfully
+main.jsx:13 🔍 Loading products with 3-tier fallback system
+main.jsx:17 📋 Fetching GBP products for CID: ChIJvW8VATCFWUcRDDXH5bhDN4k
+App.jsx:20 App rendering with bootstrap: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+App.jsx:21 isMobile: false
+index.jsx:72 HomepageV1 using data: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+ServicesSection.jsx:8 ServicesSection DEBUG - Services data: Septic Tanks string
+ServicesSection.jsx:9 ServicesSection DEBUG - GBP products: (6) [{…}, {…}, {…}, {…}, {…}, {…}]
+ServicesSection.jsx:79 ServicesSection DEBUG - ServicesList: (3) ['Product 1', 'Product 2', 'Product 3'] Type: object
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 1 Type: string Index: 0
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 2 Type: string Index: 1
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 3 Type: string Index: 2
+ServicesSection.jsx:95 ServicesSection DEBUG - ServicesToShow: (3) [{…}, {…}, {…}]
+AboutSection.jsx:8 AboutSection DEBUG - Team data: [] Length: 0
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(0)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(0)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+photo:1 
+            
+            
+           GET https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=undefined&key=undefined 403 (Forbidden)
+Image
+Nf @ react-dom-client.production.js:8427
+Bf @ react-dom-client.production.js:8776
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8775
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8775
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8775
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8775
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8819
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8819
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8819
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8819
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8819
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8747
+id @ react-dom-client.production.js:11210
+nd @ react-dom-client.production.js:11070
+$f @ react-dom-client.production.js:10490
+Wf @ react-dom-client.production.js:10419
+hd @ react-dom-client.production.js:11626
+Ie @ scheduler.production.js:151
+photo:1 
+            
+            
+           GET https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=undefined&key=undefined 403 (Forbidden)
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:22 🔧 Color Guard: Fixed contrast for element, bg: #ffffff, new color: #000000
+2colorGuard.js:22 🔧 Color Guard: Fixed contrast for element, bg: #000000, new color: #ffffff
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:22 📦 Got 0 GBP products
+main.jsx:32 👤 Using 3 user products as fallback
+renderProducts.js:2 🎨 Rendering 3 products to grid
+renderProducts.js:42 ✅ Products rendered successfully
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete

@@ -12,12 +12,12 @@ export default function DesktopDashboard({ bootstrap }) {
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [previewContent, setPreviewContent] = useState(() => {
-    // If bootstrap data exists, encode it for the template URL
+    // If bootstrap data exists, use short URL format
     if (bootstrap && Object.keys(bootstrap).length > 0) {
       const encoded = encodeURIComponent(JSON.stringify(bootstrap));
-      return `/templates/homepage/v1/index.jsx?data=${encoded}`;
+      return `/t/v1?data=${encoded}`;
     }
-    return '/templates/homepage/v1/index.jsx';
+    return '/t/v1';
   });
 
   /* AUTO-LOAD USER DATA ON MOUNT */
@@ -85,15 +85,22 @@ export default function DesktopDashboard({ bootstrap }) {
   };
 
   const showTemplatePreview = (templateUrl) => {
-    let fullUrl = templateUrl;
+    // Convert long URLs to short format
+    let shortUrl = templateUrl;
+    if (templateUrl.includes('/templates/homepage/v1/')) shortUrl = '/t/v1';
+    else if (templateUrl.includes('/templates/homepage/v2/')) shortUrl = '/t/v2';
+    else if (templateUrl.includes('/templates/homepage/v3/')) shortUrl = '/t/v3';
+    else if (templateUrl.includes('/templates/service/v1/')) shortUrl = '/s/v1';
+    else if (templateUrl.includes('/templates/contact/v1/')) shortUrl = '/c/v1';
+    
     // Add bootstrap data to URL if available
     if (bootstrap && Object.keys(bootstrap).length > 0) {
       const encoded = encodeURIComponent(JSON.stringify(bootstrap));
-      fullUrl += `?data=${encoded}`;
+      shortUrl += `?data=${encoded}`;
     }
-    setPreviewContent(fullUrl);
+    setPreviewContent(shortUrl);
     setShowPagesDropdown(false);
-    console.log('Showing template preview:', fullUrl);
+    console.log('Showing template preview:', shortUrl);
   };
 
   const handleLogout = async () => {

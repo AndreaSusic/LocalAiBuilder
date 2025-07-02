@@ -8,12 +8,12 @@ export default function MobileDashboard({ bootstrap }) {
   const [showVersions, setShowVersions] = useState(false);
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
   const [previewContent, setPreviewContent] = useState(() => {
-    // If bootstrap data exists, encode it for the template URL
+    // If bootstrap data exists, use short URL format
     if (bootstrap && Object.keys(bootstrap).length > 0) {
       const encoded = encodeURIComponent(JSON.stringify(bootstrap));
-      return `/templates/homepage/v1/index.jsx?data=${encoded}`;
+      return `/t/v1?data=${encoded}`;
     }
-    return '/templates/homepage/v1/index.jsx';
+    return '/t/v1';
   });
 
   /* AUTO-LOAD USER DATA ON MOUNT */
