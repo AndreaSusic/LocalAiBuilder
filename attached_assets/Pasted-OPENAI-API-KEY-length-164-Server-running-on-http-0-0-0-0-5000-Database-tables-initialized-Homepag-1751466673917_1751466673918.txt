@@ -1,0 +1,1081 @@
+OPENAI_API_KEY length: 164
+Server running on http://0.0.0.0:5000
+Database tables initialized
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+📂 Serving SPA from production build
+API /user-data called
+User authenticated: false
+User object: undefined
+Session ID: bW1hBlv1kh6QhZZaAgG3g5JD_YdSZQhm
+Loading data for possible users: [
+  'jlI-FqIQLyjYpXtRzrdownLPaD4469Gt',
+  'bW1hBlv1kh6QhZZaAgG3g5JD_YdSZQhm'
+]
+📂 Serving SPA from production build
+No user data found for authentication, checking for recent bootstrap data
+Found recent bootstrap data, using for preview
+🔄 Fetching GBP data for bootstrap integration... https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k
+Extracted place_id from URL: ChIJvW8VATCFWUcRDDXH5bhDN4k
+Fetching details from: https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k&fields=name,formatted_address,formatted_phone_number,international_phone_number,website,opening_hours,business_status,photo,rating,user_ratings_total,reviews,editorial_summary,types,url&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE
+Google API response: {
+  "html_attributions": [],
+  "result": {
+    "business_status": "OPERATIONAL",
+    "formatted_address": "Svetog Save bb, Osečina 14253, Serbia",
+    "formatted_phone_number": "065 2170293",
+    "international_phone_number": "+381 65 2170293",
+    "name": "KIGEN PLASTIKA",
+    "opening_hours": {
+      "open_now": true,
+      "periods": [
+        {
+          "close": {
+            "day": 1,
+            "time": "1700"
+          },
+          "open": {
+            "day": 1,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 2,
+            "time": "1730"
+          },
+          "open": {
+            "day": 2,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 3,
+            "time": "1700"
+          },
+          "open": {
+            "day": 3,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 4,
+            "time": "1700"
+          },
+          "open": {
+            "day": 4,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 5,
+            "time": "1700"
+          },
+          "open": {
+            "day": 5,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 6,
+            "time": "1700"
+          },
+          "open": {
+            "day": 6,
+            "time": "0600"
+          }
+        }
+      ],
+      "weekday_text": [
+        "Monday: 6:00 AM – 5:00 PM",
+        "Tuesday: 6:00 AM – 5:30 PM",
+        "Wednesday: 6:00 AM – 5:00 PM",
+        "Thursday: 6:00 AM – 5:00 PM",
+        "Friday: 6:00 AM – 5:00 PM",
+        "Saturday: 6:00 AM – 5:00 PM",
+        "Sunday: Closed"
+      ]
+    },
+    "photos": [
+      {
+        "height": 900,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdvhNAi6jMVApC5pId0lURGxnnjYxlwUoamXky8kjtQNnCxKAhQYKuk0fhHDhw9-5qEfEQ1QK4URXAlLAyJYbIq27qJtKs8vikPuV-nb_BvIRwYgUoGyUia_wMVTXUtBjsbN8ofSwgDZN7433mmmNgIFfNM5QPgdXdDumyAz8J0FpDl330ujRPr_TELXgdKrcgL9cS8Tx3xRbkFuY8QAYwljCYCB5P3j8D19YHlzUBKhTRRR8-tO9QoNQFdAkKLxLS8nzOz1mkkDDZZH_grVo4CCCWJNk9_KXtsM9NlRzwEgBKVv67Y2N31_ATA1wapBZ04R4LtVIM",
+        "width": 1600
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpeMWpSrcoH5v5Ueigs-UzY26D0ZEQ82Q0j99HowFkwjns6MlAA_MtNEYKLwskHFw-7HeKn7M5e1TF6lOCxbXGY3PWuEwP5c2Fyw1DFFVBsTY-Ihzx372UWyQlUOQX_icGq_gEkwUT57Tb1uhbxej7cABdG5pzCeghB8WLTL3sMWpHAuWW1ruOb4-Be5Cd2l6Miv47HLl_1hFoOvWEa4NtgPGqeoexjwq9ixvlczYX3qMZN_yy2OpfLUmVi_-XxuygwRBjDKEvPqb1FPuhYSTMIIxafzDfrcq6CyzPhCddUuMHah4LETuV_2av_usFyqYeKHWHQbydg",
+        "width": 1600
+      },
+      {
+        "height": 900,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpeegs8GEpy1Rg_6YW8rfl7oUtVlWDIWTeOIg7s9y1wovsKrWqAxtUe6v7A3JuO4nnZsFurkIl56mEemxxoy-hE-MJ0xrrc6Dz-tJE7M3ut3h_GnEeT53_r8ItGnxvAZ403xTVJV1hJeqITADPg-wmCUhAJmYSIzefxUYjI1K28AZAEWmMv0oyJTonlibSLjI2fPyNhghLZB9_K0LSITt6jXWPkF5JyezF3RwAB0BT0cWeBUlzfymemxU-yn0Q3yJPL7DbkBD2FqQR0wJa3h4YmTjB1_bovOR8VaikI60-pxKa4wBYB8AUmaEsBUsnQXv6FUt5oKu5g",
+        "width": 1600
+      },
+      {
+        "height": 1200,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpcfS_CcgCYMaQyy1WICxG44MckF5QmnsRJwIsqkOpDXe5OkTqop72IXdlSTWqmLJfrqNFECfhict79CrMy-dMRSQdXwoQZt7I_Ngoz0MOG5HVyX15ZzCJGrCIpU5OhbDSYWXUaN7H2YPQUZWMfVwx_3SnnZeo33fYG1pMZIKvCiV7G9t_OgNqKtzMpPydCCReyZ_dRo0LY8zXO7GuzlpK0roaLk8adSbfPlA9ZE462C3W0XwBP-dN_QE1I-aWn6-3ICkSNo1yLmagJCUefMgzi7FoeNwBRK7Tzi5hRQRVw5Ky2GeLHqxFloE-HeL4kszSg-1nRelwg",
+        "width": 1600
+      },
+      {
+        "height": 600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpcj9ftQL9L0DgcBf2S_0jOH1CtD5EeMVqikmecICiG4HFS3nen4kJkObVWN-dY5WTO4kSrCWRb-bbt7urG1bi7MleiIKXmkyclRYN3rXPIpB6W5GIVk582_KQ2C_HeUDxoN6T1V3pFrgsopIPqDnGK0RThRCRQwPJIZVRdN-E_eHxb8CKneEDPtjAcKz-Z0bMhnKOmk9NeX2s-TWAsDgDho9s4InZl4pknBzSP0qnymLZdVPF76m-yTBB5VnhGRoYZeDoJuXcv7ezSYywn2k5y6B3-gIwnJgYmFFpm9bAH-T8vannLRj740hCoCdTPhfwFPoM5Buuk",
+        "width": 800
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpeoMA1NjdcCKE0XAjMm2txsWq7au5GhcUrHR1j8UR3SEzM7wN6yn0gu_47-virFUDiRqUoA6YWG3zdBptOd2J_hT176SJ6N-w354a95rWUckT-WR8at2DtCLILSGFeKfPF7S4zNTSvxUT1R6lYLUbVb7xXUXmqqdRSPDytGdlFDSHSgMX_cWqWC183MoLxyB9C1_XLycM-rC_EQVstCFmBeQgO7x4fPYy38R0q0igxlar8ghsr9T1hpGkdGBQn8_k2uRjNGmUjWRt8lAhvhx7soSPSt9wTEUDyz63zAsmAILaQItNwIiKZkwBNAM-JSdsmGZyJgK8U",
+        "width": 1200
+      },
+      {
+        "height": 601,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpewJRw-TkIJ5zn4fxT218SWL9orrclPN95DMFVAUDIE0V2M1BVw5pFAAAZhNmLlYv8pLMliKUzrZ6OrZ3QS-fb80K3sMbWomDE-PX9vjKmQgbCCdBtyNBZQcpdWwtdk07Eosxf0ZfOiIvcjumefaHzM6In5v7JfFURveeuD2pR1hii2I30AgPGJXDo6Ku_BMW6mjgof4Dfd7mt1k_iQggqsq0VV6dbxCmUq7Cf2VrlBzLM6Sd3ipbRkOKMk7NfBeHieEl3FDbFw2TCv48svvj4-f-BpMa_X3CbH7Cs63tmzfm0RNcExg_NdhZS178GF8uTk85PKKnY",
+        "width": 1069
+      },
+      {
+        "height": 720,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpfOIZZqUBn1eF9yq51tf8w2NjOcJKj5ldCzJZRIq0ofhocVBjkQ7ZBVPZCsMml54R7k73WxN2SrEXAEkzpG7uk8CkArp_zN-2QYYJcC-Sx9dZYTFpAk1zjqlxp49PLTjwZRlr_8g0fY7w9pADEL6bvrGaAKNNqcjyin1Mf6qgdw0Hkgu1smWmfWUx9IAFp5GATtxXOEXYyn_QfA1-igKJ6xtPJ1x827HtfQnp-RYIaR_M3c4giPYv8nmGyLkrhS9s5vtOBmk7lvDv3Rkuef_fS7BjbsMjLnNq3KrgkX2ncX4blWEjuphzTRgF2nIFPwsyz1vR81hfY",
+        "width": 1062
+      },
+      {
+        "height": 703,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdcYzKjUsSvWSRLH4hA5wqe08zVnyfWwezPq3zmBgoXCUyKLUwCEyW7vedp7xMsIe3VBpEJP-zZ7YXJGceBi7iPya9tMRk6A5O3lFM27s1ZUdZfIq93Nno4vEOBuu7yt7VABuzFpKOIfA8ct2SyB94_DDngQkICFlKJcJ0fIDVvqc-wJW9CimZlJCH1ZP7Hln6MCUYGadRrCHaGHa08YB0n4KReeKZiyoqL_AEBBCK2dEA1Ztk7vgKwVY_KIYh0hqU7rXa7-ZM9j4YHDw7Fhsid6D2-BgrEwkHjCIVz9yNDokIi98AsyqTaoNsybY3kCE6YDj0BLZM",
+        "width": 1249
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpcrzzVMkuSTow1nNpT--or8Pa8PUWVj1ZkJor0D40JhzJ4xJLQpdLJee6jlfYuasa7KSfshdKCwMmzx65L1INAUkUdnvq6I0o1mQVOF1zdnTPjU1v0C8CW7VQ0VaHN1aEE2fm4XbcRMx_ZtPAbsk_LRgAR6sZ1vPVlSW85nJQSSq0p_ebmAyky_U1V_yHilmNxOcX0doPoq24V-BdRks3xneSw9SrpIGAEA_EYMclqfbqJBTPlyvWS0Nxg3AAoxfLXWyJeHf--tWpmir5yhEUVT_4fTVaF1ES2dIRzz_gkC0GPL6epeYufDSyS6bw3JpCzKo3IdXsw",
+        "width": 1600
+      }
+    ],
+    "rating": 5,
+    "reviews": [
+      {
+        "author_name": "Jordan Jančić",
+        "author_url": "https://www.google.com/maps/contrib/117238617582172202259/reviews",
+        "language": "en-US",
+        "original_language": "el",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocLFa5ZPGAPsjwisJD7A9pWARavU6D4mOK6IxUYKtOjqjKe2sQ=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "a month ago",
+        "text": "Kigen plastika da te voli zena i svastika",
+        "time": 1746341494,
+        "translated": true
+      },
+      {
+        "author_name": "Aleksandar Popovic",
+        "author_url": "https://www.google.com/maps/contrib/103861905436016429808/reviews",
+        "language": "en-US",
+        "original_language": "bs",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjWIKZyJE80rn7oPzJwHA9dxOUmY2yYcLWKFdCzsxA4NJP1j32_w=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "in the last week",
+        "text": "fast and excellent cooperation... 10/10... everything was done on time...",
+        "time": 1751098944,
+        "translated": true
+      },
+      {
+        "author_name": "Gačo",
+        "author_url": "https://www.google.com/maps/contrib/108296540367083988023/reviews",
+        "language": "en-US",
+        "original_language": "hr",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJbRmTIUz5NIZh34XisCCYPFEIA-Lgdoe2eYaItoflrl01uhd8=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "2 months ago",
+        "text": "Kigen Plastika all praises for the cooperation.",
+        "time": 1746007757,
+        "translated": true
+      },
+      {
+        "author_name": "Marko Pavlovic",
+        "author_url": "https://www.google.com/maps/contrib/113922321462713645058/reviews",
+        "language": "en-US",
+        "original_language": "bs",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjWwAtzhuvmW1TWQaUIzqkB7Y9WxtVjtsyQSykyqGfettWoMbLqz=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "a month ago",
+        "text": "Excellent production of all items, recommendation to all future buyers.",
+        "time": 1746341589,
+        "translated": true
+      },
+      {
+        "author_name": "Dejan Gladovic",
+        "author_url": "https://www.google.com/maps/contrib/104737720143919947854/reviews",
+        "language": "en-US",
+        "original_language": "hr",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVAhGDIJnaEQtGgBQ0R7XAecOuruKDrJmpb1RuI8CoGFUZadgh7=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "in the last week",
+        "text": "All recommendations",
+        "time": 1751098854,
+        "translated": true
+      }
+    ],
+    "types": [
+      "point_of_interest",
+      "establishment"
+    ],
+    "url": "https://maps.google.com/?cid=9887445968323294476",
+    "user_ratings_total": 10,
+    "website": "https://www.kigen-plastika.rs/"
+  },
+  "status": "OK"
+}
+GBP API Response: no status KIGEN PLASTIKA
+GBP Fields available: [
+  'place_id',       'name',
+  'address',        'phone',
+  'website',        'email',
+  'business_hours', 'business_status',
+  'rating',         'total_reviews',
+  'reviews',        'photos',
+  'products',       'types',
+  'maps_url'
+]
+GBP Phone field: 065 2170293
+GBP Address field: Svetog Save bb, Osečina 14253, Serbia
+Raw phone value: 065 2170293
+Raw address value: Svetog Save bb, Osečina 14253, Serbia
+✅ GBP data integrated for KIGEN PLASTIKA
+Returning bootstrap data for: Kigen Plastika
+📂 Serving SPA from production build
+📂 Serving SPA from production build
+API /user-data called
+User authenticated: false
+User object: undefined
+Session ID: bW1hBlv1kh6QhZZaAgG3g5JD_YdSZQhm
+Loading data for possible users: [
+  'jlI-FqIQLyjYpXtRzrdownLPaD4469Gt',
+  'bW1hBlv1kh6QhZZaAgG3g5JD_YdSZQhm'
+]
+No user data found for authentication, checking for recent bootstrap data
+Found recent bootstrap data, using for preview
+🔄 Fetching GBP data for bootstrap integration... https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k
+Extracted place_id from URL: ChIJvW8VATCFWUcRDDXH5bhDN4k
+Fetching details from: https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k&fields=name,formatted_address,formatted_phone_number,international_phone_number,website,opening_hours,business_status,photo,rating,user_ratings_total,reviews,editorial_summary,types,url&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE
+Google API response: {
+  "html_attributions": [],
+  "result": {
+    "business_status": "OPERATIONAL",
+    "formatted_address": "Svetog Save bb, Osečina 14253, Serbia",
+    "formatted_phone_number": "065 2170293",
+    "international_phone_number": "+381 65 2170293",
+    "name": "KIGEN PLASTIKA",
+    "opening_hours": {
+      "open_now": true,
+      "periods": [
+        {
+          "close": {
+            "day": 1,
+            "time": "1700"
+          },
+          "open": {
+            "day": 1,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 2,
+            "time": "1730"
+          },
+          "open": {
+            "day": 2,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 3,
+            "time": "1700"
+          },
+          "open": {
+            "day": 3,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 4,
+            "time": "1700"
+          },
+          "open": {
+            "day": 4,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 5,
+            "time": "1700"
+          },
+          "open": {
+            "day": 5,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 6,
+            "time": "1700"
+          },
+          "open": {
+            "day": 6,
+            "time": "0600"
+          }
+        }
+      ],
+      "weekday_text": [
+        "Monday: 6:00 AM – 5:00 PM",
+        "Tuesday: 6:00 AM – 5:30 PM",
+        "Wednesday: 6:00 AM – 5:00 PM",
+        "Thursday: 6:00 AM – 5:00 PM",
+        "Friday: 6:00 AM – 5:00 PM",
+        "Saturday: 6:00 AM – 5:00 PM",
+        "Sunday: Closed"
+      ]
+    },
+    "photos": [
+      {
+        "height": 900,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdhwEF3qanV8T2KufA1zGRs_mx9DuYrS4x8DRLNy68IbzLFASS0nkJK82SyYP2O3eNPKkS_LoMgzYWSsFsbh-d4cnQgxkBZ3s8seC5rstqRh96cN43foJ60GTaCHRemVlk_6mv6-7DOqRDRSJj6K6x4W7m3Ox4hDgiCYjOgd4vaUnmC-yvi0ofwcTTk6VJsDdMpwnmy5fw5XmFlbDXlslmvUFr5XWBrxD1IBjq7dqLbNhzW526WtlkPmu30iXN5mcGh-cJwq5kKUAxIT-ccdt8_-Jf7gBZSX8uCUQ2l5eBnH8bKaLIB3u1oDIc7MerlGoscU_D4hLQ",
+        "width": 1600
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpewN6BToGmTDlyH5ST3UIl-DYknE-4Ph32g9s-AXcKgFrOWBu0tYRCUWHOaEeIvjsSnzLNJuRXcqngMaWWeG6a0K9Pev6nPrDIn4KOF3ZSVvF00ffNoTBaejlf0sFTg-W7XxA-1Vd-AH7VAexnkVoMwgzzm_lktL0hFrPGVaS0qammdNAdCHQ_MJ3xN8GnyQIVUAwoQPmvDSzVKbo2nfuV3392sSzhTbEuN9o5gMxD5TinhrQC9SwxGIe7501reRzotBFcmuJFxaDCmkJBF5F4JQvaJZFij-SHHb9sNZP6EsOP3PWhwYsZngjmbfbEbA3nZSc-fBKY",
+        "width": 1600
+      },
+      {
+        "height": 900,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpe7nI9ZkHWy2dT73eN3NUc-ojBZJNz5sOTAU6XXYGgCHNkrUDf82CFgWhSTpI2-th5cnF84c2k3BZ7_hcYioyL5NoxbxT9a4doaVVziFlT_yd9b54-xhmmfqZptdfjH_o9eqXaRgPxUYnTlynFonUhcagjfYeyyv00r6G4k6Gw0bQow4YkqfrXumtGGUEdmRaQtbV7HCwjQE_gqybPfUBJauS1uX6Jz1rFRL1CXIxiPrNQDgm3-8bLHjgjTfEWa9t451pjS0jtXJUM_bB3mCQeQaFqjCkMyrZQziSrGBBP0dVQfF0_mlszqrZGekCR90Is7zaC85Mc",
+        "width": 1600
+      },
+      {
+        "height": 1200,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpcK6cOQF8q--7NbzvHrkNoyVzEhnvmvt0NgSX27snO_H9c-4L4oQo3-4-jJYxDz-M6Gpy2m-c2rIzAMRfSbmwwSV1tNcbD6igDEgJAkB441zUVsctB4I7wV3dCClfoybTUp3DKffwjv-xaHxLtbI_YSm91RUURrtov4cDCTgOsA8ONKpPDj1BSyFiTfoZakNqed1A6I_L2jHNPOj_3bYOQOQS3LaliYR_x1eC4X2GRcsKKFHb-qM7-rXQhaiZosjhdPo6AxlCBoFQQODJmbCC1swfhZcdx4YJo2PwbLbKiOA2hI7nM2Svx0S-d3lGqDfZwOK5xchmY",
+        "width": 1600
+      },
+      {
+        "height": 600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpf2M-rVq0Fg0vqTCwEoF1G8VJkfywp7JqV46ljR6REj-8FVLxWItU07x_FTb3N82ywe9fNudyErLuOHNX9DhgKBKEc3T05EbrZujsX4igjkdhsQaRNHOUfhkfPa_ekURRmiPDjOuLrgcggugU0Gr1WyxeC8XA_vKX9qvms6nvs12K2QgLjIkfbTJfRh3GACj8-rzDeEmNeAC-YKqd6PW6trRo0cbqHbXkr-ygU8H34Rlg7zYxifjs2D0Do9EgCgMfEvHSau5ZTCqrxEcQwgrq8vLxjJJWsu22A2Ogj4_iIClETs2qcUkDbW1ROR6ReNWUGjrUD2hp4",
+        "width": 800
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdG3jJABovRumoEStJMdcXToOxQd_Id_qjYJAbtMWTiK07XGv6O69k_yZXzqss7rmoAVVChO_Iq028vXaAGKIH5YfiUE5rzDimMlS_I-lxhbQ2-6x_9AsCRUr9sjzJm3OCOCmd-Cz4lXZF8-on6le2gt0k_yox18qLlo7WfRwzwFhvWc9fwAI9ehjb_xuxOiraHpHidySigCn40QiLX7AV1WUi2wEO_ib2WOVCEEqJV_nU5oWQkQYq7CLLqOYxlWDapPfSZktG-VsS6GpbzBAzB77ozXr293258WDqNjvN0sf86Rw-ShYFRGKKzlbROZmaJ3AKDcTo",
+        "width": 1200
+      },
+      {
+        "height": 601,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdKhFLBEN3Lvwvd5DYQa2KU8DGlt8uZr_JLKJjS-7XAAmo1iCLlbAmFoJ9R5-9Q7SuIoKxv2jZ8ApNp_M2tSSrlrb7SFA95CzjRRolET4w1eZTHG9hepx2d8PIrIsJf9FQWwbhhISKtHnXLjHh7E8Le8ENwdgLkIiOdyXAVWFFO6AYz6QojdEEN4FYFZQFp9w0z8swbGlXDTyGn_JQebIJSWKjVm6TBy_V9qZrWHq59o5_sgWD0mLMyzR4t8S9Ilb8xBg2sIx8XEhG2ZfeLAPIUApaJc4wZXPJ0LPw0-NvCiTWd4Oj017pfD4NSXWEWpTKKhjlsnR0",
+        "width": 1069
+      },
+      {
+        "height": 720,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdrZddbqgAA_Rt4j_5lQ2n67Sj0_smjTcyeyZoPqyMs-wvcsLfxor6bDZMsBxe-VrcgrrCtn6kZcyIA_ce8dKVjqVBLWEGa4FRZ2I7Lu1qKz7wT9QbbKaCOF2n-EGEoguQlhBZ6e-arhKT3ocALFc4I8nOIsw-4h9CV0PncwpN0pHld1R1tI8HxGAJQMIzya_4NWJSnVvyp7unnPhgfxYiwdpK1wXYQLh4jAwMw-BY9Xh6IlZxCTFkr2t8gp3Jr45CC7_Yumk93VSykSkDHJXP37n0qaeF7074KAAoTLh7HHhoHh1d1J-0XfzzQSNPXrlPwcP-puQk",
+        "width": 1062
+      },
+      {
+        "height": 703,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdSbPmMl-LwW8l_G9wUUFafuSN9bYoUTuI2u2FtzGZ8Uxgg14T3TaCds73IFfr7UneVwvSIH-AW9Jh8CnCSN0YdGcUKuiiJhHPIb_pow8Wr0k-CW2Yx1mJ1oME_YNmJXS-WZgUb17B4rOO2PJrWOH1W8ouNSNwkKTSU6UFlza4fyttAuSru2xO3WEO3xKEXpivhjuyS6IAj-KC6DoVUQCBFROmI6OOQoG0grXo5jzEFcwazR-MQyzjIQQpeX9ACq1Yan6E_UMTOEJRUcwwEpfspxwg9--6d2jg9I23gTnAEl_gbhppylLT0fuiQLTH_HHbajBus1_M",
+        "width": 1249
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpfo8GvlFUGtYuW2D3LL0x3nD3ScaaWFEYA8dFTtBXJykS2P4trHHvM2dJI-Otfo9bNXnLpihhumPyqwzGiIrX12ZMi99AOB4iH5R9MubYhwdp0QUqOSK2HWdAZDLgZSv9tPc48W8Px2PUUw1piApgseT19Cy01U2WJmXFmuGuyiSYzXPFoLzwDMtCZdRYsXT48-bBA2VSmIE_WHzWmv8glwwVuLhso-SYRIxTCn_INcFdl73m3mHqxVfW80sj-TUgefZWIskWn7ChGa88otHTwFfnBP1DmShfAzrhR_-eHS0V8_0K9a2NfMZu54KnH4TRmR62e_RXU",
+        "width": 1600
+      }
+    ],
+    "rating": 5,
+    "reviews": [
+      {
+        "author_name": "Jordan Jančić",
+        "author_url": "https://www.google.com/maps/contrib/117238617582172202259/reviews",
+        "language": "en-US",
+        "original_language": "el",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocLFa5ZPGAPsjwisJD7A9pWARavU6D4mOK6IxUYKtOjqjKe2sQ=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "a month ago",
+        "text": "Kigen plastika da te voli zena i svastika",
+        "time": 1746341494,
+        "translated": true
+      },
+      {
+        "author_name": "Aleksandar Popovic",
+        "author_url": "https://www.google.com/maps/contrib/103861905436016429808/reviews",
+        "language": "en-US",
+        "original_language": "bs",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjWIKZyJE80rn7oPzJwHA9dxOUmY2yYcLWKFdCzsxA4NJP1j32_w=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "in the last week",
+        "text": "fast and excellent cooperation... 10/10... everything was done on time...",
+        "time": 1751098944,
+        "translated": true
+      },
+      {
+        "author_name": "Gačo",
+        "author_url": "https://www.google.com/maps/contrib/108296540367083988023/reviews",
+        "language": "en-US",
+        "original_language": "hr",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJbRmTIUz5NIZh34XisCCYPFEIA-Lgdoe2eYaItoflrl01uhd8=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "2 months ago",
+        "text": "Kigen Plastika all praises for the cooperation.",
+        "time": 1746007757,
+        "translated": true
+      },
+      {
+        "author_name": "Marko Pavlovic",
+        "author_url": "https://www.google.com/maps/contrib/113922321462713645058/reviews",
+        "language": "en-US",
+        "original_language": "bs",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjWwAtzhuvmW1TWQaUIzqkB7Y9WxtVjtsyQSykyqGfettWoMbLqz=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "a month ago",
+        "text": "Excellent production of all items, recommendation to all future buyers.",
+        "time": 1746341589,
+        "translated": true
+      },
+      {
+        "author_name": "Dejan Gladovic",
+        "author_url": "https://www.google.com/maps/contrib/104737720143919947854/reviews",
+        "language": "en-US",
+        "original_language": "hr",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVAhGDIJnaEQtGgBQ0R7XAecOuruKDrJmpb1RuI8CoGFUZadgh7=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "in the last week",
+        "text": "All recommendations",
+        "time": 1751098854,
+        "translated": true
+      }
+    ],
+    "types": [
+      "point_of_interest",
+      "establishment"
+    ],
+    "url": "https://maps.google.com/?cid=9887445968323294476",
+    "user_ratings_total": 10,
+    "website": "https://www.kigen-plastika.rs/"
+  },
+  "status": "OK"
+}
+GBP API Response: no status KIGEN PLASTIKA
+GBP Fields available: [
+  'place_id',       'name',
+  'address',        'phone',
+  'website',        'email',
+  'business_hours', 'business_status',
+  'rating',         'total_reviews',
+  'reviews',        'photos',
+  'products',       'types',
+  'maps_url'
+]
+GBP Phone field: 065 2170293
+GBP Address field: Svetog Save bb, Osečina 14253, Serbia
+Raw phone value: 065 2170293
+Raw address value: Svetog Save bb, Osečina 14253, Serbia
+✅ GBP data integrated for KIGEN PLASTIKA
+Returning bootstrap data for: Kigen Plastika
+Homepage accessed, user authenticated: false
+📂 Serving SPA from production build
+📂 Serving SPA from production build
+API /user-data called
+User authenticated: false
+User object: undefined
+Session ID: bW1hBlv1kh6QhZZaAgG3g5JD_YdSZQhm
+Loading data for possible users: [
+  'jlI-FqIQLyjYpXtRzrdownLPaD4469Gt',
+  'bW1hBlv1kh6QhZZaAgG3g5JD_YdSZQhm'
+]
+📂 Serving SPA from production build
+No user data found for authentication, checking for recent bootstrap data
+Found recent bootstrap data, using for preview
+🔄 Fetching GBP data for bootstrap integration... https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k
+Extracted place_id from URL: ChIJvW8VATCFWUcRDDXH5bhDN4k
+Fetching details from: https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k&fields=name,formatted_address,formatted_phone_number,international_phone_number,website,opening_hours,business_status,photo,rating,user_ratings_total,reviews,editorial_summary,types,url&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE
+Google API response: {
+  "html_attributions": [],
+  "result": {
+    "business_status": "OPERATIONAL",
+    "formatted_address": "Svetog Save bb, Osečina 14253, Serbia",
+    "formatted_phone_number": "065 2170293",
+    "international_phone_number": "+381 65 2170293",
+    "name": "KIGEN PLASTIKA",
+    "opening_hours": {
+      "open_now": true,
+      "periods": [
+        {
+          "close": {
+            "day": 1,
+            "time": "1700"
+          },
+          "open": {
+            "day": 1,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 2,
+            "time": "1730"
+          },
+          "open": {
+            "day": 2,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 3,
+            "time": "1700"
+          },
+          "open": {
+            "day": 3,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 4,
+            "time": "1700"
+          },
+          "open": {
+            "day": 4,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 5,
+            "time": "1700"
+          },
+          "open": {
+            "day": 5,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 6,
+            "time": "1700"
+          },
+          "open": {
+            "day": 6,
+            "time": "0600"
+          }
+        }
+      ],
+      "weekday_text": [
+        "Monday: 6:00 AM – 5:00 PM",
+        "Tuesday: 6:00 AM – 5:30 PM",
+        "Wednesday: 6:00 AM – 5:00 PM",
+        "Thursday: 6:00 AM – 5:00 PM",
+        "Friday: 6:00 AM – 5:00 PM",
+        "Saturday: 6:00 AM – 5:00 PM",
+        "Sunday: Closed"
+      ]
+    },
+    "photos": [
+      {
+        "height": 900,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpe0FyImAG_EGsB8pFG93Knd8AH7aGIAlPrml7kma6j0-vRBy5vHa9tZFbeobs3B4j6VhIMj1wINhbJ2jC1J-lRO0J2EdWF6z7M5Q0V8L4dRA_YZUpmSGuCbQwAdGT1ArrCT0FcsY3VHxms67VRokFILaa-myJ07QPscMGUiPi1OcAuWz9oUQXf5PhA0s9sjEREplbfKFVsP8Q6vXIzwCy6KM8ggAYhEkQhfvTBU90kjBKzuPl1G3xCaA4fHrQ-SksXx-imIfI66AhjgjidFw3eky5FqMfSswa-7bv4SBsN6uq5XucZC-iccYZOiK6f7TjQiZQHQbIs",
+        "width": 1600
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpcd5NWm9gmPcEb-TSNW8BDkvi30vF622s9pF5wraQvsjlODrbn7sf-3aLZUd3czjn1nDJPTbyZlew8Aa8i5-nyU-HPtZhwUUA8pg1bMzw5auazi0HSW4aeBI9sZFhvShrPP6Pz3K532V1blaiVvXdLa_ccSN1wXx5mJ4pusiKZ6_hjEuTCpGeneqxsuFtORHwHmqY22DCKEKXC7D1IQ4Q8BgOlKoUHAl2Uu0s8AsmlPDs2unANbhTDAH1SOzRQtimkFibeCniN_yY10q3uqcDgyUHRbcnoJHbDuFGsH93ULefWXWfjrv9_0h_FvC3heKAPehP4vaPw",
+        "width": 1600
+      },
+      {
+        "height": 900,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdgFIKHQ9JHggIwO6E06Yz13BD70O4OVxmKtbxbYacgolzrY0EB2gkZ_7r6G6cTfwVVsaBC02TrgeetRDlgRMUs47f06LGBayigmAjOi6smto9qU-JA8RAzn2zbtexfRiiC5XRKdUv3QguJBfQn4kPk51RCM6oaVsSdloF8xoJ1Fm6YtZ3iDB6XoEBO_B6n1jH0kSnQVJdzbRaJn7u6lVnmgmk4USDWWzqwgeKcjNMSalOyDdki761EDj_nU6cBhDEXlscFcQOA5-bjZFx3gQGIt7QuGjcHtgkPwZ0EJ9Drxxsl-rTq3G62olpmi6x4Epv272YTJO4",
+        "width": 1600
+      },
+      {
+        "height": 1200,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpevOp__9ISpgDLpvTrEMvxn-vNvC-Gp0xKml2OaJyqzA9HYqTF2CZPq6F5_7KUmZ71OBxQ6w59cA3yGExrG06fWWv2uT5poeLtc60AAo1WhIJzkgEVr5bem7OpOA7mVLaH1xzBf63iD7w1ppaLmpE81vIlnGuE1TWPPo6smc232CfdABJdb_KobR9U93nTfwCciku4WA93jSprc8kfeLPXLKpz_I_ipah1-kypMtJixKWiZ3hAaXZ_jEQOSN9JzVu4zY6h3RUH8pgtvmzXOwfQp_zrVeN7eBrXplOoufefN61OBomwOk4WIZenlZln-ucwjHgE1Gsg",
+        "width": 1600
+      },
+      {
+        "height": 600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpcInVt_007-5cWGoAr7t3ioggQ-LDiWYqhkd1-LLBUixka-5c8HfqOVVwT1xvDefhCAKERaaKnXWAKg-W8MreMsRD2tzp4wFfEDU4fim403Uh4n2qOFTvKIjEEgXxXi18WYlnXKZ2Di_2P147O9hMiZFkgGdkuZ8T3HmDj3hTBd3dJWwT-Lr4Kn50AdF7hfgFdRST2j156yNNo_g1vULt5ePRxLy42-OnR_N5720yyPiJmX6KN7GFnXDeCLFCkLHJmFYEfKVC16z3trm_EobAKvCuh46VzgBjggjZSa13x8-duwqwif40cFRje1HxSnwbNCX-c29X0",
+        "width": 800
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpeWcoPxqtMo9xh3LW-n49iPqsKV66K1JNNVPK5hp8wIK9peHJ0WztYi0OZLkJCkYAw1ZArkzYRxKR3Hwt9XPXzfuKzxwwwg8t1-mlQ5B8MWuUviU7PL-sdHyUUMq_7BoUAJyxYbOvV5w3kWmrqP3ZFK_DqzNzBq_sSTGT-2Ec1yk8nkMj5jTOtUp3nOMdb9EOjTSPURcfaxjcdYUAczCY9NtfgLWVytm9eWoS9kogtRuZLjxvID47yf7WBpgd80IM3R0ViqtK6pm6uR5cuHSkSD6p3Ug4W5asN_kEnzec2hHeDKOeByjvF5cQB-aq1cubJBFy9NRls",
+        "width": 1200
+      },
+      {
+        "height": 601,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpftc1mo-zVegN3pqVxLKoN0bH8SDxkLBeiBVmfHI3dmo4LYTNobyWt7mUoBI_G4wgzI63De4HpS0ng6BkpPpYxoaqbMZsBbD1XwUnsslQHp0MF77s0AKRDnUklxWRN-zal4m5DYXE1UZyVtV8XMcZjW7k2CuLfCOd9cr_HOkt2PEH-WBppe5l_RGg-jNrYpgFIm5-bU5iXAJ7dkHigEUmqykI7QYdVTLIC3K2DaJfpMKvxK03r5QhisCOs8_IudfttCoUr1OVju2RSL9eNKWovJZz6UO1ZIOg6-A5uVSab8HlsnoiTstklRnPZMCSnmdKl9j8Hoxdw",
+        "width": 1069
+      },
+      {
+        "height": 720,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdAo_aOzbgltHi0rHLPRgMbib-ctHeJb_oge-USW4rdE8dGVNGNHc_qZZWtd753L9V7pujq7tTl1TVpHvzHZcZp31qWp7VxmMq0vU9t120940NFVH0D3UXDtNzOOXGtqxmIBjZKyYbgrd_o-P-EUVsudkMNYNUk1nSCKBaAcwK4H-9bd9CAzJtER5THyCDjR5SEKwLpWWWtn2vrGqzZF8RopAI9wjnQH3DUDIrbaN4Civ4UKJ2FpxvUQNf8TSfbZZICJDmC73CJsTwX_6I8voYFUaWRJxbfuSWhUQ7mM-2Ypn2I-kFExefWIrm68SN_e-FGshcFgt8",
+        "width": 1062
+      },
+      {
+        "height": 703,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpcrliSB1OiZxkAhT-QL-_BqqO0yBgWteeI-u-722ft9PUzj88iPqIXF7QY-cAdE2sF9iNnj4xO77NE98Og3Q5pL0sBMVA2glr5KoNVXztdT69fFTqG8WBEvtaeEbUmZ0LkCMo9L9w6H-X2S92OWNxTquRquxrpKFV-S_p7AsSRErYHNn3AwRJFHmpHKOeuA7XlnIrtXkU0xmbtt3Sby72eTtYbOLwlQkFVjtmr0Ikz3_K8zJ-lkp2Bt61hlDnL18qgUxi2oxF4h2b6lHd_G_9mCnmL0SkF2yQOPnIzFgXlTM3y6FwaEl9VYKJIKRCek7IkvhE8OrEc",
+        "width": 1249
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpfzwqewh6kNNUg14ykXyBEuXC4mf1TnoOzzU4XA7Zse-odDYcwePKsuw-EzDx_uyBnJMBh3ZmoFVe_UyKpKcN-X7ZSE0es3o9G8cDTf4loXKhSZ4aH_T4V4BOrr2UeBeYlTA3XrWu81GPDsSWSaWqk4ykbaef9xYI9AR4-LK1N8ds3ehMzXXwM688LkacMi2ZgSstPqVoo5ypNkCiH5ptwRPIMpZAnQ4ThZ-wpR5BAGHY47-Y9Id0935FHU_lOe5B_lpfWqJdhIYRdg4GuWh2qmz88MpB5WGBds_sf5fCelY0k_57PYRIaFRzbHZCujlw8eTL8xs_E",
+        "width": 1600
+      }
+    ],
+    "rating": 5,
+    "reviews": [
+      {
+        "author_name": "Jordan Jančić",
+        "author_url": "https://www.google.com/maps/contrib/117238617582172202259/reviews",
+        "language": "en-US",
+        "original_language": "el",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocLFa5ZPGAPsjwisJD7A9pWARavU6D4mOK6IxUYKtOjqjKe2sQ=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "a month ago",
+        "text": "Kigen plastika da te voli zena i svastika",
+        "time": 1746341494,
+        "translated": true
+      },
+      {
+        "author_name": "Aleksandar Popovic",
+        "author_url": "https://www.google.com/maps/contrib/103861905436016429808/reviews",
+        "language": "en-US",
+        "original_language": "bs",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjWIKZyJE80rn7oPzJwHA9dxOUmY2yYcLWKFdCzsxA4NJP1j32_w=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "in the last week",
+        "text": "fast and excellent cooperation... 10/10... everything was done on time...",
+        "time": 1751098944,
+        "translated": true
+      },
+      {
+        "author_name": "Gačo",
+        "author_url": "https://www.google.com/maps/contrib/108296540367083988023/reviews",
+        "language": "en-US",
+        "original_language": "hr",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJbRmTIUz5NIZh34XisCCYPFEIA-Lgdoe2eYaItoflrl01uhd8=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "2 months ago",
+        "text": "Kigen Plastika all praises for the cooperation.",
+        "time": 1746007757,
+        "translated": true
+      },
+      {
+        "author_name": "Marko Pavlovic",
+        "author_url": "https://www.google.com/maps/contrib/113922321462713645058/reviews",
+        "language": "en-US",
+        "original_language": "bs",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjWwAtzhuvmW1TWQaUIzqkB7Y9WxtVjtsyQSykyqGfettWoMbLqz=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "a month ago",
+        "text": "Excellent production of all items, recommendation to all future buyers.",
+        "time": 1746341589,
+        "translated": true
+      },
+      {
+        "author_name": "Dejan Gladovic",
+        "author_url": "https://www.google.com/maps/contrib/104737720143919947854/reviews",
+        "language": "en-US",
+        "original_language": "hr",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVAhGDIJnaEQtGgBQ0R7XAecOuruKDrJmpb1RuI8CoGFUZadgh7=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "in the last week",
+        "text": "All recommendations",
+        "time": 1751098854,
+        "translated": true
+      }
+    ],
+    "types": [
+      "point_of_interest",
+      "establishment"
+    ],
+    "url": "https://maps.google.com/?cid=9887445968323294476",
+    "user_ratings_total": 10,
+    "website": "https://www.kigen-plastika.rs/"
+  },
+  "status": "OK"
+}
+GBP API Response: no status KIGEN PLASTIKA
+GBP Fields available: [
+  'place_id',       'name',
+  'address',        'phone',
+  'website',        'email',
+  'business_hours', 'business_status',
+  'rating',         'total_reviews',
+  'reviews',        'photos',
+  'products',       'types',
+  'maps_url'
+]
+GBP Phone field: 065 2170293
+GBP Address field: Svetog Save bb, Osečina 14253, Serbia
+Raw phone value: 065 2170293
+Raw address value: Svetog Save bb, Osečina 14253, Serbia
+✅ GBP data integrated for KIGEN PLASTIKA
+Returning bootstrap data for: Kigen Plastika
+📂 Serving SPA from production build
+📂 Serving SPA from production build
+API /user-data called
+User authenticated: false
+User object: undefined
+Session ID: SfTTLlH7FwhdA2TPcQGsp4KHRyvUmriZ
+Loading data for possible users: [ 'SfTTLlH7FwhdA2TPcQGsp4KHRyvUmriZ' ]
+No user data found for authentication, checking for recent bootstrap data
+Found recent bootstrap data, using for preview
+🔄 Fetching GBP data for bootstrap integration... https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k
+Extracted place_id from URL: ChIJvW8VATCFWUcRDDXH5bhDN4k
+Fetching details from: https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k&fields=name,formatted_address,formatted_phone_number,international_phone_number,website,opening_hours,business_status,photo,rating,user_ratings_total,reviews,editorial_summary,types,url&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE
+Google API response: {
+  "html_attributions": [],
+  "result": {
+    "business_status": "OPERATIONAL",
+    "formatted_address": "Svetog Save bb, Osečina 14253, Serbia",
+    "formatted_phone_number": "065 2170293",
+    "international_phone_number": "+381 65 2170293",
+    "name": "KIGEN PLASTIKA",
+    "opening_hours": {
+      "open_now": true,
+      "periods": [
+        {
+          "close": {
+            "day": 1,
+            "time": "1700"
+          },
+          "open": {
+            "day": 1,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 2,
+            "time": "1730"
+          },
+          "open": {
+            "day": 2,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 3,
+            "time": "1700"
+          },
+          "open": {
+            "day": 3,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 4,
+            "time": "1700"
+          },
+          "open": {
+            "day": 4,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 5,
+            "time": "1700"
+          },
+          "open": {
+            "day": 5,
+            "time": "0600"
+          }
+        },
+        {
+          "close": {
+            "day": 6,
+            "time": "1700"
+          },
+          "open": {
+            "day": 6,
+            "time": "0600"
+          }
+        }
+      ],
+      "weekday_text": [
+        "Monday: 6:00 AM – 5:00 PM",
+        "Tuesday: 6:00 AM – 5:30 PM",
+        "Wednesday: 6:00 AM – 5:00 PM",
+        "Thursday: 6:00 AM – 5:00 PM",
+        "Friday: 6:00 AM – 5:00 PM",
+        "Saturday: 6:00 AM – 5:00 PM",
+        "Sunday: Closed"
+      ]
+    },
+    "photos": [
+      {
+        "height": 900,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpd_RrZLmFH604U2S2hHxCawjUj-2PxRiMyQva-SA7HErihLNgXfRqoEGphsG-fWl3bQmKYhWA2lZqGsAstY3mgnR32pD4R1r2ki0cgiGqi8-3VaK-OFWgZKDZU7Pn4YWRSnW7dPPWD1M2otg9JvstepBEEIb_Mnoul7RNiS2vuvi52Fiy5RxAvChpea5lX33yGLCFG_qiQflJMFO2uS8fdymyYPhTmViY3_f-wGN-YJYGeQ_D_QIwIJZmbmf8piOrbmXRWsUTovfUJDpWr1r34xLz3xgQiYSREqaFISx4CS7nRI6skidH0J7LB_URVdtwlSBfNOIE0",
+        "width": 1600
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpeo-jTa4-A32MKl8_Hm_OjoCJoxVcm4rmr6Dcos_3XwPCw5bt6jiqRbE4lJj-7As1ZMPkp3Ykf3MUT4VeRKr_h8C_FSmltDexXMoq9LLuJE-26jO_6wbxPsjU4Py18Itev_dQsj8dpgAFCMceTitKwF6xDCFpBByY1_TCFC03hqtOF6ZhbgM5r5kdL21qQiPtCnSVfVeDDBDI4w6uH_nj9JbWi33yETfOufYwT3iW-jxFljKx5pGxpU_l8yef2bfCvZmo_E7neyxj8tgKChx6qVw8xPrXLCrly9ZnCOELczjMbmIVGXim34BT5hmwuiIRibYTFF3zQ",
+        "width": 1600
+      },
+      {
+        "height": 900,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpeo2h3Im_rJTJJX-ge2WTi_zRsfEF4QtWOTFBfT07LzovjNvRfiQWoCs2fsr9jf8qMpNjivoms6naty8oZqIImCDieXw5cURxlJjxl42N1eS5Je7CNL9Ex5obbKlVLqKUCnr1vfewskj92gEerE77Fdo4p9e_OCtxenz0yfxhb4bmUT7KSYdWrjaGtz2iO4q2WvONFeM5EU2bC5PyTtd9m-ha4FpYyQ-bPvCvbqk93vEk26JSfELGkLVRAQqRVMH02fArZ-espYaem3pXxjLyjg9r6cHswaxMcXS_nBTx5TjcfFMvhgeWDw1DEstE8cBnR_XWXHBn4",
+        "width": 1600
+      },
+      {
+        "height": 1200,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdEucuPM_WLiFiXEsEzyfPKFZxEEeo6N2lOD34Z3ELzWRBlasuxGV_QmhTCHcFcjQB3Jk12FJbkViJVRfH1tce9p68b9UJQRUUSbOab_2DFnTOSju8Zw7w72XL-ebfHNQbGxbGvyGfZjs5767b8pRrzsqDE1c35HB20OZa_pZr9IddxauUH4JYvBfrWcYCzqF-zJNRP25UBwYD5YMVcamJdr9-HxifjAngAm1LSe2IG95rrogIrHd7CDCYjFWDpNSpYMXUsXk1tW6ZJ5RdayMrkvvPPcPKT8atsIP9nbMLJRDGkk0YC9vKeBC73Dl1dn55__SxawtA",
+        "width": 1600
+      },
+      {
+        "height": 600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdmGmpseMwl59QRcHRPMuZTyE2NbwnAX2jeQIqYsre1SLcSazNminNxBEgE-EkLSb4ZjPnRLEoK6mciBjQgpeGPqz7ThOJXUONFRbcdepcG7z4relkTdxUpe8enJjlIBkAP2LLrd7U_0rhRXWeJjMOBkJ-of5yTfwTolQqVgm8m6UbI_vN_vh3R5rQG5af30kiSiAwP2SRh05DWJ-lY8t5hmzaXH8xbZx7fPzKhRw9RGQ8q0TEsKVCmx6VfU_UR1xRYl7QaqffBjWxGCrZc52U-Si-VDMkShA9kCDvB439UUoMURWMiD51DXacNf-mmw0VrtLhnPRc",
+        "width": 800
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpe51BybogTfWsrQp1zpivtbpyr7oRmVMFd6uwQ5P265oUsw9nuM_mPsSlHsDKYJH1brd_X188yjl_VKLxeHTpTMMta8Jhsg_EQ503ggARTmY41-r_kll8RJyxo3IDflvabPW3oH4Fnu-Gb2As5D50nvDJLTqALPoBgqY-p9SQly-a1L_7qibAenGXqpaB1PbFmM6duywBqlOEFyvv_MKQYHSuLpH1pvKJtJRIAMILVp1dQQ2K5Bvecrh8j-qZpYTI8FqUbANF1g_PlyZfcE_AjgzBnF5f8F6tLnf2opHckOR8ff2OAzhKH37SeXfPisW9pj1rKUVkU",
+        "width": 1200
+      },
+      {
+        "height": 601,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpc2eyCzDkgMeUVM2ek2hOT_81gpEsWEURav26VNxaX8fvCITsqlFGqIewTHZOGUhfEBG4AC0OsIaqwxhVAwE60sLFSiwOUdbS_kli64z7pgSQxiSVmeOMUQiRQeebnezcAgIG1LjcX7fVFjoQz1sdnk_LkBI06SOFtBogVo8ymoTT1hbZWwofFI6IHGRBfJbVTI9aCzOrEt9rvZmwFZx9i06kA1_dfk5o4_UO1-xalJosNy4b0w1sw7OsZH3CPv3OSZfM8DZcMSoQTGdcCXjdHlXnFmTgaT0NENZUEXVz3fzZ3-THPiqm-3Z7v6168pRc9C9IT7ekI",
+        "width": 1069
+      },
+      {
+        "height": 720,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdLbcIOL1s55G8VAopzSREbrA21yBw-FmoJVooV8pAuml-JJl7uKxTqqizeAJ5RLFpQmHhPsqCH3nGtCXcLGWd45v8PcEyTx3IWWiCBzPeS4Cux9GaPpMkCJwYGWeS2lZ8DTLSo6c5AFkSdvxX5OyT9AJ6jLRJpXEMIVWc8wa_z3MNeEf-RmEPBWvx4IQRxgAE1bH4y7q0QXkd989Yr8jamqog4qfrw-VhmxVnU2zWBHznba7l0Z_JeHkoNQ2KS7VnuMKQGx5VddJGIZ4dNJp1JhkOSdfBxhy9Tu2VITKxxphtvE18PaBVoc_fWSRQWXChPyZTkoYw",
+        "width": 1062
+      },
+      {
+        "height": 703,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpeO500cdUgvTIch5lUpApYnr2pYVJkJ-41Gh0SMts0ASS02pYwjn5IQ-hi__KiDVCojZjLzbn07zi2KXORAhL1MEh4upUcbkkI890gm3zWxKxNui94-ivgUmk1EmyRVvn_JDhEUqVbkPXYxFICicExHsEtYXgdD5yDmA6G9i8ynfOKuNjful7Vec6sBroHM6Xqchb2JMruJJhCCIFc4GRS5Gu-9LtLbLkY_G2a66FwvxVGHMPrh8gJLFOE0wvglavkqfUUWaiennW9hL8loGBzmdyqAf54NtWV2yPr_Ku0saXGtr9S2R0NOJrpMCGSZvThKl6XRQG0",
+        "width": 1249
+      },
+      {
+        "height": 1600,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107348567682105133216\">KIGEN PLASTIKA</a>"
+        ],
+        "photo_reference": "ATKogpdvGF_BLCYkw0dCe83memKopmRi1oN-__naTcRJzfDOCLz1aH2YkCfZl6J-CWgrBHX8WdyDpVeB0geensZ1KVPekVy3U6i9ArxzMW57uFxZq-Znunt7pDyycasaBb0_Q-KkVYX8IofKwRxKT2_NYgiH7a6zLtKhKU05I5JOjDK_dPE4XaFX3b0IErYlKorhBRdKGV3fhZKX-ewSaPfXfYjnriTo86ZcQG3DT5F9oV9NaUrfE5DmhFymiD7Cq_1olwr-Kzq-YOHqPPcn4U82fkOsx4Zom6V9NB93MFG5GpZSSB52I3sm7Ffj8gqfhKVfnmXHRxgILIQ",
+        "width": 1600
+      }
+    ],
+    "rating": 5,
+    "reviews": [
+      {
+        "author_name": "Jordan Jančić",
+        "author_url": "https://www.google.com/maps/contrib/117238617582172202259/reviews",
+        "language": "en-US",
+        "original_language": "el",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocLFa5ZPGAPsjwisJD7A9pWARavU6D4mOK6IxUYKtOjqjKe2sQ=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "a month ago",
+        "text": "Kigen plastika da te voli zena i svastika",
+        "time": 1746341494,
+        "translated": true
+      },
+      {
+        "author_name": "Aleksandar Popovic",
+        "author_url": "https://www.google.com/maps/contrib/103861905436016429808/reviews",
+        "language": "en-US",
+        "original_language": "bs",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjWIKZyJE80rn7oPzJwHA9dxOUmY2yYcLWKFdCzsxA4NJP1j32_w=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "in the last week",
+        "text": "fast and excellent cooperation... 10/10... everything was done on time...",
+        "time": 1751098944,
+        "translated": true
+      },
+      {
+        "author_name": "Gačo",
+        "author_url": "https://www.google.com/maps/contrib/108296540367083988023/reviews",
+        "language": "en-US",
+        "original_language": "hr",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJbRmTIUz5NIZh34XisCCYPFEIA-Lgdoe2eYaItoflrl01uhd8=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "2 months ago",
+        "text": "Kigen Plastika all praises for the cooperation.",
+        "time": 1746007757,
+        "translated": true
+      },
+      {
+        "author_name": "Marko Pavlovic",
+        "author_url": "https://www.google.com/maps/contrib/113922321462713645058/reviews",
+        "language": "en-US",
+        "original_language": "bs",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjWwAtzhuvmW1TWQaUIzqkB7Y9WxtVjtsyQSykyqGfettWoMbLqz=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "a month ago",
+        "text": "Excellent production of all items, recommendation to all future buyers.",
+        "time": 1746341589,
+        "translated": true
+      },
+      {
+        "author_name": "Dejan Gladovic",
+        "author_url": "https://www.google.com/maps/contrib/104737720143919947854/reviews",
+        "language": "en-US",
+        "original_language": "hr",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVAhGDIJnaEQtGgBQ0R7XAecOuruKDrJmpb1RuI8CoGFUZadgh7=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "in the last week",
+        "text": "All recommendations",
+        "time": 1751098854,
+        "translated": true
+      }
+    ],
+    "types": [
+      "point_of_interest",
+      "establishment"
+    ],
+    "url": "https://maps.google.com/?cid=9887445968323294476",
+    "user_ratings_total": 10,
+    "website": "https://www.kigen-plastika.rs/"
+  },
+  "status": "OK"
+}
+GBP API Response: no status KIGEN PLASTIKA
+GBP Fields available: [
+  'place_id',       'name',
+  'address',        'phone',
+  'website',        'email',
+  'business_hours', 'business_status',
+  'rating',         'total_reviews',
+  'reviews',        'photos',
+  'products',       'types',
+  'maps_url'
+]
+GBP Phone field: 065 2170293
+GBP Address field: Svetog Save bb, Osečina 14253, Serbia
+Raw phone value: 065 2170293
+Raw address value: Svetog Save bb, Osečina 14253, Serbia
+✅ GBP data integrated for KIGEN PLASTIKA
+Returning bootstrap data for: Kigen Plastika
+Homepage accessed, user authenticated: false
