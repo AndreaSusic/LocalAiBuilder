@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { SiteDataContext } from '../context/SiteDataContext';
+import { SiteDataContext } from '../context/SiteDataContext.js';
 
 export default function NavigationSection() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
