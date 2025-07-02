@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { HeroSection, ServicesSection, AboutSection, GallerySection, ReviewsSection, ContactSection } from '../sections';
+import HeroSection from '../sections/HeroSection.jsx';
+import ServicesSection from '../sections/ServicesSection.jsx';
+import AboutSection from '../sections/AboutSection.jsx';
+import GallerySection from '../sections/GallerySection.jsx';
+import ReviewsSection from '../sections/ReviewsSection.jsx';
+import ContactSection from '../sections/ContactSection.jsx';
 
 export default function HomePageV1() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
