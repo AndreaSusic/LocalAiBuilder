@@ -619,7 +619,12 @@ app.get('/api/user-data', async (req, res) => {
           industry: state.industry,
           language: state.language,
           colours: state.colours,
-          images: state.images || [],
+          images: (state.images || []).filter(img => 
+            typeof img === 'string' && 
+            img.length > 0 && 
+            !img.includes('placeholder') &&
+            (img.startsWith('http://') || img.startsWith('https://'))
+          ),
           google_profile: state.google_profile || {},
           ai_customization: state.ai_customization || {},
           conversation: typeof siteData.convo === 'string' ? JSON.parse(siteData.convo || '[]') : (siteData.convo || [])
@@ -659,7 +664,12 @@ app.get('/api/user-data', async (req, res) => {
           industry: state.industry || 'Your Industry',
           language: state.language || 'English',
           colours: state.colours || ['#5DD39E', '#EFD5BD'],
-          images: state.images || [],
+          images: (state.images || []).filter(img => 
+            typeof img === 'string' && 
+            img.length > 0 && 
+            !img.includes('placeholder') &&
+            (img.startsWith('http://') || img.startsWith('https://'))
+          ),
           google_profile: state.google_profile || {},
           ai_customization: {
             hero_title: `${state.company_name || 'Your Business'} - Professional Services`,
