@@ -213,26 +213,65 @@ app.use('/vite.svg', express.static(path.join(__dirname, 'dashboard', 'dist', 'v
 // Serve SPA for dashboard routes only
 const dist = path.join(__dirname, 'dashboard', 'dist');
 
-// Short URL redirects for templates
+// Short URL redirects for templates with session data storage
 app.get('/t/:id', (req, res) => {
   const { data } = req.query;
   const id = req.params.id;
-  const targetUrl = `http://localhost:4000/templates/homepage/${id}/index.jsx${data ? `?data=${data}` : ''}`;
-  res.redirect(302, targetUrl);
+  
+  if (data) {
+    // Store data in session to avoid URL length issues
+    const dataId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+    req.session[`template_data_${dataId}`] = data;
+    const targetUrl = `http://localhost:4000/templates/homepage/${id}/index.jsx?dataId=${dataId}`;
+    res.redirect(302, targetUrl);
+  } else {
+    const targetUrl = `http://localhost:4000/templates/homepage/${id}/index.jsx`;
+    res.redirect(302, targetUrl);
+  }
 });
 
 app.get('/s/:id', (req, res) => {
   const { data } = req.query;
   const id = req.params.id;
-  const targetUrl = `http://localhost:4000/templates/service/${id}/index.jsx${data ? `?data=${data}` : ''}`;
-  res.redirect(302, targetUrl);
+  
+  if (data) {
+    const dataId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+    req.session[`template_data_${dataId}`] = data;
+    const targetUrl = `http://localhost:4000/templates/service/${id}/index.jsx?dataId=${dataId}`;
+    res.redirect(302, targetUrl);
+  } else {
+    const targetUrl = `http://localhost:4000/templates/service/${id}/index.jsx`;
+    res.redirect(302, targetUrl);
+  }
 });
 
 app.get('/c/:id', (req, res) => {
   const { data } = req.query;
   const id = req.params.id;
-  const targetUrl = `http://localhost:4000/templates/contact/${id}/index.jsx${data ? `?data=${data}` : ''}`;
-  res.redirect(302, targetUrl);
+  
+  if (data) {
+    const dataId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+    req.session[`template_data_${dataId}`] = data;
+    const targetUrl = `http://localhost:4000/templates/contact/${id}/index.jsx?dataId=${dataId}`;
+    res.redirect(302, targetUrl);
+  } else {
+    const targetUrl = `http://localhost:4000/templates/contact/${id}/index.jsx`;
+    res.redirect(302, targetUrl);
+  }
+});
+
+// API endpoint to retrieve template data by dataId
+app.get('/api/template-data/:dataId', (req, res) => {
+  const { dataId } = req.params;
+  const sessionKey = `template_data_${dataId}`;
+  
+  if (req.session[sessionKey]) {
+    res.json({ data: req.session[sessionKey] });
+    // Clean up session data after use
+    delete req.session[sessionKey];
+  } else {
+    res.status(404).json({ error: 'Template data not found' });
+  }
 });
 
 app.get(['/preview', '/template/:id', '/templates/homepage/v1/index.jsx', '/templates/homepage/v2/index.jsx', '/templates/homepage/v3/index.jsx'], (_req, res) => {

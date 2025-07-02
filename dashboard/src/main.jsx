@@ -43,6 +43,24 @@ async function loadProducts(bootstrap) {
 }
 
 async function loadBootstrap(){
+  // Check if we have a dataId parameter (from short URL system)
+  const urlParams = new URLSearchParams(window.location.search);
+  const dataId = urlParams.get('dataId');
+  
+  if (dataId) {
+    try {
+      const response = await fetch(`/api/template-data/${dataId}`);
+      if (response.ok) {
+        const result = await response.json();
+        const bootstrap = JSON.parse(result.data);
+        console.log('🔄 Loaded bootstrap data from session:', bootstrap.company_name);
+        return bootstrap;
+      }
+    } catch (error) {
+      console.error('Error loading template data:', error);
+    }
+  }
+  
   // 1) Try secure API first
   const api = await fetch('/api/user-data');
   if(api.status !== 401){
