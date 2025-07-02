@@ -3,9 +3,9 @@ import { SiteDataContext } from '../context/SiteDataContext.js';
 
 export default function NavigationSection() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { company_name, services, industry, google = {} } = useContext(SiteDataContext) || {};
+  const { company_name, services, industry, contact = {} } = useContext(SiteDataContext) || {};
   
-  const phone = google.phone || '+1 (555) 123-4567';
+  const phone = contact.phone || '+1 (555) 123-4567';
   
   // Parse services to extract individual products/services
   let servicesList = [];

@@ -89,7 +89,7 @@ export default function ContactSection() {
       <section className="secondary-cta">
         <h2>Ready to Schedule Your Visit?</h2>
         <p>Join thousands of satisfied {ai_customization.reviewerLabel?.toLowerCase() || 'clients'} who trust {company_name || 'us'} with their care.</p>
-        <button className="btn-accent">{ctaText}</button>
+        <button className="btn-accent">Contact Us</button>
       </section>
 
       {/* Footer */}

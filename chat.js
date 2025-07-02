@@ -694,9 +694,9 @@ async function handleMissing(res){
   // Note: mergeState(res) and draft saving now happens in sendUser()
   // This function just handles the UI logic for missing fields
 
-  // Step 1: Ask for text Qs (company, city, industry, language, services, social, google_profile, payment_plans, hero_video)
+  // Step 1: Ask for text Qs (company, city, industry, language, offering_type, services, social, google_profile, payment_plans, hero_video)
   const order = [
-    'company_name','city','industry','language','services',
+    'company_name','city','industry','language','offering_type','services',
     'social','google_profile','payment_plans','hero_video'
   ];
   const next = order.find(k => {
