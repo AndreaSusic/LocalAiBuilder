@@ -17,8 +17,9 @@ export default function ContactSection() {
   const contactTitle = ai_customization.contactTitle || 'Contact Us';
   const ctaText = ai_customization.ctaText || 'Book Appointment';
   
-  // Define industry-specific variables before use
-  const isLandscaping = industry && industry.toLowerCase().includes('landscap');
+  // Only treat as grass/sod landscaping if services actually mention grass or sod
+  const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
+    (typeof services === 'string' && (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod')));
   
   // Parse services to extract individual products/services
   let servicesList = [];
