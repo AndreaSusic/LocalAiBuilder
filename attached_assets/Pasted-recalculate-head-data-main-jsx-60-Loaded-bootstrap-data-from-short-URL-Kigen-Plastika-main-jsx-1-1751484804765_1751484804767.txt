@@ -1,0 +1,85 @@
+recalculate_head_data
+main.jsx:60 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+main.jsx:142 BOOTSTRAP >> Object
+main.jsx:143 Current path: /t/v1/mcmcrzb7tvyych38irt
+main.jsx:144 Root element exists: true
+main.jsx:158 React app rendered successfully
+main.jsx:13 🔍 Loading products with 3-tier fallback system
+main.jsx:17 📋 Fetching GBP products for CID: ChIJvW8VATCFWUcRDDXH5bhDN4k
+App.jsx:20 App rendering with bootstrap: Object
+App.jsx:21 isMobile: false
+index.jsx:72 HomepageV1 using data: Object
+ServicesSection.jsx:8 ServicesSection DEBUG - Services data: Septic Tanks string
+ServicesSection.jsx:9 ServicesSection DEBUG - GBP products: Array(6)
+ServicesSection.jsx:79 ServicesSection DEBUG - ServicesList: Array(3) Type: object
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 1 Type: string Index: 0
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 2 Type: string Index: 1
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 3 Type: string Index: 2
+ServicesSection.jsx:95 ServicesSection DEBUG - ServicesToShow: Array(3)
+AboutSection.jsx:8 AboutSection DEBUG - Team data: Array(0) Length: 0
+App.jsx:20 App rendering with bootstrap: Object
+App.jsx:21 isMobile: false
+index.jsx:72 HomepageV1 using data: Object
+ServicesSection.jsx:8 ServicesSection DEBUG - Services data: Septic Tanks string
+ServicesSection.jsx:9 ServicesSection DEBUG - GBP products: Array(6)
+ServicesSection.jsx:79 ServicesSection DEBUG - ServicesList: Array(3) Type: object
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 1 Type: string Index: 0
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 2 Type: string Index: 1
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 3 Type: string Index: 2
+ServicesSection.jsx:95 ServicesSection DEBUG - ServicesToShow: Array(3)
+AboutSection.jsx:8 AboutSection DEBUG - Team data: Array(0) Length: 0
+index.jsx:16 Uncaught TypeError: i.includes is not a function
+    at jy (index.jsx:16:19)
+    at GallerySection.jsx:82:34
+    at Array.map (<anonymous>)
+    at gy (GallerySection.jsx:59:40)
+    at gs (react-dom-client.production.js:3502:21)
+    at Os (react-dom-client.production.js:6239:15)
+    at wf (react-dom-client.production.js:7243:14)
+    at ed (react-dom-client.production.js:10855:14)
+    at S0 (react-dom-client.production.js:10736:37)
+    at lo (react-dom-client.production.js:10717:7)
+jy @ index.jsx:16
+(anonymous) @ GallerySection.jsx:82
+gy @ GallerySection.jsx:59
+gs @ react-dom-client.production.js:3502
+Os @ react-dom-client.production.js:6239
+wf @ react-dom-client.production.js:7243
+ed @ react-dom-client.production.js:10855
+S0 @ react-dom-client.production.js:10736
+lo @ react-dom-client.production.js:10717
+Wf @ react-dom-client.production.js:10322
+hd @ react-dom-client.production.js:11626
+Ie @ scheduler.production.js:151
+content.js:48 request OK
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+/robots.txt:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+[object%20Object]:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+extension_content.js:1 recalculate_head_data
+photo:1 
+            
+            
+           Failed to load resource: the server responded with a status of 403 ()
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:22 📦 Got 0 GBP products
+main.jsx:32 👤 Using 3 user products as fallback
+renderProducts.js:2 🎨 Rendering 3 products to grid
+renderProducts.js:8 ⚠️ Services grid not found, skipping product rendering
