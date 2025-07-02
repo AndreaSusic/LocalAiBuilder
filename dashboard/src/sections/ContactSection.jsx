@@ -20,7 +20,7 @@ export default function ContactSection() {
   const ctaText = ai_customization.ctaText || 'Book Appointment';
   
   // Only treat as grass/sod landscaping if services actually mention grass or sod
-  const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
+  const isLandscaping = industry && typeof industry === 'string' && industry.toLowerCase().includes('landscap') && 
     (typeof services === 'string' && (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod')));
   
   // Parse services to extract individual products/services
