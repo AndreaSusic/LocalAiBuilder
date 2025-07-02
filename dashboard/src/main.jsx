@@ -48,9 +48,7 @@ if (params.has('data')) {
 // -----------------------------------------------------------
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ThemeProvider>
-      <App bootstrap={bootstrap} />
-    </ThemeProvider>
-  </StrictMode>,
+  <ThemeProvider>
+    <App bootstrap={bootstrap} />
+  </ThemeProvider>
 )
