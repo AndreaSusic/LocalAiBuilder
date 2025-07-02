@@ -655,7 +655,7 @@ app.get('/api/user-data', async (req, res) => {
         
         if (bootstrapData && typeof bootstrapData === 'object') {
           console.log('Returning temp bootstrap data with keys:', Object.keys(bootstrapData));
-          return res.json(bootstrapData);
+          return res.json({ ok: true, bootstrap: bootstrapData });
         }
         break;
       }
@@ -697,7 +697,7 @@ app.get('/api/user-data', async (req, res) => {
           conversation: typeof siteData.convo === 'string' ? JSON.parse(siteData.convo || '[]') : (siteData.convo || [])
         };
         
-        return res.json(websiteData);
+        return res.json({ ok: true, bootstrap: websiteData });
       }
       
       // If no completed website, check for draft
@@ -746,7 +746,7 @@ app.get('/api/user-data', async (req, res) => {
           conversation: typeof draftData.convo === 'string' ? JSON.parse(draftData.convo || '[]') : (draftData.convo || [])
         };
         
-        return res.json(websiteData);
+        return res.json({ ok: true, bootstrap: websiteData });
       }
     }
     
@@ -803,7 +803,7 @@ app.get('/api/user-data', async (req, res) => {
     console.log('No bootstrap data found, returning test data for demonstration');
     const testDataPath = path.join(__dirname, 'test-data.json');
     const testData = JSON.parse(fs.readFileSync(testDataPath, 'utf8'));
-    return res.json(testData);
+    return res.json({ ok: true, bootstrap: testData });
     
   } catch (error) {
     console.error('Error fetching user data:', error);
