@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { ThemeProvider } from './lib/theme.jsx'
+import { renderProducts } from '../utils/renderProducts.js'
 
 async function loadBootstrap(){
   // 1) Try secure API first
@@ -78,6 +79,9 @@ loadBootstrap().then(bootstrap=>{
       </ThemeProvider>
     );
     console.log('React app rendered successfully');
+    
+    // Load products after React app is rendered
+    loadProducts(bootstrap);
   } catch (error) {
     console.error('Error rendering React app:', error);
   }

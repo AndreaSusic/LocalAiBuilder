@@ -300,10 +300,35 @@ img {
 
 .services-grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+/* Responsive column classes for products */
+.services-grid.one-column {
+  grid-template-columns: 1fr;
+}
+
+.services-grid.two-columns {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.services-grid.three-columns {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Default fallback (when no specific column class is set) */
+.services-grid:not(.one-column):not(.two-columns):not(.three-columns) {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .services-grid.two-columns,
+  .services-grid.three-columns {
+    grid-template-columns: 1fr;
+  }
 }
 
 .service-card {
