@@ -5,7 +5,9 @@ export default function ServicesSection() {
   const contextData = useContext(SiteDataContext) || {};
   const { services = [], images = [], google_profile = {}, industry = '', ai_customization = {}, safeImg } = contextData;
   
-  const isLandscaping = industry && industry.toLowerCase().includes('landscap');
+  // Only treat as grass/sod landscaping if services actually mention grass or sod
+  const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
+    (typeof services === 'string' && (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod')));
   
   // Parse services to extract individual products/services
   let servicesList = [];
