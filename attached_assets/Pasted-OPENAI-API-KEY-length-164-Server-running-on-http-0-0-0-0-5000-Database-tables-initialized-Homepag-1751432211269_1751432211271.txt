@@ -1,0 +1,163 @@
+OPENAI_API_KEY length: 164
+Server running on http://0.0.0.0:5000
+Database tables initialized
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+OPENAI_API_KEY length: 164
+Server running on http://0.0.0.0:5000
+Database tables initialized
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+Homepage accessed, user authenticated: false
+Google profile: {
+  "id": "110795423852052644529",
+  "displayName": "Andrea Susic",
+  "name": {
+    "familyName": "Susic",
+    "givenName": "Andrea"
+  },
+  "emails": [
+    {
+      "value": "andrea.susic29@gmail.com",
+      "verified": true
+    }
+  ],
+  "photos": [
+    {
+      "value": "https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa=s96-c"
+    }
+  ],
+  "provider": "google",
+  "_raw": "{\n  \"sub\": \"110795423852052644529\",\n  \"name\": \"Andrea Susic\",\n  \"given_name\": \"Andrea\",\n  \"family_name\": \"Susic\",\n  \"picture\": \"https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa\\u003ds96-c\",\n  \"email\": \"andrea.susic29@gmail.com\",\n  \"email_verified\": true\n}",
+  "_json": {
+    "sub": "110795423852052644529",
+    "name": "Andrea Susic",
+    "given_name": "Andrea",
+    "family_name": "Susic",
+    "picture": "https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa=s96-c",
+    "email": "andrea.susic29@gmail.com",
+    "email_verified": true
+  }
+}
+Google profile: {
+  id: '110795423852052644529',
+  displayName: 'Andrea Susic',
+  name: { familyName: 'Susic', givenName: 'Andrea' },
+  emails: [ { value: 'andrea.susic29@gmail.com', verified: true } ],
+  photos: [
+    {
+      value: 'https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa=s96-c'
+    }
+  ],
+  provider: 'google',
+  _raw: '{\n' +
+    '  "sub": "110795423852052644529",\n' +
+    '  "name": "Andrea Susic",\n' +
+    '  "given_name": "Andrea",\n' +
+    '  "family_name": "Susic",\n' +
+    '  "picture": "https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa\\u003ds96-c",\n' +
+    '  "email": "andrea.susic29@gmail.com",\n' +
+    '  "email_verified": true\n' +
+    '}',
+  _json: {
+    sub: '110795423852052644529',
+    name: 'Andrea Susic',
+    given_name: 'Andrea',
+    family_name: 'Susic',
+    picture: 'https://lh3.googleusercontent.com/a/ACg8ocKC7Tc4ZLC5bkNiCdFEgFCYJsU3BWUPCz8g0NpcdRwnDQk34SBa=s96-c',
+    email: 'andrea.susic29@gmail.com',
+    email_verified: true
+  }
+}
+OAuth callback returnTo: undefined
+ℹ️  No session‐draft to migrate for sk5mv-5jIE1cOiEZDyZ86489_5X22xad
+Draft found, checking for bootstrap data and redirecting to preview
+📦 Trying to retrieve temp bootstrap data for possible users: [
+  '110795423852052644529',
+  'sk5mv-5jIE1cOiEZDyZ86489_5X22xad',
+  'andrea.susic29@gmail.com'
+]
+📦 No temp data found for authenticated user
+📦 No temp data found for any user ID
+TokenError: Bad Request
+    at OAuth2Strategy.parseErrorResponse (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:373:12)
+    at OAuth2Strategy._createOAuthError (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:420:16)
+    at /home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:177:45
+    at /home/runner/workspace/node_modules/oauth/lib/oauth2.js:196:18
+    at passBackControl (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:132:9)
+    at IncomingMessage.<anonymous> (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:157:7)
+    at IncomingMessage.emit (node:events:530:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+📂 Preview route accessed, redirecting to development server
+📂 Serving preview from production build: /home/runner/workspace/dashboard/dist/index.html
+TokenError: Bad Request
+    at OAuth2Strategy.parseErrorResponse (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:373:12)
+    at OAuth2Strategy._createOAuthError (/home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:420:16)
+    at /home/runner/workspace/node_modules/passport-oauth2/lib/strategy.js:177:45
+    at /home/runner/workspace/node_modules/oauth/lib/oauth2.js:196:18
+    at passBackControl (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:132:9)
+    at IncomingMessage.<anonymous> (/home/runner/workspace/node_modules/oauth/lib/oauth2.js:157:7)
+    at IncomingMessage.emit (node:events:530:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+API /user-data called
+User authenticated: true
+Loading data for possible users: [
+  '110795423852052644529',
+  'sk5mv-5jIE1cOiEZDyZ86489_5X22xad',
+  'qGwL81GN6OK4Y7HXy0AN4rV_5Fd0FCUh',
+  'andrea.susic29@gmail.com'
+]
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Found draft data for user, converting to website format
+Error fetching user data: SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at /home/runner/workspace/server.js:738:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+📂 Preview route accessed, redirecting to development server
+📂 Serving preview from production build: /home/runner/workspace/dashboard/dist/index.html
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+📂 Preview route accessed, redirecting to development server
+📂 Serving preview from production build: /home/runner/workspace/dashboard/dist/index.html
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
+Template route hit: v1
+Redirecting to development server: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/templates/homepage/v1/index.jsx
