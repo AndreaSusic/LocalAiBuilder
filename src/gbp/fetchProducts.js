@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer-core';
+const puppeteer = require('puppeteer-core');
 // Simple in-memory cache for 6 hours
 const cache = new Map();
 const CACHE_DURATION = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
@@ -40,7 +40,7 @@ async function fetchProductDescription(page, productUrl) {
         return null;
     }
 }
-export async function fetchGbpProducts(cid) {
+async function fetchGbpProducts(cid) {
     // Check cache first
     const cached = cache.get(cid);
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
@@ -128,3 +128,4 @@ export async function fetchGbpProducts(cid) {
         }
     }
 }
+module.exports = { fetchGbpProducts };
