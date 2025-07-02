@@ -772,8 +772,57 @@ app.get('/api/user-data', async (req, res) => {
       }
     }
     
-    // If no user data found, return test data for demonstration
-    console.log('No user data found, returning test data for demonstration');
+    // If no user data found, try to get the most recent temp bootstrap data
+    console.log('No user data found for authentication, checking for recent bootstrap data');
+    
+    const recentBootstrapQuery = await pool.query(
+      'SELECT data FROM temp_bootstrap_data ORDER BY created_at DESC LIMIT 1'
+    );
+    
+    if (recentBootstrapQuery.rows.length > 0) {
+      console.log('Found recent bootstrap data, using for preview');
+      let bootstrapData = recentBootstrapQuery.rows[0].data;
+      
+      // Handle both string and object data formats
+      if (typeof bootstrapData === 'string') {
+        try {
+          bootstrapData = JSON.parse(bootstrapData);
+        } catch (e) {
+          console.log('Data parsing error:', e);
+        }
+      }
+      
+      if (bootstrapData && typeof bootstrapData === 'object') {
+        // Transform the bootstrap data to match expected format
+        const websiteData = {
+          company_name: bootstrapData.company_name || 'Your Business',
+          city: bootstrapData.city || ['Your City'],
+          services: bootstrapData.services || 'Your Services',
+          industry: bootstrapData.industry || 'Your Industry',
+          language: bootstrapData.language || 'English',
+          colours: bootstrapData.colours || ['#5DD39E', '#EFD5BD'],
+          images: bootstrapData.images || [],
+          google_profile: bootstrapData.google_profile || {},
+          ai_customization: {
+            hero_title: `${bootstrapData.company_name || 'Your Business'} - Professional Services`,
+            hero_subtitle: `Quality services in ${Array.isArray(bootstrapData.city) ? bootstrapData.city[0] : bootstrapData.city || 'your area'}`,
+            services_title: 'Our Services',
+            about_title: `About ${bootstrapData.company_name || 'Your Business'}`,
+            about_text: `We provide excellent ${bootstrapData.services || 'services'} to our valued clients.`,
+            reviewer_label: 'Clients',
+            cta_text: 'Contact Us',
+            map_query: `${bootstrapData.company_name || 'business'} ${Array.isArray(bootstrapData.city) ? bootstrapData.city[0] : bootstrapData.city || ''}`
+          },
+          conversation: bootstrapData.conversation || []
+        };
+        
+        console.log('Returning bootstrap data for:', bootstrapData.company_name);
+        return res.json(websiteData);
+      }
+    }
+    
+    // If no bootstrap data, return test data for demonstration
+    console.log('No bootstrap data found, returning test data for demonstration');
     const testDataPath = path.join(__dirname, 'test-data.json');
     const testData = JSON.parse(fs.readFileSync(testDataPath, 'utf8'));
     return res.json(testData);
