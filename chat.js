@@ -976,35 +976,15 @@ async function handleMissing(res){
         console.log('💾 Bootstrap data saved to temp storage:', tempResult);
         
         // Save draft to sessionStorage for OAuth migration
-        try {
-          const draftData = {
-            ...state,
-            colors: colors,
-            images: images,
-            conversation: convo
-          };
-          
-          // Save to sessionStorage for client-side recovery
-          sessionStorage.setItem('draft', JSON.stringify(draftData));
-          
-          // Also save to server session
-          await fetch('/api/save-session-draft', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(draftData)
-          });
-          
-          console.log('💾 Draft saved to session before OAuth');
-        } catch (error) {
-          console.error('⚠️ Failed to save session draft:', error);
-        }
+        console.log('💾 Saving draft to sessionStorage before OAuth');
+        sessionStorage.setItem('draft', JSON.stringify(state));
         
         // Break out of iframe and redirect parent window to OAuth
         console.log('🚀 Breaking out of iframe for OAuth flow');
         
-        // build clean OAuth URL with returnTo parameter
+        // Use OAuth2 state parameter to carry returnTo (session-independent)
         const back = encodeURIComponent(location.pathname + location.search || '/preview');
-        const authUrl = `/auth/google?returnTo=${back}`;
+        const authUrl = `/auth/google?state=${back}`;
         
         if (window.parent !== window) {
           // We're in an iframe, break out to parent
