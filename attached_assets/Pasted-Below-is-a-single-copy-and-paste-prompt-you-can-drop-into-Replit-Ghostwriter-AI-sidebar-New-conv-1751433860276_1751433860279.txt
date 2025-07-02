@@ -1,0 +1,137 @@
+Below is a single copy-and-paste prompt you can drop into Replit Ghostwriter (AI sidebar → “New conversation”) to fix the white-screen preview bug end-to-end.
+
+⸻
+
+
+You are editing an existing Repl with:
+
+• server/index.js         – Express backend
+• src/main.jsx + App.jsx  – React SPA (built by Vite)
+• src/chat.js             – wizard that redirects users
+• /dist/                  – production build folder
+
+Bug summary
+-----------
+* /preview and /template/v1 render a blank page.
+* Console shows vite-WS errors and bootstrap == {}.
+* server logs “User authenticated: false” and still returns 200 + {}.
+
+Goals
+-----
+1. Return **401** from /api/user-data when no session, so React can fall back.
+2. Stop redirecting /preview to a dev host that isn’t running.
+3. Serve the compiled bundle for ANY SPA path.
+4. Build with correct asset paths.
+5. Parse bootstrap safely in React.
+
+============================================================
+=== 1.  server/index.js  ===================================
+============================================================
+
+```diff
+- // PREVIEW route (old)
+- app.get('/preview', (req,res)=> {
+-   if(process.env.NODE_ENV === 'development'){
+-     const host = req.hostname;
+-     return res.redirect(`https://${host}-3000.${host.slice(host.indexOf('.')+1)}${req.originalUrl}`);
+-   }
+-   res.sendFile(path.join(__dirname,'dist','index.html'));
+- });
+
++// Serve SPA for every non-API route
++const dist = path.join(__dirname,'dist');
++app.use(express.static(dist));
++
++app.get(['/','/preview','/template/:id'], (_req,res)=>
++  res.sendFile(path.join(dist,'index.html'))
++);
+
+Add clear 401 logic:
+
+ app.get('/api/user-data', async (req,res)=>{
+-   const data = await db.get(req.session.userId);
+-   res.json(data||{});
++   if(!req.session?.userId){
++     return res.status(401).json({ ok:false, reason:'unauth' });
++   }
++   const data = await db.get(req.session.userId);
++   res.json({ ok:true, bootstrap:data });
+ });
+
+============================================================
+=== 2.  src/chat.js  (redirect logic) ======================
+
+- const next = `https://${location.hostname}-3002${location.pathname}?data=${enc}`;
++const next = `/preview?data=${encodeURIComponent(JSON.stringify(state))}`;
+ window.location.assign(next);
+
+(If the JSON is too large, store it in sessionStorage instead and drop the ?data= param.)
+
+============================================================
+=== 3.  src/main.jsx  (bootstrap parser) ===================
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+async function loadBootstrap(){
+  // 1) Try secure API
+  const api = await fetch('/api/user-data');
+  if(api.status !== 401){
+    const { bootstrap } = await api.json();
+    return bootstrap;
+  }
+
+  // 2) Fallback: ?data= or sessionStorage
+  const p = new URLSearchParams(location.search);
+  if(p.has('data')){
+    return JSON.parse(decodeURIComponent(p.get('data')));
+  }
+  return JSON.parse(sessionStorage.getItem('bootstrap')||'{}');
+}
+
+loadBootstrap().then(bootstrap=>{
+  console.log('BOOTSTRAP >>', bootstrap);
+  ReactDOM.createRoot(document.getElementById('root'))
+    .render(<App bootstrap={bootstrap}/>);
+});
+
+============================================================
+=== 4.  vite.config.js  (correct asset base) ===============
+
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins:[react()],
+  base: '/',          // important: assets resolve at /assets/…
+  server: { host:true, port:3000, hmr:{port:3000} }
+});
+
+============================================================
+=== 5.  package.json & .replit run line ====================
+
+"scripts":{
+  "dev":"vite",
+  "build":"vite build",
+  "server":"node server/index.js",
+  "start":"npm run server"
+}
+
+.replit
+
+run = ["bash","-c","npm run server & npm run dev -- --host 0.0.0.0 --port 3000 --hmr-port 3000"]
+
+============================================================
+How to verify
+	1.	Click Run (both Express + Vite start).
+	2.	Complete the chat → redirect should land on /preview?data=%7B….
+	3.	DevTools: JS bundle 200, no vite-WS error, BOOTSTRAP >> { … }.
+	4.	Hero shows company name; no white screen.
+
+If logged-out user hits /dashboard → API returns 401 → React shows login.
+
+Apply all diffs above. Save, run, test.
+
+Ghostwriter should update the files and scripts exactly as instructed.  
+After it finishes, hit **Run**, go through the wizard, and the customized homepage should load instead of a white screen.
