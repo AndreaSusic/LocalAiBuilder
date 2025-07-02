@@ -32,14 +32,14 @@ export default function DesktopDashboard({ bootstrap }) {
           if (response.ok) {
             const userData = await response.json();
             const encoded = encodeURIComponent(JSON.stringify(userData));
-            const userDataUrl = `/templates/homepage/v1/index.jsx?data=${encoded}`;
+            const userDataUrl = `/t/v1?data=${encoded}`;
             setPreviewContent(userDataUrl);
             console.log('Auto-loaded user data for desktop preview');
           }
         } catch (error) {
           console.log('Could not auto-load user data:', error.message);
           // Load demo data as fallback
-          const demoUrl = `/templates/homepage/v1/index.jsx`;
+          const demoUrl = `/t/v1`;
           setPreviewContent(demoUrl);
           console.log('Loaded demo template as fallback');
         }
