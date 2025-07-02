@@ -1,0 +1,131 @@
+
+
+Context
+=======
+• Express + Passport-Google OAuth
+• React SPA served from /dist
+• Wizard saves answers in `state`
+• After OAuth callback we get “returnTo: undefined” → blank page.
+
+We need to:
+1. Preserve “where to go back” (`returnTo`) when we start OAuth.
+2. Preserve the anonymous draft (wizard answers) and attach it to the Google-user row.
+3. Make sure the session cookie survives callback.
+4. Redirect back to /preview (or /dashboard) with real bootstrap.
+
+─────────────────────────────────────────────
+STEP 1 – session middleware hardening
+─────────────────────────────────────────────
+🔸 **server/index.js**  (top)
+
+```js
+import session from 'express-session';
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: true,   // Replit HTTPS proxy
+      sameSite: 'lax'
+    }
+  })
+);
+
+If you run locally, override cookie.secure = false when
+NODE_ENV !== 'production'.
+
+─────────────────────────────────────────────
+STEP 2 – start-auth route captures returnTo
+─────────────────────────────────────────────
+🔸 routes/auth.js (or in server file)
+
+app.get('/auth/google',
+-  passport.authenticate('google', { scope:['profile','email'] })
++  (req, res, next) => {
++    // remember path to come back to
++    req.session.returnTo =
++      req.query.returnTo || req.headers.referer || '/dashboard';
++    next();
++  },
++  passport.authenticate('google', { scope:['profile','email'] })
+);
+
+─────────────────────────────────────────────
+STEP 3 – client-side redirect always passes returnTo
+─────────────────────────────────────────────
+🔸 src/chat.js (login button handler)
+
+// save draft before leaving
+sessionStorage.setItem('draft', JSON.stringify(state));
+
+// build clean OAuth URL
+const back = encodeURIComponent(location.pathname + location.search);
+window.location.href = `/auth/google?returnTo=${back}`;
+
+─────────────────────────────────────────────
+STEP 4 – callback migrates draft + redirects
+─────────────────────────────────────────────
+🔸 routes/auth.js (callback)
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+- (req, res) => res.redirect('/dashboard')
++ async (req, res) => {
++   /* 1 – migrate wizard draft */
++   if (req.session.draft) {
++     await db.put(req.user.id, JSON.parse(req.session.draft));
++     delete req.session.draft;
++   }
++
++   /* 2 – go back where we came from */
++   const go = req.session.returnTo || '/dashboard';
++   delete req.session.returnTo;
++   res.redirect(go);
++ }
+);
+
+─────────────────────────────────────────────
+STEP 5 – React bootstrap fallback
+─────────────────────────────────────────────
+🔸 src/main.jsx
+
+async function loadBootstrap() {
+  /* primary: secure API */
+  const api = await fetch('/api/user-data');
+  if (api.status !== 401) {
+    const { bootstrap } = await api.json();
+    return bootstrap;
+  }
+
+  /* fallback: ?data= or sessionStorage */
+  const p = new URLSearchParams(location.search);
+  if (p.has('data')) {
+    return JSON.parse(decodeURIComponent(p.get('data')));
+  }
+  const draft = sessionStorage.getItem('draft');
+  return draft ? JSON.parse(draft) : {};
+}
+
+loadBootstrap().then(bootstrap => {
+  ReactDOM.createRoot(document.getElementById('root'))
+    .render(<App bootstrap={bootstrap} />);
+});
+
+─────────────────────────────────────────────
+After applying:
+─────────────────────────────────────────────
+	1.	Wizard → “Login with Google” fires /auth/google?returnTo=/preview…
+	2.	Callback finds returnTo, migrates draft, redirects to /preview.
+	3.	React logs real bootstrap → white screen gone.
+
+---
+
+**What to do**
+
+1. Paste the prompt above into Ghostwriter.  
+2. Accept the code diffs it generates.  
+3. Add the callback URI to Google Cloud console:  
+   `https://<your-repl>.repl.co/auth/google/callback`  
+4. Click **Run**, go through the wizard, hit **Login**, and you should land back on `/preview` with your customized homepage instead of a white screen.

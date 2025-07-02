@@ -1002,12 +1002,16 @@ async function handleMissing(res){
         // Break out of iframe and redirect parent window to OAuth
         console.log('🚀 Breaking out of iframe for OAuth flow');
         
+        // build clean OAuth URL with returnTo parameter
+        const back = encodeURIComponent(location.pathname + location.search || '/preview');
+        const authUrl = `/auth/google?returnTo=${back}`;
+        
         if (window.parent !== window) {
           // We're in an iframe, break out to parent
-          window.parent.location.href = '/auth/google';
+          window.parent.location.href = authUrl;
         } else {
           // We're in the main window
-          window.location.href = '/auth/google';
+          window.location.href = authUrl;
         }
       } catch (error) {
         console.error('❌ Failed to save website data:', error);

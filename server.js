@@ -72,9 +72,9 @@ app.use(bodyParser.json());
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-random-secret-key-here',
   resave: false,
-  saveUninitialized: true,     // now true, cookie sent immediately
+  saveUninitialized: false,
   cookie: {
-    secure: false, // Set to true in production with HTTPS
+    secure: true,  // Replit HTTPS proxy
     sameSite: 'lax',
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
@@ -209,8 +209,9 @@ app.get(['/preview', '/template/:id'], (_req, res) => {
 // Auth routes
 app.get('/auth/google', 
   function(req, res, next) {
-    // remember where to go back
-    req.session.returnTo = req.headers.referer || '/preview';
+    // remember path to come back to
+    req.session.returnTo = req.query.returnTo || req.headers.referer || '/preview';
+    console.log('Setting returnTo:', req.session.returnTo);
     next();
   },
   passport.authenticate('google', { scope: ['profile', 'email'] })
@@ -248,7 +249,7 @@ app.get('/auth/google/callback',
         [req.user.id, req.user.emails[0].value, req.user.displayName]
       );
 
-      // migrate draft -> real user
+      // migrate draft -> real user 
       if (req.session.draft) {
         try {
           const draft = JSON.parse(req.session.draft);
@@ -265,6 +266,8 @@ app.get('/auth/google/callback',
           console.error('❌ Draft migration error:', err);
         }
       }
+      
+      console.log('OAuth callback complete, session returnTo:', req.session.returnTo);
 
       const go = req.session.returnTo || '/preview';
       delete req.session.returnTo;
