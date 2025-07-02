@@ -651,6 +651,8 @@ app.get('/api/user-data', async (req, res) => {
   try {
     console.log('API /user-data called');
     console.log('User authenticated:', req.isAuthenticated && req.isAuthenticated());
+    console.log('User object:', req.user);
+    console.log('Session ID:', req.sessionID);
     
     // Try multiple user ID sources to find the data
     const possibleUserIds = [
