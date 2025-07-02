@@ -213,22 +213,20 @@ app.get(['/preview', '/template/:id'], (_req, res) => {
 // Auth routes
 app.get('/auth/google', 
   function(req, res, next) {
-    // remember path to come back to
-    req.session.returnTo = req.query.returnTo || req.headers.referer || '/preview';
-    console.log('Setting returnTo:', req.session.returnTo);
-    console.log('Session ID:', req.session.id);
-    console.log('Session:', req.session);
-    // Force session save before redirect
-    req.session.save((err) => {
-      if (err) {
-        console.error('Session save error:', err);
-      } else {
-        console.log('Session saved successfully');
-      }
-      next();
-    });
+    // Pass state parameter to OAuth for session-independent returnTo
+    const state = req.query.state || '/preview';
+    console.log('OAuth state parameter:', state);
+    
+    // Store state in passport authenticate options
+    req.authOptions = { state: state };
+    next();
   },
-  passport.authenticate('google', { scope: ['profile', 'email'] })
+  function(req, res, next) {
+    passport.authenticate('google', { 
+      scope: ['profile', 'email'],
+      state: req.authOptions.state
+    })(req, res, next);
+  }
 );
 
 // Logout route
@@ -252,9 +250,10 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   async (req, res) => {
     console.log('Google profile:', req.user);
-    console.log('OAuth callback session ID:', req.session.id);
-    console.log('OAuth callback full session:', req.session);
-    console.log('OAuth callback returnTo:', req.session.returnTo);
+    
+    // Get returnTo from OAuth state parameter (session-independent)
+    const returnTo = decodeURIComponent(req.query.state || '/preview');
+    console.log('OAuth callback complete, state returnTo:', returnTo);
 
     try {
       // Upsert user into database
@@ -265,29 +264,8 @@ app.get('/auth/google/callback',
         [req.user.id, req.user.emails[0].value, req.user.displayName]
       );
 
-      // migrate draft -> real user 
-      if (req.session.draft) {
-        try {
-          const draft = JSON.parse(req.session.draft);
-          // Save draft data to temp_bootstrap_data table
-          await pool.query(
-            `INSERT INTO temp_bootstrap_data (user_id, data, created_at)
-             VALUES ($1, $2, NOW())
-             ON CONFLICT (user_id) DO UPDATE SET data=EXCLUDED.data, created_at=NOW()`,
-            [req.user.id, JSON.stringify(draft)]
-          );
-          delete req.session.draft;
-          console.log('🔄 Migrated session draft to user data');
-        } catch (err) {
-          console.error('❌ Draft migration error:', err);
-        }
-      }
-      
-      console.log('OAuth callback complete, session returnTo:', req.session.returnTo);
-
-      const go = req.session.returnTo || '/preview';
-      delete req.session.returnTo;
-      res.redirect(go);
+      console.log('✅ User saved to database, redirecting to:', returnTo);
+      res.redirect(returnTo);
     } catch (err) {
       console.error('OAuth callback error:', err);
       res.redirect('/');
@@ -514,7 +492,33 @@ app.get('/api/test-data', (req, res) => {
   }
 });
 
-// Save session draft for OAuth migration
+// Migrate draft from client after OAuth login
+app.post('/api/migrate-draft', ensureLoggedIn(), async (req, res) => {
+  try {
+    const { draft } = req.body;
+    const userId = req.user.id;
+    
+    if (draft && userId) {
+      // Save draft data to temp_bootstrap_data table
+      await pool.query(
+        `INSERT INTO temp_bootstrap_data (user_id, data, created_at)
+         VALUES ($1, $2, NOW())
+         ON CONFLICT (user_id) DO UPDATE SET data=EXCLUDED.data, created_at=NOW()`,
+        [userId, JSON.stringify(draft)]
+      );
+      
+      console.log('🔄 Migrated client draft to user data for:', userId);
+      res.json({ success: true });
+    } else {
+      res.status(400).json({ error: 'Invalid draft data or user not authenticated' });
+    }
+  } catch (error) {
+    console.error('❌ Draft migration error:', error);
+    res.status(500).json({ error: 'Migration failed' });
+  }
+});
+
+// Save session draft for OAuth migration (legacy)
 app.post('/api/save-session-draft', (req, res) => {
   try {
     req.session.draft = JSON.stringify(req.body);
