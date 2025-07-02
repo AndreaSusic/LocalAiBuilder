@@ -1,0 +1,82 @@
+
+
+One-shot prompt for Replit Ghostwriter
+
+Copy-paste the block below into a fresh Ghostwriter chat; it patches all of the above:
+
+We have a Passport-Google OAuth flow that:
+
+1) forgets to set `req.session.returnTo`  → callback doesn't know where to redirect.
+2) loses the anonymous draft  → no bootstrap saved.
+3) crashes React with empty data.
+
+Patch list:
+
+──────────────────────────────────────
+A. routes/auth.js  (or server/index.js)
+──────────────────────────────────────
+```diff
+ app.get('/auth/google',
+-  passport.authenticate('google', { scope:['profile','email'] }));
++  (req,res,next)=>{
++    // remember where to go back
++    req.session.returnTo = req.headers.referer || '/dashboard';
++    next();
++  },
++  passport.authenticate('google', { scope:['profile','email'] })
++);
+
+ app.get('/auth/google/callback',
+   passport.authenticate('google', { failureRedirect:'/login' }),
+   async (req,res)=>{
+-    res.redirect('/dashboard');
++    // migrate draft -> real user
++    if(req.session.draft){
++      const draft = JSON.parse(req.session.draft);
++      await db.put(req.user.id, draft);
++      delete req.session.draft;
++    }
++    const go = req.session.returnTo || '/dashboard';
++    delete req.session.returnTo;
++    res.redirect(go);
+ });
+
+──────────────────────────────────────
+B. src/chat.js (before OAuth jump)
+──────────────────────────────────────
+```js
+sessionStorage.setItem('draft', JSON.stringify(state));
+window.location.href = '/auth/google';
+
+──────────────────────────────────────
+C. src/main.jsx (after bootstrap fetch)
+──────────────────────────────────────
+
+if(res.status === 401){
+   // try client-side draft
+   const draft = sessionStorage.getItem('draft');
+   if(draft){
+     bootstrap = JSON.parse(draft);
+   }
+}
+
+──────────────────────────────────────
+D. Google Cloud console
+──────────────────────────────────────
+Add Authorized redirect URI
+
+https://REPL_NAME.REPL_ID.repl.co/auth/google/callback
+
+──────────────────────────────────────
+Result
+──────
+✅ OAuth callback finds returnTo, redirect works
+✅ Draft migrates to user row, bootstrap loads
+✅ React no longer sees {} → no white screen
+
+Give Ghostwriter a minute to insert code, then:
+
+1. Add the callback URI to Google Cloud “OAuth 2.0 Client IDs” → save.  
+2. Hit **Run** again, go through chat → **Login** → preview now renders.
+
+Let me know if any error still pops up after these patches!

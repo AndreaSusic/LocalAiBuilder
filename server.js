@@ -236,10 +236,8 @@ app.get(['/preview', '/template/:id'], (_req, res) => {
 // Auth routes
 app.get('/auth/google', 
   function(req, res, next) {
-    // Store returnTo parameter in session
-    if (req.query.returnTo) {
-      req.session.returnTo = req.query.returnTo;
-    }
+    // remember where to go back
+    req.session.returnTo = req.headers.referer || '/preview';
     next();
   },
   passport.authenticate('google', { scope: ['profile', 'email'] })
@@ -265,7 +263,6 @@ app.get('/auth/logout', (req, res) => {
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   async (req, res) => {
-    const userId = req.user.id;
     console.log('Google profile:', req.user);
     console.log('OAuth callback returnTo:', req.session.returnTo);
 
@@ -278,112 +275,31 @@ app.get('/auth/google/callback',
         [req.user.id, req.user.emails[0].value, req.user.displayName]
       );
 
-      // 1) Find the latest session draft row
-      const { rows } = await pool.query(
-        `SELECT id
-         FROM sites
-         WHERE user_id = $1 AND is_draft = TRUE
-         ORDER BY updated_at DESC
-         LIMIT 1`,
-        [req.cookies.saveDraftKey]
-      );
-
-      if (rows.length) {
+      // migrate draft -> real user
+      if (req.session.draft) {
         try {
+          const draft = JSON.parse(req.session.draft);
+          // Save draft data to temp_bootstrap_data table
           await pool.query(
-            `UPDATE sites
-             SET user_id = $1
-             WHERE id = $2`,
-            [req.user.id, rows[0].id]
+            `INSERT INTO temp_bootstrap_data (user_id, data, created_at)
+             VALUES ($1, $2, NOW())
+             ON CONFLICT (user_id) DO UPDATE SET data=EXCLUDED.data, created_at=NOW()`,
+            [req.user.id, JSON.stringify(draft)]
           );
-          console.log('🔄 Migrated draft id=' + rows[0].id);
+          delete req.session.draft;
+          console.log('🔄 Migrated session draft to user data');
         } catch (err) {
-          if (err.code === '23505') {
-            console.warn('⚠️ Duplicate draft migration ignored for id=' + rows[0].id);
-          } else {
-            console.error('❌ Migration error:', err);
-          }
+          console.error('❌ Draft migration error:', err);
         }
-      } else {
-        console.log('ℹ️  No session‐draft to migrate for', req.cookies.saveDraftKey);
       }
 
-      // 3) Now check for that ONE migrated draft under the user ID
-      const { rows: urows } = await pool.query(
-        `SELECT 1 FROM sites
-         WHERE user_id = $1 AND is_draft = TRUE
-         LIMIT 1`,
-        [req.user.id]
-      );
-
-      if (urows.length) {
-        console.log('Draft found, checking for bootstrap data and redirecting to preview');
-        
-        // Always try to get stored bootstrap data and redirect to dashboard
-        res.send(`
-          <script>
-            console.log("OAuth complete, retrieving bootstrap data from database");
-            
-            fetch('/api/get-temp-data')
-              .then(response => response.json())
-              .then(data => {
-                console.log("Retrieved temp data:", data);
-                
-                if (data.success && data.bootstrapData) {
-                  // Store data in sessionStorage for the React dashboard  
-                  sessionStorage.setItem('bootstrap', JSON.stringify(data.bootstrapData));
-                  // Redirect to preview dashboard with data
-                  window.location.href = '/preview';
-                } else {
-                  console.log("No temp data found, redirecting to dashboard without data");
-                  window.location.href = '/preview';
-                }
-              })
-              .catch(error => {
-                console.error("Error retrieving temp data:", error);
-                window.location.href = '/preview';
-              });
-          </script>
-        `);
-        return;
-      }
+      const go = req.session.returnTo || '/preview';
+      delete req.session.returnTo;
+      res.redirect(go);
     } catch (err) {
-      console.error('DB error checking draft:', err);
-      // on error, default to homepage
+      console.error('OAuth callback error:', err);
+      res.redirect('/');
     }
-
-    console.log('No draft found, checking for bootstrap data and redirecting to preview');
-    
-    // Always try to get stored bootstrap data and redirect to dashboard (no draft case)
-    res.send(`
-      <script>
-        console.log("OAuth complete (no draft), retrieving bootstrap data from database");
-        
-        fetch('/api/get-temp-data')
-          .then(response => response.json())
-          .then(data => {
-            console.log("Retrieved temp data:", data);
-            
-            if (data.success && data.bootstrapData) {
-              // Store data in sessionStorage for the React dashboard  
-              sessionStorage.setItem('bootstrap', JSON.stringify(data.bootstrapData));
-              // Redirect to preview dashboard
-              window.location.href = '/preview';
-            } else {
-              console.log("No temp data found, redirecting to homepage");
-              window.location.href = '/';
-            }
-          })
-          .catch(error => {
-            console.error("Error retrieving temp data:", error);
-            window.location.assign('/');
-          });
-      </script>
-    `);
-    return;
-    
-    // Otherwise redirect to dashboard via preview route
-    res.redirect('/preview');
   }
 );
 
