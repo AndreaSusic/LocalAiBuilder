@@ -45,7 +45,7 @@ export default function MobileDashboard({ bootstrap }) {
     }
   }, [bootstrap]);
 
-  const showTemplatePreview = (templateUrl) => {
+  const showTemplatePreview = async (templateUrl) => {
     // Convert long URLs to short format
     let shortUrl = templateUrl;
     if (templateUrl.includes('/templates/homepage/v1/')) shortUrl = '/t/v1';
@@ -54,14 +54,16 @@ export default function MobileDashboard({ bootstrap }) {
     else if (templateUrl.includes('/templates/service/v1/')) shortUrl = '/s/v1';
     else if (templateUrl.includes('/templates/contact/v1/')) shortUrl = '/c/v1';
     
-    // Add bootstrap data to URL if available
+    // Add bootstrap data to URL if available - but let the server handle session storage
     if (bootstrap && Object.keys(bootstrap).length > 0) {
       const encoded = encodeURIComponent(JSON.stringify(bootstrap));
       shortUrl += `?data=${encoded}`;
     }
-    setPreviewContent(shortUrl);
+    
+    // Navigate to the short URL which will redirect properly
+    window.open(shortUrl, '_blank');
     setShowPagesDropdown(false);
-    console.log('Showing mobile template preview:', shortUrl);
+    console.log('Opening template in new tab:', shortUrl);
   };
 
   const handleLogout = async () => {
@@ -136,7 +138,15 @@ export default function MobileDashboard({ bootstrap }) {
           </div>
           <button 
             className="view-live-btn-mobile" 
-            onClick={() => window.open(previewContent || "about:blank", "_blank")}
+            onClick={() => {
+              // Use the homepage template with bootstrap data
+              let shortUrl = '/t/v1';
+              if (bootstrap && Object.keys(bootstrap).length > 0) {
+                const encoded = encodeURIComponent(JSON.stringify(bootstrap));
+                shortUrl += `?data=${encoded}`;
+              }
+              window.open(shortUrl, '_blank');
+            }}
           >
             View Live Site
           </button>
