@@ -70,13 +70,16 @@ export default function ServicesSection() {
   
   const sectionTitle = isLandscaping ? 'Our Products' : 'Our Services';
 
-  const servicesToShow = servicesList.length > 0 ? servicesList.map((service, index) => ({
-    title: service,
-    description: isLandscaping ? 
-      `Premium ${service.toLowerCase()} perfect for your lawn and landscaping needs.` :
-      `Professional ${service.toLowerCase()} services tailored to your needs.`,
-    image: availableImages[index] || defaultImages[index] || defaultImages[0]
-  })) : [];
+  const servicesToShow = servicesList.length > 0 ? servicesList.map((service, index) => {
+    const serviceText = typeof service === 'string' ? service : String(service || '');
+    return {
+      title: serviceText,
+      description: isLandscaping ? 
+        `Premium ${serviceText.toLowerCase()} perfect for your lawn and landscaping needs.` :
+        `Professional ${serviceText.toLowerCase()} services tailored to your needs.`,
+      image: availableImages[index] || defaultImages[index] || defaultImages[0]
+    };
+  }) : [];
 
   // Don't show section if no services
   if (servicesToShow.length === 0) return null;
