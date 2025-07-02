@@ -216,9 +216,14 @@ app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
   const ver = req.params.ver;
   console.log(`Template route hit: v${ver}`);
   
+  // Get the current host but change port to 4000 for development server
+  const host = req.get('host');
+  const baseHost = host.replace(':5000', '').replace('-5000', '');
+  const devHost = `${baseHost}-4000.${host.split('.').slice(1).join('.')}`;
+  
   // Redirect to development server with query params preserved
   const queryString = req.url.includes('?') ? req.url.split('?')[1] : '';
-  const redirectUrl = `http://localhost:4000/templates/homepage/v${ver}/index.jsx${queryString ? '?' + queryString : ''}`;
+  const redirectUrl = `https://${devHost}/templates/homepage/v${ver}/index.jsx${queryString ? '?' + queryString : ''}`;
   
   console.log(`Redirecting to development server: ${redirectUrl}`);
   res.redirect(302, redirectUrl);
@@ -249,8 +254,13 @@ app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'ass
 app.get('/preview', (req, res) => {
   console.log('📂 Preview route accessed, redirecting to development server');
   
-  // Redirect to development server since production build has white screen issues
-  res.redirect(302, 'http://localhost:4000/preview');
+  // Get the current host but change port to 4000 for development server
+  const host = req.get('host');
+  const baseHost = host.replace(':5000', '').replace('-5000', '');
+  const devUrl = `https://${baseHost}-4000.${host.split('.').slice(1).join('.')}/preview`;
+  
+  console.log(`Redirecting to development server: ${devUrl}`);
+  res.redirect(302, devUrl);
 });
 
 // Serve static files (after template routes)
