@@ -729,6 +729,8 @@ app.get('/api/user-data', async (req, res) => {
             console.log('GBP Address field:', gbpResult.address || gbpResult.formatted_address || gbpResult.vicinity || 'no address');
             console.log('Raw phone value:', gbpResult.phone);
             console.log('Raw address value:', gbpResult.address);
+            console.log('Formatted phone:', gbpResult.formatted_phone_number);
+            console.log('Formatted address:', gbpResult.formatted_address);
             if (!gbpResult.error && gbpResult.name) {
               gbpData = gbpResult;
               console.log('✅ GBP data integrated for', gbpResult.name);
@@ -759,10 +761,10 @@ app.get('/api/user-data', async (req, res) => {
             products: gbpData.products || []
           } : {},
           contact: {
-            phone: gbpData?.formatted_phone_number || gbpData?.international_phone_number || null,
-            address: gbpData?.formatted_address || null,
+            phone: gbpData?.phone || null,
+            address: gbpData?.address || null,
             website: gbpData?.website || null,
-            business_hours: gbpData?.opening_hours?.weekday_text || null
+            business_hours: gbpData?.business_hours || null
           },
           reviews: gbpData?.reviews ? gbpData.reviews.slice(0, 3).map(review => ({
             author_name: review.author_name,
