@@ -84,7 +84,7 @@ export default function DesktopDashboard({ bootstrap }) {
     console.log('Preview screen:', screens[nextIndex]);
   };
 
-  const showTemplatePreview = (templateUrl) => {
+  const showTemplatePreview = async (templateUrl) => {
     // Convert long URLs to short format
     let shortUrl = templateUrl;
     if (templateUrl.includes('/templates/homepage/v1/')) shortUrl = '/t/v1';
@@ -93,14 +93,16 @@ export default function DesktopDashboard({ bootstrap }) {
     else if (templateUrl.includes('/templates/service/v1/')) shortUrl = '/s/v1';
     else if (templateUrl.includes('/templates/contact/v1/')) shortUrl = '/c/v1';
     
-    // Add bootstrap data to URL if available
+    // Add bootstrap data to URL if available - but let the server handle session storage
     if (bootstrap && Object.keys(bootstrap).length > 0) {
       const encoded = encodeURIComponent(JSON.stringify(bootstrap));
       shortUrl += `?data=${encoded}`;
     }
-    setPreviewContent(shortUrl);
+    
+    // Navigate to the short URL which will redirect properly
+    window.open(shortUrl, '_blank');
     setShowPagesDropdown(false);
-    console.log('Showing template preview:', shortUrl);
+    console.log('Opening template in new tab:', shortUrl);
   };
 
   const handleLogout = async () => {
