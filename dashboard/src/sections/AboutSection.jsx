@@ -15,7 +15,7 @@ export default function AboutSection() {
   // Only treat as grass/sod landscaping if services actually mention grass or sod
   const contextData = useContext(SiteDataContext) || {};
   const { services = '' } = contextData;
-  const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
+  const isLandscaping = industry && typeof industry === 'string' && industry.toLowerCase().includes('landscap') && 
     (typeof services === 'string' && (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod')));
   
   return (

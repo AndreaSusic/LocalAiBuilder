@@ -6,7 +6,7 @@ export default function ServicesSection() {
   const { services = [], images = [], google_profile = {}, industry = '', ai_customization = {}, safeImg } = contextData;
   
   // Only treat as grass/sod landscaping if services actually mention grass or sod
-  const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
+  const isLandscaping = industry && typeof industry === 'string' && industry.toLowerCase().includes('landscap') && 
     (typeof services === 'string' && (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod')));
   
   // Check if we have enhanced product data from GBP
