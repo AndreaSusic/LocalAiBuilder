@@ -743,19 +743,28 @@ app.get('/api/user-data', async (req, res) => {
           industry: bootstrapData.industry || 'Your Industry',
           language: bootstrapData.language || 'English',
           colours: bootstrapData.colours || ['#5DD39E', '#EFD5BD'],
-          images: gbpData?.photos ? gbpData.photos.map(photo => ({
+          images: gbpData?.photos ? gbpData.photos.slice(0, 2).map(photo => ({
             url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${process.env.GOOGLE_PLACES_API_KEY}`,
             alt: `${bootstrapData.company_name} photo`,
             source: 'google_business_profile'
           })) : (bootstrapData.images || []),
-          google_profile: gbpData || (typeof bootstrapData.google_profile === 'object' ? bootstrapData.google_profile : {}),
+          google_profile: gbpData ? {
+            name: gbpData.name,
+            rating: gbpData.rating,
+            user_ratings_total: gbpData.user_ratings_total
+          } : {},
           contact: {
             phone: gbpData?.formatted_phone_number || gbpData?.international_phone_number || null,
             address: gbpData?.formatted_address || null,
             website: gbpData?.website || null,
             business_hours: gbpData?.opening_hours?.weekday_text || null
           },
-          reviews: gbpData?.reviews || [],
+          reviews: gbpData?.reviews ? gbpData.reviews.slice(0, 3).map(review => ({
+            author_name: review.author_name,
+            rating: review.rating,
+            text: review.text.substring(0, 150),
+            relative_time_description: review.relative_time_description
+          })) : [],
           rating: gbpData?.rating || null,
           ai_customization: {
             hero_title: `${bootstrapData.company_name || 'Your Business'} - Professional Services`,
