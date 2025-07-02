@@ -190,34 +190,7 @@ app.use('/templates/homepage', (req, res, next) => {
   }
 });
 
-// Template routing - serve production build directly
-app.get('/templates/homepage/v:ver/index.jsx', (req, res) => {
-  const ver = req.params.ver;
-  console.log(`Template route hit: v${ver}`);
-  
-  // Serve the dashboard index.html to handle React Router for this route
-  const filePath = path.join(__dirname, 'dashboard', 'dist', 'index.html');
-  console.log(`📂 Serving template from production build: ${filePath}`);
-  res.sendFile(filePath);
-});
 
-// Service template routing - proxy to dashboard for React Router
-app.get('/templates/service/v:ver/index.jsx', (req, res) => {
-  const ver = req.params.ver;
-  console.log(`Service template route hit: v${ver}`);
-  
-  // Serve the dashboard index.html to handle React Router for this route
-  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
-});
-
-// Contact template routing - proxy to dashboard for React Router  
-app.get('/templates/contact/v:ver/index.jsx', (req, res) => {
-  const ver = req.params.ver;
-  console.log(`Contact template route hit: v${ver}`);
-  
-  // Serve the dashboard index.html to handle React Router for this route
-  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
-});
 
 // Serve main static files first (homepage, etc.)
 app.use(express.static('.'));
