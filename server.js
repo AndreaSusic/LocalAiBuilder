@@ -765,7 +765,29 @@ app.get('/api/user-data', async (req, res) => {
             products: gbpData.products || []
           } : {},
           gbpCid: gbpData?.place_id || null,
-          userProducts: bootstrapData.userProducts || [],
+          userProducts: bootstrapData.userProducts || (
+            // Add test products for Kigen Plastika to demonstrate fallback system
+            (bootstrapData.company_name === 'Kigen Plastika') ? [
+              {
+                id: 'kigen1',
+                name: 'Septic Tank Systems',
+                description: 'Complete septic tank solutions for residential and commercial properties. High-quality plastic construction.',
+                image: 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?w=400&h=300&fit=crop'
+              },
+              {
+                id: 'kigen2', 
+                name: 'Plastic Water Containers',
+                description: 'Durable plastic water storage containers and tanks for various applications.',
+                image: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?w=400&h=300&fit=crop'
+              },
+              {
+                id: 'kigen3',
+                name: 'Industrial Plastic Components',
+                description: 'Custom plastic manufacturing for industrial applications and specialized containers.',
+                image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&h=300&fit=crop'
+              }
+            ] : []
+          ),
           contact: {
             phone: gbpData?.phone || null,
             address: gbpData?.address || null,
