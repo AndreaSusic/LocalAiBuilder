@@ -1,6 +1,6 @@
-import puppeteer from 'puppeteer-core';
+const puppeteer = require('puppeteer-core');
 
-export interface Product {
+interface Product {
   id: string;
   name: string;
   description: string | null;
@@ -55,7 +55,7 @@ async function fetchProductDescription(page: any, productUrl: string): Promise<s
   }
 }
 
-export async function fetchGbpProducts(cid: string): Promise<Product[]> {
+async function fetchGbpProducts(cid: string): Promise<Product[]> {
   // Check cache first
   const cached = cache.get(cid);
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
@@ -159,3 +159,5 @@ export async function fetchGbpProducts(cid: string): Promise<Product[]> {
     }
   }
 }
+
+module.exports = { fetchGbpProducts };

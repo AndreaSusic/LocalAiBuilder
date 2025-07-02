@@ -3,7 +3,43 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { ThemeProvider } from './lib/theme.jsx'
-import { renderProducts } from '../utils/renderProducts.js'
+import { renderProducts } from './utils/renderProducts.js'
+
+// 3-tier product loading system
+async function loadProducts(bootstrap) {
+  let products = [];
+  
+  console.log('🔍 Loading products with 3-tier fallback system');
+  
+  // Tier 1: Try to fetch GBP products if we have a CID
+  if (bootstrap.gbpCid) {
+    console.log('📋 Fetching GBP products for CID:', bootstrap.gbpCid);
+    try {
+      const response = await fetch(`/api/gbp-products?cid=${bootstrap.gbpCid}`);
+      if (response.ok) {
+        products = await response.json();
+        console.log(`📦 Got ${products.length} GBP products`);
+      }
+    } catch (error) {
+      console.warn('⚠️ Failed to fetch GBP products:', error);
+    }
+  }
+  
+  // Tier 2: Fall back to user products if no GBP products found
+  if (!products.length && bootstrap.userProducts?.length) {
+    products = bootstrap.userProducts;
+    console.log(`👤 Using ${products.length} user products as fallback`);
+  }
+  
+  // Tier 3: Keep placeholders if no products (do nothing)
+  if (!products.length) {
+    console.log('📝 No products found, keeping placeholder content');
+    return;
+  }
+  
+  // Render the products
+  renderProducts(products);
+}
 
 async function loadBootstrap(){
   // 1) Try secure API first
