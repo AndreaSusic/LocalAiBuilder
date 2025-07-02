@@ -42,6 +42,7 @@ let convo = [], state = {
   language: null,
   offering_type: null,
   services: null,
+  userProducts: [],
   colours: null,
   social: {                // NEW  : fb / ig / tt / li etc.
     facebook: null,

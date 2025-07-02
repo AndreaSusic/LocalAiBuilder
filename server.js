@@ -764,6 +764,8 @@ app.get('/api/user-data', async (req, res) => {
             photos: gbpData.photos || [],
             products: gbpData.products || []
           } : {},
+          gbpCid: gbpData?.place_id || null,
+          userProducts: bootstrapData.userProducts || [],
           contact: {
             phone: gbpData?.phone || null,
             address: gbpData?.address || null,
