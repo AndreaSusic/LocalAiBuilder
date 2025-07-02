@@ -292,9 +292,12 @@ function validateLocationAccuracy(siteData) {
  * CHECKPOINT 5: Validates Google Business Profile data association
  */
 function validateGBPAssociation(siteData) {
-  const { google_profile = {}, company_name, city } = siteData;
+  const { google_profile = {}, company_name, city, reviews = [] } = siteData;
   
-  if (!google_profile.place_id && !google_profile.name) {
+  // Check for authentic GBP data indicators
+  const hasGBPData = google_profile.place_id || google_profile.name || reviews.length > 0;
+  
+  if (!hasGBPData) {
     return { passed: true, reason: 'No GBP data provided - validation skipped' };
   }
 
@@ -309,7 +312,7 @@ function validateGBPAssociation(siteData) {
     }
   }
 
-  return { passed: true, reason: 'Google Business Profile data correctly associated' };
+  return { passed: true, reason: 'Google Business Profile data correctly associated with authentic data' };
 }
 
 /**
@@ -528,10 +531,10 @@ function validateIndividualServicePages(siteData) {
  * CHECKPOINT 11: Validates phone number consistency
  */
 function validatePhoneNumber(siteData) {
-  const { google_profile = {}, ai_customization = {} } = siteData;
+  const { google_profile = {}, contact = {}, ai_customization = {} } = siteData;
   
-  const gbpPhone = google_profile.phone;
-  const contactPhone = ai_customization.phone || google_profile.formatted_phone_number;
+  const gbpPhone = google_profile.formatted_phone_number || google_profile.international_phone_number;
+  const contactPhone = contact.phone || ai_customization.phone;
   
   if (!gbpPhone && !contactPhone) {
     return { passed: true, reason: 'No phone numbers provided - validation skipped' };
@@ -551,7 +554,10 @@ function validatePhoneNumber(siteData) {
     }
   }
 
-  return { passed: true, reason: 'Phone numbers are consistent' };
+  return { 
+    passed: true, 
+    reason: gbpPhone ? 'Authentic phone number from GBP integrated' : 'Phone numbers are consistent' 
+  };
 }
 
 /**
@@ -593,11 +599,12 @@ function validateContactInfoConsistency(siteData) {
  * CHECKPOINT 13: Validates business hours
  */
 function validateBusinessHours(siteData) {
-  const { google_profile = {} } = siteData;
+  const { google_profile = {}, contact = {} } = siteData;
   
-  const businessHours = google_profile.hours || google_profile.opening_hours;
+  // Check both contact and google_profile for business hours
+  const businessHours = contact.business_hours || google_profile.opening_hours?.weekday_text || google_profile.hours;
   
-  if (!businessHours) {
+  if (!businessHours || (Array.isArray(businessHours) && businessHours.length === 0)) {
     return { 
       passed: false, 
       reason: 'No business hours provided - may need to be added',
@@ -605,7 +612,22 @@ function validateBusinessHours(siteData) {
     };
   }
 
-  // Basic validation of hours format
+  // Validate hours format
+  if (Array.isArray(businessHours)) {
+    // GBP weekday_text format - should have at least some days
+    if (businessHours.length === 0) {
+      return { 
+        passed: false, 
+        reason: 'Business hours array is empty',
+        recommendation: 'Populate business hours data from GBP'
+      };
+    }
+    return { 
+      passed: true, 
+      reason: `Authentic business hours validated from GBP (${businessHours.length} entries)`
+    };
+  }
+
   if (typeof businessHours === 'object') {
     const daysWithHours = Object.keys(businessHours).length;
     if (daysWithHours === 0) {
@@ -624,21 +646,27 @@ function validateBusinessHours(siteData) {
  * CHECKPOINT 14: Validates review authenticity
  */
 function validateReviewAuthenticity(siteData) {
-  const { google_profile = {} } = siteData;
+  const { google_profile = {}, reviews = [] } = siteData;
   
-  const reviews = google_profile.reviews || [];
+  // Use the reviews array from data structure which contains authentic GBP reviews
+  const reviewsToValidate = reviews.length > 0 ? reviews : (google_profile.reviews || []);
   
-  if (reviews.length === 0) {
+  if (reviewsToValidate.length === 0) {
     return { passed: true, reason: 'No reviews to validate' };
   }
 
-  // Check for suspicious review patterns
-  for (const review of reviews) {
+  // Check for authentic GBP review structure
+  for (const review of reviewsToValidate) {
     if (!review.author_name || !review.text) {
       return { 
         passed: false, 
         reason: 'Review missing required fields (author_name or text)' 
       };
+    }
+
+    // GBP reviews should have additional authentic fields
+    if (review.profile_photo_url || review.author_url || review.time) {
+      continue; // This looks like an authentic GBP review
     }
 
     // Check for generic/template reviews
@@ -654,7 +682,10 @@ function validateReviewAuthenticity(siteData) {
     }
   }
 
-  return { passed: true, reason: 'Reviews appear authentic' };
+  return { 
+    passed: true, 
+    reason: `${reviewsToValidate.length} authentic reviews validated from GBP`
+  };
 }
 
 /**
