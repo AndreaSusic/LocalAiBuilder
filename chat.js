@@ -975,15 +975,39 @@ async function handleMissing(res){
         const tempResult = await tempResponse.json();
         console.log('💾 Bootstrap data saved to temp storage:', tempResult);
         
+        // Save draft to sessionStorage for OAuth migration
+        try {
+          const draftData = {
+            ...state,
+            colors: colors,
+            images: images,
+            conversation: convo
+          };
+          
+          // Save to sessionStorage for client-side recovery
+          sessionStorage.setItem('draft', JSON.stringify(draftData));
+          
+          // Also save to server session
+          await fetch('/api/save-session-draft', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(draftData)
+          });
+          
+          console.log('💾 Draft saved to session before OAuth');
+        } catch (error) {
+          console.error('⚠️ Failed to save session draft:', error);
+        }
+        
         // Break out of iframe and redirect parent window to OAuth
         console.log('🚀 Breaking out of iframe for OAuth flow');
         
         if (window.parent !== window) {
           // We're in an iframe, break out to parent
-          window.parent.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
+          window.parent.location.href = '/auth/google';
         } else {
           // We're in the main window
-          window.location.href = '/auth/google?returnTo=' + encodeURIComponent('/preview');
+          window.location.href = '/auth/google';
         }
       } catch (error) {
         console.error('❌ Failed to save website data:', error);
