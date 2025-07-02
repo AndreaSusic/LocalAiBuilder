@@ -484,7 +484,21 @@ async function sendUser() {
       } else {
         state.google = gbp;
         state.google_profile = 'yes';
-        bubble('ai', `Great! I found your Google Business Profile for **${gbp.name}**. I'll use your business photos and contact details.`);
+        
+        // Extract products from GBP data if available
+        if (gbp.products && gbp.products.length > 0) {
+          state.products = gbp.products;
+          bubble('ai', `Great! I found your Google Business Profile for **${gbp.name}** with ${gbp.products.length} products. I'll use your business photos, contact details, and product information.`);
+        } else {
+          bubble('ai', `Great! I found your Google Business Profile for **${gbp.name}**. I'll use your business photos and contact details.`);
+        }
+        
+        // Update contact information from GBP
+        if (gbp.phone) state.phone = gbp.phone;
+        if (gbp.address) state.address = gbp.address;
+        if (gbp.website) state.website = gbp.website;
+        if (gbp.email) state.email = gbp.email;
+        
         responseHandled = true;
         clearInput();
         await handleMissing({});
