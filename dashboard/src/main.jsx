@@ -8,11 +8,22 @@ async function loadBootstrap(){
   // 1) Try secure API
   const api = await fetch('/api/user-data');
   if(api.status !== 401){
-    const { bootstrap } = await api.json();
-    return bootstrap;
+    const result = await api.json();
+    if(result.ok && result.bootstrap){
+      return result.bootstrap;
+    }
   }
 
-  // 2) Fallback: ?data= or sessionStorage
+  // 2) Handle 401 - try client-side draft
+  if(api.status === 401){
+    const draft = sessionStorage.getItem('draft');
+    if(draft){
+      console.log('Using client-side draft for 401 response');
+      return JSON.parse(draft);
+    }
+  }
+
+  // 3) Fallback: ?data= or sessionStorage
   const p = new URLSearchParams(location.search);
   if(p.has('data')){
     return JSON.parse(decodeURIComponent(p.get('data')));
