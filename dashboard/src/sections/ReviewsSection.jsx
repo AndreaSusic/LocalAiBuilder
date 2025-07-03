@@ -55,13 +55,13 @@ export default function ReviewsSection() {
     <>
       {/* Testimonials */}
       <section className="testimonials">
-        <h2>{reviewsTitle}</h2>
+        <h2 data-gas-edit="reviewsTitle">{reviewsTitle}</h2>
         <div className="testimonials-grid">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="testimonial">
-              <p>"{testimonial.text}"</p>
+              <p data-gas-edit={`testimonialText${index}`}>"{testimonial.text}"</p>
               <div className="stars">{testimonial.stars}</div>
-              <p><strong>— {testimonial.author}</strong></p>
+              <p data-gas-edit={`testimonialAuthor${index}`}><strong>— {testimonial.author}</strong></p>
             </div>
           ))}
         </div>

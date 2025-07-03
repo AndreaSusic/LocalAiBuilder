@@ -1,0 +1,95 @@
+✅ Made 0 elements editable tells us the bridge ran but didn’t find anything that matches the selector list you handed it.
+Nothing is actually wrong with CORS or the injection any more – the bridge simply has no targets, so every click is ignored.
+
+⸻
+
+1 · Confirm the page really has “editable” markers
+
+In your React/Vite build (or in the static HTML you serve) each element that
+should light-up in the inline editor must carry a marker the bridge can
+detect, for example
+
+<h1 data-gas-edit="heroTitle">Septic-tank pros since 1986</h1>
+<p  data-gas-edit="heroSubtitle">We build…</p>
+
+or the class variant you used earlier:
+
+<h2 class="gas-edit" data-field="faqHeading">FAQ</h2>
+
+Open the Elements panel in DevTools and search for data-gas-edit
+or .gas-edit.  If you find none, the rendering layer stopped adding them
+during the last refactor – fix that first.
+
+⸻
+
+2 · Check the selector list inside editorBridge.js
+
+Right now the bridge probably does something like:
+
+const SELECTORS = [
+  "[data-gas-edit]",
+  ".gas-edit"
+];
+
+document.querySelectorAll(SELECTORS.join(","))
+        .forEach(makeEditable);
+
+If you changed your markup to use a different attr/class (say
+data-inline-edit) you must keep the list in sync.
+
+Add a quick trace:
+
+const editableEls = document.querySelectorAll(SELECTORS.join(","));
+console.log("[bridge] candidates found:", editableEls.length, editableEls);
+editableEls.forEach(makeEditable);
+
+Then reload.  If the count is still 0 you know the selectors are wrong.
+
+⸻
+
+3 · Verify makeEditable is not filtering them out
+
+Sometimes the bridge skips elements that already have contenteditable,
+that are empty, or that are outside the main container.
+
+Temporarily relax the condition:
+
+function makeEditable(el) {
+  el.contentEditable = true;               // or use Quill/TipTap/etc.
+  el.style.outline = "2px dashed #ffc000"; // visual cue
+}
+
+If outlines appear, clicks now work, and the issue is inside your original
+makeEditable logic (often a stale if (!el.textContent.trim()) return;).
+
+⸻
+
+4 · Final checklist
+
+✅	Item	Where
+Markers present (data-gas-edit / .gas-edit)	Rendered HTML	
+Selector list matches those markers	editorBridge.js	
+querySelectorAll() returns > 0	DevTools console	
+makeEditable() doesn’t early-return	Bridge code	
+Visual cue shows on hover/click	Browser	
+
+Fix whichever row still fails and the inline editor becomes clickable again.
+
+⸻
+
+Quick patch example
+
+If you just forgot the attribute, patch your template:
+
+{/* Homepage hero title */}
+<h1 data-gas-edit="heroTitle">{siteData.company_name}</h1>
+
+{/* FAQ heading */}
+<section id="faq">
+  <h2 data-gas-edit="faqHeading">{t("faqTitle")}</h2>
+  …
+</section>
+
+Reload → bridge finds them → count > 0 → inline editing works.
+
+Good luck 🚀

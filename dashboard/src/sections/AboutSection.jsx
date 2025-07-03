@@ -44,16 +44,16 @@ export default function AboutSection() {
             <img src={aboutImage} alt={isLandscaping ? "Landscaping Services" : "Our Services"} />
           </div>
           <div className="location-text">
-            <h2>{isLandscaping ? `Premium Grass & Sod in ${cityName}` : `Serving ${cityName} with Excellence`}</h2>
-            <p>At {company_name || 'Your Business'}, we're proud to serve the {cityName} community. {isLandscaping ? 
+            <h2 data-gas-edit="aboutTitle">{isLandscaping ? `Premium Grass & Sod in ${cityName}` : `Serving ${cityName} with Excellence`}</h2>
+            <p data-gas-edit="aboutParagraph1">At {company_name || 'Your Business'}, we're proud to serve the {cityName} community. {isLandscaping ? 
               `From premium sod varieties to expert lawn installation, we provide everything you need for a beautiful, healthy lawn.` :
               `We combine the latest techniques with exceptional service to deliver outstanding results.`
             }</p>
-            <p>{isLandscaping ? 
+            <p data-gas-edit="aboutParagraph2">{isLandscaping ? 
               `Our high-quality grass varieties are carefully selected for Texas climate conditions, ensuring your lawn thrives year-round.` :
               `We take the time to understand your needs and deliver personalized solutions that exceed expectations.`
             }</p>
-            <p>{isLandscaping ? 
+            <p data-gas-edit="aboutParagraph3">{isLandscaping ? 
               `Whether you're starting a new lawn project or renovating an existing one, our team provides expert guidance and premium products for lasting results.` :
               `From consultation to completion, we ensure every detail meets our high standards and your satisfaction.`
             }</p>
@@ -69,8 +69,8 @@ export default function AboutSection() {
               <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
           </div>
-          <h3>{isLandscaping ? 'Premium Quality Sod' : 'Expert Service'}</h3>
-          <p>{isLandscaping ? 'We source the highest quality grass varieties perfect for Texas climate conditions.' : 'Our experienced team provides exceptional service tailored to your needs.'}</p>
+          <h3 data-gas-edit="feature1Title">{isLandscaping ? 'Premium Quality Sod' : 'Expert Service'}</h3>
+          <p data-gas-edit="feature1Description">{isLandscaping ? 'We source the highest quality grass varieties perfect for Texas climate conditions.' : 'Our experienced team provides exceptional service tailored to your needs.'}</p>
         </div>
 
         <div className="feature">
@@ -79,8 +79,8 @@ export default function AboutSection() {
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
           </div>
-          <h3>{isLandscaping ? 'Professional Installation' : 'Quality Results'}</h3>
-          <p>{isLandscaping ? 'Expert installation services ensure your new lawn establishes quickly and thrives.' : 'We use proven methods to deliver outstanding, lasting results.'}</p>
+          <h3 data-gas-edit="feature2Title">{isLandscaping ? 'Professional Installation' : 'Quality Results'}</h3>
+          <p data-gas-edit="feature2Description">{isLandscaping ? 'Expert installation services ensure your new lawn establishes quickly and thrives.' : 'We use proven methods to deliver outstanding, lasting results.'}</p>
         </div>
 
         <div className="feature">
@@ -89,8 +89,8 @@ export default function AboutSection() {
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
           </div>
-          <h3>{isLandscaping ? 'Customer Satisfaction' : 'Dedicated Care'}</h3>
-          <p>{isLandscaping ? 'From consultation to completion, we ensure you love your new lawn.' : 'Our friendly team is dedicated to exceeding your expectations.'}</p>
+          <h3 data-gas-edit="feature3Title">{isLandscaping ? 'Customer Satisfaction' : 'Dedicated Care'}</h3>
+          <p data-gas-edit="feature3Description">{isLandscaping ? 'From consultation to completion, we ensure you love your new lawn.' : 'Our friendly team is dedicated to exceeding your expectations.'}</p>
         </div>
       </section>
 

@@ -65,8 +65,14 @@ function injectEditorBridge(iframe) {
         }
         
         waitForReactComponents().then(() => {
-          // Enhanced element selection with React component awareness
-          const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button');
+          // Look for elements with data-gas-edit attributes (proper editable markers)
+          const SELECTORS = [
+            "[data-gas-edit]",
+            ".gas-edit"
+          ];
+          
+          const elements = document.querySelectorAll(SELECTORS.join(","));
+          console.log('[bridge] candidates found:', elements.length, elements);
           
           let editableCount = 0;
           
