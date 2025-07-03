@@ -59,18 +59,18 @@ export default function MobileDashboard({ bootstrap }) {
     const createPreviewUrl = async () => {
       let dataToUse = bootstrap;
       
-      // If no bootstrap data, try to load Kigen Plastika data by default
+      // If no bootstrap data, try to load user data
       if (!dataToUse || Object.keys(dataToUse).length === 0) {
         try {
-          const response = await fetch('/api/kigen-data', {
+          const response = await fetch('/api/user-data', {
             credentials: 'include'
           });
           if (response.ok) {
             dataToUse = await response.json();
-            console.log('Auto-loaded Kigen Plastika data for mobile preview');
+            console.log('Auto-loaded user data for mobile preview');
           }
         } catch (error) {
-          console.log('Could not auto-load Kigen Plastika data:', error.message);
+          console.log('Could not auto-load user data:', error.message);
           setPreviewContent('/t/v1');
           return;
         }
