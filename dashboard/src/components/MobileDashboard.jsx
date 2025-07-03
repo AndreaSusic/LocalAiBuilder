@@ -24,6 +24,9 @@ function injectEditorBridge(iframe) {
 /**
  * INLINE EDITOR BRIDGE - Mobile Version
  */
+
+console.log("[bridge] injected, origin:", location.origin);
+
 let currentEditableElement = null;
 let toolbar = null;
 let undoHistory = [];
@@ -346,6 +349,13 @@ window.editorBridge = {
   toolbar: () => toolbar,
   current: () => currentEditableElement
 };
+
+// Signal that the bridge is ready
+console.log('🚀 Bridge ready! Mobile Editor is now active');
+window.dispatchEvent(new CustomEvent('gas-bridge-ready'));
+if (window.parent) {
+  window.parent.postMessage({type: 'bridge-ready', origin: location.origin}, '*');
+}
       `;
       
       frameDoc.head.appendChild(script);

@@ -26,6 +26,8 @@ function injectEditorBridge(iframe) {
  * Framework-agnostic inline editing system for live preview iframe
  */
 
+console.log("[bridge] injected, origin:", location.origin);
+
 // Global state
 let currentEditableElement = null;
 let toolbar = null;
@@ -620,6 +622,13 @@ window.editorBridge = {
   toolbar: () => toolbar,
   current: () => currentEditableElement
 };
+
+// Signal that the bridge is ready
+console.log('🚀 Bridge ready! Editor is now active');
+window.dispatchEvent(new CustomEvent('gas-bridge-ready'));
+if (window.parent) {
+  window.parent.postMessage({type: 'bridge-ready', origin: location.origin}, '*');
+}
       `;
       
       frameDoc.head.appendChild(script);
@@ -657,11 +666,13 @@ window.editorBridge = {
       iframe.addEventListener('load', injectScript);
     }
     
-    // Listen for save messages from the iframe
+    // Listen for messages from the iframe
     window.addEventListener('message', (event) => {
       if (event.data.type === 'editor-save') {
         console.log('💾 Received edit from iframe:', event.data.data);
         // Here you can save the changes to your backend or state
+      } else if (event.data.type === 'bridge-ready') {
+        console.log('✅ Bridge ready! Editor is now active from:', event.data.origin);
       }
     });
     
