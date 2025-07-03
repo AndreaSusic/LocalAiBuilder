@@ -8,6 +8,8 @@ export default function ReviewsSection() {
   // Debug logging to understand data structure
   console.log('🔍 ReviewsSection - Full siteData:', siteData);
   console.log('🔍 ReviewsSection - google_profile:', google_profile);
+  console.log('🔍 ReviewsSection - google_profile.reviews:', google_profile?.reviews);
+  console.log('🔍 ReviewsSection - reviews prop:', reviews);
   console.log('🔍 ReviewsSection - team data:', team);
   
   const defaultTestimonials = [
