@@ -12,41 +12,63 @@ export default function DesktopDashboard({ bootstrap }) {
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [previewContent, setPreviewContent] = useState(() => {
-    // If bootstrap data exists, use short URL format
+    // Use short URL approach for preview to avoid long URLs
     if (bootstrap && Object.keys(bootstrap).length > 0) {
-      const encoded = encodeURIComponent(JSON.stringify(bootstrap));
-      return `/t/v1?data=${encoded}`;
+      // Try to create a short URL for preview
+      return null; // Will be set by useEffect
     }
     return '/t/v1';
   });
 
-  /* AUTO-LOAD USER DATA ON MOUNT */
+  /* AUTO-LOAD USER DATA ON MOUNT AND CREATE SHORT URL FOR PREVIEW */
   useEffect(() => {
-    // Only auto-load if no bootstrap data was provided
-    if (!bootstrap || Object.keys(bootstrap).length === 0) {
-      const loadUserData = async () => {
+    const createPreviewUrl = async () => {
+      let dataToUse = bootstrap;
+      
+      // If no bootstrap data, try to load user data
+      if (!dataToUse || Object.keys(dataToUse).length === 0) {
         try {
           const response = await fetch('/api/user-data', {
             credentials: 'include'
           });
           if (response.ok) {
-            const userData = await response.json();
-            const encoded = encodeURIComponent(JSON.stringify(userData));
-            const userDataUrl = `/t/v1?data=${encoded}`;
-            setPreviewContent(userDataUrl);
+            dataToUse = await response.json();
             console.log('Auto-loaded user data for desktop preview');
           }
         } catch (error) {
           console.log('Could not auto-load user data:', error.message);
-          // Load demo data as fallback
-          const demoUrl = `/t/v1`;
-          setPreviewContent(demoUrl);
-          console.log('Loaded demo template as fallback');
+          setPreviewContent('/t/v1');
+          return;
         }
-      };
+      }
       
-      loadUserData();
-    }
+      // Create short URL for preview iframe
+      if (dataToUse && Object.keys(dataToUse).length > 0) {
+        try {
+          const shortId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+          
+          const response = await fetch('/api/cache-preview', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: shortId, data: dataToUse })
+          });
+          
+          if (response.ok) {
+            const shortUrl = `/t/v1/${shortId}`;
+            setPreviewContent(shortUrl);
+            console.log('Created short URL for preview:', shortUrl);
+            return;
+          }
+        } catch (error) {
+          console.error('Error creating short URL for preview:', error);
+        }
+      }
+      
+      // Fallback
+      setPreviewContent('/t/v1');
+    };
+    
+    createPreviewUrl();
   }, [bootstrap]);
 
   /* HANDLERS */
