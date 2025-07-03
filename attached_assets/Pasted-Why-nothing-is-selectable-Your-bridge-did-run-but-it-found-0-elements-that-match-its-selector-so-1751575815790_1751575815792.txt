@@ -1,0 +1,95 @@
+Why nothing is selectable
+
+Your bridge did run but it found “0 elements” that match its selector, so it sets zero contenteditables and logs:
+
+🔧 Initializing inline editor bridge...
+✅ Made 0 elements editable
+
+– that’s exactly what you’re seeing.
+
+⸻
+
+❶ Confirm what the bridge is looking for
+
+Open the injected script (or the part you add with innerHTML = …).
+You’ll see something like:
+
+const EDITABLE_SELECTOR = '[data-editable]';   // or '.editable', '.js-edit', etc.
+
+document.querySelectorAll(EDITABLE_SELECTOR).forEach(el => {
+  el.contentEditable = 'true';
+  // other hookups: onBlur → POST /save, etc.
+});
+
+If the selector is '[data-edit]', but your HTML has data-editable or nothing at all, the bridge won’t find anything → 0 elements.
+
+⸻
+
+❷ Mark the actual text nodes you want to edit
+
+Edit the rendered HTML template so the elements you want to click carry the attribute / class expected by the bridge, e.g.:
+
+<h1 data-editable="heroHeading">AI-powered website builder</h1>
+
+<p data-editable="heroSub">
+  Start generating a professional website in seconds – no code needed.
+</p>
+
+<button class="btn-primary" data-editable="ctaText">
+  Start Building
+</button>
+
+If your bridge is using a class:
+
+<h2 class="editable" data-key="feature1Title">Lightning-fast AI</h2>
+
+
+⸻
+
+❸ Reload preview and test
+	1.	Refresh the /preview page.
+	2.	Check the console – you should now see something like
+✅ Made 3 elements editable.
+	3.	Click the H1 or paragraph – the caret will appear.
+
+⸻
+
+❹ (Optionally) expose keys for saving
+
+If you want the bridge to know what it’s updating, keep an ID/key:
+
+<p data-editable data-key="heroSub">
+  ...
+</p>
+
+Your bridge can then POST:
+
+fetch('/api/save', {
+  method: 'POST',
+  body: JSON.stringify({
+    key: el.dataset.key,
+    value: el.innerHTML
+  })
+});
+
+
+⸻
+
+Quick debugging checklist
+
+Check	How
+Bridge injected once?	You already see the “inline script injected” log ✅
+Correct selector?	console.log(EDITABLE_SELECTOR) inside the bridge
+Elements match?	In DevTools Console: document.querySelectorAll('[data-editable]') → should show NodeList( n ).
+CSS pointer-events?	Make sure no overlay div is blocking clicks. Use Elements panel → “Force element state :hover” to see.
+Iframe sandboxing?	If preview is in an iframe with sandbox attribute, add allow-same-origin allow-scripts so contentEditable works.
+
+
+⸻
+
+What to do next
+	1.	Add the expected attribute/class to every piece of text you want editable.
+	2.	Reload – bridge will now find them.
+	3.	Optional: extend the bridge to auto-attach the attribute when rendering (e.g. inside your React components) so you don’t have to add them manually each time.
+
+If you paste a snippet of your current bridge selector or want a tiny utility that auto-wraps all <h1-h6>,p,span in edit wrappers, let me know and I’ll drop it in!
