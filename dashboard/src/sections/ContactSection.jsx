@@ -105,6 +105,20 @@ export default function ContactSection() {
             {phone && <a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a>}
             <a href={`mailto:${email}`}>{email}</a>
             {address && <p style={{ color: '#ccc', fontSize: '0.9rem', marginTop: '0.5rem' }}>{address}</p>}
+            {rating && totalReviews > 0 && (
+              <div style={{ marginTop: '0.75rem', color: '#ffc000' }}>
+                <span style={{ fontSize: '1.1rem' }}>★★★★★</span>
+                <span style={{ color: '#ccc', marginLeft: '0.5rem', fontSize: '0.9rem' }}>
+                  {rating}/5 ({totalReviews} reviews)
+                </span>
+              </div>
+            )}
+            {website && (
+              <a href={website} target="_blank" rel="noopener noreferrer" 
+                 style={{ color: '#ffc000', fontSize: '0.9rem', display: 'block', marginTop: '0.5rem' }}>
+                Visit Website
+              </a>
+            )}
           </div>
           <div>
             <h4>{sectionLabel}</h4>
