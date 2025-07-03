@@ -79,40 +79,14 @@ function loadEditorStyles() {
 function setupEditableElements() {
   console.log('🏷️ Setting up comprehensive editable elements...');
   
-  // Add page-level undo/redo controls in top-right corner of viewport
-  if (!document.getElementById('ez-page-controls')) {
-    const pageControls = document.createElement('div');
-    pageControls.id = 'ez-page-controls';
-    pageControls.style.cssText = `
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 10003;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      display: flex;
-      gap: 2px;
-    `;
-    
-    const undoBtn = document.createElement('button');
-    undoBtn.innerHTML = '↶';
-    undoBtn.title = 'Undo (Ctrl+Z)';
-    undoBtn.className = 'ez-btn';
-    undoBtn.onclick = undoAction;
-    
-    const redoBtn = document.createElement('button');
-    redoBtn.innerHTML = '↷';
-    redoBtn.title = 'Redo (Ctrl+Y)';
-    redoBtn.className = 'ez-btn';
-    redoBtn.onclick = redoAction;
-    
-    pageControls.appendChild(undoBtn);
-    pageControls.appendChild(redoBtn);
-    document.body.appendChild(pageControls);
-  }
+  // Listen for undo/redo messages from parent window
+  window.addEventListener('message', (event) => {
+    if (event.data.type === 'undo') {
+      undoAction();
+    } else if (event.data.type === 'redo') {
+      redoAction();
+    }
+  });
   
   // Find ALL elements that should be editable (text, images, buttons, links)
   const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button, img, video');
@@ -121,7 +95,7 @@ function setupEditableElements() {
     // Skip if element is already marked as non-editable or is part of navigation/toolbar
     if (element.closest('[contenteditable="false"]') || 
         element.closest('.ez-toolbar') || 
-        element.closest('#ez-page-controls') ||
+
         element.closest('script') ||
         element.closest('style')) {
       return;
@@ -168,7 +142,7 @@ function addDeleteButton(element) {
     right: -8px;
     width: 20px;
     height: 20px;
-    background: #ff4757;
+    background: #6c757d;
     color: white;
     border: none;
     border-radius: 50%;
@@ -176,7 +150,9 @@ function addDeleteButton(element) {
     cursor: pointer;
     display: none;
     z-index: 10001;
-    line-height: 1;
+    line-height: 20px;
+    text-align: center;
+    font-weight: bold;
   `;
   
   deleteBtn.onclick = (e) => {
@@ -353,6 +329,40 @@ function createToolbar() {
   });
   toolbar.appendChild(headingDropdown);
   
+  // Create font size dropdown
+  const fontSizeDropdown = document.createElement('select');
+  fontSizeDropdown.className = 'ez-fontsize-dropdown';
+  fontSizeDropdown.innerHTML = `
+    <option value="8px">8px</option>
+    <option value="10px">10px</option>
+    <option value="12px">12px</option>
+    <option value="14px">14px</option>
+    <option value="16px">16px</option>
+    <option value="18px">18px</option>
+    <option value="20px">20px</option>
+    <option value="24px">24px</option>
+    <option value="28px">28px</option>
+    <option value="32px">32px</option>
+  `;
+  fontSizeDropdown.addEventListener('change', (e) => {
+    saveToHistory();
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const span = document.createElement('span');
+      span.style.fontSize = e.target.value;
+      try {
+        range.surroundContents(span);
+      } catch (error) {
+        span.innerHTML = range.extractContents();
+        range.insertNode(span);
+      }
+    } else if (currentEditableElement) {
+      currentEditableElement.style.fontSize = e.target.value;
+    }
+  });
+  toolbar.appendChild(fontSizeDropdown);
+  
   // Create main command buttons
   Object.keys(COMMANDS).forEach(command => {
     // Skip commands that have special UI
@@ -496,6 +506,19 @@ function saveElementChanges(element) {
   }
   
   console.log('💾 Saved changes:', data);
+  
+  // Refresh element editability after changes to ensure toolbar reappears
+  setTimeout(() => {
+    if (element && element.parentNode) {
+      element.setAttribute('data-editable', 'true');
+      element.style.cursor = 'pointer';
+      
+      // Re-add delete button if missing
+      if (!element.querySelector('.ez-element-delete')) {
+        addDeleteButton(element);
+      }
+    }
+  }, 100);
 }
 
 // Command implementations
@@ -595,37 +618,51 @@ function saveToHistory() {
 
 // Undo last action
 function undoAction() {
-  if (undoHistory.length === 0) return;
-  
-  const currentState = {
-    element: currentEditableElement,
-    content: currentEditableElement.innerHTML,
-    timestamp: Date.now()
-  };
-  
-  redoHistory.push(currentState);
+  if (undoHistory.length === 0) {
+    console.log('📝 No actions to undo');
+    return;
+  }
   
   const previousState = undoHistory.pop();
-  if (previousState && previousState.element) {
+  if (previousState && previousState.element && previousState.element.parentNode) {
+    // Save current state for redo
+    if (currentEditableElement && currentEditableElement.parentNode) {
+      const currentState = {
+        element: currentEditableElement,
+        content: currentEditableElement.innerHTML,
+        timestamp: Date.now()
+      };
+      redoHistory.push(currentState);
+    }
+    
+    // Restore previous state
     previousState.element.innerHTML = previousState.content;
+    console.log('↶ Undid action');
   }
 }
 
 // Redo last undone action
 function redoAction() {
-  if (redoHistory.length === 0) return;
-  
-  const currentState = {
-    element: currentEditableElement,
-    content: currentEditableElement.innerHTML,
-    timestamp: Date.now()
-  };
-  
-  undoHistory.push(currentState);
+  if (redoHistory.length === 0) {
+    console.log('📝 No actions to redo');
+    return;
+  }
   
   const nextState = redoHistory.pop();
-  if (nextState && nextState.element) {
+  if (nextState && nextState.element && nextState.element.parentNode) {
+    // Save current state for undo
+    if (currentEditableElement && currentEditableElement.parentNode) {
+      const currentState = {
+        element: currentEditableElement,
+        content: currentEditableElement.innerHTML,
+        timestamp: Date.now()
+      };
+      undoHistory.push(currentState);
+    }
+    
+    // Restore next state
     nextState.element.innerHTML = nextState.content;
+    console.log('↷ Redid action');
   }
 }
 

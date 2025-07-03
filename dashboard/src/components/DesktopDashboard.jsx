@@ -186,6 +186,21 @@ export default function DesktopDashboard({ bootstrap }) {
     }
   };
 
+  // Handle undo/redo actions from iframe
+  const handleUndo = () => {
+    const iframe = document.querySelector('iframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ type: 'undo' }, '*');
+    }
+  };
+
+  const handleRedo = () => {
+    const iframe = document.querySelector('iframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ type: 'redo' }, '*');
+    }
+  };
+
   return (
     <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
       {/* ---------------- TOP BAR ---------------- */}
@@ -197,6 +212,8 @@ export default function DesktopDashboard({ bootstrap }) {
           </a>
           <button className="btn" onClick={newSite}>New Site</button>
           <button className="btn" onClick={saveSite}>Save</button>
+          <button className="btn" onClick={handleUndo} title="Undo (Ctrl+Z)">↶</button>
+          <button className="btn" onClick={handleRedo} title="Redo (Ctrl+Y)">↷</button>
           <button className="btn" onClick={publish}>Publish</button>
         </div>
 

@@ -99,10 +99,12 @@ html, body { overflow-x: hidden; }
     max-width:980px;margin:auto;font-size:14px;opacity:.8;
   }
   .logo{width:42px;height:42px;margin-right:.5rem}
-  .brand{display:flex;align-items:center;gap:.5rem}
+  .brand{display:flex;align-items:center;gap:.5rem; z-index: 999; padding-left: 20px}
   .wordmark{font-size:1.2rem;font-weight:700}
+  .wordmark a{color:black}
   .nav-links{display:flex;align-items:center;gap:1rem;list-style:none;margin:0;padding:0}
   .nav-links li{position:relative}
+  .nav-links li a{color: black}
   .nav-toggle{display:none;background:none;border:0;cursor:pointer}
   .nav-toggle span{display:block;width:22px;height:2px;background:#000;margin:4px 0}
   .language-btn{font-size:14px;background:none;border:0;cursor:pointer}
@@ -407,6 +409,15 @@ button.skip-btn{background:var(--brand-yellow);color:#fff;border:0;padding:.5rem
 .benefit-icon svg{stroke:var(--brand-yellow)}
 .benefit-card p{font-size:.95rem}
 
+
+@media(max-width:768px){
+
+.benefits {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+}
 
 /* ============ HOW IT WORKS ============ */
 .how-it-works {
@@ -2080,7 +2091,8 @@ line-height: 1.4;
   }
 
   .nav-toggle {
-    display: flex;
+    display: block;
+    padding-right: 20px;
   }
 
   .nav-toggle.active span:nth-child(1) {
@@ -2303,7 +2315,7 @@ select:focus {
 #chatContainer iframe.chatPane{height:90vh;border:1px solid #ddd;border-radius:8px;display:block;}
 
 #chatContainer{display:flex;gap:2rem;align-items:flex-start;}
-.hero{flex:1 0 55%;}
+.hero{flex:0 0 5%;}
 .chatPaneWrapper{flex:1 0 45%;}
 
 @media(max-width:900px){
@@ -2463,7 +2475,7 @@ iframe.chatPane {
     box-shadow: var(--shadow-lg);
     transition: right var(--transition-normal);
     overflow-y: auto;
-    z-index: 999;
+    z-index: 900;
   }
 
   /* slide-in state */
