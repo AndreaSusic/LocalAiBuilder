@@ -408,58 +408,122 @@ button.skip-btn{background:var(--brand-yellow);color:#fff;border:0;padding:.5rem
 .benefit-card p{font-size:.95rem}
 
 
-/* How It Works Section */
+/* ============ HOW IT WORKS ============ */
 .how-it-works {
-  padding: var(--spacing-4xl) 0;
-  background-color: var(--light-color);
+padding: 3rem 0;
+background: #fafafa;
 }
-
+.how-it-works .container {
+max-width: 800px;
+margin: 0 auto;
+text-align: center;
+}
 .how-it-works h2 {
-  text-align: center;
-  margin-bottom: var(--spacing-3xl);
+font-size: 2rem;
+margin-bottom: 2rem;
 }
 
-.steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--spacing-2xl);
+.how-it-works .timeline {
+position: relative;
+margin: 0;
+padding: 0;
+}
+.how-it-works .timeline::before {
+content: '';
+position: absolute;
+top: 0;
+bottom: 0;
+left: 24px;
+width: 4px;
+background: #ddd;
 }
 
+.how-it-works .timeline-item {
+position: relative;
+padding: 1.5rem 1rem 1.5rem 80px;
+text-align: left;
+}
+.how-it-works .marker {
+position: absolute;
+left: 0;
+top: 1.5rem;
+width: 48px;
+height: 48px;
+border-radius: 50%;
+background: var(--brand-yellow, #ffc000);
+color: #fff;
+font-weight: bold;
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.how-it-works .content h3 {
+margin: 0 0 .5rem;
+font-size: 1.25rem;
+}
+.how-it-works .content p {
+margin: 0;
+color: #555;
+line-height: 1.4;
+}
+
+/* Each step */
 .step {
-  text-align: center;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
 }
-
-.step-number {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 40px;
-  background-color: var(--accent-color);
-  color: var(--dark-color);
+.marker {
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
+  background: var(--clr);
+  color: #fff;
+  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: var(--font-size-lg);
+  margin-bottom: 0.5rem;
+}
+.label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--clr);
+  text-transform: uppercase;
 }
 
-.step-icon {
-  margin: var(--spacing-2xl) 0 var(--spacing-lg);
-  display: flex;
-  justify-content: center;
+/* Arrowheads at the end of each segment */
+.step::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--clr);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  top: 50%;
+  right: -8px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.step5::after {
+  display: none;
 }
 
-.step h3 {
-  margin-bottom: var(--spacing-md);
+/* Responsive tweaks */
+@media (max-width: 700px) {
+  .zigzag {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    height: auto;
+    grid-auto-rows: minmax(100px, auto);
+  }
+  .zigzag::before { display: none; }
+  .step::after { display: none; }
+  .step { margin-bottom: 2rem; }
 }
 
-.step p {
-  color: var(--gray-600);
-}
 
 /* FAQ Section */
 .faq {
@@ -523,112 +587,20 @@ button.skip-btn{background:var(--brand-yellow);color:#fff;border:0;padding:.5rem
   color: var(--gray-600);
 }
 
-/* Reviews Section */
-.reviews {
-  padding: var(--spacing-4xl) 0;
-  background-color: var(--light-color);
+/* ---------- 8. REVIEWS ---------------------------- */
+.reviews{background:var(--gray-100);padding:4rem 0}
+.reviews-carousel{position:relative}
+.review-track{display:flex;gap:1.5rem;overflow:hidden}
+.review-card{
+  background:#fff;border-radius:8px;padding:1.5rem;min-width:260px;flex:0 0 33%;
+  box-shadow:0 2px 6px rgba(0,0,0,.05);text-align:center
 }
-
-.reviews h2 {
-  text-align: center;
-  margin-bottom: var(--spacing-3xl);
-}
-
-.reviews-carousel {
-  max-width: 800px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.review-track {
-  display: flex;
-  transition: transform var(--transition-slow);
-}
-
-.review-card {
-  min-width: 100%;
-  padding: var(--spacing-2xl);
-  background-color: var(--white);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  text-align: center;
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.review-card.active {
-  opacity: 1;
-}
-
-.stars {
-  color: var(--accent-color);
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--spacing-md);
-}
-
-.review-card p {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--spacing-lg);
-  font-style: italic;
-}
-
-.review-author strong {
-  display: block;
-  color: var(--dark-color);
-  margin-bottom: var(--spacing-xs);
-}
-
-.review-author span {
-  color: var(--gray-500);
-  font-size: var(--font-size-sm);
-}
-
-.carousel-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-lg);
-}
-
-.carousel-btn {
-  background-color: var(--white);
-  border: 2px solid var(--gray-300);
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: var(--font-size-xl);
-  color: var(--gray-600);
-  transition: all var(--transition-fast);
-}
-
-.carousel-btn:hover {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
-}
-
-.carousel-indicators {
-  display: flex;
-  gap: var(--spacing-sm);
-}
-
-.indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: var(--gray-300);
-  border: none;
-  cursor: pointer;
-  transition: background-color var(--transition-fast);
-}
-
-.indicator.active {
-  background-color: var(--primary-color);
-}
+.stars{color:#ffb400;margin-bottom:.5rem}
+.review-author{margin-top:1rem;font-size:.9rem;color:var(--gray-500)}
+.carousel-controls{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.5rem}
+.carousel-btn{background:none;border:0;font-size:2rem;cursor:pointer;color:#fff}
+.indicator{width:10px;height:10px;border-radius:50%;background:#fff;opacity:.4;border:none;cursor:pointer}
+.indicator.active{opacity:1}
 
 
 
@@ -1814,7 +1786,7 @@ button.skip-btn{background:var(--brand-yellow);color:#fff;border:0;padding:.5rem
 
 /* ---------- 10. CTA BANNER ------------------------ */
 .cta-banner{
-  background:#222;color:#fff;text-align:center;padding:3rem 1rem;
+  background:var(--gray-100);color:#fff;text-align:center;padding:3rem 1rem;
 }
 .cta-banner a{
   display:inline-block;margin-top:1rem;
@@ -2392,15 +2364,16 @@ iframe.chatPane {
   text-decoration: none;
 }
 .footer-logo {
-  max-width: 100px;
+  max-width: 100px !important;
   margin-right: 1rem;
   background: transparent;
   opacity: 1;
 }
-.site-title {
+.site-title.footer {
   margin: 0;
   font-size: 1.3rem;
   color: white;
+  font-weight: 800;
 }
 .footer-brand {
   display: flex;
@@ -2408,7 +2381,7 @@ iframe.chatPane {
   margin-bottom: 1rem;
 }
 .footer-description {
-  color: white;
+  color: white !important;
   margin: 0;
   line-height: 1.4;
 }
