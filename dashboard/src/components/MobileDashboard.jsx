@@ -64,6 +64,17 @@ function injectFreshEditor(iframe) {
         }
         
         waitForReactComponents().then(() => {
+          // First, let's inject a test element to verify editor works
+          const testDiv = document.createElement('div');
+          testDiv.innerHTML = '<h1 data-gas-edit="test">TEST EDITABLE ELEMENT - Click me!</h1>';
+          testDiv.style.position = 'fixed';
+          testDiv.style.top = '10px';
+          testDiv.style.left = '10px';
+          testDiv.style.zIndex = '9999';
+          testDiv.style.backgroundColor = 'yellow';
+          testDiv.style.padding = '10px';
+          document.body.appendChild(testDiv);
+          
           // Find all elements with data-gas-edit attributes first, then fallback to general text elements
           const editableElements = document.querySelectorAll('[data-gas-edit]');
           const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li');
@@ -75,6 +86,13 @@ function injectFreshEditor(iframe) {
             console.log('🎯 data-gas-edit elements found:');
             editableElements.forEach((el, i) => {
               console.log(i + 1 + ':', el.tagName, el.getAttribute('data-gas-edit'), el.textContent?.slice(0, 30));
+            });
+          } else {
+            console.log('❌ No data-gas-edit elements found - React components not rendering attributes');
+            console.log('🔍 Checking if React elements exist at all...');
+            const allH1s = document.querySelectorAll('h1');
+            allH1s.forEach((h1, i) => {
+              console.log('H1 #' + (i+1) + ':', h1.textContent?.slice(0, 50), 'attributes:', [...h1.attributes].map(a => a.name + '=' + a.value));
             });
           }
         
