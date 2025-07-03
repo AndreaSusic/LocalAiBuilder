@@ -1196,8 +1196,33 @@ app.post('/api/gbp-details', async (req, res) => {
       relative_time_description: review.relative_time_description
     }));
 
-    // No placeholder products - use authentic data only
-    const products = [];
+    // Try to extract authentic services from business website
+    let products = [];
+    if (details.result.website) {
+      try {
+        const { extractServicesFromWebsite } = require('./src/gbp/extractWebsiteServices.js');
+        const websiteServices = await extractServicesFromWebsite(details.result.website);
+        
+        if (websiteServices.length > 0) {
+          products = websiteServices.map((service, index) => ({
+            id: service.id,
+            name: service.name,
+            description: `Authentic ${service.name.toLowerCase()} services from ${details.result.name}`,
+            category: 'authentic_service',
+            source: 'website'
+          }));
+          console.log(`🌐 Extracted ${products.length} authentic services from website`);
+        }
+      } catch (error) {
+        console.warn('Failed to extract website services:', error.message);
+      }
+    }
+    
+    // If no website services found, use empty array (no placeholder data)
+    if (products.length === 0) {
+      console.log('📝 No authentic services found from website, using empty products array');
+      products = [];
+    }
 
     res.json({
       place_id,
