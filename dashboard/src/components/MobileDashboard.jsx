@@ -65,29 +65,18 @@ function injectEditorBridge(iframe) {
         }
         
         waitForReactComponents().then(() => {
-          // Look for elements with data-gas-edit attributes (proper editable markers)
-          const SELECTORS = [
-            "[data-gas-edit]",
-            ".gas-edit"
-          ];
-          
-          const elements = document.querySelectorAll(SELECTORS.join(","));
+          // Find ALL elements that should be editable (like original editorBridge.js)
+          const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button');
           console.log('[bridge] candidates found:', elements.length, elements);
           
           let editableCount = 0;
           
           elements.forEach(element => {
-            // Skip elements that shouldn't be editable
+            // Skip elements that shouldn't be editable (much more permissive like original)
             if (element.closest('[contenteditable="false"]') || 
                 element.closest('script') ||
                 element.closest('style') ||
-                element.closest('nav') ||
-                element.closest('header') ||
-                element.closest('.navbar') ||
-                element.closest('.toolbar') ||
-                element.querySelector('script, style, svg') ||
-                !element.textContent.trim() ||
-                element.textContent.trim().length < 2) {
+                element.closest('.ez-toolbar')) {
               return;
             }
             
