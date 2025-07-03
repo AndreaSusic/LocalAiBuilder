@@ -157,8 +157,7 @@ loadBootstrap().then(bootstrap=>{
     );
     console.log('React app rendered successfully');
     
-    // Load products after React app is rendered
-    loadProducts(bootstrap);
+    // Products now render directly in React components - no DOM manipulation needed
     
     // Initialize Color Guard after React mounts
     setTimeout(() => {

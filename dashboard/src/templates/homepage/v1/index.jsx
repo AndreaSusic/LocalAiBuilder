@@ -91,13 +91,13 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
             --secondary: ${data.colours?.[1] || '#EFD5BD'};
           }
         `}</style>
-        <NavigationSection />
-        <HeroSection />
-        <ServicesSection />
-        <AboutSection />
-        <GallerySection />
-        <ReviewsSection />
-        <ContactSection />
+        <NavigationSection bootstrap={bootstrap} />
+        <HeroSection bootstrap={bootstrap} />
+        <ServicesSection bootstrap={bootstrap} />
+        <AboutSection bootstrap={bootstrap} />
+        <GallerySection bootstrap={bootstrap} />
+        <ReviewsSection bootstrap={bootstrap} />
+        <ContactSection bootstrap={bootstrap} />
         
         {/* Floating Color Contrast Analyzer Button */}
         <button

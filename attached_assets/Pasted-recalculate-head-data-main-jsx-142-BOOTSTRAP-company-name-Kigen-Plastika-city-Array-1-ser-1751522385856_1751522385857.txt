@@ -1,0 +1,82 @@
+recalculate_head_data
+main.jsx:142 BOOTSTRAP >> {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+main.jsx:143 Current path: /preview
+main.jsx:144 Root element exists: true
+main.jsx:158 React app rendered successfully
+main.jsx:13 🔍 Loading products with 3-tier fallback system
+main.jsx:17 📋 Fetching GBP products for CID: ChIJvW8VATCFWUcRDDXH5bhDN4k
+App.jsx:20 App rendering with bootstrap: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+App.jsx:21 isMobile: false
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(0)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:59 Created short URL for preview: /t/v1/mcmz5squfokw44uzv5m
+Console.js:61 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+Console.js:61 BOOTSTRAP >> {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 Current path: /t/v1/mcmz5squfokw44uzv5m
+Console.js:61 Root element exists: true
+Console.js:61 React app rendered successfully
+Console.js:61 🔍 Loading products with 3-tier fallback system
+Console.js:61 📋 Fetching GBP products for CID: ChIJvW8VATCFWUcRDDXH5bhDN4k
+Console.js:61 App rendering with bootstrap: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 isMobile: false
+Console.js:61 HomepageV1 using data: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 ServicesSection DEBUG - Services data: Septic Tanks string
+Console.js:61 ServicesSection DEBUG - GBP products: (6) [{…}, {…}, {…}, {…}, {…}, {…}]
+Console.js:61 🔒 PROTECTING AUTHENTIC GBP PRODUCTS: (3) ['Product 1', 'Product 2', 'Product 3']
+Console.js:61 ServicesSection DEBUG - ServicesList: (3) ['Product 1', 'Product 2', 'Product 3'] Type: object
+Console.js:61 ServicesSection DEBUG - Processing service: Product 1 Type: string Index: 0
+Console.js:61 App rendering with bootstrap: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 isMobile: false
+Console.js:61 HomepageV1 using data: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 ServicesSection DEBUG - Services data: Septic Tanks string
+Console.js:61 ServicesSection DEBUG - GBP products: (6) [{…}, {…}, {…}, {…}, {…}, {…}]
+Console.js:61 🔒 PROTECTING AUTHENTIC GBP PRODUCTS: (3) ['Product 1', 'Product 2', 'Product 3']
+Console.js:61 ServicesSection DEBUG - ServicesList: (3) ['Product 1', 'Product 2', 'Product 3'] Type: object
+Console.js:61 ServicesSection DEBUG - Processing service: Product 1 Type: string Index: 0
+ServicesSection.jsx:104 Uncaught ReferenceError: company_name is not defined
+    at ServicesSection.jsx:104:59
+    at Array.map (<anonymous>)
+    at hy (ServicesSection.jsx:83:65)
+    at gs (react-dom-client.production.js:3502:21)
+    at Os (react-dom-client.production.js:6239:15)
+    at Ef (react-dom-client.production.js:7243:14)
+    at ed (react-dom-client.production.js:10855:14)
+    at S0 (react-dom-client.production.js:10736:37)
+    at lo (react-dom-client.production.js:10717:7)
+    at Wf (react-dom-client.production.js:10322:40)
+(anonymous) @ ServicesSection.jsx:104
+hy @ ServicesSection.jsx:83
+gs @ react-dom-client.production.js:3502
+Os @ react-dom-client.production.js:6239
+Ef @ react-dom-client.production.js:7243
+ed @ react-dom-client.production.js:10855
+S0 @ react-dom-client.production.js:10736
+lo @ react-dom-client.production.js:10717
+Wf @ react-dom-client.production.js:10322
+hd @ react-dom-client.production.js:11626
+$e @ scheduler.production.js:151
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:22 📦 Got 0 GBP products
+main.jsx:32 👤 Using 3 user products as fallback
+renderProducts.js:2 🎨 Rendering 3 products to grid
+renderProducts.js:8 ⚠️ Services grid not found, skipping product rendering
+Console.js:61 📦 Got 0 GBP products
+Console.js:61 👤 Using 3 user products as fallback
+Console.js:61 🎨 Rendering 3 products to grid
+Console.js:61 ⚠️ Services grid not found, skipping product rendering
