@@ -1,0 +1,87 @@
+2.  How do I get the GOOGLE_REFRESH_TOKEN just once?
+
+	2.	In Replit, visit
+
+https://<your-repl>.replit.app/auth/google
+
+The Google dialog must show “See, edit, create and delete your Google business listings”.
+
+	3.	On the callback, your Passport strategy’s verify function will receive:
+
+function (accessToken, refreshToken, profile, done) { … }
+
+Persist that refreshToken once and forever:
+
+await kv.set(`refresh_${profile.id}`, refreshToken);
+
+
+	4.	Manually copy it into Replit Secrets or leave it in your DB/Key-Value store if you support multiple clients.
+
+Tip: If you ever need to regenerate the refresh token, add prompt=consent&access_type=offline to the auth URL so Google issues a new one.
+
+⸻
+
+3.  Minimal helper to turn a refresh token into a bearer token
+
+import { google } from "googleapis";
+
+export async function getAccessToken(refreshToken) {
+  const oauth2 = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    "postmessage"             // redirect isn’t used for refresh flow
+  );
+  oauth2.setCredentials({ refresh_token: refreshToken });
+  const { credentials } = await oauth2.refreshAccessToken();
+  return credentials.access_token;      // valid ~60 min
+}
+
+
+⸻
+
+4.  Fetching real products / services
+
+async function fetchGbpProducts(locationId) {
+  const refresh = process.env.GOOGLE_REFRESH_TOKEN      // or load per-user
+  const token   = await getAccessToken(refresh);
+
+  const url = `https://mybusinessbusinessinformation.googleapis.com/v1/${locationId}?readMask=priceLists`;
+  const r = await fetch(url, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!r.ok) throw new Error(await r.text());
+  const data = await r.json();
+
+  // Products/services are inside priceLists[0].serviceItems
+  return (data.priceLists?.[0]?.serviceItems) ?? [];
+}
+
+
+⸻
+
+5.  What to paste into Replit Chat (automation prompt)
+
+▶️  Implement Google Business Profile OAuth flow
+
+1. Add env variables:
+   - GOOGLE_PLACES_API_KEY      (already present)
+   - GOOGLE_CLIENT_ID
+   - GOOGLE_CLIENT_SECRET
+   - GOOGLE_REFRESH_TOKEN       (owner’s refresh token)
+
+2. Passport:
+   • Strategy: google-oauth20
+   • scope: ["https://www.googleapis.com/auth/business.manage"]
+   • accessType:"offline", prompt:"consent"
+   • Save refreshToken on first auth.
+
+3. Helper:
+   function getAccessToken(refreshToken) { … }  // uses googleapis
+
+4. Data fetch:
+   GET https://mybusinessbusinessinformation.googleapis.com/v1/{locationId}?readMask=priceLists
+   Header: Authorization: Bearer <access_token>
+
+5. Render serviceItems into the existing services-grid; if empty, fall back to questionnaire data.
+
+Pass that to the Replit assistant; it has the full recipe to wire the OAuth token into your existing build.
