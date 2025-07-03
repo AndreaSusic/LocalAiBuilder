@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext.js';
 
-export default function ServicesSection() {
+export default function ServicesSection({ bootstrap }) {
   const contextData = useContext(SiteDataContext) || {};
   const { 
     services = [], 
@@ -11,7 +11,7 @@ export default function ServicesSection() {
     ai_customization = {}, 
     safeImg,
     company_name = ''
-  } = contextData;
+  } = bootstrap || contextData;
   
   console.log('ServicesSection DEBUG - Services data:', services, typeof services);
   console.log('ServicesSection DEBUG - GBP products:', google_profile.products);
@@ -130,7 +130,7 @@ export default function ServicesSection() {
       <div className="services-grid three-columns">
         {servicesToShow.map((service, index) => (
           <div key={index} className="service-card">
-            <img src={safeImg ? safeImg(service.image) : service.image} alt={service.title} />
+            <img src={safeImg ? safeImg(service.image) : service.image} alt={`${company_name} - ${service.title}`} />
             <h4>{service.title}</h4>
             <p>{service.description}</p>
           </div>

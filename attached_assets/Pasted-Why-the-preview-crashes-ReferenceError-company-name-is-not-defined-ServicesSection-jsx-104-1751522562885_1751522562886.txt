@@ -1,0 +1,80 @@
+Why the preview crashes
+
+ReferenceError: company_name is not defined       ← ServicesSection.jsx:104
+
+company_name is not in scope inside ServicesSection.jsx.
+Because the exception is thrown during the React render phase, the whole
+component-tree unmounts → blank screen.
+
+⸻
+
+Fast patch
+	1.	Pass the bootstrap object (or just the fields you need) down as props
+
+// App.jsx
+<ServicesSection bootstrap={bootstrap} />
+
+
+	2.	Use the prop inside ServicesSection.jsx instead of the dangling variable
+
+// ServicesSection.jsx
+export default function ServicesSection({ bootstrap }) {
+  const { company_name } = bootstrap;      // ✅ now in scope
+  /* …your JSX… */
+  return (
+    <div className="services-grid three-columns">
+      {servicesList.map((service, i) => (
+        <div className="service-card" key={i}>
+          <img src={pickPhoto(i)} alt={`${company_name} – ${service}`} />
+          <h4>{service}</h4>
+          <p>{serviceDescriptions[i] || defaultDesc}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+
+	3.	Remove any left-over reference to the old global
+
+- alt={`{company_name} – ${service}`}
++ alt={`${company_name} – ${service}`}
+
+
+
+⸻
+
+Why the products never render
+
+⚠️  Services grid not found, skipping product rendering
+
+Your runtime util looks for:
+
+document.querySelector('.services-grid')
+
+…before React has injected that markup, so it always returns null.
+
+Either:
+	•	Render the products directly inside the React component (preferred, see above)
+or
+	•	Call the helper after ReactDOM.createRoot(...).render() finishes:
+
+import renderProducts from './renderProducts';
+
+root.render(<App bootstrap={bootstrap} />);
+// defer to next tick so the grid exists
+queueMicrotask(() => renderProducts(bootstrap));
+
+
+
+⸻
+
+Checklist to kill the white screen for good
+
+✔︎	Fix
+☐	Pass bootstrap (or company_name) as a prop to every component that needs it.
+☐	Remove any free-floating company_name, services, etc. from JSX.
+☐	Make sure .services-grid is rendered inside React, then populate it there (no imperative DOM hacking needed).
+☐	Wrap any external util that pokes the DOM in a useEffect(() => { … }, []) so it runs after the first paint.
+
+Once those four are done, the preview route (/t/v1/:slug or /preview) loads without throwing, and the color-guard / GBP product waterfall runs exactly once instead of looping.
