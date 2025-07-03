@@ -436,7 +436,6 @@ Choose your font
             <a href="/industries/beauty-spa.html"         class="box beauty">Beauty&nbsp;&amp;&nbsp;Spa</a>
 
             <!-- fifth row -->
-            <a href="/industries/news.html"               class="box news">News</a>
             <a href="/industries/ecommerce.html"          class="box ecommerce">E-comm & Retail</a>
           </div>
         </div>
@@ -511,5 +510,26 @@ Choose your font
   }
 })();
     </script>
+
+
+    <script>
+      // Mobile nav toggle
+      const navToggle   = document.querySelector('.nav-toggle');
+      const navLinks    = document.querySelector('.nav-links');
+
+      navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('open');   // animate hamburger
+        navLinks.classList.toggle('active');  // slide menu in/out
+      });
+
+      // Optional: close menu when a link is clicked (single-page feel)
+      navLinks.addEventListener('click', e => {
+        if (e.target.tagName === 'A') {
+          navLinks.classList.remove('active');
+          navToggle.classList.remove('open');
+        }
+      });
+    </script>
+
 </body>
 </html>
