@@ -254,13 +254,13 @@ export default function ServicesSection({ bootstrap }) {
 
   return (
     <section className="services">
-      <h2>{sectionTitle}</h2>
+      <h2 data-gas-edit="servicesTitle">{sectionTitle}</h2>
       <div className="services-grid three-columns">
         {servicesToShow.map((service, index) => (
           <div key={index} className="service-card">
             <img src={safeImg ? safeImg(service.image) : service.image} alt={`${company_name} - ${service.title}`} />
-            <h4>{service.title}</h4>
-            <p>{service.description}</p>
+            <h4 data-gas-edit={`serviceTitle${index}`}>{service.title}</h4>
+            <p data-gas-edit={`serviceDescription${index}`}>{service.description}</p>
           </div>
         ))}
       </div>
