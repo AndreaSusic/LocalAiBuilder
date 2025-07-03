@@ -3,7 +3,15 @@ import { SiteDataContext } from '../context/SiteDataContext.js';
 
 export default function ServicesSection() {
   const contextData = useContext(SiteDataContext) || {};
-  const { services = [], images = [], google_profile = {}, industry = '', ai_customization = {}, safeImg } = contextData;
+  const { 
+    services = [], 
+    images = [], 
+    google_profile = {}, 
+    industry = '', 
+    ai_customization = {}, 
+    safeImg,
+    company_name = ''
+  } = contextData;
   
   console.log('ServicesSection DEBUG - Services data:', services, typeof services);
   console.log('ServicesSection DEBUG - GBP products:', google_profile.products);
