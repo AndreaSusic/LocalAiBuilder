@@ -22,7 +22,7 @@ function injectEditorBridge(iframe) {
       
       // Enhanced editor bridge functionality with React component support
       window.initEditorBridge = function() {
-        console.log('🔧 Initializing enhanced editor bridge...');
+        console.log('🔧 Initializing NEW UPDATED mobile editor bridge v2.0...');
         
         // Wait for React components to fully render with more patience
         function waitForReactComponents() {
