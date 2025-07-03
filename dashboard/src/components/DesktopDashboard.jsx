@@ -20,7 +20,7 @@ function injectEditorBridge(iframe) {
       // Inject editor bridge script
       const script = frameDoc.createElement('script');
       script.id = 'editor-bridge-script';
-      script.src = 'http://localhost:5000/editorBridge.js';
+      script.src = '/editorBridge.js';
       
       script.onload = () => {
         console.log('✅ Editor bridge injected successfully');
