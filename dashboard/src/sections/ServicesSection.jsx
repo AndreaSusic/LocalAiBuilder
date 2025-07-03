@@ -107,13 +107,32 @@ export default function ServicesSection({ bootstrap }) {
                         defaultImages[index] || 
                         defaultImages[0];
     
+    // Use authentic GMB product data for title and description if available
+    let finalTitle = serviceText;
+    let finalDescription;
+    
+    if (gbpProducts.length > 0 && gbpProducts[index]) {
+      const gbpProduct = gbpProducts[index];
+      
+      // Extract authentic GMB product title
+      if (typeof gbpProduct === 'object') {
+        finalTitle = gbpProduct.name || gbpProduct.title || serviceText;
+        finalDescription = gbpProduct.description || `High-quality ${finalTitle.toLowerCase()} from ${company_name}.`;
+        console.log('🔒 Using authentic GMB product data:', finalTitle, finalDescription);
+      } else if (typeof gbpProduct === 'string') {
+        finalTitle = gbpProduct;
+        finalDescription = `High-quality ${finalTitle.toLowerCase()} from ${company_name}.`;
+      }
+    } else {
+      // Fallback descriptions when no GMB data
+      finalDescription = isLandscaping ? 
+        `Premium ${serviceText.toLowerCase()} perfect for your lawn and landscaping needs.` :
+        `Professional ${serviceText.toLowerCase()} services tailored to your needs.`;
+    }
+    
     return {
-      title: serviceText,
-      description: gbpProducts.length > 0 ? 
-        `High-quality ${serviceText.toLowerCase()} from ${company_name || 'our company'}.` :
-        (isLandscaping ? 
-          `Premium ${serviceText.toLowerCase()} perfect for your lawn and landscaping needs.` :
-          `Professional ${serviceText.toLowerCase()} services tailored to your needs.`),
+      title: finalTitle,
+      description: finalDescription,
       image: serviceImage,
       isAuthentic: gbpProducts.length > 0 // Mark as authentic to protect from AI override
     };

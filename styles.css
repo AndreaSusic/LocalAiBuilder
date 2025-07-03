@@ -1800,6 +1800,101 @@ button.skip-btn{background:var(--brand-yellow);color:#fff;border:0;padding:.5rem
   color: var(--gray-600);
 }
 
+/* ---------- 9. INDUSTRIES GRID -------------------- */
+.industries{padding:3rem 0}
+.industries-grid{
+  display:grid;gap:1rem;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+}
+.industry-box{
+  background:var(--gray-100);border:1px solid var(--gray-300);
+  padding:1.25rem;text-align:center;border-radius:6px;transition:background .2s;
+}
+.industry-box:hover{background:var(--brand-yellow);color:#fff}
+
+/* ---------- 10. CTA BANNER ------------------------ */
+.cta-banner{
+  background:#222;color:#fff;text-align:center;padding:3rem 1rem;
+}
+.cta-banner a{
+  display:inline-block;margin-top:1rem;
+  background:var(--brand-yellow);color:#fff;padding:12px 28px;border-radius:4px;font-weight:700
+}
+
+
+
+
+
+/* colour themes for new/renamed boxes */
+.box.home-garden   { background:#2a9d8f; }  /* reused Lawn colour */
+.box.medical       { background:#0081a7; }  /* former dentist */
+.box.consulting    { background:#1f7a8c; }
+.box.marketing     { background:#e29578; }
+.box.it            { background:#457b9d; }  /* teal-blue */
+.box.horeca        { background:#d62828; }  /* vivid red */
+.box.craftsmen     { background:#6d6875; }
+.box.health        { background:#e76f51; }  /* replaced fitness */
+.box.news          { background:#4d908e; }
+.box.finance       { background:#1c6e8c; }
+.box.ecommerce     { background:#f4a261; }  /* renamed shop */
+
+
+/* ===== Industries grid ===== */
+.industries{
+  padding:4rem 0;
+  background:#fafafa;
+}
+.industries h2{
+  font-size:2rem;
+  text-align:center;
+  margin-bottom:2.5rem;
+}
+.industries-grid{
+  --gap:1.2rem;
+  display:grid;
+  gap:var(--gap);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+}
+.box{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  min-height:140px;
+  padding:1rem;
+  font-weight:600;
+  font-size:1rem;
+  line-height:1.3;
+  color:#fff;
+  border-radius:10px;
+  transition:transform .2s, box-shadow .2s;
+  text-decoration:none;
+}
+
+/* Hover / focus effect */
+.box:hover,
+.box:focus{
+  transform:translateY(-6px);
+  box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+
+/* Colour themes per niche */
+.box.lawn         { background:#2a9d8f; }
+.box.dentist      { background:#0081a7; }
+.box.restaurant   { background:#d62828; }
+.box.legal        { background:#264653; }
+.box.shop         { background:#f4a261; }
+.box.fitness      { background:#e76f51; }
+.box.real-estate  { background:#6a4c93; }
+.box.beauty       { background:#c1292e; }
+.box.plumber      { background:#457b9d; }
+
+/* Responsive tweak: stack to one-col on very narrow screens */
+@media (max-width:480px){
+  .industries-grid{ grid-template-columns:1fr; }
+}
+
+
 /* Individual Industry Pages */
 .breadcrumb {
   padding: var(--spacing-md) 0;
