@@ -23,10 +23,22 @@ export default function ServicesSection({ bootstrap }) {
   // Parse services to extract individual products/services
   let servicesList = [];
   
-  // Check if GBP has specific products data
+  // Check for authentic website-extracted services first (highest priority)
+  const websiteProducts = bootstrap?.products || contextData?.products || [];
   const gbpProducts = google_profile.products || [];
   
-  if (gbpProducts.length > 0) {
+  if (websiteProducts.length > 0) {
+    // Use authentic website-extracted services - HIGHEST PRIORITY
+    console.log('🌐 USING AUTHENTIC WEBSITE SERVICES:', websiteProducts);
+    servicesList = websiteProducts.slice(0, 3).map(product => {
+      return {
+        name: product.name,
+        description: product.description || `Professional ${product.name.toLowerCase()} services from ${company_name}`,
+        authentic: true,
+        source: 'website'
+      };
+    });
+  } else if (gbpProducts.length > 0) {
     // Use authentic GBP products data - extract names from objects
     // CRITICAL: Protect authentic product names from AI override
     servicesList = gbpProducts.slice(0, 3).map(product => {
@@ -89,8 +101,35 @@ export default function ServicesSection({ bootstrap }) {
   console.log('ServicesSection DEBUG - ServicesList:', servicesList, 'Type:', typeof servicesList);
   console.log('ServicesSection DEBUG - GBP Products:', gbpProducts.length, 'Available:', gbpProducts);
   
+  // Helper function to extract image URLs
+  const getImageUrl = (img) => {
+    if (typeof img === 'string') return img;
+    if (img && typeof img === 'object') {
+      return img.url || img.src || null;
+    }
+    return null;
+  };
+  
   const servicesToShow = servicesList.length > 0 ? servicesList.map((service, index) => {
     console.log('ServicesSection DEBUG - Processing service:', service, 'Type:', typeof service, 'Index:', index);
+    
+    // Handle authentic website services differently
+    if (service && service.authentic && service.source === 'website') {
+      console.log('🌐 RENDERING AUTHENTIC WEBSITE SERVICE:', service.name);
+      
+      const serviceImage = getImageUrl(gbpPhotos[index]) || 
+                          getImageUrl(availableImages[index]) || 
+                          defaultImages[index] || 
+                          defaultImages[0];
+      
+      return {
+        title: service.name,
+        description: service.description,
+        image: serviceImage,
+        authentic: true
+      };
+    }
+    
     const serviceText = typeof service === 'string' ? service : String(service || '');
     
     // Get image URL properly from GBP photos or other sources
