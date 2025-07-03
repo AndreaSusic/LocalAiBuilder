@@ -24,13 +24,19 @@ function injectFreshEditor(iframe) {
       script.innerHTML = `
         console.log('🚀 Fresh inline editor starting...');
         
-        // Find all text elements
+        // Find all elements with data-gas-edit attributes first, then fallback to general text elements
+        const editableElements = document.querySelectorAll('[data-gas-edit]');
         const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li');
-        console.log('📝 Found', textElements.length, 'text elements');
+        console.log('📝 Found', editableElements.length, 'data-gas-edit elements');
+        console.log('📝 Found', textElements.length, 'total text elements');
         
         let editableCount = 0;
         
-        textElements.forEach(element => {
+        // Prioritize elements with data-gas-edit attributes
+        const elementsToProcess = editableElements.length > 0 ? editableElements : textElements;
+        console.log('🎯 Processing', elementsToProcess.length, 'elements for editing');
+        
+        elementsToProcess.forEach(element => {
           // Skip elements inside scripts, styles, or already processed
           if (element.closest('script, style, .editor-processed')) return;
           
