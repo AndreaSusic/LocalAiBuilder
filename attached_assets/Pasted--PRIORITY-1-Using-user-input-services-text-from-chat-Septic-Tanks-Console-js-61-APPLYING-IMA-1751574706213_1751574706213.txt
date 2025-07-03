@@ -1,0 +1,33 @@
+🥇 PRIORITY 1: Using user input services text from chat: Septic Tanks
+Console.js:61 🖼️ APPLYING IMAGE PRIORITY HIERARCHY
+Console.js:61 🥇 PRIORITY 1: Using user uploaded images: 10
+Console.js:61 ServicesSection DEBUG - ServicesList: ['Septic Tanks'] Type: object
+Console.js:61 ServicesSection DEBUG - GBP Products: 0 Available: []
+Console.js:61 ServicesSection DEBUG - Processing service: Septic Tanks Type: string Index: 0
+Console.js:61 ServicesSection DEBUG - ServicesToShow: [{…}]
+Console.js:61 AboutSection DEBUG - Team data: [] Length: 0
+Console.js:61 🔍 ReviewsSection - Full siteData keys: (17) ['city', 'images', 'social', 'colours', 'industry', 'language', 'services', 'hero_video', 'company_name', 'conversation', 'payment_plans', 'google_profile', 'team', 'products', 'contact', 'reviews', 'safeImg']
+Console.js:61 🔍 ReviewsSection - google_profile: https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k
+Console.js:61 🔍 ReviewsSection - google_profile.reviews: undefined
+Console.js:61 🔍 ReviewsSection - reviews prop: (5) [{…}, {…}, {…}, {…}, {…}]
+Console.js:61 🔍 ReviewsSection - team data: []
+Console.js:61 🔍 ReviewsSection - Has reviews in google_profile? false
+Console.js:61 🔍 ReviewsSection - Has reviews in main? true
+Console.js:61 🔍 ReviewsSection - GBP reviews found: 5 reviews
+Console.js:61 🔍 ReviewsSection - First review sample: {author_name: 'Jordan Jančić', author_url: 'https://www.google.com/maps/contrib/117238617582172202259/reviews', language: 'en-US', original_language: 'el', profile_photo_url: 'https://lh3.googleusercontent.com/a/ACg8ocLFa5ZPGA…U6D4mOK6IxUYKtOjqjKe2sQ=s128-c0x00000000-cc-rp-mo', …}
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(1)}
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 🔧 Color Guard: Fixed contrast for element, bg: #ffffff, new color: #000000
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete

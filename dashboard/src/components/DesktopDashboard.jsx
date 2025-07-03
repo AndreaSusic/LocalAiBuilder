@@ -28,77 +28,21 @@ function injectEditorBridge(iframe) {
       return;
     }
     
-    // Inject simplified editor bridge script
+    // Load the existing editorBridge.js file instead of inline script
     const script = frameDoc.createElement('script');
     script.id = 'editor-bridge-script';
-    script.innerHTML = `
-      console.log('✅ Editor bridge script injected successfully');
-      
-      try {
-        // Simple editor bridge functionality
-        console.log('🔧 Initializing NEW UPDATED inline editor bridge v2.0...');
-        
-        // Find all text elements immediately (no waiting)
-        const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button');
-        console.log('🔍 Found', elements.length, 'potential editable elements');
-        
-        let editableCount = 0;
-        
-        elements.forEach((element, index) => {
-          // Very simple filtering
-          if (element.closest('script') || element.closest('style')) {
-            return;
-          }
-          
-          console.log('✅ Making element editable:', element.tagName, element.textContent?.substring(0, 30));
-          
-          // Add editable functionality
-          element.style.cursor = 'pointer';
-          element.setAttribute('data-editable', 'true');
-          editableCount++;
-          
-          // Click to edit
-          element.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            console.log('🖱️ Element clicked for editing:', element.tagName);
-            
-            // Make editable
-            element.contentEditable = 'true';
-            element.focus();
-            element.style.outline = '2px solid #007cff';
-            element.style.backgroundColor = 'rgba(0, 124, 255, 0.05)';
-          });
-          
-          // Hover effects
-          element.addEventListener('mouseenter', function() {
-            if (element.contentEditable !== 'true') {
-              element.style.outline = '2px dashed #007cff';
-            }
-          });
-          
-          element.addEventListener('mouseleave', function() {
-            if (element.contentEditable !== 'true') {
-              element.style.outline = 'none';
-            }
-          });
-          
-          // Stop editing on blur
-          element.addEventListener('blur', function() {
-            element.contentEditable = 'false';
-            element.style.outline = 'none';
-            element.style.backgroundColor = '';
-            console.log('💾 Element editing stopped:', element.tagName);
-          });
-        });
-        
-        console.log('✅ Made', editableCount, 'elements editable');
-        
-      } catch (error) {
-        console.error('❌ Editor bridge error:', error);
+    script.type = 'module';
+    script.src = '/editorBridge.js';
+    script.onload = () => {
+      console.log('✅ External editorBridge.js loaded successfully');
+      // Initialize the bridge after the script loads
+      if (frameDoc.defaultView.initEditorBridge) {
+        frameDoc.defaultView.initEditorBridge();
       }
-    `;
+    };
+    script.onerror = () => {
+      console.error('❌ Failed to load external editorBridge.js');
+    };
     
     console.log('📄 Appending script to iframe head...');
     frameDoc.head.appendChild(script);
