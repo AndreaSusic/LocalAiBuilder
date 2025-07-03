@@ -1982,6 +1982,13 @@ app.get('/api/kigen-data', async (req, res) => {
               bootstrapData.google_profile.rating = gbpData.rating;
               bootstrapData.google_profile.user_ratings_total = gbpData.total_reviews;
               bootstrapData.google_profile.reviews = gbpData.reviews;
+              // ALSO store reviews at top level for easier access by React component
+              bootstrapData.reviews = gbpData.reviews;
+              
+              console.log('📝 Imported', gbpData.reviews?.length || 0, 'authentic GBP reviews');
+              if (gbpData.reviews && gbpData.reviews.length > 0) {
+                console.log('📝 First review:', gbpData.reviews[0].author_name, '-', gbpData.reviews[0].text.substring(0, 50) + '...');
+              }
               
               // Override contact data with authentic GBP information
               if (gbpData.phone) {
@@ -2013,6 +2020,42 @@ app.get('/api/kigen-data', async (req, res) => {
       const hasWebsiteServices = bootstrapData.products && bootstrapData.products.length > 0;
       const hasUserImages = bootstrapData.images && bootstrapData.images.some(img => 
         img && !img.includes('unsplash.com') && !img.includes('pexels.com'));
+      
+      // ENSURE REVIEWS ARE ALWAYS INCLUDED - Force unconditional GBP review import
+      if (!bootstrapData.reviews || bootstrapData.reviews.length === 0) {
+        console.log('🔄 FORCE IMPORTING AUTHENTIC GBP REVIEWS...');
+        try {
+          const gbpResponse = await fetch('http://localhost:5000/api/gbp-details', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              placeUrl: 'https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k'
+            })
+          });
+          
+          if (gbpResponse.ok) {
+            const gbpReviewData = await gbpResponse.json();
+            if (gbpReviewData.reviews && gbpReviewData.reviews.length > 0) {
+              // Ensure google_profile exists
+              if (!bootstrapData.google_profile) {
+                bootstrapData.google_profile = {};
+              }
+              
+              // Add reviews to both locations for maximum compatibility
+              bootstrapData.google_profile.reviews = gbpReviewData.reviews;
+              bootstrapData.reviews = gbpReviewData.reviews;
+              
+              console.log('✅ FORCED AUTHENTIC REVIEWS INTO BOOTSTRAP DATA');
+              console.log('📝 Total reviews added:', gbpReviewData.reviews.length);
+              console.log('📝 Sample review:', gbpReviewData.reviews[0]?.author_name, '-', gbpReviewData.reviews[0]?.text?.substring(0, 30) + '...');
+            }
+          }
+        } catch (error) {
+          console.warn('⚠️ Could not force GBP reviews:', error.message);
+        }
+      } else {
+        console.log('📝 Reviews already present in bootstrap data:', bootstrapData.reviews?.length || 0);
+      }
       
       console.log('📊 DATA PRIORITY VALIDATION:');
       console.log('   User Input Services:', hasUserInputServices ? '✅' : '❌');
