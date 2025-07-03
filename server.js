@@ -1855,6 +1855,41 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
+// Force authentic Kigen Plastika data endpoint
+app.get('/api/kigen-data', async (req, res) => {
+  console.log('🔧 Force-loading authentic Kigen Plastika data');
+  
+  try {
+    // Get the latest bootstrap data that contains Kigen Plastika
+    const result = await pool.query(
+      `SELECT data FROM temp_bootstrap_data 
+       WHERE data::text ILIKE '%Kigen Plastika%' 
+       ORDER BY created_at DESC LIMIT 1`
+    );
+    
+    if (result.rows.length > 0) {
+      console.log('✅ Found Kigen Plastika bootstrap data');
+      let bootstrapData = result.rows[0].data;
+      
+      // Handle both string and object data formats
+      if (typeof bootstrapData === 'string') {
+        try {
+          bootstrapData = JSON.parse(bootstrapData);
+        } catch (e) {
+          console.log('Data parsing error:', e);
+        }
+      }
+      
+      return res.json(bootstrapData);
+    }
+    
+    res.status(404).json({ error: 'Kigen Plastika data not found' });
+  } catch (error) {
+    console.error('❌ Error loading Kigen Plastika data:', error);
+    res.status(500).json({ error: 'Failed to load data' });
+  }
+});
+
 app.listen(PORT, '0.0.0.0', function() {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
 });

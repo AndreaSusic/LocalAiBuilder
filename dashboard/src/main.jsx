@@ -83,7 +83,19 @@ async function loadBootstrap(){
     }
   }
   
-  // 1) Try secure API first
+  // 1) Try authentic Kigen Plastika data first
+  try {
+    const kigenResponse = await fetch('/api/kigen-data');
+    if (kigenResponse.ok) {
+      const kigenData = await kigenResponse.json();
+      console.log('🔄 Loaded authentic Kigen Plastika data:', kigenData.company_name);
+      return kigenData;
+    }
+  } catch (error) {
+    console.error('Error loading Kigen data:', error);
+  }
+
+  // 2) Try secure API as fallback
   const api = await fetch('/api/user-data');
   if(api.status !== 401){
     const result = await api.json();
