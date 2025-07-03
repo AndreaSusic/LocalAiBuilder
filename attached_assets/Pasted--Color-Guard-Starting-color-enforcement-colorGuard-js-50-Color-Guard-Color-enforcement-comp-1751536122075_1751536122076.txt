@@ -1,0 +1,46 @@
+🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+Console.js:61 BOOTSTRAP >> {city: Array(1), images: Array(1), social: {…}, colours: Array(2), industry: 'Landscaping', …}
+Console.js:61 Current path: /t/v1/mcn7c6nm0pm2kso6xt7
+Console.js:61 Root element exists: true
+Console.js:61 React app rendered successfully
+Console.js:61 App rendering with bootstrap: {city: Array(1), images: Array(1), social: {…}, colours: Array(2), industry: 'Landscaping', …}
+Console.js:61 isMobile: false
+Console.js:61 HomepageV1 using data: {city: Array(1), images: Array(1), social: {…}, colours: Array(2), industry: 'Landscaping', …}
+Console.js:61 ServicesSection DEBUG - Services data: Septic Tanks string
+Console.js:61 ServicesSection DEBUG - GBP products: undefined
+Console.js:61 ServicesSection DEBUG - ServicesList: (3) ['Septic Tank Systems', 'Plastic Components', 'Installation Services'] Type: object
+Console.js:61 ServicesSection DEBUG - GBP Products: 0 Available: []
+Console.js:61 ServicesSection DEBUG - Processing service: Septic Tank Systems Type: string Index: 0
+Console.js:61 ServicesSection DEBUG - Processing service: Plastic Components Type: string Index: 1
+Console.js:61 ServicesSection DEBUG - Processing service: Installation Services Type: string Index: 2
+Console.js:61 ServicesSection DEBUG - ServicesToShow: (3) [{…}, {…}, {…}]
+Console.js:61 AboutSection DEBUG - Team data: [] Length: 0
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(2)}
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(2)}
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+mcn7c6nm0pm2kso6xt7:18 
+            
+            
+           GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/stock_photos_placeholder 404 (Not Found)
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+web-client-content-script.js:2 Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.
+    at HTMLIFrameElement.<anonymous> (web-client-content-script.js:2:402720)
+(anonymous) @ web-client-content-script.js:2
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
