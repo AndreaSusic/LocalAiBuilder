@@ -380,12 +380,7 @@ function deactivateCurrentElement() {
   }
 }
 
-// Hide toolbar
-function hideToolbar() {
-  if (toolbar) {
-    toolbar.style.display = 'none';
-  }
-}
+// Note: hideToolbar function is defined later with full functionality
 
 // Save element changes
 function saveElementChanges(element) {
