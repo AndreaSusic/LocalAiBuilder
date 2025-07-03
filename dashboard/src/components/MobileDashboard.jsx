@@ -28,9 +28,15 @@ function injectSimpleEditor(iframe) {
         setTimeout(() => {
           console.log('📝 Making all text elements editable...');
           
-          // Find ALL text elements and make them editable
+          // Look for our test element first, then all text elements
+          const testElement = document.querySelector('.editable-test');
           const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li, td, th, div');
+          console.log('Found test element:', !!testElement);
           console.log('Found', textElements.length, 'text elements');
+          
+          if (testElement) {
+            console.log('🎯 TEST ELEMENT FOUND:', testElement.tagName, testElement.textContent?.slice(0, 30));
+          }
           
           let editableCount = 0;
           

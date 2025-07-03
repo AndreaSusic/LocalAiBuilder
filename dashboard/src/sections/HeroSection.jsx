@@ -35,7 +35,7 @@ export default function HeroSection() {
   
   return (
     <section className="hero" style={{ backgroundImage: `url('${heroImg}')` }}>
-      <h1 data-gas-edit="heroTitle">{heroTitle}</h1>
+      <h1 data-gas-edit="heroTitle" className="editable-test">{heroTitle}</h1>
       <p data-gas-edit="heroSubtitle">{heroSubtitle}</p>
       <button className="btn-cta" data-gas-edit="ctaText">{ctaText}</button>
     </section>
