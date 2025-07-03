@@ -348,35 +348,16 @@ window.editorBridge = {
 };
       `;
       
-      script.onload = () => {
-        console.log('✅ Editor bridge injected successfully');
-        // Force initialization
+      frameDoc.head.appendChild(script);
+      
+      // Add a small delay to ensure DOM is ready
+      setTimeout(() => {
+        console.log('✅ Mobile Editor bridge injected successfully as inline script');
+        // Trigger initialization manually if needed
         if (frameDoc.defaultView && frameDoc.defaultView.initEditorBridge) {
           frameDoc.defaultView.initEditorBridge();
         }
-      };
-      
-      script.onerror = (error) => {
-        console.error('❌ Failed to inject editor bridge:', error);
-      };
-      
-      frameDoc.head.appendChild(script);
-      
-      // Also inject CSS for better styling
-      const style = frameDoc.createElement('style');
-      style.textContent = `
-        .ez-editable-active {
-          outline: 2px solid #007cff !important;
-          outline-offset: 2px !important;
-        }
-        .ez-toolbar {
-          z-index: 99999 !important;
-        }
-        .ez-element-delete {
-          z-index: 100000 !important;
-        }
-      `;
-      frameDoc.head.appendChild(style);
+      }, 100);
     };
     
     // Try to inject immediately, or wait for load
@@ -385,14 +366,6 @@ window.editorBridge = {
     } else {
       iframe.addEventListener('load', injectScript);
     }
-    
-    // Listen for save messages from the iframe
-    window.addEventListener('message', (event) => {
-      if (event.data.type === 'editor-save') {
-        console.log('💾 Received edit from iframe:', event.data.data);
-        // Here you can save the changes to your backend or state
-      }
-    });
     
   } catch (error) {
     console.error('❌ Could not inject editor bridge:', error);

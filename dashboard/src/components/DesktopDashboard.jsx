@@ -623,7 +623,15 @@ window.editorBridge = {
       `;
       
       frameDoc.head.appendChild(script);
-      console.log('✅ Editor bridge injected successfully as inline script');
+      
+      // Add a small delay to ensure DOM is ready
+      setTimeout(() => {
+        console.log('✅ Editor bridge injected successfully as inline script');
+        // Trigger initialization manually if needed
+        if (frameDoc.defaultView && frameDoc.defaultView.initEditorBridge) {
+          frameDoc.defaultView.initEditorBridge();
+        }
+      }, 100);
       
       // Also inject CSS for better styling
       const style = frameDoc.createElement('style');

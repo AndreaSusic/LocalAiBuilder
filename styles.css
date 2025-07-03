@@ -81,6 +81,29 @@ html, body { overflow-x: hidden; }
   --transition-normal: 300ms ease-in-out;
   --transition-slow: 500ms ease-in-out;
 
+
+
+/* Target ALL <h2> elements */
+h2 {
+  position: relative;           /* establishes the containing block          */
+  display: inline-block;        /* keeps the heading’s width tight to text   */
+}
+
+/* Draw the short underline */
+h2::after {
+  content: "";
+  position: absolute;
+  left: 50%;                    /* centre the line under the heading         */
+  transform: translateX(-50%);  /* …exact centering                          */
+
+  width: 10px;                  /* ← line length                             */
+  height: 3px;                  /* ← thickness                               */
+  background: var(--primary-color);
+
+  bottom: -4px;                 /* ← vertical gap between text & line        */
+  border-radius: 2px;           /* optional: rounds line ends a little       */
+}
+
   /* ---------- 2. GLOBAL CONTAINERS ------------------ */
   .container{width:90%;max-width:1100px;margin-inline:auto}
   .text-center{text-align:center}
@@ -2242,7 +2265,7 @@ select:focus {
 
 /* Chat layout */
 /* Layout system */
-#chatContainer{display:flex;gap:2rem;align-items:flex-start;min-height:100vh;}
+#chatContainer{display:flex;gap:2rem;align-items:flex-start;min-height:50vh;}
 .hero{flex:1 0 45%;max-width:45%;}
 .chatPane{flex:1 0 55%;height:90vh;border:1px solid #ddd;border-radius:8px;margin:30px 0;max-width:55%;}
 
