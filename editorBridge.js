@@ -7,7 +7,13 @@
 // Global state
 let currentEditableElement = null;
 let toolbar = null;
+let deleteBtn = null;
 let isToolbarActive = false;
+
+// History for undo/redo functionality
+let undoHistory = [];
+let redoHistory = [];
+let historyLimit = 20;
 
 // Toolbar commands mapping
 const COMMANDS = {
@@ -16,18 +22,25 @@ const COMMANDS = {
   '𝑼': () => document.execCommand('underline'),
   'List': () => document.execCommand('insertUnorderedList'),
   '8px': () => document.execCommand('fontSize', false, '1'),
-  'A🖌️': () => pickColor('foreColor'),
-  '🖍️': () => pickColor('hiliteColor'),
+  'A🖌️': () => openColorPicker('foreColor'),
+  '🖍️': () => openColorPicker('hiliteColor'),
   '🖼️': () => insertMedia('image'),
-  '🎥': () => insertMedia('video'),
+  '🎥': () => openVideoPanel(),
   '↔️↕️': () => toggleResizeBox(),
   '📐': () => openSpacingPanel(),
-  'H₁': () => document.execCommand('formatBlock', false, 'H1'),
-  '¶': () => document.execCommand('formatBlock', false, 'P'),
+  'H₁': () => changeHeading('H1'),
+  'H₂': () => changeHeading('H2'),
+  'H₃': () => changeHeading('H3'),
+  'H₄': () => changeHeading('H4'),
+  '¶': () => changeHeading('P'),
   '🔲': () => insertComponent('card'),
   '📋': () => pastePlain(),
   '</>': () => toggleCodeView(),
-  '🔘': () => insertComponent('button')
+  '🔘': () => insertComponent('button'),
+  '↶': () => undoAction(),
+  '↷': () => redoAction(),
+  '✕': () => deleteElement(),
+  '💬': () => openAIChat()
 };
 
 // Initialize the editor bridge
@@ -172,7 +185,9 @@ function deactivateElement(element) {
 // Show floating toolbar
 function showToolbar(element) {
   if (!toolbar) {
-    toolbar = createToolbar();
+    const toolbarData = createToolbar();
+    toolbar = toolbarData.toolbar;
+    deleteBtn = toolbarData.deleteBtn;
     document.body.appendChild(toolbar);
   }
   
@@ -185,18 +200,58 @@ function showToolbar(element) {
   toolbar.style.left = (rect.left + scrollLeft) + 'px';
   toolbar.style.display = 'flex';
   
+  // Position delete button in top-right corner of element
+  if (deleteBtn) {
+    deleteBtn.style.position = 'absolute';
+    deleteBtn.style.top = (rect.top + scrollTop - 10) + 'px';
+    deleteBtn.style.right = (window.innerWidth - rect.right - scrollLeft + 5) + 'px';
+    deleteBtn.style.display = 'block';
+    deleteBtn.style.zIndex = '10001';
+    document.body.appendChild(deleteBtn);
+  }
+  
   // Ensure toolbar is visible
   toolbar.style.zIndex = '10000';
 }
 
-// Create toolbar
+// Create enhanced toolbar with delete button positioned in top-right
 function createToolbar() {
   const toolbar = document.createElement('div');
   toolbar.className = 'ez-toolbar';
   toolbar.contentEditable = 'false';
   
-  // Create buttons
+  // Create delete button in top-right corner of element
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'ez-delete-btn';
+  deleteBtn.innerHTML = '✕';
+  deleteBtn.title = 'Delete Element';
+  deleteBtn.contentEditable = 'false';
+  deleteBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    deleteElement();
+  });
+  
+  // Create heading dropdown
+  const headingDropdown = document.createElement('select');
+  headingDropdown.className = 'ez-heading-dropdown';
+  headingDropdown.innerHTML = `
+    <option value="P">Normal</option>
+    <option value="H1">H1</option>
+    <option value="H2">H2</option>
+    <option value="H3">H3</option>
+    <option value="H4">H4</option>
+  `;
+  headingDropdown.addEventListener('change', (e) => {
+    changeHeading(e.target.value);
+  });
+  toolbar.appendChild(headingDropdown);
+  
+  // Create main command buttons
   Object.keys(COMMANDS).forEach(command => {
+    // Skip commands that have special UI
+    if (['✕', 'H₁', 'H₂', 'H₃', 'H₄', '¶'].includes(command)) return;
+    
     const button = document.createElement('button');
     button.className = 'ez-btn';
     button.textContent = command;
@@ -206,13 +261,14 @@ function createToolbar() {
     button.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
+      saveToHistory();
       COMMANDS[command]();
     });
     
     toolbar.appendChild(button);
   });
   
-  return toolbar;
+  return { toolbar, deleteBtn };
 }
 
 // Get command title for tooltip
@@ -230,11 +286,18 @@ function getCommandTitle(command) {
     '↔️↕️': 'Resize',
     '📐': 'Spacing',
     'H₁': 'Heading 1',
+    'H₂': 'Heading 2',
+    'H₃': 'Heading 3',
+    'H₄': 'Heading 4',
     '¶': 'Paragraph',
     '🔲': 'Insert Card',
     '📋': 'Paste Plain',
     '</>': 'Code View',
-    '🔘': 'Insert Button'
+    '🔘': 'Insert Button',
+    '↶': 'Undo',
+    '↷': 'Redo',
+    '✕': 'Delete Element',
+    '💬': 'AI Assistant'
   };
   return titles[command] || command;
 }
@@ -418,6 +481,240 @@ function toggleCodeView() {
       currentEditableElement.style.fontFamily = 'monospace';
       currentEditableElement.style.whiteSpace = 'pre-wrap';
     }
+  }
+}
+
+// Save current state to history for undo/redo
+function saveToHistory() {
+  if (!currentEditableElement) return;
+  
+  const state = {
+    element: currentEditableElement,
+    content: currentEditableElement.innerHTML,
+    timestamp: Date.now()
+  };
+  
+  undoHistory.push(state);
+  if (undoHistory.length > historyLimit) {
+    undoHistory.shift();
+  }
+  
+  // Clear redo history when new action is performed
+  redoHistory = [];
+}
+
+// Undo last action
+function undoAction() {
+  if (undoHistory.length === 0) return;
+  
+  const currentState = {
+    element: currentEditableElement,
+    content: currentEditableElement.innerHTML,
+    timestamp: Date.now()
+  };
+  
+  redoHistory.push(currentState);
+  
+  const previousState = undoHistory.pop();
+  if (previousState && previousState.element) {
+    previousState.element.innerHTML = previousState.content;
+  }
+}
+
+// Redo last undone action
+function redoAction() {
+  if (redoHistory.length === 0) return;
+  
+  const currentState = {
+    element: currentEditableElement,
+    content: currentEditableElement.innerHTML,
+    timestamp: Date.now()
+  };
+  
+  undoHistory.push(currentState);
+  
+  const nextState = redoHistory.pop();
+  if (nextState && nextState.element) {
+    nextState.element.innerHTML = nextState.content;
+  }
+}
+
+// Delete current element
+function deleteElement() {
+  if (!currentEditableElement) return;
+  
+  const parent = currentEditableElement.parentNode;
+  if (parent) {
+    saveToHistory();
+    currentEditableElement.remove();
+    hideToolbar();
+    currentEditableElement = null;
+  }
+}
+
+// Change heading type
+function changeHeading(headingType) {
+  if (!currentEditableElement) return;
+  
+  saveToHistory();
+  document.execCommand('formatBlock', false, headingType);
+}
+
+// Open color picker
+function openColorPicker(command) {
+  // Create color picker input
+  const colorInput = document.createElement('input');
+  colorInput.type = 'color';
+  colorInput.style.position = 'absolute';
+  colorInput.style.visibility = 'hidden';
+  
+  colorInput.addEventListener('change', (e) => {
+    saveToHistory();
+    document.execCommand(command, false, e.target.value);
+    document.body.removeChild(colorInput);
+  });
+  
+  document.body.appendChild(colorInput);
+  colorInput.click();
+}
+
+// Open video panel with URL input and upload option
+function openVideoPanel() {
+  const panel = document.createElement('div');
+  panel.className = 'ez-video-panel';
+  panel.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10002;
+    min-width: 300px;
+  `;
+  
+  panel.innerHTML = `
+    <h3>Insert Video</h3>
+    <div style="margin-bottom: 15px;">
+      <label>Video URL:</label>
+      <input type="url" id="videoUrl" placeholder="https://..." style="width: 100%; padding: 8px; margin-top: 5px;">
+    </div>
+    <div style="margin-bottom: 15px;">
+      <label>Or upload video file:</label>
+      <input type="file" id="videoFile" accept="video/*" style="width: 100%; padding: 8px; margin-top: 5px;">
+    </div>
+    <div style="text-align: right;">
+      <button id="cancelVideo" style="margin-right: 10px; padding: 8px 16px;">Cancel</button>
+      <button id="insertVideo" style="padding: 8px 16px; background: #007cff; color: white; border: none; border-radius: 4px;">Insert</button>
+    </div>
+  `;
+  
+  document.body.appendChild(panel);
+  
+  document.getElementById('cancelVideo').onclick = () => document.body.removeChild(panel);
+  document.getElementById('insertVideo').onclick = () => {
+    const url = document.getElementById('videoUrl').value;
+    const file = document.getElementById('videoFile').files[0];
+    
+    if (url) {
+      saveToHistory();
+      document.execCommand('insertHTML', false, 
+        `<video src="${url}" controls style="max-width: 100%; height: auto;">`);
+    } else if (file) {
+      const videoUrl = URL.createObjectURL(file);
+      saveToHistory();
+      document.execCommand('insertHTML', false, 
+        `<video src="${videoUrl}" controls style="max-width: 100%; height: auto;">`);
+    }
+    
+    document.body.removeChild(panel);
+  };
+}
+
+// Open AI chat interface
+function openAIChat() {
+  const chatPanel = document.createElement('div');
+  chatPanel.className = 'ez-ai-chat-panel';
+  chatPanel.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10002;
+    width: 400px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+  `;
+  
+  chatPanel.innerHTML = `
+    <h3>AI Assistant</h3>
+    <div id="chatMessages" style="flex: 1; overflow-y: auto; border: 1px solid #eee; padding: 10px; margin: 10px 0; border-radius: 4px;">
+      <div style="color: #666; font-style: italic;">Ask me to help you edit this content...</div>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <input type="text" id="chatInput" placeholder="Type your message..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+      <button id="sendChat" style="padding: 8px 16px; background: #007cff; color: white; border: none; border-radius: 4px;">Send</button>
+    </div>
+    <div style="text-align: right; margin-top: 10px;">
+      <button id="closeChat" style="padding: 8px 16px;">Close</button>
+    </div>
+  `;
+  
+  document.body.appendChild(chatPanel);
+  
+  document.getElementById('closeChat').onclick = () => document.body.removeChild(chatPanel);
+  
+  const sendMessage = async () => {
+    const input = document.getElementById('chatInput');
+    const messages = document.getElementById('chatMessages');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    // Add user message
+    messages.innerHTML += `<div style="margin: 5px 0; text-align: right;"><strong>You:</strong> ${message}</div>`;
+    input.value = '';
+    
+    try {
+      const response = await fetch('/api/ai-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          message,
+          context: currentEditableElement ? currentEditableElement.textContent : ''
+        })
+      });
+      
+      const data = await response.json();
+      messages.innerHTML += `<div style="margin: 5px 0;"><strong>AI:</strong> ${data.response}</div>`;
+      messages.scrollTop = messages.scrollHeight;
+    } catch (error) {
+      messages.innerHTML += `<div style="margin: 5px 0; color: red;"><strong>Error:</strong> Could not connect to AI</div>`;
+    }
+  };
+  
+  document.getElementById('sendChat').onclick = sendMessage;
+  document.getElementById('chatInput').onkeypress = (e) => {
+    if (e.key === 'Enter') sendMessage();
+  };
+}
+
+// Hide toolbar and delete button
+function hideToolbar() {
+  if (toolbar) {
+    toolbar.style.display = 'none';
+  }
+  if (deleteBtn && deleteBtn.parentNode) {
+    deleteBtn.parentNode.removeChild(deleteBtn);
   }
 }
 

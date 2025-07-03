@@ -1066,6 +1066,41 @@ Generate website text content for this business.`;
   }
 });
 
+// AI Chat endpoint for inline editor chat functionality
+app.post('/api/ai-chat', async (req, res) => {
+  try {
+    const { message, context } = req.body;
+    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+    
+    if (!OPENAI_API_KEY) {
+      return res.status(500).json({ error: 'OpenAI API key not configured' });
+    }
+
+    const systemPrompt = `You are a helpful website editing assistant. Help users improve their website content. 
+    Be concise, practical, and focus on actionable suggestions. Keep responses under 100 words.
+    
+    Current element context: "${context}"`;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: message }
+      ],
+      max_tokens: 200,
+      temperature: 0.7
+    });
+
+    res.json({ 
+      success: true, 
+      response: response.choices[0].message.content 
+    });
+  } catch (error) {
+    console.error('AI chat error:', error);
+    res.status(500).json({ error: 'Failed to get AI response' });
+  }
+});
+
 // Save draft endpoint - saves work in progress (no auth required)
 app.post('/api/save-draft', async (req, res) => {
   // Use Google user ID if present, otherwise sessionID
