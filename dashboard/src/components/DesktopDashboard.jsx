@@ -6,7 +6,21 @@ import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 function injectEditorBridge(iframe) {
   try {
     console.log('🔧 Attempting to inject editor bridge...');
+    
+    // Check iframe access
+    if (!iframe) {
+      console.error('❌ No iframe provided');
+      return;
+    }
+    
     const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
+    
+    if (!frameDoc) {
+      console.error('❌ Cannot access iframe document - CORS issue?');
+      return;
+    }
+    
+    console.log('✅ Successfully accessed iframe document');
     
     // Check if bridge is already injected
     if (frameDoc.querySelector('#editor-bridge-script')) {
@@ -86,7 +100,17 @@ function injectEditorBridge(iframe) {
       }
     `;
     
+    console.log('📄 Appending script to iframe head...');
     frameDoc.head.appendChild(script);
+    console.log('✅ Script successfully added to iframe');
+    
+    // Verify script was added
+    const addedScript = frameDoc.querySelector('#editor-bridge-script');
+    if (addedScript) {
+      console.log('✅ Script element found in iframe DOM');
+    } else {
+      console.error('❌ Script element not found after adding');
+    }
     
     // Listen for save messages from the iframe
     window.addEventListener('message', (event) => {
