@@ -1,0 +1,68 @@
+🔄 Loaded bootstrap data from short URL: Kigen Plastika
+main.jsx:154 BOOTSTRAP >> Object
+main.jsx:155 Current path: /t/v1/mcn7icm6gsf31c3thpp
+main.jsx:156 Root element exists: true
+main.jsx:170 React app rendered successfully
+App.jsx:20 App rendering with bootstrap: Object
+App.jsx:21 isMobile: false
+index.jsx:83 HomepageV1 using data: Object
+ServicesSection.jsx:16 ServicesSection DEBUG - Services data: Septic Tanks string
+ServicesSection.jsx:17 ServicesSection DEBUG - GBP products: undefined
+ServicesSection.jsx:32 🌐 USING AUTHENTIC WEBSITE SERVICES: Array(3)
+ServicesSection.jsx:101 ServicesSection DEBUG - ServicesList: Array(3) Type: object
+ServicesSection.jsx:102 ServicesSection DEBUG - GBP Products: 0 Available: Array(0)
+ServicesSection.jsx:114 ServicesSection DEBUG - Processing service: Object Type: object Index: 0
+ServicesSection.jsx:118 🌐 RENDERING AUTHENTIC WEBSITE SERVICE: Plastični rezervoari
+App.jsx:20 App rendering with bootstrap: Object
+App.jsx:21 isMobile: false
+index.jsx:83 HomepageV1 using data: Object
+ServicesSection.jsx:16 ServicesSection DEBUG - Services data: Septic Tanks string
+ServicesSection.jsx:17 ServicesSection DEBUG - GBP products: undefined
+ServicesSection.jsx:32 🌐 USING AUTHENTIC WEBSITE SERVICES: Array(3)
+ServicesSection.jsx:101 ServicesSection DEBUG - ServicesList: Array(3) Type: object
+ServicesSection.jsx:102 ServicesSection DEBUG - GBP Products: 0 Available: Array(0)
+ServicesSection.jsx:114 ServicesSection DEBUG - Processing service: Object Type: object Index: 0
+ServicesSection.jsx:118 🌐 RENDERING AUTHENTIC WEBSITE SERVICE: Plastični rezervoari
+ServicesSection.jsx:120 Uncaught ReferenceError: Cannot access 'Se' before initialization
+    at ServicesSection.jsx:120:28
+    at Array.map (<anonymous>)
+    at hy (ServicesSection.jsx:113:65)
+    at gs (react-dom-client.production.js:3502:21)
+    at Os (react-dom-client.production.js:6239:15)
+    at wf (react-dom-client.production.js:7243:14)
+    at ed (react-dom-client.production.js:10855:14)
+    at S0 (react-dom-client.production.js:10736:37)
+    at lo (react-dom-client.production.js:10717:7)
+    at Wf (react-dom-client.production.js:10322:40)
+(anonymous) @ ServicesSection.jsx:120
+hy @ ServicesSection.jsx:113
+gs @ react-dom-client.production.js:3502
+Os @ react-dom-client.production.js:6239
+wf @ react-dom-client.production.js:7243
+ed @ react-dom-client.production.js:10855
+S0 @ react-dom-client.production.js:10736
+lo @ react-dom-client.production.js:10717
+Wf @ react-dom-client.production.js:10322
+hd @ react-dom-client.production.js:11626
+Xe @ scheduler.production.js:151
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+extension_content.js:1 recalculate_head_data
+content.js:48 request OK
+/robots.txt:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+extension_content.js:1 recalculate_head_data
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete

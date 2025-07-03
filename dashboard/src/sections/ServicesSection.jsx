@@ -117,29 +117,18 @@ export default function ServicesSection({ bootstrap }) {
     if (service && service.authentic && service.source === 'website') {
       console.log('🌐 RENDERING AUTHENTIC WEBSITE SERVICE:', service.name);
       
-      const serviceImage = getImageUrl(gbpPhotos[index]) || 
-                          getImageUrl(availableImages[index]) || 
-                          defaultImages[index] || 
-                          defaultImages[0];
+      // Use a default image since stock_photos_placeholder is causing issues
+      const defaultServiceImage = '/assets/default-service.jpg';
       
       return {
         title: service.name,
         description: service.description,
-        image: serviceImage,
+        image: defaultServiceImage,
         authentic: true
       };
     }
     
     const serviceText = typeof service === 'string' ? service : String(service || '');
-    
-    // Get image URL properly from GBP photos or other sources
-    const getImageUrl = (img) => {
-      if (typeof img === 'string') return img;
-      if (img && typeof img === 'object') {
-        return img.url || img.src || null;
-      }
-      return null;
-    };
     
     const serviceImage = getImageUrl(gbpPhotos[index]) || 
                         getImageUrl(availableImages[index]) || 
