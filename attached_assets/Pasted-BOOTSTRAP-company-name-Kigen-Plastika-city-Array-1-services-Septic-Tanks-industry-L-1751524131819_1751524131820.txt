@@ -1,0 +1,60 @@
+BOOTSTRAP >> {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+main.jsx:143 Current path: /preview
+main.jsx:144 Root element exists: true
+main.jsx:158 React app rendered successfully
+App.jsx:20 App rendering with bootstrap: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+App.jsx:21 isMobile: false
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(0)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+extension_content.js:1 recalculate_head_data
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:59 Created short URL for preview: /t/v1/mcn083ksdmihyc1s939
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+Console.js:61 BOOTSTRAP >> {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 Current path: /t/v1/mcn083ksdmihyc1s939
+Console.js:61 Root element exists: true
+Console.js:61 React app rendered successfully
+Console.js:61 App rendering with bootstrap: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 isMobile: false
+Console.js:61 HomepageV1 using data: {company_name: 'Kigen Plastika', city: Array(1), services: 'Septic Tanks', industry: 'Landscaping', language: 'Serbian', …}
+Console.js:61 ServicesSection DEBUG - Services data: Septic Tanks string
+Console.js:61 ServicesSection DEBUG - GBP products: (6) [{…}, {…}, {…}, {…}, {…}, {…}]0: {id: 'product_1', name: 'Product 1', image: 'https://maps.googleapis.com/maps/api/place/photo?m…g6jiY&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE', description: 'High-quality product from KIGEN PLASTIKA', category: 'point_of_interest'}1: {id: 'product_2', name: 'Product 2', image: 'https://maps.googleapis.com/maps/api/place/photo?m…kii40&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE', description: 'High-quality product from KIGEN PLASTIKA', category: 'point_of_interest'}2: {id: 'product_3', name: 'Product 3', image: 'https://maps.googleapis.com/maps/api/place/photo?m…QrzDA&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE', description: 'High-quality product from KIGEN PLASTIKA', category: 'point_of_interest'}3: {id: 'product_4', name: 'Product 4', image: 'https://maps.googleapis.com/maps/api/place/photo?m…eS-og&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE', description: 'High-quality product from KIGEN PLASTIKA', category: 'point_of_interest'}4: {id: 'product_5', name: 'Product 5', image: 'https://maps.googleapis.com/maps/api/place/photo?m…73qEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE', description: 'High-quality product from KIGEN PLASTIKA', category: 'point_of_interest'}5: {id: 'product_6', name: 'Product 6', image: 'https://maps.googleapis.com/maps/api/place/photo?m…_YkF0&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE', description: 'High-quality product from KIGEN PLASTIKA', category: 'point_of_interest'}length: 6[[Prototype]]: Array(0)
+Console.js:61 🔒 PROTECTING AUTHENTIC GBP PRODUCTS: (3) ['Product 1', 'Product 2', 'Product 3']
+Console.js:61 ServicesSection DEBUG - ServicesList: (3) ['Product 1', 'Product 2', 'Product 3'] Type: object
+Console.js:61 ServicesSection DEBUG - GBP Products: 6 Available: (6) [{…}, {…}, {…}, {…}, {…}, {…}]
+Console.js:61 ServicesSection DEBUG - Processing service: Product 1 Type: string Index: 0
+Console.js:61 🚫 Ignoring placeholder GMB data, using actual business services
+Console.js:61 ServicesSection DEBUG - Processing service: Product 2 Type: string Index: 1
+Console.js:61 🚫 Ignoring placeholder GMB data, using actual business services
+Console.js:61 ServicesSection DEBUG - Processing service: Product 3 Type: string Index: 2
+Console.js:61 🚫 Ignoring placeholder GMB data, using actual business services
+Console.js:61 ServicesSection DEBUG - ServicesToShow: (3) [{…}, {…}, {…}]
+Console.js:61 AboutSection DEBUG - Team data: [] Length: 0
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(0)}
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(0)}
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 🔧 Color Guard: Fixed contrast for element, bg: #ffffff, new color: #000000
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+web-client-content-script.js:2 Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.
+    at HTMLIFrameElement.<anonymous> (web-client-content-script.js:2:402720)
+(anonymous) @ web-client-content-script.js:2
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete

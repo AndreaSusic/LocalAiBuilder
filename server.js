@@ -884,7 +884,7 @@ app.get('/api/user-data', async (req, res) => {
                 `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=${photo.photo_reference}&key=${process.env.GOOGLE_PLACES_API_KEY}` :
                 photo.url || photo
             })) : [],
-            products: gbpData.products || []
+            products: [] // Remove placeholder products - use authentic septic tank services only
           } : {},
           gbpCid: gbpData?.place_id || null,
           userProducts: [], // Remove fallback placeholder products - use authentic data only
