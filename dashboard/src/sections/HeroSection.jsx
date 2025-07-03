@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext';
+import Editable from '../components/Editable.jsx';
 // import { getStockImages } from '../../../stock.js'; // Removed to fix import in browser
 
 export default function HeroSection() {
@@ -35,9 +36,9 @@ export default function HeroSection() {
   
   return (
     <section className="hero" style={{ backgroundImage: `url('${heroImg}')` }}>
-      <h1 data-gas-edit="heroTitle" className="editable-test">{heroTitle}</h1>
-      <p data-gas-edit="heroSubtitle">{heroSubtitle}</p>
-      <button className="btn-cta" data-gas-edit="ctaText">{ctaText}</button>
+      <Editable as="h1" path="heroTitle" className="editable-test">{heroTitle}</Editable>
+      <Editable as="p" path="heroSubtitle">{heroSubtitle}</Editable>
+      <Editable as="button" path="ctaText" className="btn-cta">{ctaText}</Editable>
     </section>
   );
 }
