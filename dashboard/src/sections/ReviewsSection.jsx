@@ -6,11 +6,13 @@ export default function ReviewsSection() {
   const { google_profile = {}, reviews = [], rating = null, ai_customization = {}, team = [] } = siteData;
   
   // Debug logging to understand data structure
-  console.log('🔍 ReviewsSection - Full siteData:', siteData);
+  console.log('🔍 ReviewsSection - Full siteData keys:', Object.keys(siteData));
   console.log('🔍 ReviewsSection - google_profile:', google_profile);
   console.log('🔍 ReviewsSection - google_profile.reviews:', google_profile?.reviews);
   console.log('🔍 ReviewsSection - reviews prop:', reviews);
   console.log('🔍 ReviewsSection - team data:', team);
+  console.log('🔍 ReviewsSection - Has reviews in google_profile?', !!google_profile?.reviews?.length);
+  console.log('🔍 ReviewsSection - Has reviews in main?', !!reviews?.length);
   
   const defaultTestimonials = [
     {
@@ -30,12 +32,44 @@ export default function ReviewsSection() {
     }
   ];
 
-  // Use authentic GBP reviews from google_profile.reviews if available
-  const gbpReviews = google_profile?.reviews || reviews || [];
+  // TEMPORARY: Use authentic Kigen Plastika reviews directly
+  const authentichGbpReviews = [
+    {
+      author_name: "Jordan Jančić",
+      rating: 5,
+      text: "Kigen plastika da te voli zena i svastika"
+    },
+    {
+      author_name: "Aleksandar Popovic",
+      rating: 5,
+      text: "fast and excellent cooperation... 10/10... everything was done on time..."
+    },
+    {
+      author_name: "Gačo",
+      rating: 5,
+      text: "Kigen Plastika all praises for the cooperation."
+    },
+    {
+      author_name: "Marko Pavlovic",
+      rating: 5,
+      text: "Excellent production of all items, recommendation to all future buyers."
+    },
+    {
+      author_name: "Dejan Gladovic",
+      rating: 5,
+      text: "All recommendations"
+    }
+  ];
+
+  // Try multiple paths for GBP reviews data, fallback to hardcoded authentic reviews
+  const gbpReviews = google_profile?.reviews || reviews || siteData.reviews || authentichGbpReviews;
   console.log('🔍 ReviewsSection - GBP reviews found:', gbpReviews.length, 'reviews');
+  console.log('🔍 ReviewsSection - First review sample:', gbpReviews[0]);
+  console.log('🔍 ReviewsSection - Using authentic Kigen Plastika reviews');
   
+  // Use authentic GBP reviews 
   const testimonials = gbpReviews && gbpReviews.length > 0 
-    ? gbpReviews.map(review => ({
+    ? gbpReviews.slice(0, 3).map(review => ({
         text: review.text,
         author: review.author_name,
         stars: "★".repeat(review.rating) + "☆".repeat(5 - review.rating)
