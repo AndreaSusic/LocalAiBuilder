@@ -49,6 +49,12 @@ async function testPreview() {
     const result = await response.json();
     console.log('✅ Preview result:', result);
     
+    // Also test the data content
+    console.log('📦 Preview data content:');
+    console.log('  Company:', kiigenData.company_name);
+    console.log('  Products:', kiigenData.products?.length || 0);
+    kiigenData.products?.forEach((p, i) => console.log(`    ${i + 1}. ${p.name} (${p.source})`));
+    
     if (result.shortUrl) {
       console.log('🔗 Access template at:', result.shortUrl);
       
