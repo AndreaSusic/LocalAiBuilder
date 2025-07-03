@@ -1240,7 +1240,19 @@ app.post('/api/gbp-details', async (req, res) => {
     let products = [];
     
     // First, try real GBP Business Information API if we have a refresh token for this user
-    const userRefreshToken = await getUserRefreshToken(req.user?.id);
+    let userRefreshToken = null;
+    if (req.user?.id) {
+      try {
+        const tokenResult = await pool.query(
+          'SELECT refresh_token FROM user_tokens WHERE user_id = $1',
+          [req.user.id]
+        );
+        userRefreshToken = tokenResult.rows[0]?.refresh_token || null;
+      } catch (error) {
+        console.error('Error fetching user refresh token:', error);
+      }
+    }
+    
     if (userRefreshToken || process.env.GOOGLE_REFRESH_TOKEN) {
       console.log('🔑 OAuth configured - attempting GBP Business Information API call');
       try {
@@ -1249,6 +1261,9 @@ app.post('/api/gbp-details', async (req, res) => {
         const locationId = `locations/${place_id}`;
         
         console.log('🚀 Fetching real GBP products via Business Information API');
+        console.log('📍 Location ID:', locationId);
+        console.log('🔐 Using refresh token for authenticated user');
+        
         products = await fetchGbpProducts(locationId, refreshToken);
         console.log(`✅ Found ${products.length} authentic GBP products`);
         
