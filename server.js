@@ -21,6 +21,22 @@ function generateId(length = 10) {
   return result;
 }
 
+// Helper to get user's refresh token
+async function getUserRefreshToken(userId) {
+  if (!userId) return null;
+  
+  try {
+    const result = await pool.query(
+      'SELECT refresh_token FROM user_tokens WHERE user_id = $1',
+      [userId]
+    );
+    return result.rows[0]?.refresh_token || null;
+  } catch (error) {
+    console.error('Error fetching user refresh token:', error);
+    return null;
+  }
+}
+
 const { OpenAI } = require("openai");           // ← ONE import
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY            // ← ONE client
@@ -118,17 +134,37 @@ app.get('/chat', (req, res, next) => {
   next();
 });
 
-// Configure Google OAuth Strategy
+// Configure Google OAuth Strategy with GBP Business scope
 passport.use(new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback"
+    callbackURL: "/auth/google/callback",
+    scope: ['profile', 'email', 'https://www.googleapis.com/auth/business.manage'],
+    accessType: 'offline',
+    prompt: 'consent'
   },
-  function(accessToken, refreshToken, profile, done) {
+  async function(accessToken, refreshToken, profile, done) {
     // Debug log to see what Google returns
     console.log('Google profile:', JSON.stringify(profile, null, 2));
-    // For demo: serialize entire profile
+    console.log('Google profile:', profile);
+    
+    // Save refresh token for GBP Business Information API
+    if (refreshToken) {
+      console.log('🔑 Received refresh token, saving for GBP API access');
+      try {
+        await pool.query(
+          'INSERT INTO user_tokens (user_id, refresh_token, created_at) VALUES ($1, $2, NOW()) ON CONFLICT (user_id) DO UPDATE SET refresh_token = $2, updated_at = NOW()',
+          [profile.id, refreshToken]
+        );
+        console.log('✅ Refresh token saved for user:', profile.id);
+      } catch (error) {
+        console.error('❌ Failed to save refresh token:', error);
+      }
+    } else {
+      console.log('⚠️ No refresh token received - may need prompt=consent');
+    }
+    
     return done(null, profile);
   }
 ));
@@ -332,7 +368,7 @@ app.get(['/dashboard', '/preview', '/template/:id', '/templates/homepage/v1/inde
   res.sendFile(path.join(dist, 'index.html'));
 });
 
-// Auth routes
+// Auth routes - Updated for GBP Business scope
 app.get('/auth/google', 
   function(req, res, next) {
     // Pass state parameter to OAuth for session-independent returnTo
@@ -345,7 +381,9 @@ app.get('/auth/google',
   },
   function(req, res, next) {
     passport.authenticate('google', { 
-      scope: ['profile', 'email'],
+      scope: ['profile', 'email', 'https://www.googleapis.com/auth/business.manage'],
+      accessType: 'offline',
+      prompt: 'consent',
       state: req.authOptions.state
     })(req, res, next);
   }
@@ -1201,16 +1239,22 @@ app.post('/api/gbp-details', async (req, res) => {
     // STEP 3: Try to get authentic GBP products via Business Information API
     let products = [];
     
-    // First, try real GBP Business Information API if OAuth is configured
-    if (process.env.GOOGLE_REFRESH_TOKEN) {
+    // First, try real GBP Business Information API if we have a refresh token for this user
+    const userRefreshToken = await getUserRefreshToken(req.user?.id);
+    if (userRefreshToken || process.env.GOOGLE_REFRESH_TOKEN) {
       console.log('🔑 OAuth configured - attempting GBP Business Information API call');
       try {
-        // This would be the real implementation once OAuth is working
-        console.log('🚧 GBP Business Information API implementation ready but needs OAuth token');
-        // const gbpBusinessInfo = await fetchGbpBusinessInfo(place_id);
-        // products = gbpBusinessInfo.products || [];
+        const { fetchGbpProducts } = require('./src/gbp/gbpAuth.js');
+        const refreshToken = userRefreshToken || process.env.GOOGLE_REFRESH_TOKEN;
+        const locationId = `locations/${place_id}`;
+        
+        console.log('🚀 Fetching real GBP products via Business Information API');
+        products = await fetchGbpProducts(locationId, refreshToken);
+        console.log(`✅ Found ${products.length} authentic GBP products`);
+        
       } catch (gbpError) {
         console.log('❌ GBP Business Information API failed:', gbpError.message);
+        console.log('📋 Falling back to website extraction');
       }
     } else {
       console.log('⚠️ No GOOGLE_REFRESH_TOKEN - GBP Business Information API unavailable');
