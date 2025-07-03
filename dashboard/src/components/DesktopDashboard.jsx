@@ -24,20 +24,42 @@ function injectEditorBridge(iframe) {
       window.initEditorBridge = function() {
         console.log('🔧 Initializing enhanced editor bridge...');
         
-        // Wait for React components to fully render
+        // Wait for React components to fully render with more patience
         function waitForReactComponents() {
           return new Promise((resolve) => {
+            let attempts = 0;
+            const maxAttempts = 50; // Wait up to 5 seconds
+            
             const checkForElements = () => {
-              // Look for React-specific content indicators
-              const reactContent = document.querySelector('[data-reactroot], .react-component, .hero-section, .services-section, .about-section');
-              const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span:not(:empty), div:not(:empty), li, td, th, figcaption, blockquote, a, button');
+              console.log('🔍 Checking for React components, attempt:', attempts + 1);
               
-              if (reactContent && textElements.length > 5) {
+              // Look for specific React component classes that should be in our template
+              const heroSection = document.querySelector('.hero-section, .hero, [class*="hero"]');
+              const servicesSection = document.querySelector('.services-section, .services, [class*="service"]');
+              const aboutSection = document.querySelector('.about-section, .about, [class*="about"]');
+              const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button');
+              
+              console.log('🔍 Found elements:', {
+                heroSection: !!heroSection,
+                servicesSection: !!servicesSection,
+                aboutSection: !!aboutSection,
+                textElements: textElements.length
+              });
+              
+              // Check if we have the essential React components rendered
+              if ((heroSection || servicesSection || aboutSection) && textElements.length > 10) {
+                console.log('✅ React components detected, proceeding with editor setup');
+                resolve();
+              } else if (attempts >= maxAttempts) {
+                console.log('⚠️ Max attempts reached, proceeding anyway');
                 resolve();
               } else {
+                attempts++;
                 setTimeout(checkForElements, 100);
               }
             };
+            
+            // Start checking immediately
             checkForElements();
           });
         }
@@ -162,11 +184,13 @@ function injectEditorBridge(iframe) {
         });
       };
       
-      // Initialize when DOM is ready
+      // Initialize when DOM is ready with additional delay for React components
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', window.initEditorBridge);
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(window.initEditorBridge, 2000);
+        });
       } else {
-        window.initEditorBridge();
+        setTimeout(window.initEditorBridge, 2000);
       }
     `;
     
