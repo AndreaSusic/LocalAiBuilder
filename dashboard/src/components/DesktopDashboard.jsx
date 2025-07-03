@@ -20,36 +20,86 @@ function injectEditorBridge(iframe) {
     script.innerHTML = `
       console.log('✅ Mobile Editor bridge injected successfully as inline script');
       
-      // Basic editor bridge functionality
+      // Enhanced editor bridge functionality with React component support
       window.initEditorBridge = function() {
-        console.log('🔧 Initializing inline editor bridge...');
+        console.log('🔧 Initializing enhanced editor bridge...');
         
-        // Make all text elements editable
-        const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, li, td, th, figcaption, blockquote, a, button');
+        // Wait for React components to fully render
+        function waitForReactComponents() {
+          return new Promise((resolve) => {
+            const checkForElements = () => {
+              // Look for React-specific content indicators
+              const reactContent = document.querySelector('[data-reactroot], .react-component, .hero-section, .services-section, .about-section');
+              const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span:not(:empty), div:not(:empty), li, td, th, figcaption, blockquote, a, button');
+              
+              if (reactContent && textElements.length > 5) {
+                resolve();
+              } else {
+                setTimeout(checkForElements, 100);
+              }
+            };
+            checkForElements();
+          });
+        }
         
-        elements.forEach(element => {
-          // Skip if element is already marked as non-editable
-          if (element.closest('[contenteditable="false"]') || 
-              element.closest('script') ||
-              element.closest('style')) {
-            return;
-          }
+        waitForReactComponents().then(() => {
+          // Enhanced element selection with React component awareness
+          const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button');
           
-          // Add hover effect and click handler
-          element.style.cursor = 'pointer';
-          element.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+          let editableCount = 0;
+          
+          elements.forEach(element => {
+            // Skip elements that shouldn't be editable
+            if (element.closest('[contenteditable="false"]') || 
+                element.closest('script') ||
+                element.closest('style') ||
+                element.closest('nav') ||
+                element.closest('header') ||
+                element.closest('.navbar') ||
+                element.closest('.toolbar') ||
+                element.querySelector('script, style, svg') ||
+                !element.textContent.trim() ||
+                element.textContent.trim().length < 2) {
+              return;
+            }
             
-            // Make element editable
-            element.contentEditable = 'true';
-            element.focus();
+            // Add editable functionality
+            element.style.cursor = 'pointer';
+            element.style.transition = 'all 0.2s ease';
+            element.setAttribute('data-editable', 'true');
+            editableCount++;
             
-            // Add visual feedback
-            element.style.outline = '2px solid #007cff';
-            element.style.backgroundColor = 'rgba(0, 124, 255, 0.05)';
+            // Click handler for editing
+            element.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              // Deactivate other elements
+              document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+                if (el !== element) {
+                  el.contentEditable = 'false';
+                  el.style.outline = 'none';
+                  el.style.backgroundColor = '';
+                }
+              });
+              
+              // Make element editable
+              element.contentEditable = 'true';
+              element.focus();
+              
+              // Add visual feedback
+              element.style.outline = '2px solid #007cff';
+              element.style.backgroundColor = 'rgba(0, 124, 255, 0.05)';
+              
+              // Select all text
+              const range = document.createRange();
+              range.selectNodeContents(element);
+              const selection = window.getSelection();
+              selection.removeAllRanges();
+              selection.addRange(range);
+            });
             
-            // Handle blur to stop editing
+            // Blur handler to stop editing
             element.addEventListener('blur', function() {
               element.contentEditable = 'false';
               element.style.outline = 'none';
@@ -62,26 +112,54 @@ function injectEditorBridge(iframe) {
                   data: {
                     element: element.tagName,
                     content: element.innerHTML,
-                    text: element.textContent
+                    text: element.textContent,
+                    id: element.id || null,
+                    className: element.className || null
                   }
                 }, '*');
               }
             });
+            
+            // Enhanced hover effects
+            element.addEventListener('mouseenter', function() {
+              if (element.contentEditable !== 'true') {
+                element.style.outline = '2px dashed #007cff';
+                element.style.outlineOffset = '2px';
+              }
+            });
+            
+            element.addEventListener('mouseleave', function() {
+              if (element.contentEditable !== 'true') {
+                element.style.outline = 'none';
+                element.style.outlineOffset = '0px';
+              }
+            });
+            
+            // Handle Enter key
+            element.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                element.blur();
+              }
+              if (e.key === 'Escape') {
+                element.blur();
+              }
+            });
           });
           
-          // Add hover effect
-          element.addEventListener('mouseenter', function() {
-            element.style.outline = '2px dashed #007cff';
-          });
+          console.log('✅ Made ' + editableCount + ' elements editable out of ' + elements.length + ' total elements');
           
-          element.addEventListener('mouseleave', function() {
-            if (element.contentEditable !== 'true') {
-              element.style.outline = 'none';
+          // Add global click handler to deactivate editing
+          document.addEventListener('click', function(e) {
+            if (!e.target.closest('[data-editable="true"]')) {
+              document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+                el.contentEditable = 'false';
+                el.style.outline = 'none';
+                el.style.backgroundColor = '';
+              });
             }
           });
         });
-        
-        console.log('✅ Made ' + elements.length + ' elements editable');
       };
       
       // Initialize when DOM is ready
