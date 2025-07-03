@@ -81,29 +81,6 @@ html, body { overflow-x: hidden; }
   --transition-normal: 300ms ease-in-out;
   --transition-slow: 500ms ease-in-out;
 
-
-
-/* Target ALL <h2> elements */
-h2 {
-  position: relative;           /* establishes the containing block          */
-  display: inline-block;        /* keeps the heading’s width tight to text   */
-}
-
-/* Draw the short underline */
-h2::after {
-  content: "";
-  position: absolute;
-  left: 50%;                    /* centre the line under the heading         */
-  transform: translateX(-50%);  /* …exact centering                          */
-
-  width: 10px;                  /* ← line length                             */
-  height: 3px;                  /* ← thickness                               */
-  background: var(--primary-color);
-
-  bottom: -4px;                 /* ← vertical gap between text & line        */
-  border-radius: 2px;           /* optional: rounds line ends a little       */
-}
-
   /* ---------- 2. GLOBAL CONTAINERS ------------------ */
   .container{width:90%;max-width:1100px;margin-inline:auto}
   .text-center{text-align:center}
@@ -1815,7 +1792,7 @@ line-height: 1.4;
   background:var(--gray-100);border:1px solid var(--gray-300);
   padding:1.25rem;text-align:center;border-radius:6px;transition:background .2s;
 }
-.industry-box:hover{background:#ffc000;color:#fff}
+.industry-box:hover{background:var(--brand-yellow);color:#fff}
 
 /* ---------- 10. CTA BANNER ------------------------ */
 .cta-banner{
@@ -1823,7 +1800,7 @@ line-height: 1.4;
 }
 .cta-banner a{
   display:inline-block;margin-top:1rem;
-  background:#ffc000;color:#fff;padding:12px 28px;border-radius:4px;font-weight:700
+  background:var(--brand-yellow) !important;color:#fff;padding:12px 28px;border-radius:4px;font-weight:700
 }
 
 
@@ -2106,7 +2083,7 @@ line-height: 1.4;
     box-shadow: var(--shadow-lg);
     transform: translateY(-100%);
     transition: transform var(--transition-normal);
-    z-index: 900;
+    z-index: 999;
   }
 
   .nav-links.active {
@@ -2265,7 +2242,7 @@ select:focus {
 
 /* Chat layout */
 /* Layout system */
-#chatContainer{display:flex;gap:2rem;align-items:flex-start;min-height:50vh;}
+#chatContainer{display:flex;gap:2rem;align-items:flex-start;min-height:100vh;}
 .hero{flex:1 0 45%;max-width:45%;}
 .chatPane{flex:1 0 55%;height:90vh;border:1px solid #ddd;border-radius:8px;margin:30px 0;max-width:55%;}
 
@@ -2278,7 +2255,7 @@ select:focus {
 /* Responsive design for tablets */
 @media(max-width:1024px){
   #chatContainer{flex-direction:column;gap:1rem;}
-  .hero{flex:0 0 100%;max-width:100%;}
+  .hero{flex:1 0 100%;max-width:100%;}
   .chatPane{flex:1 0 100%;height:75vh;margin:15px 0;max-width:100%;}
 }
 
@@ -2466,11 +2443,6 @@ iframe.chatPane {
   margin: 0 .5rem;
 }
 
-@media (max-width: 768px) {
-.footer-col:nth-child(2) {
-  padding-left: 0;
-}
-}
 
 /* =======================================================
    MOBILE-FIRST NAVIGATION
