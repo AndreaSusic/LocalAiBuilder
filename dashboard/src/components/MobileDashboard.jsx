@@ -4,28 +4,60 @@ import { useNavigate } from "react-router-dom";
 // Inject editor bridge into iframe for inline editing
 function injectEditorBridge(iframe) {
   try {
+    console.log('🔧 Attempting to inject editor bridge...');
+    
     const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
     
     // Check if bridge is already injected
     if (frameDoc.querySelector('#editor-bridge-script')) {
+      console.log('⚠️ Editor bridge already injected');
       return;
     }
     
-    // Inject editor bridge script
-    const script = frameDoc.createElement('script');
-    script.id = 'editor-bridge-script';
-    script.type = 'module';
-    script.src = '/editorBridge.js';
-    
-    script.onload = () => {
-      console.log('✅ Editor bridge injected successfully');
+    // Wait for iframe to fully load
+    const injectScript = () => {
+      // Inject editor bridge script
+      const script = frameDoc.createElement('script');
+      script.id = 'editor-bridge-script';
+      script.src = 'http://localhost:5000/editorBridge.js';
+      
+      script.onload = () => {
+        console.log('✅ Editor bridge injected successfully');
+        // Force initialization
+        if (frameDoc.defaultView && frameDoc.defaultView.initEditorBridge) {
+          frameDoc.defaultView.initEditorBridge();
+        }
+      };
+      
+      script.onerror = (error) => {
+        console.error('❌ Failed to inject editor bridge:', error);
+      };
+      
+      frameDoc.head.appendChild(script);
+      
+      // Also inject CSS for better styling
+      const style = frameDoc.createElement('style');
+      style.textContent = `
+        .ez-editable-active {
+          outline: 2px solid #007cff !important;
+          outline-offset: 2px !important;
+        }
+        .ez-toolbar {
+          z-index: 99999 !important;
+        }
+        .ez-element-delete {
+          z-index: 100000 !important;
+        }
+      `;
+      frameDoc.head.appendChild(style);
     };
     
-    script.onerror = (error) => {
-      console.error('❌ Failed to inject editor bridge:', error);
-    };
-    
-    frameDoc.head.appendChild(script);
+    // Try to inject immediately, or wait for load
+    if (frameDoc.readyState === 'complete') {
+      injectScript();
+    } else {
+      iframe.addEventListener('load', injectScript);
+    }
     
     // Listen for save messages from the iframe
     window.addEventListener('message', (event) => {
