@@ -1880,7 +1880,7 @@ app.get('/api/kigen-data', async (req, res) => {
         }
       }
       
-      // Add authentic Serbian services to bootstrap data
+      // Add authentic Serbian services and GBP photos to bootstrap data
       if (bootstrapData && !bootstrapData.products) {
         bootstrapData.products = [
           {
@@ -1906,6 +1906,39 @@ app.get('/api/kigen-data', async (req, res) => {
           }
         ];
         console.log('✅ Added authentic Serbian services to bootstrap data');
+      }
+      
+      // PRIORITY: Import authentic GBP photos for Kigen Plastika
+      if (bootstrapData && bootstrapData.google_profile && (!bootstrapData.google_profile.photos || bootstrapData.images.every(img => img === null))) {
+        console.log('🖼️ Fetching authentic GBP photos for Kigen Plastika...');
+        try {
+          const gbpPhotoResponse = await fetch('http://localhost:5000/api/gbp-details', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              placeUrl: 'https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k'
+            })
+          });
+          
+          if (gbpPhotoResponse.ok) {
+            const gbpData = await gbpPhotoResponse.json();
+            if (gbpData.photos && gbpData.photos.length > 0) {
+              // Store raw photo URLs directly in images array
+              bootstrapData.images = gbpData.photos.slice(0, 10); // Take first 10 photos
+              
+              // Also store in google_profile for reference
+              if (!bootstrapData.google_profile) {
+                bootstrapData.google_profile = {};
+              }
+              bootstrapData.google_profile.photos = gbpData.photos;
+              
+              console.log('🖼️ Imported', gbpData.photos.length, 'authentic GBP photos');
+              console.log('🔗 First photo URL:', gbpData.photos[0]);
+            }
+          }
+        } catch (error) {
+          console.warn('⚠️ Could not fetch GBP photos:', error.message);
+        }
       }
       
       return res.json(bootstrapData);
