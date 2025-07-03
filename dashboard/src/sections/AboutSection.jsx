@@ -81,7 +81,7 @@ export default function AboutSection() {
       </section>
 
       {/* Team Section - Only show if team data exists and has actual member information */}
-      {team && team.length > 0 && team.some(member => member.name && member.name.trim() !== '') && (
+      {team && Array.isArray(team) && team.length > 0 && team.some(member => member && member.name && member.name.trim() !== '') && (
         <section className="team">
           <h2>Meet Our Team</h2>
           <div className="team-grid">
