@@ -22,9 +22,12 @@ export default function ReviewsSection() {
     }
   ];
 
-  // Use authentic GBP reviews if available, with proper star formatting
-  const testimonials = reviews && reviews.length > 0 
-    ? reviews.map(review => ({
+  // Use authentic GBP reviews from google_profile.reviews if available
+  const gbpReviews = google_profile?.reviews || reviews || [];
+  console.log('🔍 ReviewsSection - GBP reviews found:', gbpReviews.length, 'reviews');
+  
+  const testimonials = gbpReviews && gbpReviews.length > 0 
+    ? gbpReviews.map(review => ({
         text: review.text,
         author: review.author_name,
         stars: "★".repeat(review.rating) + "☆".repeat(5 - review.rating)
