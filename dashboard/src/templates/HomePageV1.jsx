@@ -512,6 +512,35 @@ export default function HomePageV1() {
             height: 100px;
           }
         }
+        
+        /* Inline Editor Styles */
+        .editable { 
+          cursor: text; 
+          position: relative; 
+          transition: all 0.2s ease;
+        }
+        .editable:hover { 
+          outline: 2px dotted #ffc000; 
+          outline-offset: 2px; 
+        }
+        .editable:focus { 
+          outline: 2px solid #ffc000; 
+          outline-offset: 4px; 
+        }
+        .editable::after {
+          content: '';
+          position: absolute;
+          left: 0; 
+          bottom: -4px;
+          width: 10px; 
+          height: 3px;
+          background: #ffc000;
+          opacity: 0;
+          transition: opacity 0.2s ease;
+        }
+        .editable:hover::after {
+          opacity: 1;
+        }
       `}</style>
 
       {/* Google Fonts */}

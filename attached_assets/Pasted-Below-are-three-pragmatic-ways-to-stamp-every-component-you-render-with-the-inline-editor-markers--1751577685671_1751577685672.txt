@@ -1,0 +1,174 @@
+Below are three pragmatic ways to “stamp” every component you render with the inline-editor markers without tediously touching each JSX tag.
+Pick whichever fits your code-base size and appetite for automation.
+
+⸻
+
+1. A low-friction wrapper component (<Editable>)
+
+/**
+ * Editable.tsx
+ * Wrap ANY element; adds data-edit + optional extra classes.
+ */
+import React from 'react';
+
+type Props = {
+  /** Unique path the bridge uses to save edits */
+  path: string;
+  /** The element you actually want to render */
+  as?: React.ElementType;
+  /** Children or text */
+  children?: React.ReactNode;
+  /** Extra classes for styling */
+  className?: string;
+  /** Any other props for the target element */
+  [key: string]: any;
+};
+
+export default function Editable({
+  path,
+  as: Tag = 'span',
+  className = '',
+  children,
+  ...rest
+}: Props) {
+  return (
+    <Tag
+      data-edit={path}
+      className={`editable ${className}`}
+      {...rest}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+Use it everywhere you output data
+
+import Editable from '@/components/Editable';
+
+// single field
+<Editable as="h1" path="hero.title">
+  {siteData.hero.title}
+</Editable>
+
+// list
+{siteData.services.map((srv, i) => (
+  <li key={i}>
+    <Editable as="h3" path={`services[${i}].title`}>
+      {srv.title}
+    </Editable>
+    <Editable as="p"  path={`services[${i}].desc`}>
+      {srv.desc}
+    </Editable>
+  </li>
+))}
+
+Pros  Minimal boilerplate, keeps TypeScript types, no fancy build tooling.
+Cons  You still touch each output, but typing Editable is quick and explicit.
+
+⸻
+
+2. Higher-Order Component (withEditable) – bulk-apply to whole React trees
+
+If you have dozens of existing components already returning <h1> / <p> tags, wrap them once:
+
+function withEditable(Component, config) {
+  return function EditableWrapper(props) {
+    const rendered = <Component {...props} />;
+
+    // Walk the tree and inject data-edit wherever config matches
+    return React.cloneElement(rendered, null, React.Children.map(rendered.props.children, child => {
+      if (!React.isValidElement(child)) return child;
+
+      const key = config.find(k => k.selector(child));
+      return key
+        ? React.cloneElement(child, { 'data-edit': key.path })
+        : child;
+    }));
+  };
+}
+
+// Example usage
+export default withEditable(HomepageHero, [
+  { selector: el => el.type === 'h1', path: 'hero.title' },
+  { selector: el => el.type === 'p',  path: 'hero.subtitle' },
+]);
+
+Pros  Add paths in one mapping object per component; JSX stays untouched.
+Cons  A little meta; hard to express dynamic list indices.
+
+⸻
+
+3. One-time codemod (JSCodeshift / –write flag)
+
+If you’d rather auto-rewrite the source once and be done, run a codemod that:
+	1.	Scans all .tsx? files,
+	2.	Finds text nodes fed from siteData.*,
+	3.	Adds data-edit="…".
+
+npx jscodeshift -t ./codemods/add-data-edit.js src --extensions=js,jsx,ts,tsx
+
+Sketch of the transform (add-data-edit.js):
+
+module.exports = function(file, api) {
+  const j = api.jscodeshift;
+  return j(file.source)
+    .find(j.JSXElement)
+    .forEach(path => {
+      const opening = path.value.openingElement;
+      const attrExists = opening.attributes.some(
+        a => a.name?.name === 'data-edit'
+      );
+      if (!attrExists) {
+        opening.attributes.push(
+          j.jsxAttribute(
+            j.jsxIdentifier('data-edit'),
+            j.literal('TODO_FILL_PATH')
+          )
+        );
+      }
+    })
+    .toSource();
+};
+
+After the run, search for "TODO_FILL_PATH" and fill real keys.
+
+Pros  Fast, changes every file in minutes.
+Cons  One-shot; you still need to correct the paths.
+
+⸻
+
+CSS touch-up (once)
+
+/* global visual cue */
+.editable         { cursor: text; position: relative; }
+.editable:focus   { outline: 2px dashed #ffc000; outline-offset: 4px; }
+
+/* optional yellow underline 10 px long */
+.editable::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -4px;
+  width: 10px; height: 3px;
+  background: #ffc000;
+}
+
+
+⸻
+
+Which route should you take?
+
+Situation	Best choice
+Starting fresh or refactoring anyway	<Editable> wrapper – explicit, clean, easy.
+Huge existing code, little time	Codemod – script it once, hand-fix only the paths.
+Want zero extra JSX and willing to maintain mapping files	HOC approach.
+
+Add one of these today, refresh the preview, and your console should switch from
+
+✅ Made 0 elements editable
+
+to
+
+✅ Made 37 elements editable
+
+— and you’ll finally be able to click and edit inline.  Ping me if you hit edge-cases (SVG, nested fragments, etc.).
