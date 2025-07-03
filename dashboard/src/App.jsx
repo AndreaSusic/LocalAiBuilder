@@ -10,6 +10,7 @@ import HomepageV2 from "./templates/homepage/v2/index.jsx";
 import HomepageV3 from "./templates/homepage/v3/index.jsx";
 import ServiceInvisalign from "./pages/ServiceInvisalign.jsx";
 import ContactV1 from "./pages/ContactV1.jsx";
+import TemplatePreview from "./components/TemplatePreview.jsx";
 import { validateBeforeRender } from "./utils/dataValidation";
 
 export default function App({ bootstrap }) {
@@ -40,8 +41,10 @@ export default function App({ bootstrap }) {
 
   // Check if we're on a short URL path (/t/v1/:id) - show template directly
   const currentPath = window.location.pathname;
-  if (currentPath.match(/^\/t\/v1\/[a-zA-Z0-9]+$/)) {
-    return <HomepageV1 bootstrap={bootstrap} />;
+  const templateMatch = currentPath.match(/^\/t\/v1\/([a-zA-Z0-9]+)$/);
+  if (templateMatch) {
+    const previewId = templateMatch[1];
+    return <TemplatePreview previewId={previewId} fallbackBootstrap={bootstrap} />;
   }
 
   return (

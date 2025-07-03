@@ -15,7 +15,15 @@
  * 4) Stock images (lowest)
  */
 
-const fetch = require('node-fetch');
+// Use dynamic import for node-fetch ES module
+let fetch;
+async function ensureFetch() {
+  if (!fetch) {
+    const { default: nodeFetch } = await import('node-fetch');
+    fetch = nodeFetch;
+  }
+  return fetch;
+}
 
 /**
  * Automatic GBP data import flow for any user profile
@@ -29,7 +37,10 @@ async function executeAutoGbpFlow(placeUrl, existingUserData = {}) {
   console.log('🔍 Existing user data keys:', Object.keys(existingUserData));
   
   try {
-    // Step 1: Fetch comprehensive GBP details
+    // Step 1: Ensure fetch is available
+    await ensureFetch();
+    
+    // Step 2: Fetch comprehensive GBP details
     const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
     if (!GOOGLE_API_KEY) {
       throw new Error('Google API key not configured');
@@ -125,6 +136,8 @@ async function executeAutoGbpFlow(placeUrl, existingUserData = {}) {
  * Extract place ID from various GBP URL formats
  */
 async function extractPlaceId(placeUrl, apiKey) {
+  await ensureFetch();
+  
   // Direct place_id parameter
   const placeIdMatch = placeUrl.match(/place_id=([^&]+)/);
   if (placeIdMatch) {

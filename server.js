@@ -919,6 +919,7 @@ app.get('/api/user-data', async (req, res) => {
                 `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=${photo.photo_reference}&key=${process.env.GOOGLE_PLACES_API_KEY}` :
                 photo.url || photo
             })) : [],
+            reviews: gbpData.reviews || [], // ENSURE AUTHENTIC REVIEWS ARE AVAILABLE IN google_profile.reviews
             products: [] // Remove placeholder products - use authentic septic tank services only
           } : {},
           gbpCid: gbpData?.place_id || null,
@@ -1152,10 +1153,11 @@ app.post('/api/gbp-details', async (req, res) => {
     console.log('📍 Profile URL:', placeUrl);
     console.log('🔍 Existing data keys:', Object.keys(existingData));
     
-    // Use the automatic GBP flow system
-    const { executeAutoGbpFlow } = require('./server/gbpAutoFlow.js');
-    
+    // Use the automatic GBP flow system with dynamic import
     try {
+      const gbpAutoFlowModule = await import('./server/gbpAutoFlow.js');
+      const { executeAutoGbpFlow } = gbpAutoFlowModule;
+      
       const gbpData = await executeAutoGbpFlow(placeUrl, existingData);
       
       console.log('✅ AUTOMATIC GBP IMPORT SUCCESSFUL');
@@ -1169,7 +1171,7 @@ app.post('/api/gbp-details', async (req, res) => {
       return res.json(gbpData);
       
     } catch (autoFlowError) {
-      console.log('⚠️ Auto flow failed, falling back to basic API');
+      console.log('⚠️ Auto flow failed, falling back to basic API:', autoFlowError.message);
       // Fallback to original implementation if auto flow fails
     }
     
@@ -1878,6 +1880,27 @@ app.get('/preview', (req, res) => {
 app.get('/dashboard', (req, res) => {
   console.log('📂 Serving SPA from production build');
   res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
+
+// Template preview routes - serve React app for /t/v1/:id paths
+app.get('/t/v1/:id', (req, res) => {
+  console.log('📋 Serving template preview for ID:', req.params.id);
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
+
+// API endpoint to retrieve cached preview data
+app.get('/api/preview/:id', (req, res) => {
+  const { id } = req.params;
+  console.log('📋 Retrieving cached preview data for ID:', id);
+  
+  if (previewCache.has(id)) {
+    const cachedData = previewCache.get(id);
+    console.log('✅ Found cached data for:', cachedData.company_name || 'Unknown Company');
+    res.json(cachedData);
+  } else {
+    console.log('❌ No cached data found for ID:', id);
+    res.status(404).json({ error: 'Preview expired or not found' });
+  }
 });
 
 // Force authentic Kigen Plastika data endpoint
