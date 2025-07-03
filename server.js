@@ -1196,16 +1196,8 @@ app.post('/api/gbp-details', async (req, res) => {
       relative_time_description: review.relative_time_description
     }));
 
-    // For products, we'll use photos with descriptive analysis
-    // Since Google Places API doesn't directly provide product info, 
-    // we'll structure the photos as potential products
-    const products = photos.slice(0, 6).map((photo, index) => ({
-      id: `product_${index + 1}`,
-      name: `Product ${index + 1}`,
-      image: photo,
-      description: `High-quality product from ${details.result.name}`,
-      category: details.result.types?.[0] || 'product'
-    }));
+    // No placeholder products - use authentic data only
+    const products = [];
 
     res.json({
       place_id,
