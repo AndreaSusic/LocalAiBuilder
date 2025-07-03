@@ -57,7 +57,7 @@ export default function ServicesSection({ bootstrap }) {
     } else {
       // For septic tanks and other industries, create specific product list
       if (services.toLowerCase().includes('septic')) {
-        servicesList = ['Septic Tanks', 'Plastic Components', 'Installation Services'];
+        servicesList = ['Septic Tank Systems', 'Plastic Components', 'Installation Services'];
       } else {
         // For other industries, split by common delimiters
         servicesList = services.split(/[,&+]/).map(s => s.trim()).filter(s => s.length > 0).slice(0, 3);
@@ -131,9 +131,20 @@ export default function ServicesSection({ bootstrap }) {
         // Ignore placeholder data and use actual business services
         console.log('🚫 Ignoring placeholder GMB data, using actual business services');
         finalTitle = serviceText;
-        finalDescription = services.toLowerCase().includes('septic') ? 
-          `Professional ${serviceText.toLowerCase()} manufacturing and installation from ${company_name}.` :
-          `Professional ${serviceText.toLowerCase()} services from ${company_name}.`;
+        // Create specific descriptions for septic tank business
+        if (services.toLowerCase().includes('septic')) {
+          if (serviceText.toLowerCase().includes('septic')) {
+            finalDescription = `Complete septic tank systems manufactured with high-quality plastic construction for residential and commercial properties from ${company_name}.`;
+          } else if (serviceText.toLowerCase().includes('plastic')) {
+            finalDescription = `Durable plastic components and containers manufactured for septic systems and water storage applications from ${company_name}.`;
+          } else if (serviceText.toLowerCase().includes('installation')) {
+            finalDescription = `Professional installation and maintenance services for septic tank systems and plastic components from ${company_name}.`;
+          } else {
+            finalDescription = `Professional septic tank manufacturing and installation services from ${company_name}.`;
+          }
+        } else {
+          finalDescription = `Professional ${serviceText.toLowerCase()} services from ${company_name}.`;
+        }
       }
     } else {
       // Fallback descriptions when no GMB data
