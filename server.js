@@ -1137,15 +1137,40 @@ app.post('/api/complete-website', async (req, res) => {
   }
 });
 
-// GBP Details API
+// AUTOMATIC GBP IMPORT API - Strict flow for any user profile
 app.post('/api/gbp-details', async (req, res) => {
   try {
-    const { placeUrl } = req.body;
+    const { placeUrl, existingData = {} } = req.body;
     if (!placeUrl) return res.status(400).json({ error: 'no url' });
     
     const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
     if (!GOOGLE_API_KEY) {
       return res.status(500).json({ error: 'Google API key not configured' });
+    }
+    
+    console.log('🚀 AUTOMATIC GBP IMPORT API called');
+    console.log('📍 Profile URL:', placeUrl);
+    console.log('🔍 Existing data keys:', Object.keys(existingData));
+    
+    // Use the automatic GBP flow system
+    const { executeAutoGbpFlow } = require('./server/gbpAutoFlow.js');
+    
+    try {
+      const gbpData = await executeAutoGbpFlow(placeUrl, existingData);
+      
+      console.log('✅ AUTOMATIC GBP IMPORT SUCCESSFUL');
+      console.log('📊 Imported data summary:', {
+        contact: !!(gbpData.phone || gbpData.address || gbpData.email),
+        reviews: gbpData.reviews ? gbpData.reviews.length : 0,
+        photos: gbpData.photos ? gbpData.photos.length : 0,
+        business_info: !!(gbpData.business_hours || gbpData.business_status)
+      });
+      
+      return res.json(gbpData);
+      
+    } catch (autoFlowError) {
+      console.log('⚠️ Auto flow failed, falling back to basic API');
+      // Fallback to original implementation if auto flow fails
     }
     
     // STEP 1: fetch Place ID - try multiple approaches for different URL formats

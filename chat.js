@@ -610,9 +610,104 @@ async function sendUser() {
     // If user responded to social question but no URLs detected, mark as "no social media"
     state.social = { facebook: null, instagram: null, tiktok: null, linkedin: null, response: text };
   }
+  // AUTOMATIC GBP IMPORT SYSTEM - strict flow for any user profile
   if (!state.google_profile && RX_GBP.test(text)) {
     const urlMatch = text.match(/https?:\/\/\S+/);
-    if (urlMatch) state.google_profile = urlMatch[0];
+    if (urlMatch) {
+      console.log('🔍 GBP URL detected, starting automatic import:', urlMatch[0]);
+      
+      // Import GBP data automatically using the strict flow
+      try {
+        const response = await fetch('/api/gbp-details', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ placeUrl: urlMatch[0] })
+        });
+        
+        const gbpData = await response.json();
+        
+        if (gbpData.error || !gbpData.name) {
+          console.log('❌ GBP import failed:', gbpData.error || 'No business name found');
+          state.google_profile = 'no';
+        } else {
+          console.log('✅ GBP data fetched for:', gbpData.name);
+          
+          // STRICT AUTOMATIC IMPORT - PRIORITY 1: Contact Information
+          if (!state.phone && gbpData.phone) {
+            state.phone = gbpData.phone;
+            console.log('📞 AUTO-IMPORTED: Phone -', gbpData.phone);
+          }
+          
+          if (!state.address && gbpData.address) {
+            state.address = gbpData.address;
+            console.log('📍 AUTO-IMPORTED: Address -', gbpData.address);
+          }
+          
+          if (!state.website && gbpData.website) {
+            state.website = gbpData.website;
+            console.log('🌐 AUTO-IMPORTED: Website -', gbpData.website);
+          }
+          
+          if (!state.email && gbpData.email) {
+            state.email = gbpData.email;
+            console.log('📧 AUTO-IMPORTED: Email -', gbpData.email);
+          }
+          
+          // PRIORITY 2: Reviews (always import authentic reviews)
+          if (gbpData.reviews && gbpData.reviews.length > 0) {
+            state.reviews = gbpData.reviews.map(review => ({
+              ...review,
+              source: 'google_business_profile'
+            }));
+            console.log('⭐ AUTO-IMPORTED: Reviews -', gbpData.reviews.length, 'authentic GBP reviews');
+          }
+          
+          // PRIORITY 3: Business Hours and Maps URL
+          if (gbpData.business_hours) {
+            state.business_hours = gbpData.business_hours;
+            console.log('🕐 AUTO-IMPORTED: Business hours');
+          }
+          
+          if (gbpData.maps_url) {
+            state.maps_url = gbpData.maps_url;
+            console.log('🗺️ AUTO-IMPORTED: Maps URL');
+          }
+          
+          // PRIORITY 4: Rating and Review Count
+          if (gbpData.rating) {
+            state.rating = gbpData.rating;
+            console.log('⭐ AUTO-IMPORTED: Rating -', gbpData.rating, 'stars');
+          }
+          
+          if (gbpData.total_reviews) {
+            state.total_reviews = gbpData.total_reviews;
+            console.log('📊 AUTO-IMPORTED: Total reviews -', gbpData.total_reviews);
+          }
+          
+          // PRIORITY 5: Photos (only if user hasn't uploaded images)
+          const hasUserImages = images && images.length > 0;
+          if (!hasUserImages && gbpData.photos && gbpData.photos.length > 0) {
+            state.images = gbpData.photos;
+            console.log('📸 AUTO-IMPORTED: Photos -', gbpData.photos.length, 'authentic GBP photos');
+          }
+          
+          // Store complete GBP profile
+          state.google_profile = {
+            url: urlMatch[0],
+            place_id: gbpData.place_id,
+            name: gbpData.name,
+            verified: true,
+            import_date: new Date().toISOString(),
+            auto_imported: true
+          };
+          
+          console.log('✅ AUTOMATIC GBP IMPORT COMPLETED for:', gbpData.name);
+        }
+      } catch (error) {
+        console.error('❌ AUTOMATIC GBP IMPORT ERROR:', error);
+        state.google_profile = 'no';
+      }
+    }
   }
   if (!state.payment_plans && RX_PAY.test(text)) {
     state.payment_plans = text;
