@@ -3,13 +3,17 @@ import { SiteDataContext } from '../context/SiteDataContext.js';
 
 export default function NavigationSection() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { company_name, services, industry, contact = {} } = useContext(SiteDataContext) || {};
+  const { company_name, services, industry, contact = {}, user_products = [] } = useContext(SiteDataContext) || {};
   
   const phone = contact.phone || '+1 (555) 123-4567';
   
-  // Parse services to extract individual products/services
+  // Parse services to extract individual products/services, prioritize user products
   let servicesList = [];
-  if (Array.isArray(services)) {
+  
+  // First, check for user products (authentic GMB or user-provided products)
+  if (user_products && Array.isArray(user_products) && user_products.length > 0) {
+    servicesList = user_products;
+  } else if (Array.isArray(services)) {
     servicesList = services;
   } else if (typeof services === 'string' && services.length > 0) {
     // For grass/sod landscaping, look for specific grass types mentioned or extract from context

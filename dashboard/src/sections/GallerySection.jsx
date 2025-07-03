@@ -15,7 +15,8 @@ export default function GallerySection() {
       (img.startsWith('http://') || img.startsWith('https://'))
     ) : [];
   
-  const galleryImages = [...gbpPhotos, ...providedImages];
+  // Prioritize authentic GBP photos for gallery display
+  const galleryImages = gbpPhotos.length > 0 ? gbpPhotos : providedImages;
   
   // Don't show gallery if no images available
   if (galleryImages.length === 0) return null;
