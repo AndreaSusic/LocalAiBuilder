@@ -1,0 +1,90 @@
+recalculate_head_data
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+main.jsx:154 BOOTSTRAP >> Object
+main.jsx:155 Current path: /preview/
+main.jsx:156 Root element exists: true
+main.jsx:170 React app rendered successfully
+App.jsx:21 App rendering with bootstrap: Object
+App.jsx:22 isMobile: false
+content.js:48 request OK
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: Object
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+extension_content.js:1 recalculate_head_data
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+robots.txt:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+DesktopDashboard.jsx:98 Created short URL for preview: /t/v1/mcnf41ynmw1wbi4grgi
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+Console.js:61 BOOTSTRAP >> Object
+Console.js:61 Current path: /t/v1/mcnf41ynmw1wbi4grgi
+Console.js:61 Root element exists: true
+Console.js:61 React app rendered successfully
+Console.js:61 App rendering with bootstrap: Object
+Console.js:61 isMobile: false
+Console.js:61 🔍 Fetching preview data for ID: mcnf41ynmw1wbi4grgi
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: Object
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 ✅ Loaded cached preview data for: Kigen Plastika
+Console.js:61 📊 Data includes reviews: true
+Console.js:61 📊 Data includes photos: true
+Console.js:61 🎨 Rendering template with data for: Kigen Plastika
+Console.js:61 HomepageV1 using data: Object
+Console.js:61 ServicesSection DEBUG - Services data: Septic Tanks string
+Console.js:61 ServicesSection DEBUG - GBP products: undefined
+Console.js:61 🏅 APPLYING SERVICE PRIORITY HIERARCHY
+Console.js:61 🥇 PRIORITY 1: Using user input services text from chat: Septic Tanks
+Console.js:61 🖼️ APPLYING IMAGE PRIORITY HIERARCHY
+Console.js:61 🥇 PRIORITY 1: Using user uploaded images: 10
+Console.js:61 ServicesSection DEBUG - ServicesList: Array(1) Type: object
+Console.js:61 ServicesSection DEBUG - GBP Products: 0 Available: Array(0)
+Console.js:61 ServicesSection DEBUG - Processing service: Septic Tanks Type: string Index: 0
+Console.js:61 ServicesSection DEBUG - ServicesToShow: Array(1)
+Console.js:61 AboutSection DEBUG - Team data: Array(0) Length: 0
+Console.js:61 🔍 ReviewsSection - Full siteData keys: Array(17)
+Console.js:61 🔍 ReviewsSection - google_profile: https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k
+Console.js:61 🔍 ReviewsSection - google_profile.reviews: undefined
+Console.js:61 🔍 ReviewsSection - reviews prop: Array(5)
+Console.js:61 🔍 ReviewsSection - team data: Array(0)
+Console.js:61 🔍 ReviewsSection - Has reviews in google_profile? false
+Console.js:61 🔍 ReviewsSection - Has reviews in main? true
+Console.js:61 🔍 ReviewsSection - GBP reviews found: 5 reviews
+Console.js:61 🔍 ReviewsSection - First review sample: Object
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: Object
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+editorBridge.js:712 Uncaught SyntaxError: Identifier 'hideToolbar' has already been declared
+DesktopDashboard.jsx:22 ✅ Editor bridge injected successfully
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 🔧 Color Guard: Fixed contrast for element, bg: #ffffff, new color: #000000
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
