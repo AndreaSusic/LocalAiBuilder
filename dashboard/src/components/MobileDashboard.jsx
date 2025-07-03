@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
 // Inject editor bridge into iframe for inline editing
 function injectEditorBridge(iframe) {
