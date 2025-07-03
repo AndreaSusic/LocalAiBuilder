@@ -363,10 +363,7 @@ app.get('/api/template-data/:dataId', (req, res) => {
   }
 });
 
-app.get(['/dashboard', '/preview', '/template/:id', '/templates/homepage/v1/index.jsx', '/templates/homepage/v2/index.jsx', '/templates/homepage/v3/index.jsx'], (_req, res) => {
-  console.log('📂 Serving SPA from production build');
-  res.sendFile(path.join(dist, 'index.html'));
-});
+// Removed problematic route array that caused path-to-regexp error
 
 // Auth routes - Updated for GBP Business scope
 app.get('/auth/google', 
@@ -1267,12 +1264,20 @@ app.post('/api/gbp-details', async (req, res) => {
         products = await fetchGbpProducts(locationId, refreshToken);
         console.log(`✅ Found ${products.length} authentic GBP products`);
         
+        // If we got GBP products, prefer them over website extraction
+        if (products.length > 0) {
+          console.log('🎯 Using authentic GBP products from Business Profile dashboard');
+        }
+        
       } catch (gbpError) {
         console.log('❌ GBP Business Information API failed:', gbpError.message);
+        if (gbpError.message.includes('429')) {
+          console.log('⏳ API quota may still be propagating. Using fallback for now.');
+        }
         console.log('📋 Falling back to website extraction');
       }
     } else {
-      console.log('⚠️ No GOOGLE_REFRESH_TOKEN - GBP Business Information API unavailable');
+      console.log('⚠️ No refresh token found - GBP Business Information API unavailable');
       console.log('📋 Using Google Places API (limited data) + website extraction fallback');
     }
     
@@ -1409,6 +1414,57 @@ app.post('/api/generate-template', async (req, res) => {
   } catch (error) {
     console.error('Template generation error:', error);
     res.status(500).json({ error: 'Failed to generate template' });
+  }
+});
+
+// Test endpoint for GBP products
+app.get('/api/test-gbp-products', async (req, res) => {
+  if (!req.user?.id) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  
+  try {
+    // Get user's refresh token
+    const tokenResult = await pool.query(
+      'SELECT refresh_token FROM user_tokens WHERE user_id = $1',
+      [req.user.id]
+    );
+    
+    const userRefreshToken = tokenResult.rows[0]?.refresh_token;
+    if (!userRefreshToken) {
+      return res.status(400).json({ error: 'No refresh token found' });
+    }
+    
+    const { fetchGbpProducts } = require('./src/gbp/gbpAuth.js');
+    const locationId = 'locations/ChIJvW8VATCFWUcRDDXH5bhDN4k';
+    
+    const products = await fetchGbpProducts(locationId, userRefreshToken);
+    
+    res.json({
+      success: true,
+      location_id: locationId,
+      products_count: products.length,
+      products: products,
+      message: products.length > 0 ? 'GBP products found!' : 'GBP API accessible but no products configured'
+    });
+    
+  } catch (error) {
+    console.error('GBP test error:', error);
+    
+    let message = 'Unknown error';
+    if (error.message.includes('429')) {
+      message = 'Quota limit reached - APIs enabled but quota still propagating';
+    } else if (error.message.includes('403')) {
+      message = 'Permission denied - may need additional API scopes';
+    } else if (error.message.includes('404')) {
+      message = 'Location not found - check place_id format';
+    }
+    
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      message: message
+    });
   }
 });
 
@@ -1680,10 +1736,6 @@ app.post('/api/generate-pages', async (req, res) => {
 });
 
 // Handle SPA routing - serve index.html for unknown routes
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
 app.get('/chat', function(req, res) {
   res.sendFile(path.join(__dirname, 'chat.html'));
 });
@@ -1774,9 +1826,34 @@ app.get('/api/get-temp-data', async (req, res) => {
   }
 });
 
-// Duplicate route removed - using the one above
+// Remove duplicate homepage route
+app.get('/', (req, res) => {
+  console.log('Homepage accessed, user authenticated:', !!req.user);
+  
+  if (req.user) {
+    // Redirect authenticated users to preview
+    console.log('Authenticated user, redirecting to preview');
+    return res.redirect('/preview');
+  }
+  
+  // Serve main homepage for non-authenticated users
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-// Note: Removed catch-all route to avoid Express path-to-regexp error
+// Serve React app from production build for dashboard routes
+app.use('/preview', express.static(path.join(__dirname, 'dashboard', 'dist')));
+app.use('/dashboard', express.static(path.join(__dirname, 'dashboard', 'dist')));
+
+// React app routing for specific paths
+app.get('/preview', (req, res) => {
+  console.log('📂 Serving SPA from production build');
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+  console.log('📂 Serving SPA from production build');
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
 
 app.listen(PORT, '0.0.0.0', function() {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
