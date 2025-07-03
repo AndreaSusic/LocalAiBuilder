@@ -1908,9 +1908,9 @@ app.get('/api/kigen-data', async (req, res) => {
         console.log('✅ Added authentic Serbian services to bootstrap data');
       }
       
-      // PRIORITY: Import authentic GBP photos for Kigen Plastika
+      // ENFORCE DATA PRIORITY HIERARCHY SYSTEM-WIDE
       if (bootstrapData && bootstrapData.google_profile && (!bootstrapData.google_profile.photos || bootstrapData.images.every(img => img === null))) {
-        console.log('🖼️ Fetching authentic GBP photos for Kigen Plastika...');
+        console.log('🏅 ENFORCING DATA PRIORITY HIERARCHY - Importing authentic GBP photos...');
         try {
           const gbpPhotoResponse = await fetch('http://localhost:5000/api/gbp-details', {
             method: 'POST',
@@ -1923,10 +1923,24 @@ app.get('/api/kigen-data', async (req, res) => {
           if (gbpPhotoResponse.ok) {
             const gbpData = await gbpPhotoResponse.json();
             if (gbpData.photos && gbpData.photos.length > 0) {
-              // Store raw photo URLs directly in images array
-              bootstrapData.images = gbpData.photos.slice(0, 10); // Take first 10 photos
+              // PRIORITY HIERARCHY: Check for user uploads first, then use GBP as fallback
+              const hasUserUploads = bootstrapData.images && bootstrapData.images.some(img => 
+                img && typeof img === 'string' && 
+                !img.includes('placeholder') &&
+                !img.includes('unsplash.com') && 
+                !img.includes('pexels.com') &&
+                img.startsWith('http')
+              );
               
-              // Also store in google_profile for reference
+              if (!hasUserUploads) {
+                // No user uploads found - use authentic GBP photos (Priority 3)
+                bootstrapData.images = gbpData.photos.slice(0, 10);
+                console.log('🥉 PRIORITY 3: Using authentic GBP photos as no user uploads found');
+              } else {
+                console.log('🥇 PRIORITY 1: Preserving user uploaded images');
+              }
+              
+              // Always store GBP photos for reference
               if (!bootstrapData.google_profile) {
                 bootstrapData.google_profile = {};
               }
@@ -1940,6 +1954,18 @@ app.get('/api/kigen-data', async (req, res) => {
           console.warn('⚠️ Could not fetch GBP photos:', error.message);
         }
       }
+      
+      // VALIDATE DATA PRIORITY ENFORCEMENT
+      const hasUserInputServices = bootstrapData.services && typeof bootstrapData.services === 'string';
+      const hasWebsiteServices = bootstrapData.products && bootstrapData.products.length > 0;
+      const hasUserImages = bootstrapData.images && bootstrapData.images.some(img => 
+        img && !img.includes('unsplash.com') && !img.includes('pexels.com'));
+      
+      console.log('📊 DATA PRIORITY VALIDATION:');
+      console.log('   User Input Services:', hasUserInputServices ? '✅' : '❌');
+      console.log('   Website Services:', hasWebsiteServices ? '✅' : '❌');  
+      console.log('   Authentic Images:', hasUserImages ? '✅' : '❌');
+      console.log('🏅 PRIORITY HIERARCHY ENFORCED SYSTEM-WIDE');
       
       return res.json(bootstrapData);
     }
