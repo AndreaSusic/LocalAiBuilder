@@ -2,7 +2,13 @@ import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext';
 
 export default function ReviewsSection() {
-  const { google_profile = {}, reviews = [], rating = null, ai_customization = {} } = useContext(SiteDataContext) || {};
+  const siteData = useContext(SiteDataContext) || {};
+  const { google_profile = {}, reviews = [], rating = null, ai_customization = {}, team = [] } = siteData;
+  
+  // Debug logging to understand data structure
+  console.log('🔍 ReviewsSection - Full siteData:', siteData);
+  console.log('🔍 ReviewsSection - google_profile:', google_profile);
+  console.log('🔍 ReviewsSection - team data:', team);
   
   const defaultTestimonials = [
     {
@@ -35,6 +41,9 @@ export default function ReviewsSection() {
     : defaultTestimonials;
 
   const reviewsTitle = ai_customization.reviewsTitle || `What Our ${ai_customization.reviewerLabel || 'Clients'} Say`;
+  
+  // Check if team data exists and has members
+  const hasTeamData = team && Array.isArray(team) && team.length > 0;
 
   return (
     <>
@@ -52,27 +61,21 @@ export default function ReviewsSection() {
         </div>
       </section>
 
-      {/* Team */}
-      <section className="team">
-        <h2>Meet Our Team</h2>
-        <div className="team-grid">
-          <div className="team-member">
-            <img src="https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?w=900&auto=format&fit=crop&q=60" alt="Dr. Smith" />
-            <h4>Dr. Jane Smith</h4>
-            <p>Lead Dentist, DDS</p>
+      {/* Team - Only show if team data exists */}
+      {hasTeamData && (
+        <section className="team">
+          <h2>Meet Our Team</h2>
+          <div className="team-grid">
+            {team.map((member, index) => (
+              <div key={index} className="team-member">
+                <img src={member.photo || 'https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?w=900&auto=format&fit=crop&q=60'} alt={member.name} />
+                <h4>{member.name}</h4>
+                <p>{member.role}</p>
+              </div>
+            ))}
           </div>
-          <div className="team-member">
-            <img src="https://plus.unsplash.com/premium_photo-1674575134867-cb7623d39bdb?w=900&auto=format&fit=crop&q=60" alt="Dr. Johnson" />
-            <h4>Dr. Mike Johnson</h4>
-            <p>Cosmetic Specialist</p>
-          </div>
-          <div className="team-member">
-            <img src="https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900&auto=format&fit=crop&q=60" alt="Sarah" />
-            <h4>Sarah Wilson</h4>
-            <p>Dental Hygienist</p>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
 }
