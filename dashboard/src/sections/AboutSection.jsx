@@ -12,8 +12,22 @@ export default function AboutSection() {
   const providedImages = Array.isArray(images) ? 
     images.filter(img => typeof img === 'string' && img.length > 0) : [];
   
-  const availableImages = [...gbpPhotos, ...providedImages];
-  const aboutImage = availableImages[1] || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=900&auto=format&fit=crop&q=60';
+  // Extract image URLs properly from GBP photos
+  const getImageUrl = (img) => {
+    if (typeof img === 'string') return img;
+    if (img && typeof img === 'object') {
+      return img.url || img.src || null;
+    }
+    return null;
+  };
+
+  const gbpPhotoUrls = gbpPhotos.map(getImageUrl).filter(url => url && url.startsWith('http'));
+  const providedImageUrls = providedImages.map(getImageUrl).filter(url => url && url.startsWith('http'));
+  const availableImages = [...gbpPhotoUrls, ...providedImageUrls];
+  
+  // Use a different image for location section - prefer GBP exterior/building photos
+  const aboutImage = availableImages[2] || availableImages[1] || availableImages[0] || 
+    'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=900&auto=format&fit=crop&q=60';
   
   // Only treat as grass/sod landscaping if services actually mention grass or sod
   const contextData = useContext(SiteDataContext) || {};

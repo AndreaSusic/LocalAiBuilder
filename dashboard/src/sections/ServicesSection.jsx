@@ -20,10 +20,12 @@ export default function ServicesSection() {
   
   if (gbpProducts.length > 0) {
     // Use authentic GBP products data - extract names from objects
+    // CRITICAL: Protect authentic product names from AI override
     servicesList = gbpProducts.slice(0, 3).map(product => {
       if (typeof product === 'string') return product;
       return product.name || product.title || String(product);
     });
+    console.log('🔒 PROTECTING AUTHENTIC GBP PRODUCTS:', servicesList);
   } else if (Array.isArray(services)) {
     servicesList = services.slice(0, 3);
   } else if (typeof services === 'string' && services.length > 0) {
@@ -77,6 +79,7 @@ export default function ServicesSection() {
   const sectionTitle = isLandscaping ? 'Our Products' : 'Our Services';
 
   console.log('ServicesSection DEBUG - ServicesList:', servicesList, 'Type:', typeof servicesList);
+  console.log('ServicesSection DEBUG - GBP Products:', gbpProducts.length, 'Available:', gbpProducts);
   
   const servicesToShow = servicesList.length > 0 ? servicesList.map((service, index) => {
     console.log('ServicesSection DEBUG - Processing service:', service, 'Type:', typeof service, 'Index:', index);
@@ -98,10 +101,13 @@ export default function ServicesSection() {
     
     return {
       title: serviceText,
-      description: isLandscaping ? 
-        `Premium ${serviceText.toLowerCase()} perfect for your lawn and landscaping needs.` :
-        `Professional ${serviceText.toLowerCase()} services tailored to your needs.`,
-      image: serviceImage
+      description: gbpProducts.length > 0 ? 
+        `High-quality ${serviceText.toLowerCase()} from ${company_name || 'our company'}.` :
+        (isLandscaping ? 
+          `Premium ${serviceText.toLowerCase()} perfect for your lawn and landscaping needs.` :
+          `Professional ${serviceText.toLowerCase()} services tailored to your needs.`),
+      image: serviceImage,
+      isAuthentic: gbpProducts.length > 0 // Mark as authentic to protect from AI override
     };
   }) : [];
   

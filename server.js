@@ -973,6 +973,17 @@ app.post('/api/ai-text-mapping', async (req, res) => {
       return res.status(500).json({ error: 'OpenAI API key not configured' });
     }
     
+    // 🔒 CRITICAL: Protect authentic GBP products from AI override
+    if (businessData.google_profile?.products?.length > 0) {
+      console.log('🔒 BLOCKING AI text mapping - authentic GBP products detected for:', businessData.company_name);
+      return res.json({ 
+        success: false, 
+        blocked: true,
+        reason: 'Authentic GBP products detected - AI text generation disabled to preserve authentic data',
+        textMappings: {} 
+      });
+    }
+    
     // Import color contrast analysis
     const { analyzeColorScheme } = require('./colorContrast.js');
     
