@@ -67,21 +67,7 @@ export default function ReviewsSection() {
         </div>
       </section>
 
-      {/* Team - Only show if team data exists */}
-      {hasTeamData && (
-        <section className="team">
-          <h2>Meet Our Team</h2>
-          <div className="team-grid">
-            {team.map((member, index) => (
-              <div key={index} className="team-member">
-                <img src={member.photo || 'https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?w=900&auto=format&fit=crop&q=60'} alt={member.name} />
-                <h4>{member.name}</h4>
-                <p>{member.role}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* Team Section - REMOVED as requested by user (can be stored in files but not displayed) */}
     </>
   );
 }

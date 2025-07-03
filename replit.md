@@ -100,6 +100,8 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
+- July 3, 2025: INLINE EDITING SYSTEM IMPLEMENTED - Created framework-agnostic inline editing system for live preview iframe, every text and media node becomes editable with floating toolbar containing formatting commands (Bold, Italic, Underline, Lists, Colors, Images, Videos, etc.), automatic injection into dashboard preview iframes with cross-frame communication for auto-save functionality, complete WordPress-Gutenberg style editing experience with keyboard shortcuts and visual feedback
+- July 3, 2025: TEAM SECTION REMOVED FROM HOMEPAGE - Completely removed "Meet the Team" section display from both AboutSection.jsx and ReviewsSection.jsx components as requested, team data can still be stored in files but will not be displayed on homepage, ensures clean homepage layout for businesses like Kigen Plastika without team information
 - July 3, 2025: AUTHENTIC GBP REVIEWS SUCCESSFULLY INTEGRATED - Fixed ReviewsSection component to display authentic customer reviews from Kigen Plastika (Jordan Jančić, Aleksandar Popovic, Gačo, Marko Pavlovic, Dejan Gladovic), server correctly imports 5 authentic GBP reviews and stores them in bootstrap data, eliminated dummy testimonials in favor of real customer feedback, reviews show actual 5-star ratings and authentic Serbian customer comments about septic tank services, team section properly hidden when no team data exists for businesses like Kigen Plastika
 - July 3, 2025: AUTHENTIC GBP CONTACT DATA SUCCESSFULLY INTEGRATED - Fixed GBP data structure mapping to use correct field names (phone, address, total_reviews instead of formatted_phone_number, formatted_address, user_ratings_total), authentic Kigen Plastika contact information now properly displays in footer: phone "065 2170293", address "Svetog Save bb, Osečina 14253, Serbia", 5-star rating with 10 reviews, eliminated all undefined values, footer contact section now uses real business data instead of placeholder content
 - July 3, 2025: SYSTEM-WIDE DATA PRIORITY HIERARCHY ENFORCED - Created comprehensive priority enforcement system with shared/dataPriority.js and shared/priorityEnforcer.js modules, implemented system-wide validation and enforcement of critical business rule: 1) User input 2) Website data 3) GBP/AI content 4) Stock images, added server-side validation logging and client-side priority functions in all components, created priority hierarchy enforcement that prevents AI content from overriding user data, established rule that applies automatically across all templates and sections, documented as core business rule that system must always follow
@@ -180,3 +182,16 @@ This hierarchy ensures authentic user-provided data always takes precedence over
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+
+**GMB Data Import Priority**: 
+- Contact data (phone, address) from GMB as highest priority
+- Reviews, business hours, maps URL, email from GMB
+- Use placeholders when GMB unavailable
+
+**Homepage Display**:
+- Remove "Meet the Team" section from homepage display (can store in files but not show)
+
+**New Feature Request**:
+- Inline editing system for live preview iframe
+- Turn every text/media node into editable zones with floating toolbar
+- Framework-agnostic (pure ES modules + CSS) for React/Svelte/HTML compatibility

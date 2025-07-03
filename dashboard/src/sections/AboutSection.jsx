@@ -94,29 +94,7 @@ export default function AboutSection() {
         </div>
       </section>
 
-      {/* Team Section - Hide completely for Kigen Plastika as no team data provided */}
-      {team && Array.isArray(team) && team.length > 0 && team.some(member => 
-        member && 
-        member.name && 
-        member.name.trim() !== '' && 
-        !member.name.includes('Dr.') && // Skip dummy data
-        !member.name.includes('Manager') && // Skip dummy roles
-        member.name !== 'Team Member' // Skip placeholder names
-      ) && (
-        <section className="team">
-          <h2>Meet Our Team</h2>
-          <div className="team-grid">
-            {team.filter(member => member.name && member.name.trim() !== '').map((member, index) => (
-              <div key={index} className="team-member">
-                <img src={member.image || '/api/placeholder/200/200'} alt={member.name} />
-                <h4>{member.name}</h4>
-                <p>{member.title}</p>
-                <p>{member.bio}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* Team Section - REMOVED as requested by user (can be stored in files but not displayed) */}
     </>
   );
 }
