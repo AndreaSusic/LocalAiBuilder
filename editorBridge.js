@@ -15,32 +15,38 @@ let undoHistory = [];
 let redoHistory = [];
 let historyLimit = 20;
 
-// Toolbar commands mapping
+// Toolbar commands mapping with tooltips
 const COMMANDS = {
-  '𝐁': () => document.execCommand('bold'),
-  '𝑰': () => document.execCommand('italic'),
-  '𝑼': () => document.execCommand('underline'),
-  'List': () => document.execCommand('insertUnorderedList'),
-  '8px': () => document.execCommand('fontSize', false, '1'),
-  'A🖌️': () => openColorPicker('foreColor'),
-  '🖍️': () => openColorPicker('hiliteColor'),
-  '🖼️': () => insertMedia('image'),
-  '🎥': () => openVideoPanel(),
-  '↔️↕️': () => toggleResizeBox(),
-  '📐': () => openSpacingPanel(),
-  'H₁': () => changeHeading('H1'),
-  'H₂': () => changeHeading('H2'),
-  'H₃': () => changeHeading('H3'),
-  'H₄': () => changeHeading('H4'),
-  '¶': () => changeHeading('P'),
-  '🔲': () => insertComponent('card'),
-  '📋': () => pastePlain(),
-  '</>': () => toggleCodeView(),
-  '🔘': () => insertComponent('button'),
-  '↶': () => undoAction(),
-  '↷': () => redoAction(),
-  '✕': () => deleteElement(),
-  '💬': () => openAIChat()
+  '𝐁': { action: () => document.execCommand('bold'), tooltip: 'Bold' },
+  '𝑰': { action: () => document.execCommand('italic'), tooltip: 'Italic' },
+  '𝑼': { action: () => document.execCommand('underline'), tooltip: 'Underline' },
+  'List': { action: () => document.execCommand('insertUnorderedList'), tooltip: 'Bullet List' },
+  '8px': { action: () => showFontSizeMenu(), tooltip: 'Font Size' },
+  '12px': { action: () => document.execCommand('fontSize', false, '2'), tooltip: '12px' },
+  '14px': { action: () => document.execCommand('fontSize', false, '3'), tooltip: '14px' },
+  '16px': { action: () => document.execCommand('fontSize', false, '4'), tooltip: '16px' },
+  '18px': { action: () => document.execCommand('fontSize', false, '5'), tooltip: '18px' },
+  '24px': { action: () => document.execCommand('fontSize', false, '6'), tooltip: '24px' },
+  '32px': { action: () => document.execCommand('fontSize', false, '7'), tooltip: '32px' },
+  'A🖌️': { action: () => openColorPicker('foreColor'), tooltip: 'Text Color' },
+  '🖍️': { action: () => openColorPicker('hiliteColor'), tooltip: 'Highlight Color' },
+  '🖼️': { action: () => insertMedia('image'), tooltip: 'Insert Image' },
+  '🎥': { action: () => openVideoPanel(), tooltip: 'Insert Video' },
+  '↔️↕️': { action: () => toggleResizeBox(), tooltip: 'Resize Element' },
+  '📐': { action: () => openSpacingPanel(), tooltip: 'Spacing' },
+  'H₁': { action: () => changeHeading('H1'), tooltip: 'Heading 1' },
+  'H₂': { action: () => changeHeading('H2'), tooltip: 'Heading 2' },
+  'H₃': { action: () => changeHeading('H3'), tooltip: 'Heading 3' },
+  'H₄': { action: () => changeHeading('H4'), tooltip: 'Heading 4' },
+  '¶': { action: () => changeHeading('P'), tooltip: 'Paragraph' },
+  '🔲': { action: () => insertComponent('card'), tooltip: 'Insert Card' },
+  '📋': { action: () => pastePlain(), tooltip: 'Paste Plain Text' },
+  '</>': { action: () => toggleCodeView(), tooltip: 'Code View' },
+  '🔘': { action: () => insertComponent('button'), tooltip: 'Insert Button' },
+  '↶': { action: () => undoAction(), tooltip: 'Undo' },
+  '↷': { action: () => redoAction(), tooltip: 'Redo' },
+  '✕': { action: () => deleteElement(), tooltip: 'Delete Element' },
+  '💬': { action: () => openAIChat(), tooltip: 'AI Assistant' }
 };
 
 // Initialize the editor bridge
@@ -71,31 +77,63 @@ function loadEditorStyles() {
 
 // Setup editable elements
 function setupEditableElements() {
-  console.log('🏷️ Setting up editable elements...');
+  console.log('🏷️ Setting up comprehensive editable elements...');
   
-  // Find all text elements that should be editable
-  const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote');
+  // Add page-level undo/redo controls in top-right corner of viewport
+  if (!document.getElementById('ez-page-controls')) {
+    const pageControls = document.createElement('div');
+    pageControls.id = 'ez-page-controls';
+    pageControls.style.cssText = `
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 10003;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      display: flex;
+      gap: 2px;
+    `;
+    
+    const undoBtn = document.createElement('button');
+    undoBtn.innerHTML = '↶';
+    undoBtn.title = 'Undo (Ctrl+Z)';
+    undoBtn.className = 'ez-btn';
+    undoBtn.onclick = undoAction;
+    
+    const redoBtn = document.createElement('button');
+    redoBtn.innerHTML = '↷';
+    redoBtn.title = 'Redo (Ctrl+Y)';
+    redoBtn.className = 'ez-btn';
+    redoBtn.onclick = redoAction;
+    
+    pageControls.appendChild(undoBtn);
+    pageControls.appendChild(redoBtn);
+    document.body.appendChild(pageControls);
+  }
   
-  textElements.forEach(element => {
+  // Find ALL elements that should be editable (text, images, buttons, links)
+  const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button, img, video');
+  
+  allElements.forEach(element => {
     // Skip if element is already marked as non-editable or is part of navigation/toolbar
     if (element.closest('[contenteditable="false"]') || 
         element.closest('.ez-toolbar') || 
-        element.closest('nav') || 
-        element.closest('header') ||
+        element.closest('#ez-page-controls') ||
         element.closest('script') ||
         element.closest('style')) {
       return;
     }
     
-    // Skip if element is empty or only contains whitespace
-    if (!element.textContent.trim()) {
-      return;
-    }
-    
     // Mark as editable
     element.setAttribute('data-editable', 'true');
-    element.style.cursor = 'text';
-    element.style.minHeight = '1em';
+    element.style.cursor = 'pointer';
+    element.style.position = element.style.position || 'relative';
+    
+    // Add delete button for every element
+    addDeleteButton(element);
     
     // Add hover effect
     element.addEventListener('mouseenter', () => {
@@ -112,7 +150,52 @@ function setupEditableElements() {
     });
   });
   
-  console.log(`✅ Made ${textElements.length} elements editable`);
+  console.log(`✅ Made ${allElements.length} elements editable with delete buttons`);
+}
+
+// Add delete button to element
+function addDeleteButton(element) {
+  // Skip if already has delete button
+  if (element.querySelector('.ez-element-delete')) return;
+  
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'ez-element-delete';
+  deleteBtn.innerHTML = '✕';
+  deleteBtn.title = 'Delete Element';
+  deleteBtn.style.cssText = `
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    display: none;
+    z-index: 10001;
+    line-height: 1;
+  `;
+  
+  deleteBtn.onclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    saveToHistory();
+    element.remove();
+  };
+  
+  element.appendChild(deleteBtn);
+  
+  // Show delete button on hover
+  element.addEventListener('mouseenter', () => {
+    deleteBtn.style.display = 'block';
+  });
+  
+  element.addEventListener('mouseleave', () => {
+    deleteBtn.style.display = 'none';
+  });
 }
 
 // Setup global event listeners
@@ -191,13 +274,36 @@ function showToolbar(element) {
     document.body.appendChild(toolbar);
   }
   
-  // Position toolbar above element
+  // Position toolbar above element, ensuring it stays within viewport
   const rect = element.getBoundingClientRect();
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
   
-  toolbar.style.top = (rect.top + scrollTop - toolbar.offsetHeight - 10) + 'px';
-  toolbar.style.left = (rect.left + scrollLeft) + 'px';
+  // Calculate optimal position
+  let top = rect.top + scrollTop - toolbar.offsetHeight - 10;
+  let left = rect.left + scrollLeft;
+  
+  // Ensure toolbar stays within viewport bounds
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const toolbarWidth = toolbar.offsetWidth || 400;
+  const toolbarHeight = toolbar.offsetHeight || 40;
+  
+  // Adjust horizontal position if toolbar would go off-screen
+  if (left + toolbarWidth > viewportWidth) {
+    left = viewportWidth - toolbarWidth - 10;
+  }
+  if (left < 10) {
+    left = 10;
+  }
+  
+  // Adjust vertical position if toolbar would go off-screen
+  if (top < scrollTop + 10) {
+    top = rect.bottom + scrollTop + 10; // Position below element instead
+  }
+  
+  toolbar.style.top = top + 'px';
+  toolbar.style.left = left + 'px';
   toolbar.style.display = 'flex';
   
   // Position delete button in top-right corner of element
@@ -262,7 +368,11 @@ function createToolbar() {
       e.preventDefault();
       e.stopPropagation();
       saveToHistory();
-      COMMANDS[command]();
+      if (typeof COMMANDS[command] === 'function') {
+        COMMANDS[command]();
+      } else if (COMMANDS[command].action) {
+        COMMANDS[command].action();
+      }
     });
     
     toolbar.appendChild(button);
@@ -273,33 +383,10 @@ function createToolbar() {
 
 // Get command title for tooltip
 function getCommandTitle(command) {
-  const titles = {
-    '𝐁': 'Bold',
-    '𝑰': 'Italic',
-    '𝑼': 'Underline',
-    'List': 'Bullet List',
-    '8px': 'Small Font',
-    'A🖌️': 'Text Color',
-    '🖍️': 'Highlight',
-    '🖼️': 'Insert Image',
-    '🎥': 'Insert Video',
-    '↔️↕️': 'Resize',
-    '📐': 'Spacing',
-    'H₁': 'Heading 1',
-    'H₂': 'Heading 2',
-    'H₃': 'Heading 3',
-    'H₄': 'Heading 4',
-    '¶': 'Paragraph',
-    '🔲': 'Insert Card',
-    '📋': 'Paste Plain',
-    '</>': 'Code View',
-    '🔘': 'Insert Button',
-    '↶': 'Undo',
-    '↷': 'Redo',
-    '✕': 'Delete Element',
-    '💬': 'AI Assistant'
-  };
-  return titles[command] || command;
+  if (COMMANDS[command] && COMMANDS[command].tooltip) {
+    return COMMANDS[command].tooltip;
+  }
+  return command;
 }
 
 // Handle keydown events
@@ -317,15 +404,23 @@ function handleKeydown(e) {
     switch (e.key) {
       case 'b':
         e.preventDefault();
-        COMMANDS['𝐁']();
+        if (COMMANDS['𝐁'].action) COMMANDS['𝐁'].action();
         break;
       case 'i':
         e.preventDefault();
-        COMMANDS['𝑰']();
+        if (COMMANDS['𝑰'].action) COMMANDS['𝑰'].action();
         break;
       case 'u':
         e.preventDefault();
-        COMMANDS['𝑼']();
+        if (COMMANDS['𝑼'].action) COMMANDS['𝑼'].action();
+        break;
+      case 'z':
+        e.preventDefault();
+        undoAction();
+        break;
+      case 'y':
+        e.preventDefault();
+        redoAction();
         break;
     }
   }
@@ -630,11 +725,70 @@ function openVideoPanel() {
 }
 
 // Open AI chat interface
+// Show font size menu
+function showFontSizeMenu() {
+  const menu = document.createElement('div');
+  menu.className = 'ez-font-size-menu';
+  menu.style.cssText = `
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 10001;
+    min-width: 80px;
+  `;
+  
+  const sizes = ['8px', '12px', '14px', '16px', '18px', '24px', '32px'];
+  const fontSizes = ['1', '2', '3', '4', '5', '6', '7'];
+  
+  sizes.forEach((size, index) => {
+    const button = document.createElement('button');
+    button.style.cssText = `
+      display: block;
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      background: none;
+      text-align: left;
+      cursor: pointer;
+      font-size: ${size};
+    `;
+    button.textContent = size;
+    button.onmouseover = () => button.style.backgroundColor = '#f0f0f0';
+    button.onmouseout = () => button.style.backgroundColor = '';
+    button.onclick = () => {
+      saveToHistory();
+      document.execCommand('fontSize', false, fontSizes[index]);
+      document.body.removeChild(menu);
+    };
+    menu.appendChild(button);
+  });
+  
+  // Position menu relative to toolbar
+  if (toolbar) {
+    const rect = toolbar.getBoundingClientRect();
+    menu.style.top = (rect.bottom + 5) + 'px';
+    menu.style.left = rect.left + 'px';
+  }
+  
+  document.body.appendChild(menu);
+  
+  // Close menu when clicking outside
+  const closeMenu = (e) => {
+    if (!menu.contains(e.target)) {
+      document.body.removeChild(menu);
+      document.removeEventListener('click', closeMenu);
+    }
+  };
+  setTimeout(() => document.addEventListener('click', closeMenu), 100);
+}
+
 function openAIChat() {
   const chatPanel = document.createElement('div');
   chatPanel.className = 'ez-ai-chat-panel';
   chatPanel.style.cssText = `
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
