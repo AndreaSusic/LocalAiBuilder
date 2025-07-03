@@ -114,14 +114,26 @@ export default function ServicesSection({ bootstrap }) {
     if (gbpProducts.length > 0 && gbpProducts[index]) {
       const gbpProduct = gbpProducts[index];
       
-      // Extract authentic GMB product title
-      if (typeof gbpProduct === 'object') {
-        finalTitle = gbpProduct.name || gbpProduct.title || serviceText;
-        finalDescription = gbpProduct.description || `High-quality ${finalTitle.toLowerCase()} from ${company_name}.`;
-        console.log('🔒 Using authentic GMB product data:', finalTitle, finalDescription);
-      } else if (typeof gbpProduct === 'string') {
-        finalTitle = gbpProduct;
-        finalDescription = `High-quality ${finalTitle.toLowerCase()} from ${company_name}.`;
+      // Check if this is real GMB data or placeholder data
+      const isRealGMBData = gbpProduct.name && !gbpProduct.name.startsWith('Product ');
+      
+      if (isRealGMBData) {
+        // Use authentic GMB product data
+        if (typeof gbpProduct === 'object') {
+          finalTitle = gbpProduct.name || gbpProduct.title || serviceText;
+          finalDescription = gbpProduct.description || `High-quality ${finalTitle.toLowerCase()} from ${company_name}.`;
+          console.log('🔒 Using authentic GMB product data:', finalTitle, finalDescription);
+        } else if (typeof gbpProduct === 'string') {
+          finalTitle = gbpProduct;
+          finalDescription = `High-quality ${finalTitle.toLowerCase()} from ${company_name}.`;
+        }
+      } else {
+        // Ignore placeholder data and use actual business services
+        console.log('🚫 Ignoring placeholder GMB data, using actual business services');
+        finalTitle = serviceText;
+        finalDescription = services.toLowerCase().includes('septic') ? 
+          `Professional ${serviceText.toLowerCase()} manufacturing and installation from ${company_name}.` :
+          `Professional ${serviceText.toLowerCase()} services from ${company_name}.`;
       }
     } else {
       // Fallback descriptions when no GMB data
