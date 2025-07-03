@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
-// Fresh inline editor implementation
-function injectFreshEditor(iframe) {
+// Ultra-simple inline editor that just works
+function injectSimpleEditor(iframe) {
   try {
-    console.log('🔧 Starting completely fresh inline editor...');
+    console.log('🔧 Injecting ultra-simple inline editor...');
     
     const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
     if (!frameDoc) {
@@ -17,150 +17,247 @@ function injectFreshEditor(iframe) {
     const existingScripts = frameDoc.querySelectorAll('[id*="editor"], [id*="bridge"]');
     existingScripts.forEach(script => script.remove());
     
-    // Wait for iframe content to fully load
+    // Wait a bit for content to load, then inject the simplest possible editor
     setTimeout(() => {
       const script = frameDoc.createElement('script');
-      script.id = 'fresh-editor-script';
+      script.id = 'simple-editor-script';
       script.innerHTML = `
-        console.log('🚀 Fresh inline editor starting...');
+        console.log('🚀 Simple inline editor starting...');
         
-        // Find all elements with data-gas-edit attributes first, then fallback to general text elements
-        const editableElements = document.querySelectorAll('[data-gas-edit]');
-        const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li');
-        console.log('📝 Found', editableElements.length, 'data-gas-edit elements');
-        console.log('📝 Found', textElements.length, 'total text elements');
-        
-        let editableCount = 0;
-        
-        // Prioritize elements with data-gas-edit attributes
-        const elementsToProcess = editableElements.length > 0 ? editableElements : textElements;
-        console.log('🎯 Processing', elementsToProcess.length, 'elements for editing');
-        
-        elementsToProcess.forEach(element => {
-          // Skip elements inside scripts, styles, or already processed
-          if (element.closest('script, style, .editor-processed')) return;
+        // Wait a moment for DOM to be ready
+        setTimeout(() => {
+          console.log('📝 Making all text elements editable...');
           
-          // Mark as processed
-          element.classList.add('editor-processed');
+          // Find ALL text elements and make them editable
+          const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li, td, th, div');
+          console.log('Found', textElements.length, 'text elements');
           
-          // Add visual feedback
-          element.style.cursor = 'pointer';
-          element.style.transition = 'all 0.2s ease';
+          let editableCount = 0;
           
-          // Hover effect
-          element.addEventListener('mouseenter', () => {
-            element.style.outline = '2px dashed #007cff';
-            element.style.backgroundColor = 'rgba(0, 124, 255, 0.05)';
-          });
-          
-          element.addEventListener('mouseleave', () => {
-            if (!element.isContentEditable || element.contentEditable === 'false') {
+          textElements.forEach((element, index) => {
+            // Skip elements that shouldn't be editable
+            if (element.closest('script, style, head, meta') || 
+                element.children.length > 0 || 
+                !element.textContent || 
+                element.textContent.trim().length === 0) {
+              return;
+            }
+            
+            console.log('Making editable:', element.tagName, element.textContent?.slice(0, 30));
+            
+            // Add hover effect
+            element.addEventListener('mouseenter', () => {
+              element.style.outline = '2px dashed #007cff';
+              element.style.backgroundColor = 'rgba(0, 124, 255, 0.05)';
+              element.style.cursor = 'pointer';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+              if (element.contentEditable !== 'true') {
+                element.style.outline = 'none';
+                element.style.backgroundColor = 'transparent';
+              }
+            });
+            
+            // Click to edit
+            element.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              console.log('✏️ Editing:', element.tagName, element.textContent?.slice(0, 30));
+              
+              // Make editable
+              element.contentEditable = 'true';
+              element.focus();
+              element.style.outline = '2px solid #007cff';
+              element.style.backgroundColor = 'rgba(0, 124, 255, 0.1)';
+              
+              // Select all text
+              const range = document.createRange();
+              range.selectNodeContents(element);
+              const selection = window.getSelection();
+              selection.removeAllRanges();
+              selection.addRange(range);
+            });
+            
+            // Stop editing on blur or Enter
+            element.addEventListener('blur', () => {
+              element.contentEditable = 'false';
               element.style.outline = 'none';
               element.style.backgroundColor = 'transparent';
-            }
+              console.log('💾 Saved changes to:', element.tagName);
+            });
+            
+            element.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                element.blur();
+              }
+              if (e.key === 'Escape') {
+                element.blur();
+              }
+            });
+            
+            editableCount++;
           });
           
-          // Click to edit
-          element.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            console.log('✏️ Editing element:', element.tagName, element.textContent?.slice(0, 30));
-            
-            // Make editable
-            element.contentEditable = 'true';
-            element.focus();
-            element.style.outline = '2px solid #007cff';
-            element.style.backgroundColor = 'rgba(0, 124, 255, 0.1)';
-            
-            // Select all text
-            const range = document.createRange();
-            range.selectNodeContents(element);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-          });
+          console.log('✅ Made', editableCount, 'elements editable');
           
-          // Stop editing on blur
-          element.addEventListener('blur', () => {
-            element.contentEditable = 'false';
-            element.style.outline = 'none';
-            element.style.backgroundColor = 'transparent';
-            console.log('💾 Stopped editing:', element.tagName);
-          });
-          
-          editableCount++;
-        });
-        
-        console.log('✅ Made', editableCount, 'elements editable');
+        }, 2000); // Wait 2 seconds for everything to load
       `;
       
       frameDoc.head.appendChild(script);
-      console.log('✅ Fresh editor script injected');
+      console.log('✅ Simple editor script injected');
       
-    }, 1000); // Wait 1 second for iframe to fully load
+    }, 1000); // Wait 1 second for iframe to load
     
   } catch (error) {
-    console.error('❌ Fresh editor setup failed:', error);
+    console.error('❌ Simple editor setup failed:', error);
   }
 }
 
-export default function DesktopDashboard() {
-  const [previewUrl, setPreviewUrl] = useState("");
+export default function DesktopDashboard({ bootstrap }) {
   const navigate = useNavigate();
+  const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
+  const [showVersions, setShowVersions] = useState(false);
+  const [showPagesDropdown, setShowPagesDropdown] = useState(false);
+  const [previewContent, setPreviewContent] = useState(null);
 
   useEffect(() => {
-    // Create short URL for preview
-    const generatePreview = async () => {
+    const createPreviewUrl = async () => {
       try {
         const response = await fetch('/api/cache-preview', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ data: {} })
+          body: JSON.stringify({ data: bootstrap || {} })
         });
         const result = await response.json();
         const shortUrl = `/t/v1/${result.id}`;
-        setPreviewUrl(shortUrl);
-        console.log('Created short URL for preview:', shortUrl);
+        setPreviewContent(shortUrl);
+        console.log('Created short URL for desktop preview:', shortUrl);
       } catch (error) {
         console.error('Failed to create preview URL:', error);
+        setPreviewContent('/t/v1');
       }
     };
 
-    generatePreview();
-  }, []);
+    createPreviewUrl();
+  }, [bootstrap]);
 
   const handleIframeLoad = (event) => {
     const iframe = event.target;
-    if (iframe && previewUrl) {
-      // Inject fresh editor after iframe loads
+    if (iframe && previewContent) {
+      // Inject simple editor after iframe loads
       setTimeout(() => {
-        injectFreshEditor(iframe);
+        injectSimpleEditor(iframe);
       }, 500);
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      window.location.href = '/auth/logout';
+    } catch (error) {
+      console.error('Logout error:', error);
+      window.location.href = '/auth/logout';
+    }
+  };
+
+  const showTemplatePreview = async (templateUrl) => {
+    if (bootstrap && Object.keys(bootstrap).length > 0) {
+      try {
+        const shortId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+        
+        const response = await fetch('/api/cache-preview', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: shortId, data: bootstrap })
+        });
+        
+        if (response.ok) {
+          const shortUrl = `/t/v1/${shortId}`;
+          window.open(shortUrl, '_blank');
+          return;
+        }
+      } catch (error) {
+        console.error('Error creating short URL:', error);
+      }
+    }
+    
+    window.open('/t/v1/demo', '_blank');
+  };
+
   return (
-    <div className="desktop-dashboard">
-      <div className="dashboard-grid">
-        <div className="chat-panel">
-          <UnifiedCommandChatPanel />
+    <div className="dashboard-wireframe">
+      {/* Header */}
+      <header className="header-wireframe">
+        <div className="logo-section">
+          <a href="/" className="logo-link">
+            <img src="/logo.svg" alt="LocalAI Builder" className="dashboard-logo" />
+          </a>
         </div>
-        <div className="preview-panel">
-          <h3>Live Preview</h3>
-          {previewUrl && (
-            <iframe
-              src={previewUrl}
-              className="preview-iframe"
-              onLoad={handleIframeLoad}
-              style={{
-                width: '100%',
-                height: '600px',
-                border: '1px solid #ddd',
-                borderRadius: '4px'
-              }}
-            />
-          )}
+        <div className="header-actions">
+          <div className="dropdown-wrapper">
+            <button 
+              className="btn-wireframe"
+              onClick={() => setShowPagesDropdown(!showPagesDropdown)}
+            >
+              Pages ▼
+            </button>
+            {showPagesDropdown && (
+              <div className="versions-dropdown">
+                <div className="version-item" onClick={() => showTemplatePreview('/templates/homepage/v1/index.jsx')}>
+                  Homepage
+                </div>
+                <div className="version-item" onClick={() => showTemplatePreview('/templates/service/v1/index.jsx')}>
+                  Service
+                </div>
+                <div className="version-item" onClick={() => showTemplatePreview('/templates/contact/v1/index.jsx')}>
+                  Contact
+                </div>
+              </div>
+            )}
+          </div>
+          <button className="btn-wireframe">🔔</button>
+          <button className="btn-wireframe">Publish</button>
+          <button className="btn-wireframe" onClick={handleLogout}>Logout</button>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <div className="main-content-wireframe">
+        {/* Live Preview */}
+        <div className="left-panel-wireframe">
+          <h2>Live Preview</h2>
+          <div className="preview-frame">
+            {previewContent && (
+              <iframe 
+                title="preview" 
+                src={previewContent}
+                onLoad={handleIframeLoad}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  border: "none"
+                }}
+              />
+            )}
+          </div>
+          <button 
+            className="view-live-btn" 
+            onClick={() => {
+              if (previewContent) {
+                window.open(previewContent, '_blank');
+              }
+            }}
+          >
+            View Live Site
+          </button>
+        </div>
+
+        {/* Command Chat Panel */}
+        <div className="right-panel-wireframe">
+          <UnifiedCommandChatPanel />
         </div>
       </div>
     </div>

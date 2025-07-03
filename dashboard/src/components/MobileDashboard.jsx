@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
-// Fresh inline editor implementation (same as desktop)
-function injectFreshEditor(iframe) {
+// Ultra-simple inline editor that just works
+function injectSimpleEditor(iframe) {
   try {
-    console.log('🔧 Starting completely fresh inline editor...');
+    console.log('🔧 Injecting ultra-simple inline editor...');
     
     const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
     if (!frameDoc) {
@@ -17,158 +17,102 @@ function injectFreshEditor(iframe) {
     const existingScripts = frameDoc.querySelectorAll('[id*="editor"], [id*="bridge"]');
     existingScripts.forEach(script => script.remove());
     
-    // Wait for iframe content to fully load, then wait more for React to render
+    // Wait a bit for content to load, then inject the simplest possible editor
     setTimeout(() => {
       const script = frameDoc.createElement('script');
-      script.id = 'fresh-editor-script';
+      script.id = 'simple-editor-script';
       script.innerHTML = `
-        console.log('🚀 Fresh inline editor starting...');
+        console.log('🚀 Simple inline editor starting...');
         
-        // Wait for React components to fully render
-        function waitForReactComponents() {
-          return new Promise((resolve) => {
-            let attempts = 0;
-            const maxAttempts = 30; // Wait up to 3 seconds
-            
-            const checkForElements = () => {
-              console.log('🔍 Checking for React components, attempt:', attempts + 1);
-              
-              // Check for both React components and data-gas-edit attributes
-              const heroSection = document.querySelector('.hero, [class*="hero"]');
-              const servicesSection = document.querySelector('.services, [class*="service"]');
-              const editableElements = document.querySelectorAll('[data-gas-edit]');
-              const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li');
-              
-              console.log('🔍 React detection results:', {
-                heroSection: !!heroSection,
-                servicesSection: !!servicesSection,
-                editableElements: editableElements.length,
-                textElements: textElements.length
-              });
-              
-              // If we have React components AND data-gas-edit elements, proceed
-              if ((heroSection || servicesSection) && editableElements.length > 0) {
-                console.log('✅ React components with data-gas-edit detected!');
-                resolve();
-              } else if (attempts >= maxAttempts) {
-                console.log('⚠️ Max attempts reached, proceeding anyway');
-                resolve();
-              } else {
-                attempts++;
-                setTimeout(checkForElements, 100);
-              }
-            };
-            
-            checkForElements();
-          });
-        }
-        
-        waitForReactComponents().then(() => {
-          // First, let's inject a test element to verify editor works
-          const testDiv = document.createElement('div');
-          testDiv.innerHTML = '<h1 data-gas-edit="test">TEST EDITABLE ELEMENT - Click me!</h1>';
-          testDiv.style.position = 'fixed';
-          testDiv.style.top = '10px';
-          testDiv.style.left = '10px';
-          testDiv.style.zIndex = '9999';
-          testDiv.style.backgroundColor = 'yellow';
-          testDiv.style.padding = '10px';
-          document.body.appendChild(testDiv);
+        // Wait a moment for DOM to be ready
+        setTimeout(() => {
+          console.log('📝 Making all text elements editable...');
           
-          // Find all elements with data-gas-edit attributes first, then fallback to general text elements
-          const editableElements = document.querySelectorAll('[data-gas-edit]');
-          const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li');
-          console.log('📝 Found', editableElements.length, 'data-gas-edit elements');
-          console.log('📝 Found', textElements.length, 'total text elements');
+          // Find ALL text elements and make them editable
+          const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li, td, th, div');
+          console.log('Found', textElements.length, 'text elements');
           
-          // Debug: Show what data-gas-edit elements we found
-          if (editableElements.length > 0) {
-            console.log('🎯 data-gas-edit elements found:');
-            editableElements.forEach((el, i) => {
-              console.log(i + 1 + ':', el.tagName, el.getAttribute('data-gas-edit'), el.textContent?.slice(0, 30));
-            });
-          } else {
-            console.log('❌ No data-gas-edit elements found - React components not rendering attributes');
-            console.log('🔍 Checking if React elements exist at all...');
-            const allH1s = document.querySelectorAll('h1');
-            allH1s.forEach((h1, i) => {
-              console.log('H1 #' + (i+1) + ':', h1.textContent?.slice(0, 50), 'attributes:', [...h1.attributes].map(a => a.name + '=' + a.value));
-            });
-          }
-        
           let editableCount = 0;
-        
-        // Prioritize elements with data-gas-edit attributes
-        const elementsToProcess = editableElements.length > 0 ? editableElements : textElements;
-        console.log('🎯 Processing', elementsToProcess.length, 'elements for editing');
-        
-        elementsToProcess.forEach(element => {
-          // Skip elements inside scripts, styles, or already processed
-          if (element.closest('script, style, .editor-processed')) return;
           
-          // Mark as processed
-          element.classList.add('editor-processed');
-          
-          // Add visual feedback
-          element.style.cursor = 'pointer';
-          element.style.transition = 'all 0.2s ease';
-          
-          // Hover effect
-          element.addEventListener('mouseenter', () => {
-            element.style.outline = '2px dashed #007cff';
-            element.style.backgroundColor = 'rgba(0, 124, 255, 0.05)';
-          });
-          
-          element.addEventListener('mouseleave', () => {
-            if (!element.isContentEditable || element.contentEditable === 'false') {
+          textElements.forEach((element, index) => {
+            // Skip elements that shouldn't be editable
+            if (element.closest('script, style, head, meta') || 
+                element.children.length > 0 || 
+                !element.textContent || 
+                element.textContent.trim().length === 0) {
+              return;
+            }
+            
+            console.log('Making editable:', element.tagName, element.textContent?.slice(0, 30));
+            
+            // Add hover effect
+            element.addEventListener('mouseenter', () => {
+              element.style.outline = '2px dashed #007cff';
+              element.style.backgroundColor = 'rgba(0, 124, 255, 0.05)';
+              element.style.cursor = 'pointer';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+              if (element.contentEditable !== 'true') {
+                element.style.outline = 'none';
+                element.style.backgroundColor = 'transparent';
+              }
+            });
+            
+            // Click to edit
+            element.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              console.log('✏️ Editing:', element.tagName, element.textContent?.slice(0, 30));
+              
+              // Make editable
+              element.contentEditable = 'true';
+              element.focus();
+              element.style.outline = '2px solid #007cff';
+              element.style.backgroundColor = 'rgba(0, 124, 255, 0.1)';
+              
+              // Select all text
+              const range = document.createRange();
+              range.selectNodeContents(element);
+              const selection = window.getSelection();
+              selection.removeAllRanges();
+              selection.addRange(range);
+            });
+            
+            // Stop editing on blur or Enter
+            element.addEventListener('blur', () => {
+              element.contentEditable = 'false';
               element.style.outline = 'none';
               element.style.backgroundColor = 'transparent';
-            }
+              console.log('💾 Saved changes to:', element.tagName);
+            });
+            
+            element.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                element.blur();
+              }
+              if (e.key === 'Escape') {
+                element.blur();
+              }
+            });
+            
+            editableCount++;
           });
           
-          // Click to edit
-          element.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            console.log('✏️ Editing element:', element.tagName, element.textContent?.slice(0, 30));
-            
-            // Make editable
-            element.contentEditable = 'true';
-            element.focus();
-            element.style.outline = '2px solid #007cff';
-            element.style.backgroundColor = 'rgba(0, 124, 255, 0.1)';
-            
-            // Select all text
-            const range = document.createRange();
-            range.selectNodeContents(element);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-          });
+          console.log('✅ Made', editableCount, 'elements editable');
           
-          // Stop editing on blur
-          element.addEventListener('blur', () => {
-            element.contentEditable = 'false';
-            element.style.outline = 'none';
-            element.style.backgroundColor = 'transparent';
-            console.log('💾 Stopped editing:', element.tagName);
-          });
-          
-          editableCount++;
-        });
-        
-        console.log('✅ Made', editableCount, 'elements editable');
-        }); // Close the waitForReactComponents().then()
+        }, 2000); // Wait 2 seconds for everything to load
       `;
       
       frameDoc.head.appendChild(script);
-      console.log('✅ Fresh editor script injected');
+      console.log('✅ Simple editor script injected');
       
-    }, 1000); // Wait 1 second for iframe to fully load
+    }, 1000); // Wait 1 second for iframe to load
     
   } catch (error) {
-    console.error('❌ Fresh editor setup failed:', error);
+    console.error('❌ Simple editor setup failed:', error);
   }
 }
 
@@ -203,9 +147,9 @@ export default function MobileDashboard({ bootstrap }) {
   const handleIframeLoad = (event) => {
     const iframe = event.target;
     if (iframe && previewContent) {
-      // Inject fresh editor after iframe loads
+      // Inject simple editor after iframe loads
       setTimeout(() => {
-        injectFreshEditor(iframe);
+        injectSimpleEditor(iframe);
       }, 500);
     }
   };
