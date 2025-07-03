@@ -1886,21 +1886,21 @@ app.get('/api/kigen-data', async (req, res) => {
           {
             id: 'website_service_1',
             name: 'Plastični rezervoari',
-            description: 'Authentic plastic tank services from Kigen Plastika',
+            description: 'Vrhunski plastični rezervoari za septičke jame, cisterne i skladištenje. Izrađeni od visokokvalitetnih materijala otpornih na habanje i vremenske uslove.',
             source: 'website',
             authentic: true
           },
           {
             id: 'website_service_2', 
-            name: 'cisterne',
-            description: 'Professional cistern services from Kigen Plastika',
+            name: 'Cisterne za vodu',
+            description: 'Profesionalne cisterne za skladištenje pitke vode i tehničke tečnosti. Sertifikovani proizvodi prema evropskim standardima kvaliteta.',
             source: 'website',
             authentic: true
           },
           {
             id: 'website_service_3',
-            name: 'Cisterne',
-            description: 'Expert cistern solutions from Kigen Plastika', 
+            name: 'Septičke jame',
+            description: 'Kompletni sistemi za prečišćavanje otpadnih voda. Ekološki prihvatljiva rešenja za individualne i komercijalne objekte.',
             source: 'website',
             authentic: true
           }

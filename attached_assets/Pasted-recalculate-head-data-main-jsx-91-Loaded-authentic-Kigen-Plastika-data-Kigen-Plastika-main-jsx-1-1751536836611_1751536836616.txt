@@ -1,0 +1,89 @@
+recalculate_head_data
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+main.jsx:154 BOOTSTRAP >> {city: Array(1), images: Array(1), social: {…}, colours: Array(2), industry: 'Landscaping', …}
+main.jsx:155 Current path: /preview/
+main.jsx:156 Root element exists: true
+main.jsx:170 React app rendered successfully
+App.jsx:20 App rendering with bootstrap: {city: Array(1), images: Array(1), social: {…}, colours: Array(2), industry: 'Landscaping', …}
+App.jsx:21 isMobile: false
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(2)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:59 Created short URL for preview: /t/v1/mcn7npa2xafh1wglm0a
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+Console.js:61 BOOTSTRAP >> {city: Array(1), images: Array(1), social: {…}, colours: Array(2), industry: 'Landscaping', …}
+Console.js:61 Current path: /t/v1/mcn7npa2xafh1wglm0a
+Console.js:61 Root element exists: true
+Console.js:61 React app rendered successfully
+Console.js:61 App rendering with bootstrap: {city: Array(1), images: Array(1), social: {…}, colours: Array(2), industry: 'Landscaping', …}
+Console.js:61 isMobile: false
+Console.js:61 HomepageV1 using data: {city: Array(1), images: Array(1), social: {…}, colours: Array(2), industry: 'Landscaping', …}
+Console.js:61 ServicesSection DEBUG - Services data: Septic Tanks string
+Console.js:61 ServicesSection DEBUG - GBP products: undefined
+Console.js:61 🌐 USING AUTHENTIC WEBSITE SERVICES: (3) [{…}, {…}, {…}]0: {id: 'website_service_1', name: 'Plastični rezervoari', description: 'Authentic plastic tank services from Kigen Plastika', source: 'website', authentic: true}1: {id: 'website_service_2', name: 'cisterne', description: 'Professional cistern services from Kigen Plastika', source: 'website', authentic: true}2: {id: 'website_service_3', name: 'Cisterne', description: 'Expert cistern solutions from Kigen Plastika', source: 'website', authentic: true}length: 3[[Prototype]]: Array(0)
+Console.js:61 ServicesSection DEBUG - ServicesList: (3) [{…}, {…}, {…}] Type: object
+Console.js:61 ServicesSection DEBUG - GBP Products: 0 Available: []
+Console.js:61 ServicesSection DEBUG - Processing service: {name: 'Plastični rezervoari', description: 'Authentic plastic tank services from Kigen Plastika', authentic: true, source: 'website'} Type: object Index: 0
+Console.js:61 🌐 RENDERING AUTHENTIC WEBSITE SERVICE: Plastični rezervoari
+Console.js:61 ServicesSection DEBUG - Processing service: {name: 'cisterne', description: 'Professional cistern services from Kigen Plastika', authentic: true, source: 'website'} Type: object Index: 1
+Console.js:61 🌐 RENDERING AUTHENTIC WEBSITE SERVICE: cisterne
+Console.js:61 ServicesSection DEBUG - Processing service: {name: 'Cisterne', description: 'Expert cistern solutions from Kigen Plastika', authentic: true, source: 'website'} Type: object Index: 2
+Console.js:61 🌐 RENDERING AUTHENTIC WEBSITE SERVICE: Cisterne
+Console.js:61 ServicesSection DEBUG - ServicesToShow: (3) [{…}, {…}, {…}]
+Console.js:61 AboutSection DEBUG - Team data: [] Length: 0
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(2)}
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(2)}
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+default-service.jpg:1 
+            
+            
+           GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/default-service.jpg 404 (Not Found)
+Image
+zf @ react-dom-client.production.js:8427
+Bf @ react-dom-client.production.js:8776
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8775
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8775
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8775
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8775
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8819
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8819
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8711
+ga @ react-dom-client.production.js:9559
+Bf @ react-dom-client.production.js:8747
+id @ react-dom-client.production.js:11210
+nd @ react-dom-client.production.js:11070
+$f @ react-dom-client.production.js:10490
+Wf @ react-dom-client.production.js:10419
+hd @ react-dom-client.production.js:11626
+Xe @ scheduler.production.js:151
+mcn7npa2xafh1wglm0a:18 
+            
+            
+           GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/stock_photos_placeholder 404 (Not Found)
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+web-client-content-script.js:2 Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.
+    at HTMLIFrameElement.<anonymous> (web-client-content-script.js:2:402720)
+(anonymous) @ web-client-content-script.js:2

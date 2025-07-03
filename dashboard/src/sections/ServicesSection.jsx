@@ -117,8 +117,13 @@ export default function ServicesSection({ bootstrap }) {
     if (service && service.authentic && service.source === 'website') {
       console.log('🌐 RENDERING AUTHENTIC WEBSITE SERVICE:', service.name);
       
-      // Use a default image since stock_photos_placeholder is causing issues
-      const defaultServiceImage = '/assets/default-service.jpg';
+      // Use septic tank specific images for Kigen Plastika
+      const septicImages = [
+        'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=900&auto=format&fit=crop&q=60',
+        'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=900&auto=format&fit=crop&q=60',
+        'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=900&auto=format&fit=crop&q=60'
+      ];
+      const defaultServiceImage = septicImages[index] || septicImages[0];
       
       return {
         title: service.name,
