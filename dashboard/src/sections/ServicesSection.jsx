@@ -20,100 +20,127 @@ export default function ServicesSection({ bootstrap }) {
   const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
     (typeof services === 'string' && (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod')));
   
-  // DATA PRIORITY HIERARCHY - Critical Business Rule
-  // 1. HIGHEST: User input data from chat (services/products, images)
-  // 2. SECOND: Website extraction data  
-  // 3. THIRD: GBP data and AI content
-  // 4. FOURTH: Stock images (when no GBP)
+  // Apply system-wide data priority hierarchy
+  const prioritizeServices = ({ userInput, websiteData = [], gbpData = [], industry = '' }) => {
+    console.log('🏅 APPLYING SERVICE PRIORITY HIERARCHY');
+    
+    // PRIORITY 1: User chat input (highest priority)
+    if (Array.isArray(userInput) && userInput.length > 0) {
+      console.log('🥇 PRIORITY 1: Using user input services from chat:', userInput);
+      return userInput.slice(0, 3);
+    } else if (typeof userInput === 'string' && userInput.length > 0) {
+      console.log('🥇 PRIORITY 1: Using user input services text from chat:', userInput);
+      // Parse user input based on industry context
+      if (isLandscaping) {
+        const grassTypes = [];
+        const lowerServices = userInput.toLowerCase();
+        
+        if (lowerServices.includes('bermuda')) grassTypes.push('Bermuda Grass');
+        if (lowerServices.includes('zoysia')) grassTypes.push('Zoysia Grass');
+        if (lowerServices.includes('st. august') || lowerServices.includes('st august')) grassTypes.push('St. Augustine Grass');
+        if (lowerServices.includes('buffalo')) grassTypes.push('Buffalo Grass');
+        
+        if (grassTypes.length === 0 && (lowerServices.includes('sod') || lowerServices.includes('grass'))) {
+          grassTypes.push('Bermuda Grass', 'Zoysia Grass');
+        }
+        
+        return grassTypes.length > 0 ? grassTypes.slice(0, 3) : [userInput];
+      } else {
+        return userInput.split(/[,&+]/).map(s => s.trim()).filter(s => s.length > 0).slice(0, 3);
+      }
+    }
+    
+    // PRIORITY 2: Website extraction data (second priority)
+    if (websiteData.length > 0) {
+      console.log('🥈 PRIORITY 2: Using authentic website-extracted services:', websiteData);
+      return websiteData.slice(0, 3).map(product => ({
+        name: product.name,
+        description: product.description || `Professional ${product.name.toLowerCase()} services`,
+        authentic: true,
+        source: 'website'
+      }));
+    }
+    
+    // PRIORITY 3: GBP data (third priority)
+    if (gbpData.length > 0) {
+      console.log('🥉 PRIORITY 3: Using GBP products data:', gbpData);
+      return gbpData.slice(0, 3).map(product => {
+        if (typeof product === 'string') return product;
+        return product.name || product.title || String(product);
+      });
+    }
+    
+    // PRIORITY 4: AI-generated fallback (lowest priority)
+    console.log('🏅 PRIORITY 4: Using AI-generated services as fallback');
+    if (industry && industry.toLowerCase().includes('landscap')) {
+      return ['Premium Sod Installation', 'Lawn Maintenance', 'Landscaping Design'];
+    } else if (industry && industry.toLowerCase().includes('septic')) {
+      return ['Septic Tank Systems', 'Plastic Components', 'Installation Services'];
+    } else {
+      return ['Professional Services', 'Expert Solutions', 'Quality Support'];
+    }
+  };
   
-  let servicesList = [];
   const websiteProducts = bootstrap?.products || contextData?.products || [];
   const gbpProducts = google_profile.products || [];
   
-  // PRIORITY 1: User chat input services (highest priority)
-  if (Array.isArray(services) && services.length > 0) {
-    console.log('🥇 PRIORITY 1: Using user input services from chat:', services);
-    servicesList = services.slice(0, 3);
-  } else if (typeof services === 'string' && services.length > 0) {
-    console.log('🥇 PRIORITY 1: Using user input services text from chat:', services);
-    if (isLandscaping) {
-      const grassTypes = [];
-      const lowerServices = services.toLowerCase();
-      
-      // Check for explicit mentions
-      if (lowerServices.includes('bermuda')) grassTypes.push('Bermuda Grass');
-      if (lowerServices.includes('zoysia')) grassTypes.push('Zoysia Grass');
-      if (lowerServices.includes('st. august') || lowerServices.includes('st august')) grassTypes.push('St. Augustine Grass');
-      if (lowerServices.includes('buffalo')) grassTypes.push('Buffalo Grass');
-      
-      // If no specific types found but it's a general sod producer, add common Texas grasses
-      if (grassTypes.length === 0 && (lowerServices.includes('sod') || lowerServices.includes('grass'))) {
-        grassTypes.push('Bermuda Grass', 'Zoysia Grass');
-      }
-      
-      servicesList = grassTypes.length > 0 ? grassTypes.slice(0, 3) : [services];
-    } else {
-      // For septic tanks and other industries, split by common delimiters
-      servicesList = services.split(/[,&+]/).map(s => s.trim()).filter(s => s.length > 0).slice(0, 3);
-    }
+  const servicesList = prioritizeServices({
+    userInput: services,
+    websiteData: websiteProducts,
+    gbpData: gbpProducts,
+    industry: industry
+  });
   
-  // PRIORITY 2: Website extraction data (second priority)
-  } else if (websiteProducts.length > 0) {
-    console.log('🥈 PRIORITY 2: Using authentic website-extracted services:', websiteProducts);
-    servicesList = websiteProducts.slice(0, 3).map(product => {
-      return {
-        name: product.name,
-        description: product.description || `Professional ${product.name.toLowerCase()} services from ${company_name}`,
-        authentic: true,
-        source: 'website'
-      };
-    });
-  
-  // PRIORITY 3: GBP data (third priority)
-  } else if (gbpProducts.length > 0) {
-    console.log('🥉 PRIORITY 3: Using GBP products data:', gbpProducts);
-    servicesList = gbpProducts.slice(0, 3).map(product => {
-      if (typeof product === 'string') return product;
-      return product.name || product.title || String(product);
-    });
+  // Apply system-wide image priority hierarchy
+  const prioritizeImages = ({ userUploads = [], websiteImages = [], gbpPhotos = [], stockImages = [] }) => {
+    console.log('🖼️ APPLYING IMAGE PRIORITY HIERARCHY');
     
-  // PRIORITY 4: AI-generated fallback (lowest priority)
-  } else {
-    console.log('🏅 PRIORITY 4: Using AI-generated services as fallback');
-    if (isLandscaping) {
-      servicesList = ['Premium Sod Installation', 'Lawn Maintenance', 'Landscaping Design'];
-    } else if (industry && industry.toLowerCase().includes('septic')) {
-      servicesList = ['Septic Tank Systems', 'Plastic Components', 'Installation Services'];
-    } else {
-      servicesList = ['Professional Services', 'Expert Solutions', 'Quality Support'];
-    }
-  }
-  
-  // IMAGE PRIORITY HIERARCHY - Following same business rule
-  // 1. HIGHEST: User uploaded images from chat
-  // 2. SECOND: Website images (not implemented yet)
-  // 3. THIRD: GBP imported images 
-  // 4. FOURTH: Stock images from Unsplash/Pexels
-  
-  const userUploadedImages = Array.isArray(images) ? 
-    images.filter(img => 
+    // Filter user uploads (exclude stock images and placeholders)
+    const validUserUploads = userUploads.filter(img => 
       typeof img === 'string' && 
       img.length > 0 && 
       !img.includes('placeholder') &&
       !img.includes('unsplash.com') &&
       !img.includes('pexels.com') &&
       (img.startsWith('http://') || img.startsWith('https://'))
-    ) : [];
+    );
     
-  const gbpPhotos = google_profile.photos || [];
-  const stockImages = Array.isArray(images) ? 
-    images.filter(img => 
+    // Filter stock images
+    const validStockImages = stockImages.filter(img => 
       typeof img === 'string' && 
       (img.includes('unsplash.com') || img.includes('pexels.com'))
-    ) : [];
+    );
+    
+    // Apply priority order
+    const prioritizedImages = [
+      ...validUserUploads,      // PRIORITY 1: User uploads
+      ...websiteImages,         // PRIORITY 2: Website images
+      ...gbpPhotos,            // PRIORITY 3: GBP photos
+      ...validStockImages      // PRIORITY 4: Stock images
+    ];
+    
+    if (validUserUploads.length > 0) {
+      console.log('🥇 PRIORITY 1: Using user uploaded images:', validUserUploads.length);
+    } else if (websiteImages.length > 0) {
+      console.log('🥈 PRIORITY 2: Using website extracted images:', websiteImages.length);
+    } else if (gbpPhotos.length > 0) {
+      console.log('🥉 PRIORITY 3: Using GBP imported images:', gbpPhotos.length);
+    } else if (validStockImages.length > 0) {
+      console.log('🏅 PRIORITY 4: Using stock images as fallback:', validStockImages.length);
+    }
+    
+    return prioritizedImages;
+  };
   
-  // Priority order: User uploads > GBP photos > Stock images
-  const availableImages = [...userUploadedImages, ...gbpPhotos, ...stockImages];
+  const gbpPhotos = google_profile.photos || [];
+  const allImages = Array.isArray(images) ? images : [];
+  
+  const availableImages = prioritizeImages({
+    userUploads: allImages,
+    websiteImages: [], // Not implemented yet
+    gbpPhotos: gbpPhotos,
+    stockImages: allImages
+  });
   
   // Default images for landscaping business
   const defaultImages = [
