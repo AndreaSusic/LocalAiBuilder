@@ -100,6 +100,7 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 
 ## Changelog
 
+- July 3, 2025: IMPLEMENTED DATA PRIORITY HIERARCHY - Established critical business rule for data source prioritization: 1) User chat input (highest), 2) Website extraction, 3) GBP data/AI content, 4) Stock images (lowest). Updated ServicesSection component with proper priority order, documented in replit.md for system-wide consistency, ensures authentic user data always takes precedence over automated sources
 - July 3, 2025: COMPLETE GBP OAUTH IMPLEMENTATION VERIFIED - Successfully authenticated user 110795423852052644529 with full Google Business Profile OAuth flow, confirmed refresh token storage in database, tested Business Information API endpoints (quota propagating after API enablement), created comprehensive GBP integration with multiple endpoint fallbacks, system ready to fetch authentic dashboard-managed products once quota becomes active, OAuth implementation working perfectly with Business scope, user has enabled APIs in Google Cloud Console and requested quota increase, API connectivity confirmed
 - July 3, 2025: MAJOR BREAKTHROUGH - Successfully implemented authentic Serbian service extraction system for Kigen Plastika - eliminated all placeholder "Product 1, Product 5, Product 6" generation completely from server.js, created website service extraction system that successfully extracts real Serbian services ("Plastični rezervoari", "cisterne", "Cisterne") directly from kigen-plastika.rs business website, updated ServicesSection React component to prioritize authentic website-extracted data over generic fallbacks, created complete GBP Business Information API toolkit for fetching real product descriptions, confirmed GBP API correctly returns authentic services with proper structure, fixed React dashboard proxy configuration to connect frontend to backend server, system now displays authentic Serbian septic tank services instead of AI-generated placeholder content
 - July 3, 2025: Fixed critical white screen errors and strengthened authentic data protection - resolved ReferenceError company_name scope issues by properly passing bootstrap props to all React components, eliminated DOM manipulation approach for product rendering in favor of direct React component rendering, added server-side AI text mapping blocking when authentic GBP products are detected to prevent AI override of real business data, fixed image data extraction throughout all template sections to properly handle GBP photo objects, created missing logo.svg file to eliminate 404 errors, strengthened protection against AI text replacement system overriding authentic product names and business information
@@ -161,6 +162,16 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 - June 22, 2025: Added Chatislav 24/7 chat widget to all pages (index, pricing, cart, checkout, account, signup, privacy, tos) for customer support
 - June 22, 2025: Major pricing page redesign - removed Free Trial card, implemented pill-style billing toggle, updated all plan buttons to "Try for Free", added "Everything in X, plus:" headings to Pro/Agency plans, updated responsive layout for 3 plans
 - June 21, 2025: Initial setup
+
+## Data Priority Hierarchy
+
+**Critical Business Rule - Data Source Priority Order:**
+1. **Highest Priority**: User input data entered in chat (services/products descriptions, uploaded images)
+2. **Second Priority**: Authentic website data extraction 
+3. **Third Priority**: Google Business Profile imported images and AI-generated content
+4. **Fourth Priority**: Stock images from Unsplash/Pexels APIs (only when no GBP available)
+
+This hierarchy ensures authentic user-provided data always takes precedence over automated extraction or AI generation.
 
 ## User Preferences
 
