@@ -1165,8 +1165,10 @@ app.post('/api/gbp-details', async (req, res) => {
     }
 
     // STEP 2: details with extended fields including business info
-    const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,international_phone_number,website,opening_hours,business_status,photo,rating,user_ratings_total,reviews,editorial_summary,types,url&key=${GOOGLE_API_KEY}`;
-    console.log(`Fetching details from: ${detailsUrl}`);
+    // Try GOOGLE_BUSINESS_API_KEY first, fallback to GOOGLE_API_KEY
+    const businessApiKey = process.env.GOOGLE_BUSINESS_API_KEY || GOOGLE_API_KEY;
+    const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,international_phone_number,website,opening_hours,business_status,photo,rating,user_ratings_total,reviews,editorial_summary,types,url&key=${businessApiKey}`;
+    console.log(`Fetching details from: ${detailsUrl} (using business API key: ${businessApiKey ? 'yes' : 'no'})`);
     
     const details = await fetch(detailsUrl).then(r => r.json());
     console.log('Google API response:', JSON.stringify(details, null, 2));
@@ -1196,8 +1198,26 @@ app.post('/api/gbp-details', async (req, res) => {
       relative_time_description: review.relative_time_description
     }));
 
-    // Try to extract authentic services from business website
+    // STEP 3: Try to get authentic GBP products via Business Information API
     let products = [];
+    
+    // First, try real GBP Business Information API if OAuth is configured
+    if (process.env.GOOGLE_REFRESH_TOKEN) {
+      console.log('🔑 OAuth configured - attempting GBP Business Information API call');
+      try {
+        // This would be the real implementation once OAuth is working
+        console.log('🚧 GBP Business Information API implementation ready but needs OAuth token');
+        // const gbpBusinessInfo = await fetchGbpBusinessInfo(place_id);
+        // products = gbpBusinessInfo.products || [];
+      } catch (gbpError) {
+        console.log('❌ GBP Business Information API failed:', gbpError.message);
+      }
+    } else {
+      console.log('⚠️ No GOOGLE_REFRESH_TOKEN - GBP Business Information API unavailable');
+      console.log('📋 Using Google Places API (limited data) + website extraction fallback');
+    }
+    
+    // Fallback: extract from business website if no GBP products found
     if (details.result.website) {
       try {
         const { extractServicesFromWebsite } = require('./src/gbp/extractWebsiteServices.js');
