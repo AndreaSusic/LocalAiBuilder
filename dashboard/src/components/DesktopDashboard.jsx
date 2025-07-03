@@ -5,26 +5,92 @@ import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 // Inject editor bridge into iframe for inline editing
 function injectEditorBridge(iframe) {
   try {
+    console.log('🔧 Attempting to inject editor bridge...');
     const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
     
     // Check if bridge is already injected
     if (frameDoc.querySelector('#editor-bridge-script')) {
+      console.log('⚠️ Editor bridge already injected');
       return;
     }
     
-    // Inject editor bridge script
+    // Inject editor bridge script inline to avoid cross-origin issues
     const script = frameDoc.createElement('script');
     script.id = 'editor-bridge-script';
-    script.type = 'module';
-    script.src = '/editorBridge.js';
-    
-    script.onload = () => {
-      console.log('✅ Editor bridge injected successfully');
-    };
-    
-    script.onerror = (error) => {
-      console.error('❌ Failed to inject editor bridge:', error);
-    };
+    script.innerHTML = `
+      console.log('✅ Mobile Editor bridge injected successfully as inline script');
+      
+      // Basic editor bridge functionality
+      window.initEditorBridge = function() {
+        console.log('🔧 Initializing inline editor bridge...');
+        
+        // Make all text elements editable
+        const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, li, td, th, figcaption, blockquote, a, button');
+        
+        elements.forEach(element => {
+          // Skip if element is already marked as non-editable
+          if (element.closest('[contenteditable="false"]') || 
+              element.closest('script') ||
+              element.closest('style')) {
+            return;
+          }
+          
+          // Add hover effect and click handler
+          element.style.cursor = 'pointer';
+          element.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Make element editable
+            element.contentEditable = 'true';
+            element.focus();
+            
+            // Add visual feedback
+            element.style.outline = '2px solid #007cff';
+            element.style.backgroundColor = 'rgba(0, 124, 255, 0.05)';
+            
+            // Handle blur to stop editing
+            element.addEventListener('blur', function() {
+              element.contentEditable = 'false';
+              element.style.outline = 'none';
+              element.style.backgroundColor = '';
+              
+              // Send changes to parent
+              if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                  type: 'editor-save',
+                  data: {
+                    element: element.tagName,
+                    content: element.innerHTML,
+                    text: element.textContent
+                  }
+                }, '*');
+              }
+            });
+          });
+          
+          // Add hover effect
+          element.addEventListener('mouseenter', function() {
+            element.style.outline = '2px dashed #007cff';
+          });
+          
+          element.addEventListener('mouseleave', function() {
+            if (element.contentEditable !== 'true') {
+              element.style.outline = 'none';
+            }
+          });
+        });
+        
+        console.log('✅ Made ' + elements.length + ' elements editable');
+      };
+      
+      // Initialize when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.initEditorBridge);
+      } else {
+        window.initEditorBridge();
+      }
+    `;
     
     frameDoc.head.appendChild(script);
     

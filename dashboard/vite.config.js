@@ -11,8 +11,8 @@ export default defineConfig({
   },
   server: {
     host: true, // ⬅️  bind on all + disable host check
-    port: 4000, // any free port
-    strictPort: true,
+    port: 5173, // any free port
+    strictPort: false,
     allowedHosts: true, // still allowed, but host:true is the key
     hmr: {
       protocol: "wss",
