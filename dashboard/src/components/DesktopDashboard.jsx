@@ -65,20 +65,28 @@ function injectEditorBridge(iframe) {
         }
         
         waitForReactComponents().then(() => {
+          console.log('🔍 Editor bridge starting element detection...');
+          
           // Find ALL elements that should be editable (like original editorBridge.js)
           const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button');
-          console.log('[bridge] candidates found:', elements.length, elements);
+          console.log('🔍 [bridge] Raw candidates found:', elements.length);
+          console.log('🔍 [bridge] First 5 elements:', Array.from(elements).slice(0, 5));
           
           let editableCount = 0;
           
-          elements.forEach(element => {
+          elements.forEach((element, index) => {
+            console.log('🔍 Processing element', index, ':', element.tagName, element.textContent?.substring(0, 50));
+            
             // Skip elements that shouldn't be editable (much more permissive like original)
             if (element.closest('[contenteditable="false"]') || 
                 element.closest('script') ||
                 element.closest('style') ||
                 element.closest('.ez-toolbar')) {
+              console.log('❌ Skipped element', index, '- matches exclusion criteria');
               return;
             }
+            
+            console.log('✅ Making element', index, 'editable:', element.tagName);
             
             // Add editable functionality
             element.style.cursor = 'pointer';
