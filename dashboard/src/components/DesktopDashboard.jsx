@@ -14,186 +14,75 @@ function injectEditorBridge(iframe) {
       return;
     }
     
-    // Inject editor bridge script inline to avoid cross-origin issues
+    // Inject simplified editor bridge script
     const script = frameDoc.createElement('script');
     script.id = 'editor-bridge-script';
     script.innerHTML = `
-      console.log('✅ Mobile Editor bridge injected successfully as inline script');
+      console.log('✅ Editor bridge script injected successfully');
       
-      // Enhanced editor bridge functionality with React component support
-      window.initEditorBridge = function() {
+      try {
+        // Simple editor bridge functionality
         console.log('🔧 Initializing NEW UPDATED inline editor bridge v2.0...');
         
-        // Wait for React components to fully render with more patience
-        function waitForReactComponents() {
-          return new Promise((resolve) => {
-            let attempts = 0;
-            const maxAttempts = 50; // Wait up to 5 seconds
-            
-            const checkForElements = () => {
-              console.log('🔍 Checking for React components, attempt:', attempts + 1);
-              
-              // Look for specific React component classes that should be in our template
-              const heroSection = document.querySelector('.hero-section, .hero, [class*="hero"]');
-              const servicesSection = document.querySelector('.services-section, .services, [class*="service"]');
-              const aboutSection = document.querySelector('.about-section, .about, [class*="about"]');
-              const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button');
-              
-              console.log('🔍 Found elements:', {
-                heroSection: !!heroSection,
-                servicesSection: !!servicesSection,
-                aboutSection: !!aboutSection,
-                textElements: textElements.length
-              });
-              
-              // Check if we have the essential React components rendered
-              if ((heroSection || servicesSection || aboutSection) && textElements.length > 10) {
-                console.log('✅ React components detected, proceeding with editor setup');
-                resolve();
-              } else if (attempts >= maxAttempts) {
-                console.log('⚠️ Max attempts reached, proceeding anyway');
-                resolve();
-              } else {
-                attempts++;
-                setTimeout(checkForElements, 100);
-              }
-            };
-            
-            // Start checking immediately
-            checkForElements();
-          });
-        }
+        // Find all text elements immediately (no waiting)
+        const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button');
+        console.log('🔍 Found', elements.length, 'potential editable elements');
         
-        waitForReactComponents().then(() => {
-          console.log('🔍 Editor bridge starting element detection...');
+        let editableCount = 0;
+        
+        elements.forEach((element, index) => {
+          // Very simple filtering
+          if (element.closest('script') || element.closest('style')) {
+            return;
+          }
           
-          // Find ALL elements that should be editable (like original editorBridge.js)
-          const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button');
-          console.log('🔍 [bridge] Raw candidates found:', elements.length);
-          console.log('🔍 [bridge] First 5 elements:', Array.from(elements).slice(0, 5));
+          console.log('✅ Making element editable:', element.tagName, element.textContent?.substring(0, 30));
           
-          let editableCount = 0;
+          // Add editable functionality
+          element.style.cursor = 'pointer';
+          element.setAttribute('data-editable', 'true');
+          editableCount++;
           
-          elements.forEach((element, index) => {
-            console.log('🔍 Processing element', index, ':', element.tagName, element.textContent?.substring(0, 50));
+          // Click to edit
+          element.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             
-            // Skip elements that shouldn't be editable (much more permissive like original)
-            if (element.closest('[contenteditable="false"]') || 
-                element.closest('script') ||
-                element.closest('style') ||
-                element.closest('.ez-toolbar')) {
-              console.log('❌ Skipped element', index, '- matches exclusion criteria');
-              return;
+            console.log('🖱️ Element clicked for editing:', element.tagName);
+            
+            // Make editable
+            element.contentEditable = 'true';
+            element.focus();
+            element.style.outline = '2px solid #007cff';
+            element.style.backgroundColor = 'rgba(0, 124, 255, 0.05)';
+          });
+          
+          // Hover effects
+          element.addEventListener('mouseenter', function() {
+            if (element.contentEditable !== 'true') {
+              element.style.outline = '2px dashed #007cff';
             }
-            
-            console.log('✅ Making element', index, 'editable:', element.tagName);
-            
-            // Add editable functionality
-            element.style.cursor = 'pointer';
-            element.style.transition = 'all 0.2s ease';
-            element.setAttribute('data-editable', 'true');
-            editableCount++;
-            
-            // Click handler for editing
-            element.addEventListener('click', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              
-              // Deactivate other elements
-              document.querySelectorAll('[contenteditable="true"]').forEach(el => {
-                if (el !== element) {
-                  el.contentEditable = 'false';
-                  el.style.outline = 'none';
-                  el.style.backgroundColor = '';
-                }
-              });
-              
-              // Make element editable
-              element.contentEditable = 'true';
-              element.focus();
-              
-              // Add visual feedback
-              element.style.outline = '2px solid #007cff';
-              element.style.backgroundColor = 'rgba(0, 124, 255, 0.05)';
-              
-              // Select all text
-              const range = document.createRange();
-              range.selectNodeContents(element);
-              const selection = window.getSelection();
-              selection.removeAllRanges();
-              selection.addRange(range);
-            });
-            
-            // Blur handler to stop editing
-            element.addEventListener('blur', function() {
-              element.contentEditable = 'false';
+          });
+          
+          element.addEventListener('mouseleave', function() {
+            if (element.contentEditable !== 'true') {
               element.style.outline = 'none';
-              element.style.backgroundColor = '';
-              
-              // Send changes to parent
-              if (window.parent && window.parent !== window) {
-                window.parent.postMessage({
-                  type: 'editor-save',
-                  data: {
-                    element: element.tagName,
-                    content: element.innerHTML,
-                    text: element.textContent,
-                    id: element.id || null,
-                    className: element.className || null
-                  }
-                }, '*');
-              }
-            });
-            
-            // Enhanced hover effects
-            element.addEventListener('mouseenter', function() {
-              if (element.contentEditable !== 'true') {
-                element.style.outline = '2px dashed #007cff';
-                element.style.outlineOffset = '2px';
-              }
-            });
-            
-            element.addEventListener('mouseleave', function() {
-              if (element.contentEditable !== 'true') {
-                element.style.outline = 'none';
-                element.style.outlineOffset = '0px';
-              }
-            });
-            
-            // Handle Enter key
-            element.addEventListener('keydown', function(e) {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                element.blur();
-              }
-              if (e.key === 'Escape') {
-                element.blur();
-              }
-            });
-          });
-          
-          console.log('✅ Made ' + editableCount + ' elements editable out of ' + elements.length + ' total elements');
-          
-          // Add global click handler to deactivate editing
-          document.addEventListener('click', function(e) {
-            if (!e.target.closest('[data-editable="true"]')) {
-              document.querySelectorAll('[contenteditable="true"]').forEach(el => {
-                el.contentEditable = 'false';
-                el.style.outline = 'none';
-                el.style.backgroundColor = '';
-              });
             }
           });
+          
+          // Stop editing on blur
+          element.addEventListener('blur', function() {
+            element.contentEditable = 'false';
+            element.style.outline = 'none';
+            element.style.backgroundColor = '';
+            console.log('💾 Element editing stopped:', element.tagName);
+          });
         });
-      };
-      
-      // Initialize when DOM is ready with additional delay for React components
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-          setTimeout(window.initEditorBridge, 2000);
-        });
-      } else {
-        setTimeout(window.initEditorBridge, 2000);
+        
+        console.log('✅ Made', editableCount, 'elements editable');
+        
+      } catch (error) {
+        console.error('❌ Editor bridge error:', error);
       }
     `;
     
@@ -251,337 +140,203 @@ export default function DesktopDashboard({ bootstrap }) {
           return;
         }
       }
-      
-      // Create short URL for preview iframe
+
+      // Create short URL for preview
       if (dataToUse && Object.keys(dataToUse).length > 0) {
         try {
-          const shortId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-          
           const response = await fetch('/api/cache-preview', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: shortId, data: dataToUse })
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToUse),
           });
-          
+
           if (response.ok) {
-            const shortUrl = `/t/v1/${shortId}`;
-            setPreviewContent(shortUrl);
-            console.log('Created short URL for preview:', shortUrl);
-            return;
+            const result = await response.json();
+            console.log('Created short URL for preview:', result.url);
+            setPreviewContent(result.url);
+          } else {
+            console.log('Failed to create short URL, using default');
+            setPreviewContent('/t/v1');
           }
         } catch (error) {
-          console.error('Error creating short URL for preview:', error);
+          console.log('Error creating short URL:', error.message);
+          setPreviewContent('/t/v1');
         }
+      } else {
+        setPreviewContent('/t/v1');
       }
-      
-      // Fallback
-      setPreviewContent('/t/v1');
     };
-    
+
     createPreviewUrl();
   }, [bootstrap]);
 
-  /* HANDLERS */
-  const sendChat = () => { console.log("Chat:", draftChat); setChat(""); };
-  const newSite = () => console.log("New Site");
-  const saveSite = () => console.log("Save");
-  const publish = () => console.log("Publish");
-
-  const openVer = v => {
-    let baseUrl = '';
-    if (v === "Version 1") {
-      baseUrl = '/templates/homepage/v1/index.jsx';
-    } else if (v === "Version 2") {
-      baseUrl = '/templates/homepage/v2/index.jsx'; 
-    } else if (v === "Version 3") {
-      baseUrl = '/templates/homepage/v3/index.jsx';
-    }
+  const handlePreviewVersion = (version) => {
+    // Navigate to different template versions
+    const versionMap = {
+      "Version 1": "/templates/homepage/v1/index.jsx",
+      "Version 2": "/templates/homepage/v2/index.jsx", 
+      "Version 3": "/templates/homepage/v3/index.jsx"
+    };
     
-    // Add bootstrap data to URL if available
-    if (bootstrap && Object.keys(bootstrap).length > 0) {
-      const encoded = encodeURIComponent(JSON.stringify(bootstrap));
-      baseUrl += `?data=${encoded}`;
+    const targetUrl = versionMap[version];
+    if (targetUrl) {
+      window.open(targetUrl, '_blank');
     }
-    
-    window.open(baseUrl, '_blank');
-  };
-  const handleEditorAction = (action) => {
-    console.log('Toolbar action:', action);
-  };
-  const switchPreviewScreen = () => {
-    const screens = ["desktop", "tablet", "mobile"];
-    const currentIndex = screens.indexOf(previewScreen);
-    const nextIndex = (currentIndex + 1) % screens.length;
-    setPreviewScreen(screens[nextIndex]);
-    console.log('Preview screen:', screens[nextIndex]);
   };
 
-  const showTemplatePreview = async (templateUrl) => {
-    // Generate a short URL with cached data
-    if (bootstrap && Object.keys(bootstrap).length > 0) {
-      try {
-        // Generate short code for the bootstrap data
-        const shortId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-        
-        // Cache the data on the server
-        const response = await fetch('/api/cache-preview', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: shortId, data: bootstrap })
-        });
-        
-        if (response.ok) {
-          const shortUrl = `/t/v1/${shortId}`;
-          window.open(shortUrl, '_blank');
-          setShowPagesDropdown(false);
-          console.log('Opening template with short URL:', shortUrl);
-          return;
-        }
-      } catch (error) {
-        console.error('Error creating short URL:', error);
-      }
-    }
-    
-    // Fallback: open without data
-    window.open('/t/v1/demo', '_blank');
-    setShowPagesDropdown(false);
-  };
-
-  const handleLogout = async () => {
+  const handleSignOut = async () => {
     try {
-      // Use the correct logout endpoint
-      window.location.href = '/auth/logout';
+      const response = await fetch('/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        navigate('/');
+      }
     } catch (error) {
-      console.error('Logout error:', error);
-      window.location.href = '/auth/logout';
+      console.error('Logout failed:', error);
     }
   };
 
-  // Handle undo/redo actions from iframe
-  const handleUndo = () => {
-    const iframe = document.querySelector('iframe');
-    if (iframe && iframe.contentWindow) {
-      iframe.contentWindow.postMessage({ type: 'undo' }, '*');
-    }
-  };
-
-  const handleRedo = () => {
-    const iframe = document.querySelector('iframe');
-    if (iframe && iframe.contentWindow) {
-      iframe.contentWindow.postMessage({ type: 'redo' }, '*');
+  // Handle iframe load to inject editor bridge
+  const handleIframeLoad = (iframe) => {
+    if (iframe) {
+      // Small delay to ensure iframe content is fully loaded
+      setTimeout(() => {
+        injectEditorBridge(iframe);
+      }, 500);
     }
   };
 
   return (
-    <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
-      {/* ---------------- TOP BAR ---------------- */}
-      <div className="topBar">
-        <div className="group">
-          <span className="hamburger">☰</span>
-          <a href="/" className="logo-link">
-            <img src="/logo.svg" alt="LocalAI Builder" className="dashboard-logo" />
-          </a>
-          <button className="btn" onClick={newSite}>New Site</button>
-          <button className="btn" onClick={saveSite}>Save</button>
-          <button className="btn" onClick={handleUndo} title="Undo (Ctrl+Z)">↶</button>
-          <button className="btn" onClick={handleRedo} title="Redo (Ctrl+Y)">↷</button>
-          <button className="btn" onClick={publish}>Publish</button>
-        </div>
-
-        <div className="group">
-          <div className="usage">Basic Plan  3 / 10 q's</div>
-          <button className="iconBtn">🛎️</button>
-          <button className="iconBtn">❔</button>
-        </div>
-
-        <div className="group">
-          <button className="btn preview-switcher" onClick={switchPreviewScreen}>
-            {previewScreen === "desktop" && "🖥️ Desktop"}
-            {previewScreen === "tablet" && "📱 Tablet"}
-            {previewScreen === "mobile" && "📱 Mobile"}
-          </button>
-          <button className="btn">Sites ▼</button>
-          <div style={{ position: "relative" }}>
-            <button 
-              className="btn" 
-              onClick={() => setShowPagesDropdown(!showPagesDropdown)}
-            >
-              Pages ▼
-            </button>
-            {showPagesDropdown && (
-              <div style={{
-                position: "absolute",
-                top: "100%",
-                right: 0,
-                background: "white",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                minWidth: "120px",
-                zIndex: 1000,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
-              }}>
-                <div 
-                  onClick={() => showTemplatePreview("/templates/homepage/v1/index.jsx")}
-                  style={{
-                    display: "block",
-                    padding: "8px 16px",
-                    textDecoration: "none",
-                    color: "#333",
-                    borderBottom: "1px solid #eee",
-                    cursor: "pointer"
-                  }}
-                  onMouseOver={e => e.target.style.background = "#f5f5f5"}
-                  onMouseOut={e => e.target.style.background = "white"}
-                >
-                  Homepage
-                </div>
-                <div 
-                  onClick={() => showTemplatePreview("/templates/service/v1/index.jsx")}
-                  style={{
-                    display: "block",
-                    padding: "8px 16px",
-                    textDecoration: "none",
-                    color: "#333",
-                    borderBottom: "1px solid #eee",
-                    cursor: "pointer"
-                  }}
-                  onMouseOver={e => e.target.style.background = "#f5f5f5"}
-                  onMouseOut={e => e.target.style.background = "white"}
-                >
-                  Service
-                </div>
-                <div 
-                  onClick={() => showTemplatePreview("/templates/contact/v1/index.jsx")}
-                  style={{
-                    display: "block",
-                    padding: "8px 16px",
-                    textDecoration: "none",
-                    color: "#333",
-                    cursor: "pointer"
-                  }}
-                  onMouseOver={e => e.target.style.background = "#f5f5f5"}
-                  onMouseOut={e => e.target.style.background = "white"}
-                >
-                  Contact
-                </div>
-              </div>
-            )}
+    <div className="dashboard-container">
+      {/* Header */}
+      <header className="dashboard-header">
+        <div className="header-left">
+          <div className="logo">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="#ffc000"/>
+              <path d="M8 12h16v8H8z" fill="white"/>
+              <circle cx="12" cy="16" r="2" fill="#ffc000"/>
+              <circle cx="20" cy="16" r="2" fill="#ffc000"/>
+            </svg>
+            <span>GoAISite</span>
           </div>
-          <div style={{ position: "relative" }}>
+
+          <nav className="nav-tabs">
+            <div className="pages-dropdown">
+              <button 
+                className="dropdown-btn"
+                onClick={() => setShowPagesDropdown(!showPagesDropdown)}
+              >
+                Pages ▼
+              </button>
+              {showPagesDropdown && (
+                <div className="dropdown-menu">
+                  <a href="/templates/homepage/v1/index.jsx" target="_blank">Homepage</a>
+                  <a href="/service/invisalign" target="_blank">Service Page</a>
+                  <a href="/templates/contact/v1/index.jsx" target="_blank">Contact</a>
+                </div>
+              )}
+            </div>
+          </nav>
+        </div>
+
+        <div className="header-right">
+          <div className="search-bar">
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <div className="profile-dropdown">
             <button 
-              className="btn" 
+              className="profile-btn"
               onClick={() => setShowProfileDropdown(!showProfileDropdown)}
             >
               Profile ▼
             </button>
             {showProfileDropdown && (
-              <div style={{
-                position: "absolute",
-                top: "100%",
-                right: 0,
-                background: "white",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                minWidth: "120px",
-                zIndex: 1000,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
-              }}>
-                <div 
-                  onClick={handleLogout}
-                  style={{
-                    display: "block",
-                    padding: "8px 16px",
-                    textDecoration: "none",
-                    color: "#333",
-                    cursor: "pointer"
-                  }}
-                  onMouseOver={e => e.target.style.background = "#f5f5f5"}
-                  onMouseOut={e => e.target.style.background = "white"}
-                >
-                  Logout
-                </div>
+              <div className="dropdown-menu">
+                <button onClick={handleSignOut}>Sign Out</button>
               </div>
             )}
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* ---------------- GRID ---------------- */}
-      <div className="grid">
-
-        {/* Versions + Chat */}
-        <div className="panel" style={{ display: "none" }}>
-          <h2>Versions</h2>
-          <input
-            className="search"
-            placeholder="Search versions…"
-            value={search}
-            onChange={e=>setSearch(e.target.value)}
-          />
-          <div className="versionsCards">
-            {versions
-              .filter(v=>v.toLowerCase().includes(search.toLowerCase()))
-              .map(v=>(
-                <div key={v} className="versionCard" onClick={()=>openVer(v)}>
-                  {v}
+      {/* Main Content */}
+      <div className="dashboard-main">
+        {/* Left Sidebar - Versions */}
+        <aside className="versions-sidebar">
+          <h3>Templates</h3>
+          <div className="version-list">
+            {versions.map((version, index) => (
+              <div key={version} className="version-card">
+                <h4>{version}</h4>
+                <div className="version-preview">
+                  <div className="preview-placeholder">
+                    Template {index + 1}
+                  </div>
                 </div>
+                <button 
+                  className="view-btn"
+                  onClick={() => handlePreviewVersion(version)}
+                >
+                  View
+                </button>
+              </div>
             ))}
           </div>
-       
-        </div>
+        </aside>
 
-        {/* Live Preview */}
-        <div className="panel">
-          <h2>Live Preview - {previewScreen}</h2>
-          <div className={`preview preview-${previewScreen}`}>
-            <iframe 
-              ref={(iframe) => {
-                if (iframe && iframe.src !== "about:blank") {
-                  iframe.onload = () => injectEditorBridge(iframe);
-                }
-              }}
-              title="preview" 
-              src={previewContent || "about:blank"} 
-              style={{
-                width: "100%",
-                height: "100%",
-                border: "none"
-              }}
-            />
+        {/* Center - Live Preview */}
+        <main className="live-preview">
+          <div className="preview-header">
+            <h2>Live Preview</h2>
+            <div className="preview-controls">
+              <button 
+                className={previewScreen === "desktop" ? "active" : ""}
+                onClick={() => setPreviewScreen("desktop")}
+              >
+                🖥 Desktop
+              </button>
+              <button 
+                className={previewScreen === "mobile" ? "active" : ""}
+                onClick={() => setPreviewScreen("mobile")}
+              >
+                📱 Mobile
+              </button>
+            </div>
           </div>
-          <button 
-            className="view-live-btn" 
-            onClick={async () => {
-              // Generate a short URL with cached data
-              if (bootstrap && Object.keys(bootstrap).length > 0) {
-                try {
-                  const shortId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-                  
-                  const response = await fetch('/api/cache-preview', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: shortId, data: bootstrap })
-                  });
-                  
-                  if (response.ok) {
-                    window.open(`/t/v1/${shortId}`, '_blank');
-                    return;
-                  }
-                } catch (error) {
-                  console.error('Error creating short URL:', error);
-                }
-              }
-              
-              // Fallback
-              window.open('/t/v1/demo', '_blank');
-            }}
-          >
-            View Live Site
-          </button>
-        </div>
+          
+          <div className={`preview-frame ${previewScreen}`}>
+            {previewContent && (
+              <iframe
+                src={previewContent}
+                onLoad={(e) => handleIframeLoad(e.target)}
+                title="Website Preview"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                  borderRadius: '8px'
+                }}
+              />
+            )}
+          </div>
+        </main>
 
-        {/* Unified Command Chat Panel */}
-        <UnifiedCommandChatPanel />
+        {/* Right Sidebar - Chat */}
+        <aside className="chat-sidebar">
+          <UnifiedCommandChatPanel />
+        </aside>
       </div>
     </div>
   );
