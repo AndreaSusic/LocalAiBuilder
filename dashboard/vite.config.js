@@ -19,6 +19,13 @@ export default defineConfig({
       clientPort: 443, // HTTPS front-end port Replit uses
       // no host here – Vite will fall back to window.location.host
     },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   },
   appType: "spa",
 });
