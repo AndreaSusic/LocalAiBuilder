@@ -17,6 +17,9 @@
   user-select: none;
   flex-wrap: wrap;
   max-width: 400px;
+  /* Ensure toolbar stays within viewport */
+  max-height: 100px;
+  overflow: visible;
 }
 
 .ez-btn {
@@ -46,6 +49,32 @@
 .ez-btn:focus {
   outline: 2px solid #007cff;
   outline-offset: 1px;
+}
+
+/* Tooltip styles */
+.ez-btn::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 10001;
+}
+
+.ez-btn:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-2px);
 }
 
 /* Specific button styles */
