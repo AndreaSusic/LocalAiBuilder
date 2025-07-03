@@ -5,15 +5,22 @@ export default function GallerySection() {
   const { images = [], google_profile = {}, safeImg, company_name = 'Our Business' } = useContext(SiteDataContext) || {};
   const [selectedImage, setSelectedImage] = useState(null);
   
-  // Use GBP photos first, then provided images
-  const gbpPhotos = google_profile.photos || [];
+  // Extract image URLs properly from GBP photos and provided images
+  const getImageUrl = (img) => {
+    if (typeof img === 'string') return img;
+    if (img && typeof img === 'object') {
+      return img.url || img.src || null;
+    }
+    return null;
+  };
+
+  const gbpPhotos = (google_profile.photos || [])
+    .map(getImageUrl)
+    .filter(url => url && url.length > 0 && url.startsWith('http'));
+  
   const providedImages = Array.isArray(images) ? 
-    images.filter(img => 
-      typeof img === 'string' && 
-      img.length > 0 && 
-      !img.includes('placeholder') &&
-      (img.startsWith('http://') || img.startsWith('https://'))
-    ) : [];
+    images.map(getImageUrl)
+          .filter(url => url && url.length > 0 && !url.includes('placeholder') && url.startsWith('http')) : [];
   
   // Prioritize authentic GBP photos for gallery display
   const galleryImages = gbpPhotos.length > 0 ? gbpPhotos : providedImages;

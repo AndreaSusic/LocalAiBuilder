@@ -81,14 +81,27 @@ export default function ServicesSection() {
   const servicesToShow = servicesList.length > 0 ? servicesList.map((service, index) => {
     console.log('ServicesSection DEBUG - Processing service:', service, 'Type:', typeof service, 'Index:', index);
     const serviceText = typeof service === 'string' ? service : String(service || '');
+    
+    // Get image URL properly from GBP photos or other sources
+    const getImageUrl = (img) => {
+      if (typeof img === 'string') return img;
+      if (img && typeof img === 'object') {
+        return img.url || img.src || null;
+      }
+      return null;
+    };
+    
+    const serviceImage = getImageUrl(gbpPhotos[index]) || 
+                        getImageUrl(availableImages[index]) || 
+                        defaultImages[index] || 
+                        defaultImages[0];
+    
     return {
       title: serviceText,
       description: isLandscaping ? 
         `Premium ${serviceText.toLowerCase()} perfect for your lawn and landscaping needs.` :
         `Professional ${serviceText.toLowerCase()} services tailored to your needs.`,
-      image: (gbpPhotos[index] ? 
-        `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${gbpPhotos[index].photo_reference}&key=${process.env.GOOGLE_PLACES_API_KEY}` :
-        availableImages[index]) || defaultImages[index] || defaultImages[0]
+      image: serviceImage
     };
   }) : [];
   
