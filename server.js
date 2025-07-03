@@ -327,7 +327,7 @@ app.get('/api/template-data/:dataId', (req, res) => {
   }
 });
 
-app.get(['/preview', '/template/:id', '/templates/homepage/v1/index.jsx', '/templates/homepage/v2/index.jsx', '/templates/homepage/v3/index.jsx'], (_req, res) => {
+app.get(['/dashboard', '/preview', '/template/:id', '/templates/homepage/v1/index.jsx', '/templates/homepage/v2/index.jsx', '/templates/homepage/v3/index.jsx'], (_req, res) => {
   console.log('📂 Serving SPA from production build');
   res.sendFile(path.join(dist, 'index.html'));
 });
