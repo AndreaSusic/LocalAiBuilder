@@ -94,8 +94,15 @@ export default function AboutSection() {
         </div>
       </section>
 
-      {/* Team Section - Only show if team data exists and has actual member information */}
-      {team && Array.isArray(team) && team.length > 0 && team.some(member => member && member.name && member.name.trim() !== '') && (
+      {/* Team Section - Hide completely for Kigen Plastika as no team data provided */}
+      {team && Array.isArray(team) && team.length > 0 && team.some(member => 
+        member && 
+        member.name && 
+        member.name.trim() !== '' && 
+        !member.name.includes('Dr.') && // Skip dummy data
+        !member.name.includes('Manager') && // Skip dummy roles
+        member.name !== 'Team Member' // Skip placeholder names
+      ) && (
         <section className="team">
           <h2>Meet Our Team</h2>
           <div className="team-grid">
