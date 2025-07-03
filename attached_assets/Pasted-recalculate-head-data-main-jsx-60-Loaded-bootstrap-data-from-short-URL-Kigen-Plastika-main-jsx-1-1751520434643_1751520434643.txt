@@ -1,0 +1,62 @@
+recalculate_head_data
+main.jsx:60 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+main.jsx:142 BOOTSTRAP >> Object
+main.jsx:143 Current path: /t/v1/mcmxzbyy3qay5tchf2i
+main.jsx:144 Root element exists: true
+main.jsx:158 React app rendered successfully
+main.jsx:13 🔍 Loading products with 3-tier fallback system
+main.jsx:17 📋 Fetching GBP products for CID: ChIJvW8VATCFWUcRDDXH5bhDN4k
+App.jsx:20 App rendering with bootstrap: Object
+App.jsx:21 isMobile: false
+index.jsx:77 HomepageV1 using data: Object
+ServicesSection.jsx:8 ServicesSection DEBUG - Services data: Septic Tanks string
+ServicesSection.jsx:9 ServicesSection DEBUG - GBP products: Array(6)
+ServicesSection.jsx:79 ServicesSection DEBUG - ServicesList: Array(3) Type: object
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 1 Type: string Index: 0
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 2 Type: string Index: 1
+ServicesSection.jsx:82 ServicesSection DEBUG - Processing service: Product 3 Type: string Index: 2
+ServicesSection.jsx:95 ServicesSection DEBUG - ServicesToShow: Array(3)
+AboutSection.jsx:8 AboutSection DEBUG - Team data: Array(0) Length: 0
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: Object
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: Object
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+content.js:48 request OK
+/robots.txt:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:22 🔧 Color Guard: Fixed contrast for element, bg: #ffffff, new color: #000000
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+photo:1 
+            
+            
+           Failed to load resource: the server responded with a status of 403 ()
+[object%20Object]:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+extension_content.js:1 recalculate_head_data
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:22 📦 Got 0 GBP products
+main.jsx:32 👤 Using 3 user products as fallback
+renderProducts.js:2 🎨 Rendering 3 products to grid
+renderProducts.js:42 ✅ Products rendered successfully
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
