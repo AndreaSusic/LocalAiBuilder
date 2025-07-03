@@ -32,40 +32,10 @@ export default function ReviewsSection() {
     }
   ];
 
-  // TEMPORARY: Use authentic Kigen Plastika reviews directly
-  const authentichGbpReviews = [
-    {
-      author_name: "Jordan Jančić",
-      rating: 5,
-      text: "Kigen plastika da te voli zena i svastika"
-    },
-    {
-      author_name: "Aleksandar Popovic",
-      rating: 5,
-      text: "fast and excellent cooperation... 10/10... everything was done on time..."
-    },
-    {
-      author_name: "Gačo",
-      rating: 5,
-      text: "Kigen Plastika all praises for the cooperation."
-    },
-    {
-      author_name: "Marko Pavlovic",
-      rating: 5,
-      text: "Excellent production of all items, recommendation to all future buyers."
-    },
-    {
-      author_name: "Dejan Gladovic",
-      rating: 5,
-      text: "All recommendations"
-    }
-  ];
-
-  // Try multiple paths for GBP reviews data, fallback to hardcoded authentic reviews
-  const gbpReviews = google_profile?.reviews || reviews || siteData.reviews || authentichGbpReviews;
+  // Try multiple paths for GBP reviews data
+  const gbpReviews = google_profile?.reviews || reviews || siteData.reviews || [];
   console.log('🔍 ReviewsSection - GBP reviews found:', gbpReviews.length, 'reviews');
   console.log('🔍 ReviewsSection - First review sample:', gbpReviews[0]);
-  console.log('🔍 ReviewsSection - Using authentic Kigen Plastika reviews');
   
   // Use authentic GBP reviews 
   const testimonials = gbpReviews && gbpReviews.length > 0 
