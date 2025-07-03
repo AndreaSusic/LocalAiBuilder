@@ -25,9 +25,9 @@ export default function AboutSection() {
   const providedImageUrls = providedImages.map(getImageUrl).filter(url => url && url.startsWith('http'));
   const availableImages = [...gbpPhotoUrls, ...providedImageUrls];
   
-  // Use a different image for location section - prefer GBP exterior/building photos
-  const aboutImage = availableImages[2] || availableImages[1] || availableImages[0] || 
-    'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=900&auto=format&fit=crop&q=60';
+  // Use industrial/septic tank facility image for Kigen Plastika
+  const septicFacilityImage = 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=900&auto=format&fit=crop&q=60'; // Industrial facility
+  const aboutImage = availableImages[2] || availableImages[1] || availableImages[0] || septicFacilityImage;
   
   // Only treat as grass/sod landscaping if services actually mention grass or sod
   const contextData = useContext(SiteDataContext) || {};
