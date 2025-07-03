@@ -17,20 +17,68 @@ function injectFreshEditor(iframe) {
     const existingScripts = frameDoc.querySelectorAll('[id*="editor"], [id*="bridge"]');
     existingScripts.forEach(script => script.remove());
     
-    // Wait for iframe content to fully load
+    // Wait for iframe content to fully load, then wait more for React to render
     setTimeout(() => {
       const script = frameDoc.createElement('script');
       script.id = 'fresh-editor-script';
       script.innerHTML = `
         console.log('🚀 Fresh inline editor starting...');
         
-        // Find all elements with data-gas-edit attributes first, then fallback to general text elements
-        const editableElements = document.querySelectorAll('[data-gas-edit]');
-        const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li');
-        console.log('📝 Found', editableElements.length, 'data-gas-edit elements');
-        console.log('📝 Found', textElements.length, 'total text elements');
+        // Wait for React components to fully render
+        function waitForReactComponents() {
+          return new Promise((resolve) => {
+            let attempts = 0;
+            const maxAttempts = 30; // Wait up to 3 seconds
+            
+            const checkForElements = () => {
+              console.log('🔍 Checking for React components, attempt:', attempts + 1);
+              
+              // Check for both React components and data-gas-edit attributes
+              const heroSection = document.querySelector('.hero, [class*="hero"]');
+              const servicesSection = document.querySelector('.services, [class*="service"]');
+              const editableElements = document.querySelectorAll('[data-gas-edit]');
+              const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li');
+              
+              console.log('🔍 React detection results:', {
+                heroSection: !!heroSection,
+                servicesSection: !!servicesSection,
+                editableElements: editableElements.length,
+                textElements: textElements.length
+              });
+              
+              // If we have React components AND data-gas-edit elements, proceed
+              if ((heroSection || servicesSection) && editableElements.length > 0) {
+                console.log('✅ React components with data-gas-edit detected!');
+                resolve();
+              } else if (attempts >= maxAttempts) {
+                console.log('⚠️ Max attempts reached, proceeding anyway');
+                resolve();
+              } else {
+                attempts++;
+                setTimeout(checkForElements, 100);
+              }
+            };
+            
+            checkForElements();
+          });
+        }
         
-        let editableCount = 0;
+        waitForReactComponents().then(() => {
+          // Find all elements with data-gas-edit attributes first, then fallback to general text elements
+          const editableElements = document.querySelectorAll('[data-gas-edit]');
+          const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li');
+          console.log('📝 Found', editableElements.length, 'data-gas-edit elements');
+          console.log('📝 Found', textElements.length, 'total text elements');
+          
+          // Debug: Show what data-gas-edit elements we found
+          if (editableElements.length > 0) {
+            console.log('🎯 data-gas-edit elements found:');
+            editableElements.forEach((el, i) => {
+              console.log(i + 1 + ':', el.tagName, el.getAttribute('data-gas-edit'), el.textContent?.slice(0, 30));
+            });
+          }
+        
+          let editableCount = 0;
         
         // Prioritize elements with data-gas-edit attributes
         const elementsToProcess = editableElements.length > 0 ? editableElements : textElements;
@@ -93,6 +141,7 @@ function injectFreshEditor(iframe) {
         });
         
         console.log('✅ Made', editableCount, 'elements editable');
+        }); // Close the waitForReactComponents().then()
       `;
       
       frameDoc.head.appendChild(script);
