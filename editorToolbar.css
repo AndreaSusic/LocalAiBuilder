@@ -1,0 +1,182 @@
+/**
+ * EDITOR TOOLBAR STYLES
+ * Minimal styling for the inline editing toolbar
+ */
+
+.ez-toolbar {
+  position: absolute;
+  background: #ffffff;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  padding: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: none;
+  gap: 2px;
+  z-index: 10000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  user-select: none;
+  flex-wrap: wrap;
+  max-width: 400px;
+}
+
+.ez-btn {
+  font: 14px/1.2 sans-serif;
+  padding: 4px 6px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-radius: 3px;
+  transition: background-color 0.15s ease;
+  min-width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.ez-btn:hover {
+  background: #f0f0f0;
+}
+
+.ez-btn:active {
+  background: #e0e0e0;
+}
+
+.ez-btn:focus {
+  outline: 2px solid #007cff;
+  outline-offset: 1px;
+}
+
+/* Specific button styles */
+.ez-btn[title*="Bold"] {
+  font-weight: bold;
+}
+
+.ez-btn[title*="Italic"] {
+  font-style: italic;
+}
+
+.ez-btn[title*="Underline"] {
+  text-decoration: underline;
+}
+
+.ez-btn[title*="Color"] {
+  position: relative;
+}
+
+.ez-btn[title*="Color"]:after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 2px;
+  background: currentColor;
+}
+
+/* Separator between button groups */
+.ez-toolbar .ez-btn:nth-child(4):after,
+.ez-toolbar .ez-btn:nth-child(7):after,
+.ez-toolbar .ez-btn:nth-child(11):after,
+.ez-toolbar .ez-btn:nth-child(15):after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 2px;
+  bottom: 2px;
+  width: 1px;
+  background: #ddd;
+}
+
+/* Editable element highlighting */
+[data-editable="true"]:hover {
+  outline: 2px dashed #007cff !important;
+  outline-offset: 2px !important;
+}
+
+[data-editable="true"][contenteditable="true"] {
+  outline: 2px solid #007cff !important;
+  outline-offset: 2px !important;
+  background-color: rgba(0, 124, 255, 0.05) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .ez-toolbar {
+    max-width: 300px;
+    padding: 3px;
+  }
+  
+  .ez-btn {
+    font-size: 12px;
+    padding: 3px 4px;
+    min-width: 20px;
+    height: 20px;
+  }
+}
+
+/* Animation for toolbar appearance */
+.ez-toolbar {
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: toolbarAppear 0.2s ease-out forwards;
+}
+
+@keyframes toolbarAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Toolbar positioning fallbacks */
+.ez-toolbar.position-bottom {
+  transform: translateY(10px);
+}
+
+.ez-toolbar.position-left {
+  transform: translateX(-10px);
+}
+
+.ez-toolbar.position-right {
+  transform: translateX(10px);
+}
+
+/* Prevent toolbar from being accidentally selected */
+.ez-toolbar * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .ez-toolbar {
+    border: 2px solid #000;
+    background: #fff;
+  }
+  
+  .ez-btn:hover {
+    background: #000;
+    color: #fff;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .ez-toolbar {
+    background: #2d2d2d;
+    border-color: #555;
+    color: #fff;
+  }
+  
+  .ez-btn:hover {
+    background: #404040;
+  }
+  
+  .ez-btn:active {
+    background: #505050;
+  }
+}

@@ -1,6 +1,44 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
+
+// Inject editor bridge into iframe for inline editing
+function injectEditorBridge(iframe) {
+  try {
+    const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
+    
+    // Check if bridge is already injected
+    if (frameDoc.querySelector('#editor-bridge-script')) {
+      return;
+    }
+    
+    // Inject editor bridge script
+    const script = frameDoc.createElement('script');
+    script.id = 'editor-bridge-script';
+    script.type = 'module';
+    script.src = '/editorBridge.js';
+    
+    script.onload = () => {
+      console.log('✅ Editor bridge injected successfully');
+    };
+    
+    script.onerror = (error) => {
+      console.error('❌ Failed to inject editor bridge:', error);
+    };
+    
+    frameDoc.head.appendChild(script);
+    
+    // Listen for save messages from the iframe
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'editor-save') {
+        console.log('💾 Received edit from iframe:', event.data.data);
+        // Here you can save the changes to your backend or state
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ Could not inject editor bridge:', error);
+  }
+}
 
 export default function MobileDashboard({ bootstrap }) {
   const navigate = useNavigate();
@@ -21,18 +59,18 @@ export default function MobileDashboard({ bootstrap }) {
     const createPreviewUrl = async () => {
       let dataToUse = bootstrap;
       
-      // If no bootstrap data, try to load user data
+      // If no bootstrap data, try to load Kigen Plastika data by default
       if (!dataToUse || Object.keys(dataToUse).length === 0) {
         try {
-          const response = await fetch('/api/user-data', {
+          const response = await fetch('/api/kigen-data', {
             credentials: 'include'
           });
           if (response.ok) {
             dataToUse = await response.json();
-            console.log('Auto-loaded user data for mobile preview');
+            console.log('Auto-loaded Kigen Plastika data for mobile preview');
           }
         } catch (error) {
-          console.log('Could not auto-load user data:', error.message);
+          console.log('Could not auto-load Kigen Plastika data:', error.message);
           setPreviewContent('/t/v1');
           return;
         }
@@ -159,6 +197,11 @@ export default function MobileDashboard({ bootstrap }) {
           <h2>Live Preview</h2>
           <div className="preview-mobile">
             <iframe 
+              ref={(iframe) => {
+                if (iframe && iframe.src !== "about:blank") {
+                  iframe.onload = () => injectEditorBridge(iframe);
+                }
+              }}
               title="preview" 
               src={previewContent || "about:blank"} 
               style={{
