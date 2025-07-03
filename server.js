@@ -1962,13 +1962,44 @@ app.get('/api/kigen-data', async (req, res) => {
                 console.log('🥇 PRIORITY 1: Preserving user uploaded images');
               }
               
-              // Always store GBP photos for reference
+              // Always store complete GBP data for reference including contact info
               if (!bootstrapData.google_profile) {
                 bootstrapData.google_profile = {};
               }
               bootstrapData.google_profile.photos = gbpData.photos;
+              // Debug GBP data structure
+              console.log('🔍 GBP Data Structure Debug:');
+              console.log('  - gbpData keys:', Object.keys(gbpData));
+              console.log('  - gbpData.result keys:', gbpData.result ? Object.keys(gbpData.result) : 'No result key');
+              console.log('  - gbpData rating:', gbpData.rating, '| result.rating:', gbpData.result?.rating);
+              console.log('  - gbpData user_ratings_total:', gbpData.user_ratings_total, '| result.user_ratings_total:', gbpData.result?.user_ratings_total);
+              console.log('  - gbpData phone:', gbpData.formatted_phone_number, '| result.phone:', gbpData.result?.formatted_phone_number);
+              
+              // Map GBP data using correct field names from debug output
+              bootstrapData.google_profile.formatted_phone_number = gbpData.phone;
+              bootstrapData.google_profile.formatted_address = gbpData.address;
+              bootstrapData.google_profile.website = gbpData.website;
+              bootstrapData.google_profile.rating = gbpData.rating;
+              bootstrapData.google_profile.user_ratings_total = gbpData.total_reviews;
+              bootstrapData.google_profile.reviews = gbpData.reviews;
+              
+              // Override contact data with authentic GBP information
+              if (gbpData.phone) {
+                bootstrapData.contact.phone = gbpData.phone;
+                console.log('📞 Setting authentic GBP phone:', bootstrapData.contact.phone);
+              }
+              if (gbpData.address) {
+                bootstrapData.contact.address = gbpData.address;
+                console.log('📍 Setting authentic GBP address:', bootstrapData.contact.address);
+              }
+              if (gbpData.website) {
+                bootstrapData.contact.website = gbpData.website;
+                console.log('🌐 Setting authentic GBP website:', bootstrapData.contact.website);
+              }
               
               console.log('🖼️ Imported', gbpData.photos.length, 'authentic GBP photos');
+              console.log('📞 Imported authentic phone:', gbpData.phone);
+              console.log('⭐ Imported rating:', gbpData.rating, 'stars (', gbpData.total_reviews, 'reviews)');
               console.log('🔗 First photo URL:', gbpData.photos[0]);
             }
           }
