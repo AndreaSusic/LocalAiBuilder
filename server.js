@@ -2420,6 +2420,148 @@ app.get('/api/kigen-data', async (req, res) => {
   }
 });
 
+// ========================================
+// AUTO-SAVE API ENDPOINTS
+// Profile-based automatic page edit persistence
+// ========================================
+
+// Save page edit (auto-save functionality)
+app.post('/api/save-page-edit', ensureLoggedIn(), async (req, res) => {
+  try {
+    const { pageId, elementId, editType, originalContent, editedContent } = req.body;
+    const userId = req.user.id;
+    
+    if (!pageId || !elementId || !editType || !editedContent) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    
+    console.log('💾 Auto-saving page edit for user:', userId);
+    console.log('📄 Page ID:', pageId);
+    console.log('🎯 Element ID:', elementId);
+    console.log('✏️ Edit Type:', editType);
+    
+    // Save page edit to database
+    const editId = `edit_${userId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    await pool.query(
+      `INSERT INTO page_edits (id, user_id, page_id, element_id, edit_type, original_content, edited_content, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW())
+       ON CONFLICT (user_id, page_id, element_id) 
+       DO UPDATE SET 
+         edit_type = EXCLUDED.edit_type,
+         original_content = EXCLUDED.original_content,
+         edited_content = EXCLUDED.edited_content,
+         updated_at = NOW()`,
+      [editId, userId, pageId, elementId, editType, JSON.stringify(originalContent), JSON.stringify(editedContent)]
+    );
+    
+    console.log('✅ Page edit auto-saved successfully');
+    res.json({ success: true, message: 'Edit saved automatically' });
+    
+  } catch (error) {
+    console.error('❌ Auto-save error:', error);
+    res.status(500).json({ error: 'Failed to auto-save edit' });
+  }
+});
+
+// Get user's page edits for a specific page
+app.get('/api/get-page-edits/:pageId', ensureLoggedIn(), async (req, res) => {
+  try {
+    const { pageId } = req.params;
+    const userId = req.user.id;
+    
+    console.log('📖 Loading page edits for user:', userId, 'page:', pageId);
+    
+    const result = await pool.query(
+      `SELECT element_id, edit_type, original_content, edited_content, updated_at
+       FROM page_edits 
+       WHERE user_id = $1 AND page_id = $2
+       ORDER BY updated_at DESC`,
+      [userId, pageId]
+    );
+    
+    const edits = {};
+    result.rows.forEach(row => {
+      edits[row.element_id] = {
+        editType: row.edit_type,
+        originalContent: row.original_content,
+        editedContent: row.edited_content,
+        lastModified: row.updated_at
+      };
+    });
+    
+    console.log('📖 Found', result.rows.length, 'edits for this page');
+    res.json({ success: true, edits });
+    
+  } catch (error) {
+    console.error('❌ Error loading page edits:', error);
+    res.status(500).json({ error: 'Failed to load page edits' });
+  }
+});
+
+// Get all user's page edits (for profile overview)
+app.get('/api/get-user-edits', ensureLoggedIn(), async (req, res) => {
+  try {
+    const userId = req.user.id;
+    
+    console.log('📊 Loading all edits for user:', userId);
+    
+    const result = await pool.query(
+      `SELECT page_id, element_id, edit_type, edited_content, updated_at
+       FROM page_edits 
+       WHERE user_id = $1
+       ORDER BY updated_at DESC`,
+      [userId]
+    );
+    
+    // Group edits by page
+    const editsByPage = {};
+    result.rows.forEach(row => {
+      if (!editsByPage[row.page_id]) {
+        editsByPage[row.page_id] = [];
+      }
+      editsByPage[row.page_id].push({
+        elementId: row.element_id,
+        editType: row.edit_type,
+        editedContent: row.edited_content,
+        lastModified: row.updated_at
+      });
+    });
+    
+    console.log('📊 Found edits for', Object.keys(editsByPage).length, 'pages');
+    res.json({ success: true, editsByPage, totalEdits: result.rows.length });
+    
+  } catch (error) {
+    console.error('❌ Error loading user edits:', error);
+    res.status(500).json({ error: 'Failed to load user edits' });
+  }
+});
+
+// Delete specific page edit
+app.delete('/api/delete-page-edit/:pageId/:elementId', ensureLoggedIn(), async (req, res) => {
+  try {
+    const { pageId, elementId } = req.params;
+    const userId = req.user.id;
+    
+    console.log('🗑️ Deleting page edit for user:', userId);
+    
+    const result = await pool.query(
+      'DELETE FROM page_edits WHERE user_id = $1 AND page_id = $2 AND element_id = $3',
+      [userId, pageId, elementId]
+    );
+    
+    if (result.rowCount > 0) {
+      console.log('✅ Page edit deleted successfully');
+      res.json({ success: true, message: 'Edit deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Edit not found' });
+    }
+    
+  } catch (error) {
+    console.error('❌ Error deleting page edit:', error);
+    res.status(500).json({ error: 'Failed to delete edit' });
+  }
+});
+
 app.listen(PORT, '0.0.0.0', function() {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
 });

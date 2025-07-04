@@ -50,7 +50,22 @@ export const drafts = pgTable("drafts", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Page edits storage table for auto-save functionality
+export const pageEdits = pgTable("page_edits", {
+  id: varchar("id").primaryKey().notNull(),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  pageId: varchar("page_id").notNull(), // template ID or page identifier
+  elementId: varchar("element_id").notNull(), // DOM element identifier
+  editType: varchar("edit_type").notNull(), // 'text', 'style', 'image', 'delete', etc.
+  originalContent: jsonb("original_content"),
+  editedContent: jsonb("edited_content").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 export type Website = typeof websites.$inferSelect;
 export type Draft = typeof drafts.$inferSelect;
+export type PageEdit = typeof pageEdits.$inferSelect;
+export type InsertPageEdit = typeof pageEdits.$inferInsert;
