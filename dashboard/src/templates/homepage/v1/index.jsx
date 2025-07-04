@@ -92,6 +92,8 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   
   console.log('HomepageV1 using data:', data);
 
+  console.log('🏠 HomepageV1 rendering with data:', Object.keys(data));
+  
   return (
     <SiteDataContext.Provider value={{...data, safeImg}}>
       <div>
