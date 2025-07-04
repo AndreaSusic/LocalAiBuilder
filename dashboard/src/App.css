@@ -3,6 +3,10 @@
 html,body,#root{height:100%}
 body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-direction:column}
 
+:root {
+  --primary-color: #ffc000;
+}
+
 /* DASHBOARD WIREFRAME STYLES */
 .dashboard-wireframe {
   display: flex;
@@ -149,6 +153,14 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   display: flex;
   gap: 10px;
   align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
+  padding: 15px;
+  z-index: 100;
 }
 
 .chat-input {
@@ -183,7 +195,7 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 .right-panel-wireframe {
   background: #fff;
   border-radius: 10px;
-  padding: 15px;
+  padding: 7px 15px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -370,18 +382,7 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-/* EDITOR HEADER WITH LOGO */
-.editor-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.editor-logo {
-  height: 30px;
-  width: auto;
-}
+/* REMOVED EDITOR HEADER */
 
 /* EDITOR COMMAND BUTTONS */
 .editor-commands {
@@ -660,7 +661,7 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 }
 
 .btn-primary {
-  background: white;
+  background: var(--primary-color);
   color: #2a2a2a;
   border: 1px solid #2a2a2a;
   border-radius: 6px;
