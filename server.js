@@ -247,6 +247,16 @@ app.use('/templates/homepage', (req, res, next) => {
 
 
 
+// Add cache-busting headers for static files
+app.use((req, res, next) => {
+  if (req.path.endsWith('.css') || req.path.endsWith('.js') || req.path.endsWith('.html')) {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
+  next();
+});
+
 // Serve main static files first (homepage, etc.)
 app.use(express.static('.'));
 
