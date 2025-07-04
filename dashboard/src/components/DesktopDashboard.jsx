@@ -830,12 +830,22 @@ function DesktopDashboard({ bootstrap }) {
     // Listen for messages from preview iframe
     const handleMessage = (event) => {
       if (event.data.type === 'openAIChat') {
-        // Focus the AI chat tab and input
+        // Focus the AI chat tab and scroll to bottom chat input
         setActiveTab('ai');
+        
         // Auto-populate with context if element is selected
         if (event.data.selectedElement) {
-          const context = `Selected: ${event.data.selectedElement.tagName} "${event.data.selectedElement.textContent?.substring(0, 50)}..."`;
-          setChatMessage(context + " - ");
+          const context = `Edit ${event.data.selectedElement.tagName.toLowerCase()}: "${event.data.selectedElement.textContent?.substring(0, 50)}..." - `;
+          setChatMessage(context);
+          
+          // Focus the chat input at bottom
+          setTimeout(() => {
+            const chatInput = document.querySelector('.chat-input');
+            if (chatInput) {
+              chatInput.focus();
+              chatInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }, 100);
         }
       } else if (event.data.type === 'toolbarUpdate') {
         // Update right panel with element info
@@ -1201,27 +1211,12 @@ function DesktopDashboard({ bootstrap }) {
                     )}
                   </div>
                   
-                  <div className="chat-input-container">
-                    <input
-                      type="text"
-                      value={chatMessage}
-                      onChange={(e) => setChatMessage(e.target.value)}
-                      placeholder="Type a message to AI... (e.g., 'Change the title to Welcome')"
-                      className="chat-input"
-                      onKeyPress={(e) => {
-                        if (e.key === 'Enter') {
-                          handleSendMessage();
-                        }
-                      }}
-                      disabled={isProcessing}
-                    />
-                    <button 
-                      onClick={handleSendMessage} 
-                      disabled={isProcessing || !chatMessage.trim()}
-                      className="send-btn"
-                    >
-                      Send
-                    </button>
+                  <div className="ai-instructions">
+                    <p className="instruction-text">
+                      💡 <strong>AI Assistant activated!</strong> Use the chat field at the bottom to send messages.
+                      <br />
+                      Click any element in the preview and then click the 🤖 button to get AI help with that specific content.
+                    </p>
                   </div>
                 </div>
               )}
