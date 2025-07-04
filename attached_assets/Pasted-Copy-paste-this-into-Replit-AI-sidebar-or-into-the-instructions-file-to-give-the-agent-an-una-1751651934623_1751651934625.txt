@@ -1,0 +1,125 @@
+Copy-paste this into Replit → “AI” sidebar (or into the #instructions file) to give the agent an unambiguous spec.
+It focuses only on the MUST-have items; feel free to uncomment “(nice-to-have)” lines later.
+
+⸻
+
+
+# 🏗️  FEATURE: Automatic URL & slug system for GoAISite
+
+## 1. Data-model  (Prisma or Sequelize – pick whichever the repo already uses)
+- **Account**
+  - id           PK, uuid
+  - username     varchar, unique
+  - canonical_subdomain varchar, unique   -- e.g.  `janedoe.goaisite.com`
+  - created_at   timestamptz default now()
+
+- **Site**       -- one account ➜ many sites
+  - id           PK, uuid
+  - account_id   FK → Account.id
+  - site_name    varchar
+  - slug_prefix  varchar   -- defaults "", can be “service”, “blog”, …
+  - created_at   timestamptz
+  - is_primary   boolean default false
+
+- **Page**
+  - id           PK, uuid
+  - site_id      FK → Site.id
+  - title        varchar
+  - slug         varchar                -- “lawn-care”
+  - full_path    varchar, unique        -- “/service/lawn-care”
+  - status       enum('draft','live') default 'draft'
+  - history      jsonb DEFAULT '[]'     -- array of old full_path strings
+  - updated_at   timestamptz default now()
+
+> Add **UNIQUE (site_id, full_path)**.  
+> (Nice-to-have) separate `SlugHistory` table instead of jsonb.
+
+---
+
+## 2. Business logic
+
+### Helper: slugify(str)
+```js
+return str.toLowerCase()
+          .trim()
+          .replace(/[\s_]+/g,'-')
+          .replace(/[^\w-]/g,'');
+
+Subdomain creation
+
+When a user signs up:
+
+let sub = slugify(username);
+if (await Account.findOne({ where:{ canonical_subdomain: sub}}))
+   sub += '-' + nanoid(4);          // collision suffix
+Account.create({ canonical_subdomain: sub, … })
+
+Never changed afterwards except by admin.
+
+Page CRUD
+	1.	Create
+	•	If user supplies a slug → validate (len ≤ 60, /^[a-z0-9-]+$/).
+	•	Else derive from title.
+	•	Resolve duplicates within that site: append -2, -3, …
+	•	Compute full_path = '/' + slug_prefix + (slug_prefix ? '/' : '') + slug.
+	2.	Update slug
+	•	Push old full_path into history.
+	•	Emit event slugChanged(oldPath, newPath).
+	3.	Delete – drop row; keep slug history for 30 days (optional).
+
+Middleware
+	•	Express (or Fastify) router:
+
+app.use(async (req,res,next)=>{
+  const hostSub = req.hostname.split('.')[0];      // jane.goaisite.com
+  const account = await Account.findOne({ where:{ canonical_subdomain:hostSub }});
+  if(!account) return next();                      // pass to other handlers
+
+  const { path } = req;
+  const page = await Page.findOne({
+    where:{ site_id: account.primarySiteId, full_path: path }
+  });
+  if(page) return renderPage(page);
+
+  // 301 if path in slug history
+  const old = await Page.findOne({ 
+      where:{ site_id: account.primarySiteId, history: { [Op.contains]: [path] } }
+  });
+  if(old){
+     return res.redirect(301, old.full_path);
+  }
+  return next(); // 404
+});
+
+
+⸻
+
+3. SEO / Ops
+	•	Every rendered page gets
+
+<link rel="canonical" href="https://{{sub}}.goaisite.com{{page.full_path}}">
+
+
+	•	Nightly job regenerates sitemap.xml per sub-domain.
+	•	robots.txt disallows /preview/*.
+
+⸻
+
+Deliverables for this task
+	1.	Database migration creating the 3 tables.
+	2.	API routes
+	•	POST /sites/:siteId/pages (create)
+	•	PUT  /pages/:id (edit slug or title)
+	•	DELETE /pages/:id
+	3.	Slug / subdomain utilities in lib/slug.js.
+	4.	Integration into existing signup flow + dashboard forms.
+	5.	Unit tests for slug collisions & 301 redirect logic.
+
+Stretch (only if time left)
+	•	Custom domain support (custom_domains[] on Account) with DNS check.
+	•	Multilingual paths /sr/service/... + hreflang.
+
+End of spec – start coding 🚀
+
+---  
+Paste the block above into Replit’s AI prompt area. It gives the agent concrete tables, validation rules, routing behaviour, and explicit deliverables, so you should get an implementation without the back-and-forth.
