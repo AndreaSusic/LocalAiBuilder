@@ -1913,8 +1913,8 @@ app.use('/dashboard', express.static(path.join(__dirname, 'dashboard', 'dist')))
 
 // React app routing for specific paths
 app.get('/preview', (req, res) => {
-  console.log('📂 Serving simple preview page');
-  res.sendFile(path.join(__dirname, 'preview.html'));
+  console.log('📂 Serving SPA from production build');
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
 app.get('/dashboard', (req, res) => {

@@ -98,8 +98,29 @@ export default function App({ bootstrap }) {
           </>
         } />
         
-        {/* Preview route for OAuth redirect - shows template directly */}
-        <Route path="/preview" element={<HomepageV1 bootstrap={bootstrap} />} />
+        {/* Preview route for OAuth redirect - shows dashboard */}
+        <Route path="/preview" element={
+          <>
+            {isMobile ? <MobileDashboard bootstrap={bootstrap} /> : <DesktopDashboard bootstrap={bootstrap} />}
+            
+            {/* Keep the full-screen preview overlay for both versions */}
+            {isPreviewOpen && (
+              <div className="preview-overlay">
+                <button
+                  className="close-btn"
+                  onClick={() => setIsPreviewOpen(false)}
+                >
+                  ×
+                </button>
+                <iframe
+                  src="about:blank"
+                  title="Full Preview"
+                  className="overlay-iframe"
+                />
+              </div>
+            )}
+          </>
+        } />
         
         {/* New template dashboard with version selector */}
         <Route path="/templates" element={<DashboardPage />} />
