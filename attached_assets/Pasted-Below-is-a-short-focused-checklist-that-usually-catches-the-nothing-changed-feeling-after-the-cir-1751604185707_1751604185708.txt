@@ -1,0 +1,42 @@
+Below is a short, focused checklist that usually catches the “nothing changed” feeling after the circular-dependency refactor you just pushed. Try each item in order; stop as soon as one of them explains what you’re seeing.
+
+#	What to check	Why it matters	How to tell quickly
+1	Did the browser actually get the new bundle?	Replit’s dev server sometimes keeps the old build in memory.	Hard-reload the dashboard tab with Ctrl ⇧ R / Cmd ⇧ R (or use Chrome DevTools → Network → “Disable cache” then refresh).
+2	Do you see the new logs?	If you never see🕵️‍♀️ HomepageV1 module evaluatedthen the browser is still loading the old code or the file path is wrong.	In the preview-iframe’s console (see #5) search for those exact strings.
+3	Import path typo / alias?	If a section still does import { SiteDataContext } from '../context/SiteDataContext' instead of the default export you just created, the bundler pulls the wrong file (or an old cached copy) and the loop remains.	Grep quickly:`grep -R “SiteDataContext” dashboard/src
+4	Provider actually wraps the template?	If TemplatePreview forgot to return the provider (e.g. typo in JSX) the context is undefined and sections may crash silently.	⚡ Add a one-liner inside SiteDataProvider:console.log('📦 SiteDataProvider wrapper mounted');If you don’t see it, the provider isn’t in the tree.
+5	Right console? (dashboard vs iframe)	Your dashboard prints lots of logs. The iframe (domain localhost:5000 or ngrok URL) has its own DevTools session.	In Chrome DevTools, click the “▶ top” dropdown next to the URL bar → select the frame whose URL ends with /preview/…. Only iframe logs will show there.
+6	Residual circular path	A different file may still loop back.	Node trick:npx madge --circular --extensions js,jsx src/Lists any remaining cycles.
+7	Silent runtime error inside a section	A useContext on undefined throws but React swallows it in concurrent mode.	Temporarily add:window.addEventListener('error', e => console.error('🌋 Runtime error', e.error));in TemplatePreview.jsx.
+
+
+⸻
+
+Quick sanity-test after each change
+
+// At very top of      src/templates/homepage/v1/index.jsx
+console.log('🕵️‍♀️  HomepageV1 module evaluated');
+
+// Inside the component body
+console.log('🚀 HomepageV1 render with', bootstrap);
+
+	1.	No first log ⇒ bundle / import path problem (steps 1-3).
+	2.	First but not second log ⇒ provider/context still circular (step 6).
+	3.	Both logs but nothing on screen ⇒ runtime crash inside child section (step 7).
+
+⸻
+
+Making the two consoles easier to read (dashboard vs preview)
+	1.	Open DevTools on the dashboard tab.
+	2.	Click the ∨ next to the file-path on the top-left of the console.
+	3.	Select the frame whose URL matches the iframe (usually http://localhost:5000/t/v1/...).
+	•	You’ll now see only preview logs.
+	4.	Keep another DevTools window for the parent frame to monitor dashboard logs.
+
+⸻
+
+If you still get “Made 0 elements editable”
+
+That message means the bridge runs after render but querySelectorAll('[data-edit]') found nothing. Once you see the two HomepageV1 logs (module + render) you must get at least the three data-edit divs we placed in HeroSection / TestTemplate. So resolving the circular import is precisely what will fix the editor.
+
+Let me know which checklist step uncovers the culprit, or paste the new console output from the preview frame – we’ll finish it from there.

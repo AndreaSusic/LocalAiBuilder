@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { SiteDataContext } from '../context/SiteDataContext.js';
+import SiteDataContext from '../context/SiteDataContext.js';
 
 export default function ServicesSection({ bootstrap }) {
   const contextData = useContext(SiteDataContext) || {};

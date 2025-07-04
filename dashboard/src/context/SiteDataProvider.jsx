@@ -3,6 +3,8 @@ import SiteDataContext from './SiteDataContext';
 import { validateBeforeRender } from '../utils/dataValidation';
 
 export default function SiteDataProvider({ bootstrap, children }) {
+  console.log('📦 SiteDataProvider wrapper mounted');
+  
   const value = useMemo(() => {
     if (!bootstrap) {
       // Return default data if no bootstrap provided
