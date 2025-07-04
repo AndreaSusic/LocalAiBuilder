@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import SiteDataContext from '../context/SiteDataContext.js';
+import Editable from '../components/Editable.jsx';
 
 export default function ServicesSection({ bootstrap }) {
   const contextData = useContext(SiteDataContext) || {};
@@ -254,13 +255,13 @@ export default function ServicesSection({ bootstrap }) {
 
   return (
     <section className="services">
-      <h2 data-gas-edit="servicesTitle">{sectionTitle}</h2>
+      <Editable as="h2" path="servicesTitle">{sectionTitle}</Editable>
       <div className="services-grid three-columns">
         {servicesToShow.map((service, index) => (
           <div key={index} className="service-card">
             <img src={safeImg ? safeImg(service.image) : service.image} alt={`${company_name} - ${service.title}`} />
-            <h4 data-gas-edit={`serviceTitle${index}`}>{service.title}</h4>
-            <p data-gas-edit={`serviceDescription${index}`}>{service.description}</p>
+            <Editable as="h4" path={`serviceTitle${index}`}>{service.title}</Editable>
+            <Editable as="p" path={`serviceDescription${index}`}>{service.description}</Editable>
           </div>
         ))}
       </div>
