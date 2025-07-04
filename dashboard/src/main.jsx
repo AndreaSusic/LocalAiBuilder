@@ -169,6 +169,12 @@ loadBootstrap().then(bootstrap=>{
     );
     console.log('React app rendered successfully');
     
+    // Signal to inline editor that React is ready
+    setTimeout(() => {
+      window.dispatchEvent(new Event('react-dom-ready'));
+      console.log('✅ React DOM ready event dispatched');
+    }, 100);
+    
     // Products now render directly in React components - no DOM manipulation needed
     
     // Initialize Color Guard after React mounts
