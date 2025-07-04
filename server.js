@@ -1286,30 +1286,37 @@ app.post('/api/ai-chat', async (req, res) => {
       return res.status(500).json({ error: 'OpenAI API key not configured' });
     }
 
-    // Check if this is a content modification request
-    const contentChangeRegex = /(?:change|update|modify|set|make)\s+(?:the\s+)?(?:title|heading|text|content|h1|h2|h3)\s+to\s+["']?([^"']+)["']?/i;
+    // Enhanced content modification detection with fuzzy matching
+    const contentChangeRegex = /(?:change|update|modify|set|make|edit)\s+(?:the\s+)?(?:title|heading|text|content|h1|h2|h3)?\s*(?:["']([^"']+)["']\s+(?:to|into)\s+|(\w+[^"']*?)\s+(?:to|into)\s+)["']?([^"']+)["']?/i;
     const match = message.match(contentChangeRegex);
     
-    if (match) {
-      // This is a content change request
-      const newContent = match[1];
-      const elementType = message.toLowerCase().includes('title') ? 'title' : 
-                         message.toLowerCase().includes('h1') ? 'heading' :
-                         message.toLowerCase().includes('heading') ? 'heading' : 'text';
+    // Also try simpler pattern: "change X to Y" or "make X into Y"
+    const simpleChangeRegex = /(?:change|update|modify|set|make|edit)\s+(.*?)\s+(?:to|into)\s+(.*?)$/i;
+    const simpleMatch = message.match(simpleChangeRegex);
+    
+    if (match || simpleMatch) {
+      let searchText, newContent;
       
-      // Determine appropriate selector based on content type
-      let selector = 'h1'; // default to h1 for titles/headings
-      if (message.toLowerCase().includes('h2')) selector = 'h2';
-      if (message.toLowerCase().includes('h3')) selector = 'h3';
+      if (match) {
+        searchText = match[1] || match[2] || 'title';
+        newContent = match[3];
+      } else if (simpleMatch) {
+        searchText = simpleMatch[1].replace(/^(title|heading|text|the)\s*/i, '').trim();
+        newContent = simpleMatch[2].trim();
+      }
+      
+      // Clean up search text and new content
+      searchText = searchText.replace(/['"×]/g, '').trim();
+      newContent = newContent.replace(/['"]/g, '').trim();
       
       res.json({
         success: true,
-        message: `✅ I'll change the ${elementType} to "${newContent}"`,
+        message: `✅ Done – title changed to '${newContent}'.`,
         contentChange: {
           action: 'updateText',
-          selector: selector,
+          searchText: searchText,
           newContent: newContent,
-          elementType: elementType
+          elementType: 'text'
         }
       });
       return;

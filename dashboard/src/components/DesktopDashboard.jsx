@@ -230,6 +230,48 @@ function injectComprehensiveEditor(iframe) {
               });
             });
             
+            // Also make images editable with delete buttons
+            document.querySelectorAll('img').forEach(img => {
+              if (img.src && 
+                  !img.classList.contains('delete-x') && 
+                  !img.classList.contains('dashboard-logo') &&
+                  !img.parentElement?.classList.contains('image-wrapper')) {
+                
+                img.classList.add('edit-hover');
+                img.setAttribute('data-editable', 'true');
+                img.setAttribute('data-original', img.src);
+                
+                // Create wrapper for image with delete button
+                const wrapper = document.createElement('div');
+                wrapper.className = 'image-wrapper';
+                wrapper.style.position = 'relative';
+                wrapper.style.display = 'inline-block';
+                wrapper.style.maxWidth = '100%';
+                
+                // Create delete button for image
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-x image-delete';
+                deleteBtn.innerHTML = '×';
+                deleteBtn.style.position = 'absolute';
+                deleteBtn.style.top = '5px';
+                deleteBtn.style.right = '5px';
+                deleteBtn.style.zIndex = '1000';
+                deleteBtn.onclick = (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (confirm('Delete this image?')) {
+                    wrapper.remove();
+                    console.log('🗑️ Image deleted');
+                  }
+                };
+                
+                img.parentNode.insertBefore(wrapper, img);
+                wrapper.appendChild(img);
+                wrapper.appendChild(deleteBtn);
+                count++;
+              }
+            });
+            
             console.log(\`📍 Made \${count} elements editable with delete buttons\`);
           }
           
@@ -240,58 +282,20 @@ function injectComprehensiveEditor(iframe) {
               <h3>✏️ Element Editor</h3>
               
               <div class="panel-section">
-                <label>Text Formatting:</label>
+                <label>Add New Section:</label>
                 <div class="format-buttons">
-                  <button class="format-btn" onclick="formatText('bold')" title="Bold">
-                    <strong>B</strong>
+                  <button class="format-btn add-section-btn" onclick="addNewSection('hero')" title="Add Hero Section">
+                    + Hero
                   </button>
-                  <button class="format-btn" onclick="formatText('italic')" title="Italic">
-                    <em>I</em>
+                  <button class="format-btn add-section-btn" onclick="addNewSection('services')" title="Add Services Section">
+                    + Services
                   </button>
-                  <button class="format-btn" onclick="formatText('underline')" title="Underline">
-                    <u>U</u>
+                  <button class="format-btn add-section-btn" onclick="addNewSection('about')" title="Add About Section">
+                    + About
                   </button>
-                </div>
-              </div>
-              
-              <div class="panel-section">
-                <label>Font Size:</label>
-                <select class="panel-dropdown" onchange="changeFontSize(this.value)" id="fontSizeSelect">
-                  <option value="10">10px</option>
-                  <option value="12">12px</option>
-                  <option value="14">14px</option>
-                  <option value="16">16px</option>
-                  <option value="18">18px</option>
-                  <option value="20">20px</option>
-                  <option value="24">24px</option>
-                  <option value="28">28px</option>
-                  <option value="32">32px</option>
-                </select>
-                
-                <label>Heading Level:</label>
-                <select class="panel-dropdown" onchange="changeHeading(this.value)" id="headingSelect">
-                  <option value="">Keep current</option>
-                  <option value="H1">H1</option>
-                  <option value="H2">H2</option>
-                  <option value="H3">H3</option>
-                  <option value="H4">H4</option>
-                  <option value="H5">H5</option>
-                  <option value="H6">H6</option>
-                </select>
-              </div>
-              
-              <div class="panel-section">
-                <label>Text Color:</label>
-                <div class="color-palette">
-                  <div class="color-swatch" style="background: #000000" onclick="changeColor('#000000')" title="Black"></div>
-                  <div class="color-swatch" style="background: #333333" onclick="changeColor('#333333')" title="Dark Gray"></div>
-                  <div class="color-swatch" style="background: #666666" onclick="changeColor('#666666')" title="Gray"></div>
-                  <div class="color-swatch" style="background: #999999" onclick="changeColor('#999999')" title="Light Gray"></div>
-                  <div class="color-swatch" style="background: #ffffff; border: 2px solid #000" onclick="changeColor('#ffffff')" title="White"></div>
-                  <div class="color-swatch" style="background: #ffc000" onclick="changeColor('#ffc000')" title="Yellow"></div>
-                  <div class="color-swatch" style="background: #ff4444" onclick="changeColor('#ff4444')" title="Red"></div>
-                  <div class="color-swatch" style="background: #22c55e" onclick="changeColor('#22c55e')" title="Green"></div>
-                  <div class="color-swatch" style="background: #3b82f6" onclick="changeColor('#3b82f6')" title="Blue"></div>
+                  <button class="format-btn add-section-btn" onclick="addNewSection('contact')" title="Add Contact Section">
+                    + Contact
+                  </button>
                 </div>
               </div>
               
@@ -316,6 +320,7 @@ function injectComprehensiveEditor(iframe) {
             window.undoEdit = undoEdit;
             window.redoEdit = redoEdit;
             window.saveChanges = saveChanges;
+            window.addNewSection = addNewSection;
           }
           
           function setupEvents() {
@@ -490,10 +495,13 @@ function injectComprehensiveEditor(iframe) {
             
             fetch('/api/save-complete-page', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
               credentials: 'include',
               body: JSON.stringify({
-                pageId: window.location.pathname.split('/').pop(),
+                pageId: 'homepage-v1',
                 pageContent: pageData,
                 timestamp: new Date().toISOString()
               })
@@ -509,6 +517,93 @@ function injectComprehensiveEditor(iframe) {
               console.log('❌ Save error:', e);
               alert('Save error. Please try again.');
             });
+          }
+          
+          function addNewSection(type) {
+            saveToHistory();
+            
+            const sectionTemplates = {
+              hero: \`
+                <section class="hero-section" style="padding: 60px 20px; text-align: center; background: #f8f9fa;">
+                  <div style="max-width: 800px; margin: 0 auto;">
+                    <h1 data-editable="true" style="font-size: 2.5rem; margin-bottom: 20px;">Welcome to Our Company</h1>
+                    <p data-editable="true" style="font-size: 1.2rem; margin-bottom: 30px;">We provide exceptional services to help your business grow.</p>
+                    <button data-editable="true" style="background: #ffc000; color: white; padding: 12px 30px; border: none; border-radius: 5px; font-size: 1.1rem;">Get Started</button>
+                  </div>
+                </section>
+              \`,
+              services: \`
+                <section class="services-section" style="padding: 60px 20px;">
+                  <div style="max-width: 1200px; margin: 0 auto;">
+                    <h2 data-editable="true" style="text-align: center; margin-bottom: 40px;">Our Services</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                      <div style="text-align: center; padding: 30px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                        <h3 data-editable="true">Service One</h3>
+                        <p data-editable="true">Description of your first service offering.</p>
+                      </div>
+                      <div style="text-align: center; padding: 30px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                        <h3 data-editable="true">Service Two</h3>
+                        <p data-editable="true">Description of your second service offering.</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              \`,
+              about: \`
+                <section class="about-section" style="padding: 60px 20px; background: #f8f9fa;">
+                  <div style="max-width: 1200px; margin: 0 auto;">
+                    <h2 data-editable="true" style="text-align: center; margin-bottom: 40px;">About Us</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+                      <div>
+                        <p data-editable="true" style="font-size: 1.1rem; line-height: 1.6;">We are a dedicated team committed to providing exceptional service and results for our clients.</p>
+                        <p data-editable="true" style="font-size: 1.1rem; line-height: 1.6;">With years of experience in the industry, we understand what it takes to deliver quality solutions.</p>
+                      </div>
+                      <div style="text-align: center;">
+                        <img src="https://via.placeholder.com/400x300" alt="About us" style="max-width: 100%; border-radius: 8px;" data-editable="true">
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              \`,
+              contact: \`
+                <section class="contact-section" style="padding: 60px 20px;">
+                  <div style="max-width: 800px; margin: 0 auto;">
+                    <h2 data-editable="true" style="text-align: center; margin-bottom: 40px;">Contact Us</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                      <div>
+                        <h3 data-editable="true">Get in Touch</h3>
+                        <p data-editable="true">📞 Phone: (555) 123-4567</p>
+                        <p data-editable="true">📧 Email: info@company.com</p>
+                        <p data-editable="true">📍 Address: 123 Main Street, City, State 12345</p>
+                      </div>
+                      <div>
+                        <h3 data-editable="true">Business Hours</h3>
+                        <p data-editable="true">Monday - Friday: 9:00 AM - 6:00 PM</p>
+                        <p data-editable="true">Saturday: 10:00 AM - 4:00 PM</p>
+                        <p data-editable="true">Sunday: Closed</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              \`
+            };
+            
+            const template = sectionTemplates[type];
+            if (template) {
+              // Find a good place to insert the new section
+              const main = document.querySelector('main') || document.body;
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = template;
+              const newSection = tempDiv.firstElementChild;
+              
+              main.appendChild(newSection);
+              
+              // Make the new section's elements editable
+              setTimeout(() => {
+                makeEditable();
+                console.log(\`✅ Added new \${type} section\`);
+              }, 100);
+            }
           }
           
           function scheduleAutoSave(el) {
@@ -555,15 +650,53 @@ function injectComprehensiveEditor(iframe) {
             return \`\${tag}-\${cls}-\${txt}-\${idx}\`.toLowerCase();
           }
           
-          // Listen for AI content updates from parent
+          // Listen for AI content updates from parent with fuzzy matching
           window.addEventListener('message', (event) => {
             if (event.data.type === 'AI_CONTENT_UPDATE') {
-              console.log('🤖 Received AI content update:', event.data.newContent);
+              console.log('🤖 Received AI content update:', event.data);
               
-              if (activeEl) {
-                activeEl.textContent = event.data.newContent;
-                console.log('✅ Applied AI content to active element');
-                scheduleAutoSave(activeEl);
+              const { searchText, newContent } = event.data;
+              
+              // Find element by fuzzy text matching
+              let foundElement = null;
+              
+              // Try exact match first
+              const allElements = Array.from(document.querySelectorAll('[data-editable="true"]'));
+              foundElement = allElements.find(el => 
+                el.textContent.trim().toLowerCase() === searchText.toLowerCase()
+              );
+              
+              // If no exact match, try partial matching
+              if (!foundElement) {
+                foundElement = allElements.find(el => 
+                  el.textContent.trim().toLowerCase().includes(searchText.toLowerCase()) ||
+                  searchText.toLowerCase().includes(el.textContent.trim().toLowerCase())
+                );
+              }
+              
+              // If still no match, find by similarity (remove common words)
+              if (!foundElement) {
+                const cleanSearch = searchText.toLowerCase().replace(/[^a-z0-9]/g, '');
+                foundElement = allElements.find(el => {
+                  const cleanEl = el.textContent.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+                  return cleanEl.includes(cleanSearch.substring(0, 10)) || 
+                         cleanSearch.includes(cleanEl.substring(0, 10));
+                });
+              }
+              
+              if (foundElement) {
+                saveToHistory();
+                foundElement.textContent = newContent;
+                console.log('✅ Applied AI content using fuzzy matching to:', foundElement.tagName);
+                scheduleAutoSave(foundElement);
+                
+                // Briefly highlight the changed element
+                foundElement.style.backgroundColor = '#90EE90';
+                setTimeout(() => {
+                  foundElement.style.backgroundColor = '';
+                }, 2000);
+              } else {
+                console.log('❌ Could not find element with text:', searchText);
               }
             }
           });
@@ -1552,25 +1685,19 @@ function DesktopDashboard({ bootstrap }) {
       
       const data = await response.json();
       
-      // If AI returned a content change instruction, execute it in the iframe
+      // Enhanced AI content change handling with fuzzy matching
       if (data.contentChange) {
         const iframe = document.querySelector('.preview-iframe');
         if (iframe && iframe.contentWindow) {
           try {
-            // Execute DOM changes in the iframe
-            const script = `
-              const element = document.querySelector('${data.contentChange.selector}');
-              if (element) {
-                element.textContent = '${data.contentChange.newContent}';
-                element.innerHTML = '${data.contentChange.newContent}';
-                console.log('✅ Content updated successfully');
-              } else {
-                console.log('❌ Element not found with selector: ${data.contentChange.selector}');
-              }
-            `;
-            iframe.contentWindow.eval(script);
+            // Enhanced content update with fuzzy text matching
+            iframe.contentWindow.postMessage({
+              type: 'AI_CONTENT_UPDATE',
+              searchText: data.contentChange.searchText,
+              newContent: data.contentChange.newContent
+            }, '*');
           } catch (error) {
-            console.error('Error executing content change:', error);
+            console.error('Error sending AI content update:', error);
           }
         }
       }
