@@ -14,7 +14,7 @@ import TemplatePreview from "./components/TemplatePreview.jsx";
 import { validateBeforeRender } from "./utils/dataValidation";
 
 export default function App({ bootstrap }) {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   
   // Debug info
@@ -25,7 +25,7 @@ export default function App({ bootstrap }) {
   // Update mobile detection on resize
   useEffect(() => {
     const handleResize = () => {
-      const newIsMobile = window.innerWidth < 800;
+      const newIsMobile = window.innerWidth < 640;
       console.log('Resize detected - Window width:', window.innerWidth, 'isMobile:', newIsMobile);
       setIsMobile(newIsMobile);
     };
