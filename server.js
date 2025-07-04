@@ -1918,13 +1918,8 @@ app.get('/preview', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-  // Check if dist exists dynamically
-  if (!require('fs').existsSync(dist)) {
-    console.log('🔄 Redirecting to Vite dev server');
-    return res.redirect('http://localhost:5173/dashboard');
-  }
-  console.log('📂 Serving SPA from production build');
-  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+  console.log('🔄 Redirecting to Vite dev server');
+  return res.redirect('http://localhost:5173/dashboard');
 });
 
 // Template preview routes - serve React app for /t/v1/:id paths (duplicate route - already handled above)
