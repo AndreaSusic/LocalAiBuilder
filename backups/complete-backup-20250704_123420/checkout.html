@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="checkoutPageTitle">Checkout - GoAISite</title>
+    <!-- sr: Plaćanje - GoAISite -->
+    <meta name="description" content="Complete your purchase securely">
+    <link href="https://fonts.cdnfonts.com/css/cooper-hewitt" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/" class="brand">
+                    <img src="/assets/logo.svg" alt="GoAISite logo" class="logo">
+                    <span class="wordmark">GoAISite</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-lang="navHome">Home</a></li>
+                    <li><a href="pricing.html" data-lang="navPricing">Pricing</a></li>
+                    <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li>
+                    <li><a href="index.html#faq" data-lang="navFAQ">FAQ</a></li>
+                    <li><a href="account.html" class="btn-secondary" data-lang="navLogin">Login</a></li>
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="checkout-section">
+            <div class="container">
+                <h1 data-lang="checkoutTitle">Secure Checkout</h1>
+                <!-- sr: Bezbedno plaćanje -->
+                
+                <div class="checkout-notice">
+                    <div class="notice-box">
+                        <h3 data-lang="demoNoticeTitle">Demo Mode</h3>
+                        <!-- sr: Demo režim -->
+                        <p data-lang="demoNoticeText">Sandbox checkout is currently disabled in this demo. In production, you would be able to complete your purchase using the payment methods below.</p>
+                        <!-- sr: Sandbox plaćanje je trenutno onemogućeno u ovoj demo verziji. U produkciji, mogli biste da završite vašu kupovinu koristeći načine plaćanja navedene ispod. -->
+                    </div>
+                </div>
+
+                <div class="checkout-content">
+                    <div class="payment-methods">
+                        <h2 data-lang="paymentMethodsTitle">Payment Methods</h2>
+                        <!-- sr: Načini plaćanja -->
+                        
+                        <div class="payment-option">
+                            <h3 data-lang="cardPaymentTitle">Credit/Debit Card</h3>
+                            <!-- sr: Kreditna/debitna kartica -->
+                            <p data-lang="cardPaymentDesc">Secure payment processing via Stripe</p>
+                            <!-- sr: Bezbedno procesiranje plaćanja preko Stripe -->
+                            <button class="btn-primary payment-btn" onclick="handleStripePayment()">
+                                <span data-lang="payWithCard">💳 Pay with Card</span>
+                                <!-- sr: 💳 Plati karticom -->
+                            </button>
+                        </div>
+
+                        <div class="payment-option">
+                            <h3 data-lang="googlePayTitle">Google Pay</h3>
+                            <!-- sr: Google Pay -->
+                            <p data-lang="googlePayDesc">Quick and secure payment with Google Pay</p>
+                            <!-- sr: Brzo i bezbedno plaćanje sa Google Pay -->
+                            <button class="btn-primary payment-btn" onclick="handleGooglePay()">
+                                <span data-lang="payWithGoogle">🤖 Pay with Google</span>
+                                <!-- sr: 🤖 Plati sa Google -->
+                            </button>
+                        </div>
+
+                        <div class="payment-option">
+                            <h3 data-lang="paypalTitle">PayPal</h3>
+                            <!-- sr: PayPal -->
+                            <p data-lang="paypalDesc">Pay securely with your PayPal account</p>
+                            <!-- sr: Platite bezbedno sa vašim PayPal nalogom -->
+                            <button class="btn-primary payment-btn paypal-btn" onclick="handlePayPalPayment()">
+                                <span data-lang="payWithPaypal">💰 Pay with PayPal</span>
+                                <!-- sr: 💰 Plati sa PayPal -->
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <h3 data-lang="orderSummaryTitle">Order Summary</h3>
+                        <!-- sr: Pregled porudžbine -->
+                        <div id="checkoutOrderSummary">
+                            <!-- Order details will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-notice">
+                    <p data-lang="securityText">🔒 Your payment information is encrypted and secure. We never store your credit card details.</p>
+                    <!-- sr: 🔒 Vaše platne informacije su šifrovane i bezbedne. Nikad ne čuvamo podatke vaše kreditne kartice. -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 LocalAI Builder • <a href="tos.html">ToS</a> • <a href="privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <!-- Chatislav 24/7 Support Chat -->
+    <script>
+      (function (w, d, o, f) {
+        w[o] =
+          w[o] ||
+          function (config) {
+            var js = d.createElement("script");
+            js.src = f;
+            js.async = true;
+            js.onload = function () {
+              var e = d.createElement("div");
+              e.id = o;
+              d.body.appendChild(e);
+              w.init_chatislav
+                ? w.init_chatislav(o, config)
+                : console.error("chatislav init function not available.");
+            };
+            d.body.appendChild(js);
+          };
+      })(
+        window,
+        document,
+        "ctslv_bbl",
+        "https://chatislav.ai/api/static/chat-bot/index.js"
+      );
+
+      /* Initialize widget */
+      ctslv_bbl({
+        base_url: "https://chatislav.ai/api",
+        token: "92072c32-e8e4-4e76-9aca-a4f3c635c64e"
+      });
+    </script>
+</body>
+</html>

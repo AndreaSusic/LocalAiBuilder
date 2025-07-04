@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="cartPageTitle">Shopping Cart - GoAISite</title>
+    <!-- sr: Korpa - GoAISite -->
+    <meta name="description" content="Review your selected plan and proceed to checkout">
+    <link href="https://fonts.cdnfonts.com/css/cooper-hewitt" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/" class="brand">
+                    <img src="/assets/logo.svg" alt="GoAISite logo" class="logo">
+                    <span class="wordmark">GoAISite</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-lang="navHome">Home</a></li>
+                    <li><a href="pricing.html" data-lang="navPricing">Pricing</a></li>
+                    <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li>
+                    <li><a href="index.html#faq" data-lang="navFAQ">FAQ</a></li>
+                    <li><a href="account.html" class="btn-secondary" data-lang="navLogin">Login</a></li>
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="cart-section">
+            <div class="container">
+                <h1 data-lang="cartTitle">Your Order</h1>
+                <!-- sr: Vaša porudžbina -->
+                
+                <div class="cart-content">
+                    <div class="cart-summary" id="cartSummary">
+                        <!-- Plan details will be populated by JavaScript -->
+                    </div>
+
+                    <div class="billing-options">
+                        <h3 data-lang="billingFrequencyTitle">Billing Frequency</h3>
+                        <!-- sr: Učestalost naplate -->
+                        <div class="billing-toggle">
+                            <label class="billing-option">
+                                <input type="radio" name="billing" value="monthly" checked>
+                                <span data-lang="monthlyBilling">Monthly</span>
+                                <!-- sr: Mesečno -->
+                            </label>
+                            <label class="billing-option">
+                                <input type="radio" name="billing" value="annual">
+                                <span data-lang="annualBilling">Annual</span>
+                                <!-- sr: Godišnje -->
+                                <span class="discount" data-lang="annualDiscount">(Save 15%)</span>
+                                <!-- sr: (Uštedite 15%) -->
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="order-total">
+                        <div class="total-line">
+                            <span data-lang="subtotal">Subtotal:</span>
+                            <!-- sr: Međuzir: -->
+                            <span id="subtotalAmount">$0</span>
+                        </div>
+                        <div class="total-line discount-line" id="discountLine" style="display: none;">
+                            <span data-lang="annualDiscountText">Annual Discount (15%):</span>
+                            <!-- sr: Godišnji popust (15%): -->
+                            <span id="discountAmount">-$0</span>
+                        </div>
+                        <div class="total-line total">
+                            <span data-lang="total">Total:</span>
+                            <!-- sr: Ukupno: -->
+                            <span id="totalAmount">$0</span>
+                        </div>
+                    </div>
+
+                    <div class="cart-actions">
+                        <button class="btn-secondary" onclick="goBack()" data-lang="backToPricing">← Back to Pricing</button>
+                        <!-- sr: ← Nazad na cene -->
+                        <button class="btn-primary" onclick="proceedToCheckout()" data-lang="proceedToCheckout">Proceed to Checkout</button>
+                        <!-- sr: Nastavi na plaćanje -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 LocalAI Builder • <a href="tos.html">ToS</a> • <a href="privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <!-- Chatislav 24/7 Support Chat -->
+    <script>
+      (function (w, d, o, f) {
+        w[o] =
+          w[o] ||
+          function (config) {
+            var js = d.createElement("script");
+            js.src = f;
+            js.async = true;
+            js.onload = function () {
+              var e = d.createElement("div");
+              e.id = o;
+              d.body.appendChild(e);
+              w.init_chatislav
+                ? w.init_chatislav(o, config)
+                : console.error("chatislav init function not available.");
+            };
+            d.body.appendChild(js);
+          };
+      })(
+        window,
+        document,
+        "ctslv_bbl",
+        "https://chatislav.ai/api/static/chat-bot/index.js"
+      );
+
+      /* Initialize widget */
+      ctslv_bbl({
+        base_url: "https://chatislav.ai/api",
+        token: "92072c32-e8e4-4e76-9aca-a4f3c635c64e"
+      });
+    </script>
+</body>
+</html>
