@@ -33,7 +33,16 @@ function injectSimpleEditor(iframe) {
 }
 
 function DesktopDashboard({ bootstrap }) {
+}
+
+export default function DesktopDashboard({ bootstrap }) {
+  console.log('🖥️ DesktopDashboard component rendering');
   const navigate = useNavigate();
+  const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
+  const [showVersions, setShowVersions] = useState(false);
+  const [showPagesDropdown, setShowPagesDropdown] = useState(false);
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [showDeviceDropdown, setShowDeviceDropdown] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState('EN');
   const [currentDevice, setCurrentDevice] = useState('Desktop');
   const [previewContent, setPreviewContent] = useState(null);
@@ -137,77 +146,94 @@ function DesktopDashboard({ bootstrap }) {
           </div>
           
           {/* Language Dropdown */}
-          <div className="language-dropdown">
-            <select 
-              value={currentLanguage} 
-              onChange={(e) => setCurrentLanguage(e.target.value)}
-              className="icon-btn-wireframe"
+          <div className="dropdown-wrapper">
+            <button 
+              className="btn-wireframe"
+              onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
             >
-              <option value="EN">🇺🇸 EN</option>
-              <option value="SR">🇷🇸 SR</option>
-            </select>
+              {currentLanguage} ▼
+            </button>
+            {showLanguageDropdown && (
+              <div className="versions-dropdown">
+                <div className="version-item" onClick={() => {setCurrentLanguage('EN'); setShowLanguageDropdown(false);}}>
+                  English
+                </div>
+                <div className="version-item" onClick={() => {setCurrentLanguage('SR'); setShowLanguageDropdown(false);}}>
+                  Srpski
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Device Switcher */}
+          <div className="dropdown-wrapper">
+            <button 
+              className="btn-wireframe"
+              onClick={() => setShowDeviceDropdown(!showDeviceDropdown)}
+            >
+              {currentDevice} ▼
+            </button>
+            {showDeviceDropdown && (
+              <div className="versions-dropdown">
+                <div className="version-item" onClick={() => {setCurrentDevice('Desktop'); setShowDeviceDropdown(false);}}>
+                  🖥️ Desktop
+                </div>
+                <div className="version-item" onClick={() => {setCurrentDevice('Tablet'); setShowDeviceDropdown(false);}}>
+                  📱 Tablet
+                </div>
+                <div className="version-item" onClick={() => {setCurrentDevice('Mobile'); setShowDeviceDropdown(false);}}>
+                  📱 Mobile
+                </div>
+              </div>
+            )}
           </div>
           
-          {/* Device Switcher */}
-          <div className="device-switcher">
-            <select 
-              value={currentDevice} 
-              onChange={(e) => setCurrentDevice(e.target.value)}
-              className="icon-btn-wireframe"
+          <div className="dropdown-wrapper">
+            <button 
+              className="btn-wireframe"
+              onClick={() => setShowPagesDropdown(!showPagesDropdown)}
             >
-              <option value="Desktop">🖥️ Desktop</option>
-              <option value="Tablet">📱 Tablet</option>
-              <option value="Mobile">📱 Mobile</option>
-            </select>
-          </div>
-
-          <div className="pages-dropdown">
-            <button className="btn-wireframe" onClick={() => console.log('Pages clicked')}>
               Pages ▼
             </button>
+            {showPagesDropdown && (
+              <div className="versions-dropdown">
+                <div className="version-item" onClick={() => showTemplatePreview('/templates/homepage/v1/index.jsx')}>
+                  Homepage
+                </div>
+                <div className="version-item" onClick={() => showTemplatePreview('/templates/service/v1/index.jsx')}>
+                  Service
+                </div>
+                <div className="version-item" onClick={() => showTemplatePreview('/templates/contact/v1/index.jsx')}>
+                  Contact
+                </div>
+              </div>
+            )}
           </div>
-
-          <button className="btn-primary-wireframe" onClick={() => console.log('Publish clicked')}>
-            Publish
-          </button>
-
-          <button className="btn-wireframe" onClick={handleLogout}>
-            Logout
-          </button>
+          <button className="btn-wireframe">🔔</button>
+          <button className="btn-wireframe">Publish</button>
+          <button className="btn-wireframe" onClick={handleLogout}>Logout</button>
         </div>
       </header>
 
       {/* Main Content */}
       <div className="main-content-wireframe">
         {/* Live Preview */}
-        <div className="preview-panel-wireframe">
-          <div className="panel-header">
-            <h2>Live Preview</h2>
-            <div className="preview-controls">
-              <button className="small-btn-wireframe" onClick={() => showTemplatePreview('/templates/homepage/v1/index.jsx')}>
-                Version 1
-              </button>
-              <button className="small-btn-wireframe" onClick={() => showTemplatePreview('/templates/homepage/v2/index.jsx')}>
-                Version 2
-              </button>
-              <button className="small-btn-wireframe" onClick={() => showTemplatePreview('/templates/homepage/v3/index.jsx')}>
-                Version 3
-              </button>
-            </div>
-          </div>
-          
-          <div className="preview-area">
+        <div className="left-panel-wireframe">
+          <h2>Live Preview</h2>
+          <div className="preview-frame">
             {previewContent && (
-              <iframe
-                key={previewContent}
+              <iframe 
+                title="preview" 
                 src={previewContent}
-                className={`preview-iframe preview-${currentDevice.toLowerCase()}`}
                 onLoad={handleIframeLoad}
-                title="Website Preview"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  border: "none"
+                }}
               />
             )}
           </div>
-          
           <button 
             className="view-live-btn" 
             onClick={() => {
@@ -228,5 +254,3 @@ function DesktopDashboard({ bootstrap }) {
     </div>
   );
 }
-
-export default DesktopDashboard;

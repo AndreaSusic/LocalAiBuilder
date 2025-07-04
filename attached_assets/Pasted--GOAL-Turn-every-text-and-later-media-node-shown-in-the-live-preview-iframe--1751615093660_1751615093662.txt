@@ -1,0 +1,101 @@
+/**
+ * GOAL
+ * ----
+ * Turn every text (and later media) node shown in the live **/preview** iframe
+ * into an inline-editable zone.  
+ * When the user **clicks** inside such a zone we …
+ *   1. Make it `contenteditable`.
+ *   2. Pop a tiny floating toolbar carrying the commands we already defined
+ *      (𝐁, 𝑰, 𝑼, List, 8 px, A🖌️, 🖍️, 🖼️, 🎥, ↔️↕️, 📐, H₁, ¶, 🔲, 📋, </>, 🔘 …).
+ *   3. Wire each toolbar button → the matching `document.execCommand`
+ *      or custom routine (e.g. insert media placeholder / component stub).
+ *   4. On **Enter** inside a zone we insert a new paragraph block;
+ *      if the user selects “media: 🖼️/🎥” we insert an <img> or <video> stub.
+ *
+ *  The same floating toolbar must DISAPPEAR when the user clicks elsewhere.
+ *
+ * MUST stay framework-agnostic (pure ES-Modules + zero-dep CSS) so it plays
+ * nicely whether the underlying page was built with React, Svelte or raw HTML.
+ *
+ * ---------------------------------------------------------------------------
+ *  HIGH-LEVEL STEPS
+ * ---------------------------------------------------------------------------
+ * 1. In the preview document  ➜ walk the DOM once it finishes loading
+ *    and tag every node you want editable with    data-editable="true".
+ *
+ * 2. Inject `editorBridge.js` into the preview frame from the dashboard side.
+ *      const frameDoc = document.querySelector('#preview-iframe').contentDocument;
+ *      const s = frameDoc.createElement('script');
+ *      s.type = 'module';
+ *      s.src  = '/editorBridge.js';
+ *      frameDoc.head.appendChild(s);
+ *
+ * 3. **editorBridge.js**
+ *      – listeners:  click, keydown, blur
+ *      – toolbar:   buildToolbar();   // returns HTMLElement
+ *      – commands:  const COMMANDS = {
+ *                      '𝐁' : () => exec('bold'),
+ *                      '𝑰' : () => exec('italic'),
+ *                      '𝑼' : () => exec('underline'),
+ *                      'List': () => exec('insertUnorderedList'),
+ *                      '8px': () => exec('fontSize', 1),  // 1 = 8 px
+ *                      'A🖌️': () => pickColor('foreColor'),
+ *                      '🖍️':  () => pickColor('hiliteColor'),
+ *                      '🖼️':  () => insertMedia('image'),
+ *                      '🎥':  () => insertMedia('video'),
+ *                      '↔️↕️':() => toggleResizeBox(),
+ *                      '📐': () => openSpacingPanel(),
+ *                      'H₁': () => exec('formatBlock','H1'),
+ *                      '¶':   () => exec('formatBlock','P'),
+ *                      '🔲':  () => insertComponent('card'),
+ *                      '📋':  () => pastePlain(),
+ *                      '</>': () => toggleCodeView(),
+ *                      '🔘':  () => insertComponent('button')
+ *                   };
+ *
+ * 4.  **Toolbar positioning**  
+ *     On click set toolbar.style.top/left to element.getBoundingClientRect()
+ *     relative to `window.parent` so it hovers right above the clicked zone.
+ *
+ * 5.  **Enter key**  
+ *     In keydown handler: if `e.key === 'Enter'` && !e.shiftKey  
+ *       – preventDefault();  
+ *       – exec('insertParagraph');  
+ *       – OR call insertMediaPrompt() depending on the last toolbar action.
+ *
+ * 6.  **Auto-save bridge**  
+ *     Whenever `input` or `blur` fires inside a zone, postMessage the
+ *     updated HTML back to the dashboard editor pane so we can persist
+ *     draft changes.
+ *
+ * 7.  **Keyboard shortcuts** (nice-to-have)  
+ *     Ctrl/⌘+B,I,U  ➜ trigger matching toolbar buttons.
+ *
+ * ---------------------------------------------------------------------------
+ *  FILES TO ADD IN REPLIT
+ * ---------------------------------------------------------------------------
+ *  ⚙️  /public/editorBridge.js   – core logic above
+ *  ⚙️  /public/editorToolbar.css – minimal styling:
+ *        .ez-toolbar {position:absolute; background:#fff; border:1px solid #aaa;
+ *                    border-radius:6px; padding:4px; box-shadow:0 2px 6px #0002;}
+ *        .ez-btn     {font:16px/1 sans-serif; padding:2px 4px; cursor:pointer;}
+ *        .ez-btn:hover {background:#f0f0f0;}
+ *
+ * ---------------------------------------------------------------------------
+ *  QUICK DEV NOTES
+ * ---------------------------------------------------------------------------
+ *  • Use `document.execCommand()` for MVP even though it’s deprecated;
+ *    keeps the prototype tiny. Switch to TipTap/ProseMirror once stable.
+ *  • Media insertion = createElement('figure') with <img>/<video> & caption stub.
+ *  • Make sure to `contenteditable="false"` on the toolbar itself!
+ *
+ * ---------------------------------------------------------------------------
+ *  ANALOGIES
+ * ---------------------------------------------------------------------------
+ *  – The interaction model is deliberately **WordPress (Gutenberg)-lite**:
+ *      click = select block → mini toolbar; ENTER = new block.
+ *  – Simpler than Canva because we’re editing inline HTML, not canvas nodes.
+ *
+ * ---------------------------------------------------------------------------
+ *  DONE.
+ **/

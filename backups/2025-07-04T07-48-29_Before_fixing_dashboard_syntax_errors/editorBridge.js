@@ -548,13 +548,7 @@ function cleanup() {
   document.removeEventListener('input', handleInput);
 }
 
-// Load external CSS for better styling
-const cssLink = document.createElement('link');
-cssLink.rel = 'stylesheet';
-cssLink.href = '/editorToolbar.css';
-document.head.appendChild(cssLink);
-
-// Add additional inline styles as fallback
+// Add hover effects
 const style = document.createElement('style');
 style.textContent = `
   [data-editable="true"]:hover {
