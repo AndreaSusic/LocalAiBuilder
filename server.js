@@ -2115,6 +2115,11 @@ app.get('/api/kigen-data', async (req, res) => {
       console.log('✅ Found Kigen Plastika bootstrap data');
       let bootstrapData = result.rows[0].data;
       
+      // Auto-populate cache with a permanent ID for easy testing
+      const permanentId = 'kigen-plastika-default';
+      previewCache.set(permanentId, bootstrapData);
+      console.log('🔄 Auto-cached data with permanent ID:', permanentId);
+      
       // Handle both string and object data formats
       if (typeof bootstrapData === 'string') {
         try {
