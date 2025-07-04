@@ -4,6 +4,8 @@ import Editable from '../components/Editable.jsx';
 // import { getStockImages } from '../../../stock.js'; // Removed to fix import in browser
 
 export default function HeroSection() {
+  console.log('🎯 HeroSection is rendering!');
+  
   const { 
     company_name, 
     services = [], 
@@ -11,6 +13,8 @@ export default function HeroSection() {
     google_profile = {},
     ai_customization = {} 
   } = useContext(SiteDataContext) || {};
+  
+  console.log('🎯 HeroSection data:', { company_name, services, images: images.length });
   
   // Extract hero image URL properly from GBP photos or provided images
   const getImageUrl = (img) => {
