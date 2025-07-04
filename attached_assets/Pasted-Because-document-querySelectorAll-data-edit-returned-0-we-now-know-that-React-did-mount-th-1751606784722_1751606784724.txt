@@ -1,0 +1,94 @@
+Because document.querySelectorAll('[data-edit]') returned 0, we now know that:
+	•	React did mount the template root (we saw all the “HomepageV1 using data …” logs), but none of the nodes that should carry data-edit attributes ever reached the DOM.
+	•	That means some component in the render tree is throwing (or exiting early) before JSX with <Editable …> tags is returned.
+
+Below is a quick way to locate the breaker and get the elements back into the page.
+
+⸻
+
+1  Catch the exact exception
+
+Add an ad-hoc error boundary around the whole template.
+(You only need this temporarily to see the stack trace.)
+
+// dashboard/src/components/TemplatePreview.jsx
+import React, { Component } from 'react';
+import HomepageV1 from '../templates/homepage/v1';
+import SiteDataProvider from '../context/SiteDataProvider';
+
+class TemplateErrorBoundary extends Component {
+  state = { err: null };
+  static getDerivedStateFromError(err) { return { err }; }
+  componentDidCatch(err, info) { console.error('💥 Template crash:', err, info); }
+  render() {
+    if (this.state.err)
+      return <pre style={{color:'red'}}>{String(this.state.err)}</pre>;
+    return this.props.children;
+  }
+}
+
+export default function TemplatePreview({ templateData }) {
+  return (
+    <SiteDataProvider bootstrap={templateData}>
+      <TemplateErrorBoundary>
+        <HomepageV1 bootstrap={templateData}/>
+      </TemplateErrorBoundary>
+    </SiteDataProvider>
+  );
+}
+
+Reload /preview and keep the iframe console open.
+You’ll either see a red <pre> with the error text in the iframe itself or a red stack-trace in the console starting with “💥 Template crash:”.
+That tells you which section or helper blew up.
+
+⸻
+
+2  Typical culprits (check these first)
+
+Suspect	Symptom	Fix
+Undefined data access (e.g. services[0] when services is '')	Error like Cannot read properties of undefined	Guard with Array.isArray(services) && services[0] or default []
+Circular import still lurking	Error like undefined is not a function at first line of a section file	Make sure every file only imports SiteDataContext, never imports the provider component back.
+Early return null in a section	No error, but section absent in React-DevTools tree	Replace with a meaningful fallback (e.g. render placeholder text) so that <Editable> tags still appear.
+
+
+⸻
+
+3  Verify in React-DevTools
+	1.	In DevTools, switch to the iframe frame (Sources ▸ Paused ▸ top-left dropdown).
+	2.	Open the React panel ▸ Components tab.
+	3.	You should see something like:
+
+TemplateErrorBoundary
+  HomepageV1
+    HeroSection
+      Editable
+    ServicesSection
+      Editable
+    …
+
+Anything that is missing or greyed out is the component that aborted.
+
+⸻
+
+4  After you fix the thrower …
+
+Reload, run again:
+
+document.querySelectorAll('[data-edit]').length   // 👉 should be > 0
+
+The inline-editor bridge will now report something like:
+
+🏷️ Setting up comprehensive editable elements...
+Found 9 elements with data-edit attributes
+✅ Made 9 elements editable with delete buttons
+
+…and the dashed outlines / toolbar will work.
+
+⸻
+
+TL;DR
+	•	Wrap the template in an error boundary to surface the real runtime error.
+	•	Fix that (likely undefined data or residual circular import).
+	•	Confirm [data-edit] nodes now exist → the editor bridge will pick them up automatically.
+
+Ping me with the first error message you see and I’ll narrow the patch further if needed.
