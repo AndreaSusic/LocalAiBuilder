@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import HomepageV1 from '../templates/homepage/v1/index.jsx';
+import TestTemplate from '../templates/TestTemplate.jsx';
 
-console.log('🔍 HomepageV1 import:', HomepageV1);
-console.log('🔍 HomepageV1 is function:', typeof HomepageV1 === 'function');
+console.log('🔍 TestTemplate import:', TestTemplate);
+console.log('🔍 TestTemplate is function:', typeof TestTemplate === 'function');
 
 export default function TemplatePreview({ previewId, fallbackBootstrap }) {
   const [templateData, setTemplateData] = useState(null);
@@ -94,10 +94,10 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
 
   // Render the template with the fetched data
   console.log('🎨 Rendering template with data for:', templateData?.company_name || 'Unknown Company');
-  console.log('📋 TemplatePreview about to render HomepageV1 with bootstrap:', !!templateData);
+  console.log('📋 TemplatePreview about to render TestTemplate with bootstrap:', !!templateData);
   
   try {
-    return <HomepageV1 bootstrap={templateData} />;
+    return <TestTemplate bootstrap={templateData} />;
   } catch (error) {
     console.error('💥 TemplatePreview render error:', error);
     return (
