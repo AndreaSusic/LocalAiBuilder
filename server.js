@@ -1181,15 +1181,47 @@ Generate website text content for this business.`;
 // AI Chat endpoint for inline editor chat functionality
 app.post('/api/ai-chat', async (req, res) => {
   try {
-    const { message, context } = req.body;
+    const { message, context, isCommand } = req.body;
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
     
     if (!OPENAI_API_KEY) {
       return res.status(500).json({ error: 'OpenAI API key not configured' });
     }
 
+    // Check if this is a content modification request
+    const contentChangeRegex = /(?:change|update|modify|set|make)\s+(?:the\s+)?(?:title|heading|text|content|h1|h2|h3)\s+to\s+["']?([^"']+)["']?/i;
+    const match = message.match(contentChangeRegex);
+    
+    if (match) {
+      // This is a content change request
+      const newContent = match[1];
+      const elementType = message.toLowerCase().includes('title') ? 'title' : 
+                         message.toLowerCase().includes('h1') ? 'heading' :
+                         message.toLowerCase().includes('heading') ? 'heading' : 'text';
+      
+      // Determine appropriate selector based on content type
+      let selector = 'h1'; // default to h1 for titles/headings
+      if (message.toLowerCase().includes('h2')) selector = 'h2';
+      if (message.toLowerCase().includes('h3')) selector = 'h3';
+      
+      res.json({
+        success: true,
+        message: `✅ I'll change the ${elementType} to "${newContent}"`,
+        contentChange: {
+          action: 'updateText',
+          selector: selector,
+          newContent: newContent,
+          elementType: elementType
+        }
+      });
+      return;
+    }
+
+    // Regular AI assistant response
     const systemPrompt = `You are a helpful website editing assistant. Help users improve their website content. 
     Be concise, practical, and focus on actionable suggestions. Keep responses under 100 words.
+    
+    If users ask to change content, respond that you can help with that and ask for specifics.
     
     Current element context: "${context}"`;
 
