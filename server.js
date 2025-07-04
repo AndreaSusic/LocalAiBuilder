@@ -982,56 +982,7 @@ app.get('/api/user-data', async (req, res) => {
   }
 });
 
-// AI Chat endpoint for inline editor
-app.post('/api/ai-chat', async (req, res) => {
-  try {
-    const { message } = req.body;
-    
-    if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
-    }
-
-    // Set headers for Server-Sent Events
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    
-    // Create OpenAI stream
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-      messages: [
-        {
-          role: "system",
-          content: "You are a helpful website editing assistant. Provide concise, actionable advice for website improvements. Keep responses under 150 words."
-        },
-        {
-          role: "user",
-          content: message
-        }
-      ],
-      stream: true,
-      max_tokens: 150,
-      temperature: 0.7
-    });
-
-    // Stream the response
-    for await (const chunk of completion) {
-      const content = chunk.choices[0]?.delta?.content || '';
-      if (content) {
-        res.write(`data: ${content}\n\n`);
-      }
-    }
-    
-    res.write('data: [DONE]\n\n');
-    res.end();
-    
-  } catch (error) {
-    console.error('AI Chat error:', error);
-    res.write(`data: Sorry, I encountered an error. Please try again.\n\n`);
-    res.end();
-  }
-});
+// Streaming endpoint removed - using JSON endpoint below
 
 // AI text mapping endpoint for dynamic content generation
 app.post('/api/ai-text-mapping', async (req, res) => {
