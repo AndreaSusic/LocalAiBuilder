@@ -144,6 +144,144 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
     );
   }
   
+  useEffect(() => {
+    // Inject the inline editor after template renders
+    const injectEditor = () => {
+      if (window.universalEditorInjected) return;
+      
+      const script = document.createElement('script');
+      script.innerHTML = `
+        console.log('🔧 Injecting Universal Editor for template preview...');
+        
+        // Add editor styles
+        const style = document.createElement('style');
+        style.textContent = \`
+          .editor-highlight {
+            outline: 2px dotted #ff0000 !important;
+            outline-offset: 2px !important;
+          }
+          .editor-active {
+            outline: 2px solid #ffc000 !important;
+            outline-offset: 2px !important;
+          }
+          .editor-toolbar {
+            position: fixed !important;
+            background: white !important;
+            border: 2px solid #333 !important;
+            border-radius: 8px !important;
+            padding: 8px !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+            z-index: 99999 !important;
+            display: none !important;
+            flex-wrap: wrap !important;
+            gap: 4px !important;
+            min-width: 300px !important;
+          }
+          .editor-btn {
+            padding: 6px 12px !important;
+            border: 1px solid #ddd !important;
+            background: white !important;
+            border-radius: 4px !important;
+            cursor: pointer !important;
+            font-size: 12px !important;
+          }
+          .editor-btn:hover {
+            background: #f0f0f0 !important;
+          }
+          .delete-btn {
+            position: absolute !important;
+            top: -10px !important;
+            right: -10px !important;
+            width: 24px !important;
+            height: 24px !important;
+            background: #ff4444 !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            font-size: 14px !important;
+            display: none !important;
+            z-index: 10000 !important;
+          }
+        \`;
+        document.head.appendChild(style);
+        
+        // Make all text elements editable
+        const textSelectors = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'div', 'a', 'button', 'li'];
+        let activeElement = null;
+        
+        textSelectors.forEach(selector => {
+          document.querySelectorAll(selector).forEach(el => {
+            if (el.closest('.editor-toolbar') || el.classList.contains('delete-btn')) return;
+            
+            el.addEventListener('mouseenter', () => {
+              if (activeElement !== el) {
+                el.classList.add('editor-highlight');
+              }
+            });
+            
+            el.addEventListener('mouseleave', () => {
+              if (activeElement !== el) {
+                el.classList.remove('editor-highlight');
+              }
+            });
+            
+            el.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              // Clear previous active element
+              if (activeElement) {
+                activeElement.classList.remove('editor-active');
+                activeElement.querySelector('.delete-btn')?.remove();
+              }
+              
+              // Set new active element
+              activeElement = el;
+              el.classList.add('editor-active');
+              el.classList.remove('editor-highlight');
+              
+              // Add delete button
+              const deleteBtn = document.createElement('button');
+              deleteBtn.className = 'delete-btn';
+              deleteBtn.innerHTML = '×';
+              deleteBtn.style.display = 'block';
+              deleteBtn.onclick = (e) => {
+                e.stopPropagation();
+                el.remove();
+              };
+              el.style.position = 'relative';
+              el.appendChild(deleteBtn);
+              
+              // Make element editable
+              el.contentEditable = true;
+              el.focus();
+              
+              console.log('✅ Element activated for editing:', el.tagName);
+            });
+          });
+        });
+        
+        // Click outside to deactivate
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('[contenteditable="true"]') && activeElement) {
+            activeElement.classList.remove('editor-active');
+            activeElement.contentEditable = false;
+            activeElement.querySelector('.delete-btn')?.remove();
+            activeElement = null;
+          }
+        });
+        
+        window.universalEditorInjected = true;
+        console.log('✅ Universal Editor injected successfully');
+      `;
+      document.head.appendChild(script);
+    };
+    
+    // Inject after component mounts
+    setTimeout(injectEditor, 1000);
+  }, [templateData]);
+
   try {
     return (
       <SiteDataProvider bootstrap={templateData}>
