@@ -22,13 +22,60 @@ export default function UnifiedCommandChatPanel() {
     ));
   }, [input]);
 
-  const send = () => {
+  const send = async () => {
     if (!input.trim()) return;
+    
     const isCmd = COMMANDS.includes(input);
-    setHistory([...history, { speaker: 'user', text: input, isCommand: isCmd }]);
-    // TODO: call your LLM endpoint when isCmd or free-form
+    const userMessage = { speaker: 'user', text: input, isCommand: isCmd };
+    
+    // Add user message to history immediately
+    setHistory(prev => [...prev, userMessage]);
+    
+    // Clear input and suggestions
+    const currentInput = input;
     setInput('');
     setSuggestions([]);
+    
+    try {
+      // Call AI chat API
+      const response = await fetch('/api/ai-chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: currentInput,
+          isCommand: isCmd
+        }),
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const aiMessage = { 
+          speaker: 'ai', 
+          text: data.message || data.response || 'I understand your request.',
+          isCommand: false 
+        };
+        
+        setHistory(prev => [...prev, aiMessage]);
+      } else {
+        const errorMessage = { 
+          speaker: 'ai', 
+          text: 'Sorry, I encountered an error processing your request.',
+          isCommand: false 
+        };
+        setHistory(prev => [...prev, errorMessage]);
+      }
+    } catch (error) {
+      console.error('AI Chat error:', error);
+      const errorMessage = { 
+        speaker: 'ai', 
+        text: 'Connection error. Please try again.',
+        isCommand: false 
+      };
+      setHistory(prev => [...prev, errorMessage]);
+    }
   };
 
   return (

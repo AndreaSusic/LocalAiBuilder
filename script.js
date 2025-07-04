@@ -839,6 +839,39 @@ function initLoginModal() {
         });
     }
     
+    // Handle email/password login form
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(loginForm);
+            const email = formData.get('email');
+            const password = formData.get('password');
+            
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    // Login successful
+                    window.location.href = '/preview';
+                } else {
+                    const error = await response.json();
+                    alert(error.message || 'Login failed. Please check your credentials.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed. Please try again.');
+            }
+        });
+    }
+    
     // Ensure font selector is hidden on homepage load
     const fontWrapper = document.getElementById('wrapFont');
     const followUpPanel = document.getElementById('followUp');

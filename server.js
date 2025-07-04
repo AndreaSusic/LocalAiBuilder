@@ -435,6 +435,52 @@ app.get('/auth/google/callback',
   }
 );
 
+// Email/password login endpoint
+app.post('/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+  
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
+  
+  try {
+    // Check if user exists and password matches
+    const result = await pool.query(
+      'SELECT * FROM users WHERE email = $1 AND provider = $2',
+      [email, 'local']
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+    
+    const user = result.rows[0];
+    
+    // For now, use simple password comparison (in production, use bcrypt)
+    if (user.password_hash !== password) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+    
+    // Create session
+    req.login({ 
+      id: user.id, 
+      email: user.email, 
+      displayName: user.display_name,
+      provider: 'local'
+    }, (err) => {
+      if (err) {
+        console.error('Login session error:', err);
+        return res.status(500).json({ message: 'Login failed' });
+      }
+      res.json({ success: true });
+    });
+    
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 app.get('/profile', function(req, res) {
   if (req.isAuthenticated()) {
     const user = req.user;
