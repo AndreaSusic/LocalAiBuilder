@@ -194,6 +194,10 @@ export default function DesktopDashboard({ bootstrap }) {
   const [versions] = useState(["Version 1", "Version 2", "Version 3"]);
   const [showVersions, setShowVersions] = useState(false);
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [showDeviceDropdown, setShowDeviceDropdown] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('EN');
+  const [currentDevice, setCurrentDevice] = useState('Desktop');
   const [previewContent, setPreviewContent] = useState(null);
 
   useEffect(() => {
@@ -293,6 +297,50 @@ export default function DesktopDashboard({ bootstrap }) {
           <div className="credits-info">
             <span className="credits-label">Credits remaining: <strong>25</strong></span>
           </div>
+          
+          {/* Language Dropdown */}
+          <div className="dropdown-wrapper">
+            <button 
+              className="btn-wireframe"
+              onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
+            >
+              {currentLanguage} ▼
+            </button>
+            {showLanguageDropdown && (
+              <div className="versions-dropdown">
+                <div className="version-item" onClick={() => {setCurrentLanguage('EN'); setShowLanguageDropdown(false);}}>
+                  English
+                </div>
+                <div className="version-item" onClick={() => {setCurrentLanguage('SR'); setShowLanguageDropdown(false);}}>
+                  Srpski
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Device Switcher */}
+          <div className="dropdown-wrapper">
+            <button 
+              className="btn-wireframe"
+              onClick={() => setShowDeviceDropdown(!showDeviceDropdown)}
+            >
+              {currentDevice} ▼
+            </button>
+            {showDeviceDropdown && (
+              <div className="versions-dropdown">
+                <div className="version-item" onClick={() => {setCurrentDevice('Desktop'); setShowDeviceDropdown(false);}}>
+                  🖥️ Desktop
+                </div>
+                <div className="version-item" onClick={() => {setCurrentDevice('Tablet'); setShowDeviceDropdown(false);}}>
+                  📱 Tablet
+                </div>
+                <div className="version-item" onClick={() => {setCurrentDevice('Mobile'); setShowDeviceDropdown(false);}}>
+                  📱 Mobile
+                </div>
+              </div>
+            )}
+          </div>
+          
           <div className="dropdown-wrapper">
             <button 
               className="btn-wireframe"
