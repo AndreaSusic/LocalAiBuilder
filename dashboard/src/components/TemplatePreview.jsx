@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import HomepageV1 from '../templates/homepage/v1/index.jsx';
 
+console.log('🔍 HomepageV1 import:', HomepageV1);
+console.log('🔍 HomepageV1 is function:', typeof HomepageV1 === 'function');
+
 export default function TemplatePreview({ previewId, fallbackBootstrap }) {
   const [templateData, setTemplateData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -91,6 +94,20 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
 
   // Render the template with the fetched data
   console.log('🎨 Rendering template with data for:', templateData?.company_name || 'Unknown Company');
+  console.log('📋 TemplatePreview about to render HomepageV1 with bootstrap:', !!templateData);
   
-  return <HomepageV1 bootstrap={templateData} />;
+  try {
+    return <HomepageV1 bootstrap={templateData} />;
+  } catch (error) {
+    console.error('💥 TemplatePreview render error:', error);
+    return (
+      <div style={{ padding: '20px', background: '#ffebee' }}>
+        <h2 style={{ color: '#c62828' }}>TemplatePreview Error</h2>
+        <p>Error: {error.message}</p>
+        <pre style={{ background: '#fff', padding: '10px', overflow: 'auto' }}>
+          {error.stack}
+        </pre>
+      </div>
+    );
+  }
 }
