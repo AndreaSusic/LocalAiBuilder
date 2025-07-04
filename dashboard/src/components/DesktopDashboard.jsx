@@ -3,6 +3,498 @@ import { useNavigate } from "react-router-dom";
 import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 
 // Inject the working inline editor
+function injectComprehensiveEditor(iframe) {
+  try {
+    console.log('🔧 Injecting comprehensive editor with visible delete buttons...');
+    
+    setTimeout(() => {
+      const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
+      if (!frameDoc) return;
+      
+      // Remove any existing editor scripts
+      const existingScripts = frameDoc.querySelectorAll('[id*="editor"], [id*="comprehensive"]');
+      existingScripts.forEach(script => script.remove());
+      
+      const script = frameDoc.createElement('script');
+      script.id = 'comprehensive-editor-with-delete';
+      script.innerHTML = `
+        (function() {
+          console.log('🚀 Comprehensive editor with delete buttons starting...');
+          
+          let activeEl = null;
+          let panel = null;
+          let timer = null;
+          
+          function init() {
+            addStyles();
+            makeEditable();
+            createPanel();
+            setupEvents();
+            console.log('✅ Editor with visible delete buttons ready');
+          }
+          
+          function addStyles() {
+            const style = document.createElement('style');
+            style.textContent = \`
+              .edit-hover {
+                position: relative !important;
+                transition: outline 0.2s !important;
+              }
+              
+              .edit-hover:hover {
+                outline: 2px dashed #ff4444 !important;
+                outline-offset: 2px !important;
+              }
+              
+              .edit-active {
+                outline: 2px solid #ffc000 !important;
+                outline-offset: 2px !important;
+                background: rgba(255, 192, 0, 0.1) !important;
+              }
+              
+              .delete-x {
+                position: absolute !important;
+                top: -10px !important;
+                right: -10px !important;
+                width: 20px !important;
+                height: 20px !important;
+                background: #ff4444 !important;
+                color: white !important;
+                border: none !important;
+                border-radius: 50% !important;
+                cursor: pointer !important;
+                font-size: 14px !important;
+                font-weight: bold !important;
+                line-height: 1 !important;
+                z-index: 10000 !important;
+                display: none !important;
+                font-family: Arial, sans-serif !important;
+                text-align: center !important;
+              }
+              
+              .edit-hover:hover .delete-x {
+                display: block !important;
+              }
+              
+              .edit-active .delete-x {
+                display: block !important;
+              }
+              
+              .editor-panel {
+                position: fixed !important;
+                top: 50px !important;
+                right: 20px !important;
+                width: 300px !important;
+                background: white !important;
+                border: 1px solid #ddd !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+                z-index: 10001 !important;
+                display: none !important;
+                padding: 16px !important;
+                font-family: Arial, sans-serif !important;
+              }
+              
+              .editor-panel.show { 
+                display: block !important; 
+              }
+              
+              .editor-panel h3 {
+                margin: 0 0 12px 0 !important;
+                font-size: 14px !important;
+                font-weight: bold !important;
+                color: #333 !important;
+              }
+              
+              .panel-section {
+                margin-bottom: 12px !important;
+                padding-bottom: 12px !important;
+                border-bottom: 1px solid #eee !important;
+              }
+              
+              .panel-section:last-child { 
+                border-bottom: none !important; 
+              }
+              
+              .panel-section label {
+                display: block !important;
+                font-size: 11px !important;
+                color: #666 !important;
+                margin-bottom: 4px !important;
+                font-weight: bold !important;
+              }
+              
+              .format-buttons {
+                display: flex !important;
+                gap: 8px !important;
+                margin-bottom: 8px !important;
+              }
+              
+              .format-btn {
+                padding: 6px 12px !important;
+                border: 1px solid #ddd !important;
+                background: white !important;
+                border-radius: 4px !important;
+                cursor: pointer !important;
+                font-size: 12px !important;
+              }
+              
+              .format-btn:hover { 
+                background: #f5f5f5 !important; 
+              }
+              
+              .panel-dropdown {
+                width: 100% !important;
+                padding: 4px 8px !important;
+                border: 1px solid #ddd !important;
+                border-radius: 4px !important;
+                font-size: 12px !important;
+                margin-bottom: 8px !important;
+              }
+              
+              .color-palette {
+                display: flex !important;
+                gap: 4px !important;
+                flex-wrap: wrap !important;
+              }
+              
+              .color-swatch {
+                width: 24px !important;
+                height: 24px !important;
+                border: 1px solid #ddd !important;
+                border-radius: 4px !important;
+                cursor: pointer !important;
+              }
+              
+              .ai-button {
+                width: 100% !important;
+                padding: 8px !important;
+                background: #ffc000 !important;
+                color: white !important;
+                border: none !important;
+                border-radius: 4px !important;
+                cursor: pointer !important;
+                font-size: 12px !important;
+              }
+            \`;
+            document.head.appendChild(style);
+          }
+          
+          function makeEditable() {
+            const selectors = [
+              'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'a', 'button',
+              'nav a', 'nav span', 'nav div', 'nav li',
+              '.menu-item', '.nav-item', '.navbar-brand',
+              '[class*="title"]', '[class*="text"]', '[class*="heading"]',
+              '[class*="nav"]', '[class*="menu"]'
+            ];
+            
+            let count = 0;
+            selectors.forEach(sel => {
+              document.querySelectorAll(sel).forEach(el => {
+                if (el.classList.contains('edit-hover') || 
+                    el.tagName === 'SCRIPT' || 
+                    el.tagName === 'STYLE' ||
+                    el.classList.contains('delete-x') ||
+                    el.classList.contains('editor-panel')) return;
+                
+                const text = el.textContent.trim();
+                if (text.length > 0) {
+                  el.classList.add('edit-hover');
+                  el.setAttribute('data-editable', 'true');
+                  el.setAttribute('data-original', text);
+                  
+                  // Force relative positioning
+                  if (window.getComputedStyle(el).position === 'static') {
+                    el.style.position = 'relative';
+                  }
+                  
+                  // Create visible delete button
+                  const deleteBtn = document.createElement('button');
+                  deleteBtn.className = 'delete-x';
+                  deleteBtn.innerHTML = '×';
+                  deleteBtn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (confirm('Delete this element?')) {
+                      el.remove();
+                      console.log('🗑️ Element deleted');
+                    }
+                  };
+                  
+                  el.appendChild(deleteBtn);
+                  count++;
+                }
+              });
+            });
+            
+            console.log(\`📍 Made \${count} elements editable with delete buttons\`);
+          }
+          
+          function createPanel() {
+            const p = document.createElement('div');
+            p.className = 'editor-panel';
+            p.innerHTML = \`
+              <h3>✏️ Element Editor</h3>
+              
+              <div class="panel-section">
+                <label>Text Formatting:</label>
+                <div class="format-buttons">
+                  <button class="format-btn" onclick="formatText('bold')" title="Bold">
+                    <strong>B</strong>
+                  </button>
+                  <button class="format-btn" onclick="formatText('italic')" title="Italic">
+                    <em>I</em>
+                  </button>
+                  <button class="format-btn" onclick="formatText('underline')" title="Underline">
+                    <u>U</u>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="panel-section">
+                <label>Font Size:</label>
+                <select class="panel-dropdown" onchange="changeFontSize(this.value)" id="fontSizeSelect">
+                  <option value="10">10px</option>
+                  <option value="12">12px</option>
+                  <option value="14">14px</option>
+                  <option value="16">16px</option>
+                  <option value="18">18px</option>
+                  <option value="20">20px</option>
+                  <option value="24">24px</option>
+                  <option value="28">28px</option>
+                  <option value="32">32px</option>
+                </select>
+                
+                <label>Heading Level:</label>
+                <select class="panel-dropdown" onchange="changeHeading(this.value)" id="headingSelect">
+                  <option value="">Keep current</option>
+                  <option value="H1">H1</option>
+                  <option value="H2">H2</option>
+                  <option value="H3">H3</option>
+                  <option value="H4">H4</option>
+                  <option value="H5">H5</option>
+                  <option value="H6">H6</option>
+                </select>
+              </div>
+              
+              <div class="panel-section">
+                <label>Text Color:</label>
+                <div class="color-palette">
+                  <div class="color-swatch" style="background: #000000" onclick="changeColor('#000000')" title="Black"></div>
+                  <div class="color-swatch" style="background: #333333" onclick="changeColor('#333333')" title="Dark Gray"></div>
+                  <div class="color-swatch" style="background: #666666" onclick="changeColor('#666666')" title="Gray"></div>
+                  <div class="color-swatch" style="background: #999999" onclick="changeColor('#999999')" title="Light Gray"></div>
+                  <div class="color-swatch" style="background: #ffffff; border: 2px solid #000" onclick="changeColor('#ffffff')" title="White"></div>
+                  <div class="color-swatch" style="background: #ffc000" onclick="changeColor('#ffc000')" title="Yellow"></div>
+                  <div class="color-swatch" style="background: #ff4444" onclick="changeColor('#ff4444')" title="Red"></div>
+                  <div class="color-swatch" style="background: #22c55e" onclick="changeColor('#22c55e')" title="Green"></div>
+                  <div class="color-swatch" style="background: #3b82f6" onclick="changeColor('#3b82f6')" title="Blue"></div>
+                </div>
+              </div>
+              
+              <div class="panel-section">
+                <button class="ai-button" onclick="openAI()" title="Get AI assistance">
+                  🤖 Get AI Help
+                </button>
+              </div>
+            \`;
+            
+            document.body.appendChild(p);
+            panel = p;
+            
+            // Make functions global
+            window.formatText = formatText;
+            window.changeFontSize = changeFontSize;
+            window.changeHeading = changeHeading;
+            window.changeColor = changeColor;
+            window.openAI = openAI;
+          }
+          
+          function setupEvents() {
+            document.addEventListener('click', (e) => {
+              if (e.target.classList.contains('delete-x')) {
+                return; // Delete handles its own click
+              }
+              
+              const el = e.target.closest('[data-editable="true"]');
+              if (el) {
+                e.preventDefault();
+                e.stopPropagation();
+                activate(el);
+              } else {
+                deactivate();
+              }
+            });
+            
+            document.addEventListener('input', (e) => {
+              if (e.target.classList.contains('edit-active')) {
+                scheduleAutoSave(e.target);
+              }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+              if (e.key === 'Escape' && activeEl) {
+                deactivate();
+              }
+            });
+          }
+          
+          function activate(el) {
+            console.log('🎯 Activating element:', el.tagName, el.textContent.substring(0, 30));
+            
+            if (activeEl) deactivate();
+            
+            activeEl = el;
+            el.classList.add('edit-active');
+            el.contentEditable = true;
+            
+            if (panel) {
+              panel.classList.add('show');
+              
+              // Update dropdowns
+              const fontSize = parseInt(window.getComputedStyle(el).fontSize);
+              const fontSelect = panel.querySelector('#fontSizeSelect');
+              if (fontSelect) fontSelect.value = fontSize;
+              
+              const headSelect = panel.querySelector('#headingSelect');
+              if (headSelect && el.tagName.match(/H[1-6]/)) {
+                headSelect.value = el.tagName;
+              }
+            }
+            
+            el.focus();
+            scheduleAutoSave(el);
+          }
+          
+          function deactivate() {
+            if (activeEl) {
+              activeEl.classList.remove('edit-active');
+              activeEl.contentEditable = false;
+              activeEl = null;
+            }
+            if (panel) panel.classList.remove('show');
+          }
+          
+          function formatText(cmd) {
+            if (!activeEl) return;
+            document.execCommand(cmd, false, null);
+            console.log(\`✅ Applied format: \${cmd}\`);
+            scheduleAutoSave(activeEl);
+          }
+          
+          function changeFontSize(size) {
+            if (!activeEl) return;
+            activeEl.style.fontSize = size + 'px';
+            console.log(\`🔤 Font size: \${size}px\`);
+            scheduleAutoSave(activeEl);
+          }
+          
+          function changeHeading(level) {
+            if (!activeEl || !level) return;
+            
+            const newEl = document.createElement(level.toLowerCase());
+            newEl.innerHTML = activeEl.innerHTML;
+            newEl.className = activeEl.className;
+            newEl.setAttribute('data-editable', 'true');
+            newEl.setAttribute('data-original', activeEl.getAttribute('data-original'));
+            newEl.style.cssText = activeEl.style.cssText;
+            
+            if (window.getComputedStyle(newEl).position === 'static') {
+              newEl.style.position = 'relative';
+            }
+            
+            activeEl.parentNode.replaceChild(newEl, activeEl);
+            activate(newEl);
+            console.log(\`📝 Changed to: \${level}\`);
+          }
+          
+          function changeColor(c) {
+            if (!activeEl) return;
+            activeEl.style.color = c;
+            console.log(\`🎨 Color: \${c}\`);
+            scheduleAutoSave(activeEl);
+          }
+          
+          function openAI() {
+            if (!activeEl) return;
+            
+            const text = activeEl.textContent;
+            console.log('🤖 AI request for:', text.substring(0, 50));
+            
+            if (window.parent !== window) {
+              window.parent.postMessage({
+                type: 'AI_CHAT_REQUEST',
+                message: \`Please improve this text: "\${text}"\`,
+                context: 'inline-editor'
+              }, '*');
+            }
+          }
+          
+          function scheduleAutoSave(el) {
+            if (timer) clearTimeout(timer);
+            
+            timer = setTimeout(async () => {
+              const id = generateId(el);
+              const orig = el.getAttribute('data-original') || '';
+              const edited = el.textContent || '';
+              
+              try {
+                console.log('💾 Auto-saving:', id);
+                
+                const res = await fetch('/api/save-page-edit', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  credentials: 'include',
+                  body: JSON.stringify({
+                    pageId: window.location.pathname.split('/').pop(),
+                    elementId: id,
+                    editType: 'text',
+                    originalContent: orig,
+                    editedContent: edited
+                  })
+                });
+                
+                if (res.ok) {
+                  el.setAttribute('data-original', edited);
+                  console.log('✅ Saved successfully');
+                } else {
+                  console.log('❌ Save failed');
+                }
+              } catch (e) {
+                console.log('❌ Save error');
+              }
+            }, 1000);
+          }
+          
+          function generateId(el) {
+            const tag = el.tagName.toLowerCase();
+            const cls = el.className.replace(/\\s+/g, '-') || 'no-cls';
+            const txt = el.textContent.trim().substring(0, 20).replace(/\\s+/g, '-') || 'no-txt';
+            const idx = [...document.querySelectorAll(tag)].indexOf(el);
+            return \`\${tag}-\${cls}-\${txt}-\${idx}\`.toLowerCase();
+          }
+          
+          // Initialize
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+          } else {
+            init();
+          }
+          
+          setTimeout(init, 1000);
+          
+        })();
+      `;
+      
+      frameDoc.head.appendChild(script);
+      console.log('✅ Comprehensive editor with visible delete buttons injected');
+    }, 1000);
+  } catch (error) {
+    console.error('❌ Error injecting comprehensive editor:', error);
+  }
+}
+
 function injectWorkingEditor(iframe) {
   try {
     console.log('🔧 Injecting working inline editor...');
@@ -897,7 +1389,7 @@ function DesktopDashboard({ bootstrap }) {
     if (iframe && previewContent) {
       // Inject simple editor after iframe loads
       setTimeout(() => {
-        injectWorkingEditor(iframe);
+        injectComprehensiveEditor(iframe);
       }, 500);
     }
   };
