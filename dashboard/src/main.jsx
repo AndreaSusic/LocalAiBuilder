@@ -170,10 +170,11 @@ loadBootstrap().then(bootstrap=>{
     console.log('React app rendered successfully');
     
     // Signal to inline editor that React is ready
+    // Use a longer timeout to ensure all React components are fully rendered
     setTimeout(() => {
       window.dispatchEvent(new Event('react-dom-ready'));
       console.log('✅ React DOM ready event dispatched');
-    }, 100);
+    }, 500);
     
     // Products now render directly in React components - no DOM manipulation needed
     
