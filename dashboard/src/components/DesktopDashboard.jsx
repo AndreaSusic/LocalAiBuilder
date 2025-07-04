@@ -271,7 +271,28 @@ export default function DesktopDashboard({ bootstrap }) {
             <img src="/logo.svg" alt="LocalAI Builder" className="dashboard-logo" />
           </a>
         </div>
+        
+        {/* Main Action Buttons */}
+        <div className="header-center">
+          <button className="btn-primary" onClick={() => window.open('/', '_blank')}>
+            + New Site
+          </button>
+          <button className="btn-wireframe" onClick={() => console.log('Save clicked')}>
+            Save
+          </button>
+          <button className="btn-wireframe" onClick={() => window.postMessage({type: 'undo'}, '*')}>
+            ↶ Undo
+          </button>
+          <button className="btn-wireframe" onClick={() => window.postMessage({type: 'redo'}, '*')}>
+            ↷ Redo
+          </button>
+        </div>
+
+        {/* Right Side Actions */}
         <div className="header-actions">
+          <div className="credits-info">
+            <span className="credits-label">Credits remaining: <strong>25</strong></span>
+          </div>
           <div className="dropdown-wrapper">
             <button 
               className="btn-wireframe"
