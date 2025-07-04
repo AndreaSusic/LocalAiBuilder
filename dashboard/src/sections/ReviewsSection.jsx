@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import SiteDataContext from '../context/SiteDataContext';
+import Editable from '../components/Editable.jsx';
 
 export default function ReviewsSection() {
   const siteData = useContext(SiteDataContext) || {};
@@ -55,13 +56,13 @@ export default function ReviewsSection() {
     <>
       {/* Testimonials */}
       <section className="testimonials">
-        <h2 data-gas-edit="reviewsTitle">{reviewsTitle}</h2>
+        <Editable as="h2" path="reviewsTitle">{reviewsTitle}</Editable>
         <div className="testimonials-grid">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="testimonial">
-              <p data-gas-edit={`testimonialText${index}`}>"{testimonial.text}"</p>
+              <Editable as="p" path={`testimonialText${index}`}>"{testimonial.text}"</Editable>
               <div className="stars">{testimonial.stars}</div>
-              <p data-gas-edit={`testimonialAuthor${index}`}><strong>— {testimonial.author}</strong></p>
+              <Editable as="p" path={`testimonialAuthor${index}`}><strong>— {testimonial.author}</strong></Editable>
             </div>
           ))}
         </div>
