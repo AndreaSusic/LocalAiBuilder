@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Component } from 'react';
 import SiteDataProvider from '../context/SiteDataProvider.jsx';
 import HomepageV1 from '../templates/homepage/v1/index.jsx';
+import FixedInlineEditor from './FixedInlineEditor.jsx';
 
 console.log('🔍 HomepageV1 import:', HomepageV1);
 console.log('🔍 HomepageV1 is function:', typeof HomepageV1 === 'function');
@@ -1325,6 +1326,7 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       <SiteDataProvider bootstrap={templateData}>
         <TemplateErrorBoundary>
           <HomepageV1 bootstrap={templateData} />
+          <FixedInlineEditor previewId={previewId} />
         </TemplateErrorBoundary>
       </SiteDataProvider>
     );
