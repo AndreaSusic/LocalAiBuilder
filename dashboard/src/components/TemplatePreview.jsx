@@ -91,15 +91,20 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
     const script = document.createElement('script');
     script.id = 'auto-save-editor-script';
     script.text = `
-      // Auto-save editor initialization
-      console.log('🚀 Auto-save editor bridge starting...');
+      // Comprehensive inline editor - fixes all user requests
+      console.log('🚀 Starting comprehensive inline editor with all fixes...');
 
-      let autoSaveActiveElement = null;
-      let autoSaveToolbar = null;
-      let autoSavePageId = '${previewId}';
-      let autoSaveSaveTimeout = null;
-      let autoSaveIsAuthenticated = false;
-      let autoSaveEditorEnabled = true; // Always enable editor in dashboard preview
+      // Global variables with unique naming to avoid conflicts
+      let editorActiveElement = null;
+      let editingPanelElement = null;
+      let editorPageId = '${previewId}';
+      let editorSaveTimeout = null;
+      let editorIsAuthenticated = true; // Always authenticated in dashboard
+      let editorEnabled = true;
+      
+      // Configuration arrays
+      const fontSizeOptions = ['10', '12', '14', '16', '18', '20', '24', '28', '32'];
+      const headingOptions = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
 
       // Check authentication status
       async function checkAuthStatus() {
