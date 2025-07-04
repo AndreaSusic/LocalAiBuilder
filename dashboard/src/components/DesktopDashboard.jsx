@@ -413,7 +413,7 @@ function DesktopDashboard({ bootstrap }) {
       <header className="header-wireframe">
         <div className="logo-section">
           <a href="/" className="logo-link">
-            <img src="/assets/logo.svg" alt="LocalAI Builder" className="dashboard-logo" />
+            <img src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo.svg" alt="LocalAI Builder" className="dashboard-logo" />
           </a>
         </div>
         
@@ -498,7 +498,7 @@ function DesktopDashboard({ bootstrap }) {
           {/* Sticky button at bottom of preview panel */}
           <div className="preview-panel-footer">
             <button 
-              className="view-live-site-btn-sticky" 
+              className="view-live-btn-mobile" 
               onClick={() => {
                 if (previewContent) {
                   window.open(previewContent, '_blank');
