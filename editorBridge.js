@@ -58,7 +58,7 @@ function setupEditor() {
   console.log('📝 Setting up editor...');
   
   // Mark all text elements as editable
-  markEditableElements();
+  const count = markEditableElements();
   
   // Setup event listeners
   setupEventListeners();
@@ -66,12 +66,26 @@ function setupEditor() {
   // Create toolbar
   createToolbar();
   
-  console.log('✅ Editor setup complete');
+  console.log(`✅ Editor setup complete - ${count} elements marked as editable`);
+  
+  // Debug: Test if we can find elements
+  setTimeout(() => {
+    const editableElements = document.querySelectorAll('[data-editable="true"]');
+    console.log(`🔍 Debug: Found ${editableElements.length} editable elements after setup`);
+    
+    if (editableElements.length > 0) {
+      console.log('🎯 First editable element:', editableElements[0].tagName, editableElements[0].textContent.substring(0, 50));
+    }
+  }, 1000);
 }
 
 // Mark elements as editable
 function markEditableElements() {
   console.log('🏷️ Marking editable elements...');
+  
+  // First, let's see what elements exist
+  const allElements = document.querySelectorAll('*');
+  console.log(`🔍 Total DOM elements found: ${allElements.length}`);
   
   // Target text elements
   const textSelectors = [
@@ -81,28 +95,52 @@ function markEditableElements() {
   ];
   
   let count = 0;
+  let skippedCount = 0;
+  
   textSelectors.forEach(selector => {
     const elements = document.querySelectorAll(selector);
-    elements.forEach(el => {
+    console.log(`🔍 Found ${elements.length} ${selector} elements`);
+    
+    elements.forEach((el, index) => {
+      // Debug each element
+      console.log(`Checking ${selector}[${index}]:`, {
+        hasDataEditable: el.hasAttribute('data-editable'),
+        tagName: el.tagName,
+        textContent: el.textContent?.substring(0, 30),
+        offsetWidth: el.offsetWidth,
+        offsetHeight: el.offsetHeight,
+        hasText: !!el.textContent?.trim()
+      });
+      
       // Skip if already marked or is a script/style element
       if (el.hasAttribute('data-editable') || 
           el.tagName.toLowerCase() === 'script' || 
           el.tagName.toLowerCase() === 'style') {
+        skippedCount++;
         return;
       }
       
       // Skip if element is empty or only whitespace
-      if (!el.textContent.trim()) return;
+      if (!el.textContent || !el.textContent.trim()) {
+        skippedCount++;
+        return;
+      }
       
-      // Skip if element is too small
-      if (el.offsetWidth < 20 || el.offsetHeight < 10) return;
+      // Skip if element is too small (but be more lenient)
+      if (el.offsetWidth < 10 || el.offsetHeight < 5) {
+        skippedCount++;
+        return;
+      }
       
+      // Mark as editable
       el.setAttribute('data-editable', 'true');
+      console.log(`✅ Marked as editable: ${el.tagName} - "${el.textContent.substring(0, 30)}"`);
       count++;
     });
   });
   
-  console.log(`✅ Made ${count} elements editable`);
+  console.log(`✅ Made ${count} elements editable, skipped ${skippedCount} elements`);
+  return count;
 }
 
 // Setup event listeners
