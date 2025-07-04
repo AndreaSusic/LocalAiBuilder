@@ -51,10 +51,52 @@ export default function App({ bootstrap }) {
     <BrowserRouter>
       <Routes>
         {/* Dashboard as default route */}
-        <Route path="/" element={<DashboardPage bootstrap={bootstrap} />} />
+        <Route path="/" element={
+          <>
+            {isMobile ? <MobileDashboard bootstrap={bootstrap} /> : <DesktopDashboard bootstrap={bootstrap} />}
+            
+            {/* Keep the full-screen preview overlay for both versions */}
+            {isPreviewOpen && (
+              <div className="preview-overlay">
+                <button
+                  className="close-btn"
+                  onClick={() => setIsPreviewOpen(false)}
+                >
+                  ×
+                </button>
+                <iframe
+                  src="about:blank"
+                  title="Full Preview"
+                  className="overlay-iframe"
+                />
+              </div>
+            )}
+          </>
+        } />
         
         {/* Dashboard route alias */}
-        <Route path="/dashboard" element={<DashboardPage bootstrap={bootstrap} />} />
+        <Route path="/dashboard" element={
+          <>
+            {isMobile ? <MobileDashboard bootstrap={bootstrap} /> : <DesktopDashboard bootstrap={bootstrap} />}
+            
+            {/* Keep the full-screen preview overlay for both versions */}
+            {isPreviewOpen && (
+              <div className="preview-overlay">
+                <button
+                  className="close-btn"
+                  onClick={() => setIsPreviewOpen(false)}
+                >
+                  ×
+                </button>
+                <iframe
+                  src="about:blank"
+                  title="Full Preview"
+                  className="overlay-iframe"
+                />
+              </div>
+            )}
+          </>
+        } />
         
         {/* Preview route for OAuth redirect - shows template directly */}
         <Route path="/preview" element={<HomepageV1 bootstrap={bootstrap} />} />
