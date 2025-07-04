@@ -32,7 +32,10 @@ const safeImg = (url) => {
 };
 
 export default function HomepageV1({ tokens = {}, bootstrap = null }) {
-  const initialData = bootstrap || {
+  console.log('🚀 HomepageV1 function started, bootstrap:', !!bootstrap);
+  
+  try {
+    const initialData = bootstrap || {
     company_name: tokens.businessName || 'Your Business Name',
     city: tokens.location ? [tokens.location] : ['Your City'],
     services: tokens.services || 'Your Services',
@@ -92,68 +95,79 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   
   console.log('HomepageV1 using data:', data);
 
-  console.log('🏠 HomepageV1 rendering with data:', Object.keys(data));
-  
-  return (
-    <SiteDataContext.Provider value={{...data, safeImg}}>
-      <div>
-        <style>{`
-          :root {
-            --primary: ${data.colours?.[0] || '#5DD39E'};
-            --secondary: ${data.colours?.[1] || '#EFD5BD'};
-          }
-        `}</style>
-        <NavigationSection bootstrap={bootstrap} />
-        {console.log('🔥 About to render HeroSection')}
-        <HeroSection bootstrap={bootstrap} />
-        {console.log('🔥 HeroSection rendered, moving to ServicesSection')}
-        <ServicesSection bootstrap={bootstrap} />
-        <AboutSection bootstrap={bootstrap} />
-        <GallerySection bootstrap={bootstrap} />
-        <ReviewsSection bootstrap={bootstrap} />
-        <ContactSection bootstrap={bootstrap} />
-        
-        {/* Floating Color Contrast Analyzer Button */}
-        <button
-          onClick={() => setShowContrastAnalyzer(true)}
-          style={{
-            position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            backgroundColor: 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '50%',
-            width: '60px',
-            height: '60px',
-            fontSize: '24px',
-            cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-            zIndex: 100,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'scale(1.1)';
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.4)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'scale(1)';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
-          }}
-          title="Check Color Accessibility"
-        >
-          🎨
-        </button>
-        
-        {/* Color Contrast Analyzer Modal */}
-        <ColorContrastAnalyzer 
-          isVisible={showContrastAnalyzer}
-          onClose={() => setShowContrastAnalyzer(false)}
-        />
+    console.log('🏠 HomepageV1 rendering with data:', Object.keys(data));
+    
+    return (
+      <SiteDataContext.Provider value={{...data, safeImg}}>
+        <div>
+          <style>{`
+            :root {
+              --primary: ${data.colours?.[0] || '#5DD39E'};
+              --secondary: ${data.colours?.[1] || '#EFD5BD'};
+            }
+          `}</style>
+          <NavigationSection bootstrap={bootstrap} />
+          {console.log('🔥 About to render HeroSection')}
+          <HeroSection bootstrap={bootstrap} />
+          {console.log('🔥 HeroSection rendered, moving to ServicesSection')}
+          <ServicesSection bootstrap={bootstrap} />
+          <AboutSection bootstrap={bootstrap} />
+          <GallerySection bootstrap={bootstrap} />
+          <ReviewsSection bootstrap={bootstrap} />
+          <ContactSection bootstrap={bootstrap} />
+          
+          {/* Floating Color Contrast Analyzer Button */}
+          <button
+            onClick={() => setShowContrastAnalyzer(true)}
+            style={{
+              position: 'fixed',
+              bottom: '20px',
+              right: '20px',
+              backgroundColor: 'var(--primary)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50%',
+              width: '60px',
+              height: '60px',
+              fontSize: '24px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+              zIndex: 100,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.1)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+            }}
+            title="Check Color Accessibility"
+          >
+            🎨
+          </button>
+          
+          {/* Color Contrast Analyzer Modal */}
+          <ColorContrastAnalyzer 
+            isVisible={showContrastAnalyzer}
+            onClose={() => setShowContrastAnalyzer(false)}
+          />
+        </div>
+      </SiteDataContext.Provider>
+    );
+    
+  } catch (error) {
+    console.error('🔥 HomepageV1 render error:', error);
+    return (
+      <div style={{ padding: '20px', background: '#f0f0f0' }}>
+        <h1 style={{ color: 'red' }}>HomepageV1 Error</h1>
+        <p>Error: {error.message}</p>
+        <pre>{error.stack}</pre>
       </div>
-    </SiteDataContext.Provider>
-  );
+    );
+  }
 }
