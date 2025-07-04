@@ -94,22 +94,49 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       // Auto-save editor initialization
       console.log('🚀 Auto-save editor bridge starting...');
 
-      let activeElement = null;
-      let toolbar = null;
-      let currentPageId = '${previewId}';
-      let saveTimeout = null;
-      let isAuthenticated = false;
-      let editorEnabled = true; // Always enable editor in dashboard preview
+      let autoSaveActiveElement = null;
+      let autoSaveToolbar = null;
+      let autoSavePageId = '${previewId}';
+      let autoSaveSaveTimeout = null;
+      let autoSaveIsAuthenticated = false;
+      let autoSaveEditorEnabled = true; // Always enable editor in dashboard preview
 
       // Check authentication status
       async function checkAuthStatus() {
         try {
-          const response = await fetch('/api/me');
-          isAuthenticated = response.ok;
-          console.log('🔐 User authentication status:', isAuthenticated ? 'Authenticated' : 'Not authenticated');
+          // First try to get auth status from parent dashboard
+          if (window.parent !== window) {
+            window.parent.postMessage({ type: 'requestAuthStatus' }, '*');
+            
+            // Wait for response from parent
+            const authResponse = await new Promise((resolve) => {
+              const timeout = setTimeout(() => resolve(false), 1000);
+              
+              const messageHandler = (event) => {
+                if (event.data.type === 'authStatusResponse') {
+                  clearTimeout(timeout);
+                  window.removeEventListener('message', messageHandler);
+                  resolve(event.data.isAuthenticated);
+                }
+              };
+              
+              window.addEventListener('message', messageHandler);
+            });
+            
+            if (authResponse) {
+              autoSaveIsAuthenticated = true;
+              console.log('🔐 Authentication inherited from dashboard: Authenticated');
+              return;
+            }
+          }
+          
+          // Fallback to direct API check
+          const response = await fetch('/api/me', { credentials: 'include' });
+          autoSaveIsAuthenticated = response.ok;
+          console.log('🔐 Direct auth check:', autoSaveIsAuthenticated ? 'Authenticated' : 'Not authenticated');
         } catch (error) {
           console.log('⚠️ Could not check auth status:', error.message);
-          isAuthenticated = false;
+          autoSaveIsAuthenticated = false;
         }
       }
 
@@ -251,11 +278,11 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       }
 
       async function loadExistingEdits() {
-        if (!isAuthenticated) return;
+        if (!autoSaveIsAuthenticated) return;
         
         try {
-          console.log('📥 Loading existing edits for page:', currentPageId);
-          const response = await fetch(\`/api/get-page-edits/\${currentPageId}\`);
+          console.log('📥 Loading existing edits for page:', autoSavePageId);
+          const response = await fetch(\`/api/get-page-edits/\${autoSavePageId}\`);
           
           if (response.ok) {
             const data = await response.json();
@@ -412,16 +439,21 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       }
 
       function scheduleAutoSave(element) {
-        if (!isAuthenticated) {
+        // Always allow auto-save in dashboard iframe context
+        const isDashboardContext = window.location.pathname.includes('/t/v1/') || 
+                                   window.location.pathname.includes('/preview') ||
+                                   window.parent !== window;
+        
+        if (!autoSaveIsAuthenticated && !isDashboardContext) {
           console.log('⚠️ Auto-save skipped - user not authenticated');
           return;
         }
         
-        if (saveTimeout) {
-          clearTimeout(saveTimeout);
+        if (autoSaveSaveTimeout) {
+          clearTimeout(autoSaveSaveTimeout);
         }
         
-        saveTimeout = setTimeout(() => {
+        autoSaveSaveTimeout = setTimeout(() => {
           autoSaveElement(element);
         }, 1000);
         
@@ -429,7 +461,12 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       }
 
       async function autoSaveElement(element) {
-        if (!isAuthenticated) return;
+        // Always allow auto-save in dashboard iframe context
+        const isDashboardContext = window.location.pathname.includes('/t/v1/') || 
+                                   window.location.pathname.includes('/preview') ||
+                                   window.parent !== window;
+        
+        if (!autoSaveIsAuthenticated && !isDashboardContext) return;
         
         const elementId = element.getAttribute('data-element-id');
         const editType = element.getAttribute('data-edit-type');
@@ -462,8 +499,9 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
             headers: {
               'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({
-              pageId: currentPageId,
+              pageId: autoSavePageId,
               elementId: elementId,
               editType: editType,
               originalContent: originalContent,

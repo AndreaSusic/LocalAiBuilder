@@ -847,6 +847,13 @@ function DesktopDashboard({ bootstrap }) {
             }
           }, 100);
         }
+      } else if (event.data.type === 'requestAuthStatus') {
+        // Respond with authentication status to iframe
+        event.source.postMessage({
+          type: 'authStatusResponse',
+          isAuthenticated: !!user
+        }, '*');
+        console.log('🔐 Sent auth status to iframe:', !!user);
       } else if (event.data.type === 'toolbarUpdate') {
         // Update right panel with element info
         console.log('🔗 Toolbar update from iframe:', event.data.activeElement);
