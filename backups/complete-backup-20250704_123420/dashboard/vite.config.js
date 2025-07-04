@@ -1,0 +1,31 @@
+// dashboard/vite.config.js
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+    sourcemap: true,
+  },
+  server: {
+    host: true, // ⬅️  bind on all + disable host check
+    port: 5173, // any free port
+    strictPort: false,
+    allowedHosts: true, // still allowed, but host:true is the key
+    hmr: {
+      protocol: "wss",
+      clientPort: 443, // HTTPS front-end port Replit uses
+      // no host here – Vite will fall back to window.location.host
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  },
+  appType: "spa",
+});

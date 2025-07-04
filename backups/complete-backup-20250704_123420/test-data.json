@@ -1,0 +1,135 @@
+{
+  "company_name": "Austin Premier Dental",
+  "city": ["Austin", "TX"],
+  "services": "General Dentistry, Cosmetic Veneers, Invisalign, Emergency Dental Care",
+  "industry": "Dental Practice",
+  "language": "English",
+  "colours": ["#2E8B57", "#EFD5BD"],
+  "images": [
+    "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1606811841575-615dc3e7b41f?w=800&auto=format&fit=crop&q=60"
+  ],
+  "google_profile": {
+    "place_id": "ChIJLwPMoJm1RIYRp2M4KP8r-cE",
+    "name": "Austin Premier Dental",
+    "address": "2901 S Capital of Texas Hwy, Austin, TX 78746, USA",
+    "phone": "+1 (512) 327-6947",
+    "email": "info@austinpremierdental.com",
+    "website": "https://www.austinpremierdental.com",
+    "rating": 4.8,
+    "total_reviews": 127,
+    "business_hours": {
+      "monday": "8:00 AM – 5:00 PM",
+      "tuesday": "8:00 AM – 5:00 PM", 
+      "wednesday": "8:00 AM – 5:00 PM",
+      "thursday": "8:00 AM – 5:00 PM",
+      "friday": "8:00 AM – 3:00 PM",
+      "saturday": "Closed",
+      "sunday": "Closed"
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&auto=format&fit=crop&q=60",
+      "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&auto=format&fit=crop&q=60",
+      "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&auto=format&fit=crop&q=60",
+      "https://images.unsplash.com/photo-1606811841575-615dc3e7b41f?w=800&auto=format&fit=crop&q=60"
+    ],
+    "reviews": [
+      {
+        "author": "Sarah M.",
+        "rating": 5,
+        "text": "Dr. Smith and his team provided exceptional care during my cosmetic veneer procedure. The office is modern and clean, and the staff made me feel comfortable throughout the entire process.",
+        "date": "2024-02-15"
+      },
+      {
+        "author": "Michael R.",
+        "rating": 5,
+        "text": "I've been coming to Austin Premier Dental for years and wouldn't trust my dental care to anyone else. They're always professional, on time, and genuinely care about their patients.",
+        "date": "2024-01-22"
+      },
+      {
+        "author": "Lisa K.",
+        "rating": 5,
+        "text": "The Invisalign treatment exceeded my expectations. Dr. Johnson explained everything clearly and the results are amazing. Highly recommend this practice!",
+        "date": "2024-03-08"
+      },
+      {
+        "author": "David P.",
+        "rating": 5,
+        "text": "Emergency dental visit was handled perfectly. They got me in same day and the pain relief was immediate. Thank you to the entire team!",
+        "date": "2024-02-28"
+      }
+    ],
+    "description": "Austin Premier Dental offers comprehensive dental care in a comfortable, state-of-the-art facility. Our experienced team provides general dentistry, cosmetic procedures, and emergency care to keep your smile healthy and beautiful.",
+    "specialties": [
+      "General Dentistry",
+      "Cosmetic Veneers", 
+      "Invisalign Clear Aligners",
+      "Emergency Dental Care",
+      "Teeth Whitening",
+      "Dental Implants"
+    ]
+  },
+  "conversation": [
+    {
+      "role": "user",
+      "content": "I need a website for my dental practice in Austin"
+    },
+    {
+      "role": "assistant", 
+      "content": "I'd be happy to help you create a website for your dental practice! Can you tell me the name of your practice?"
+    },
+    {
+      "role": "user",
+      "content": "Austin Premier Dental"
+    },
+    {
+      "role": "assistant",
+      "content": "Great! What city are you located in?"
+    },
+    {
+      "role": "user", 
+      "content": "Austin, Texas"
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect! What services does Austin Premier Dental offer?"
+    },
+    {
+      "role": "user",
+      "content": "We offer general dentistry, cosmetic veneers, Invisalign, and emergency dental care"
+    },
+    {
+      "role": "assistant",
+      "content": "Excellent! I found your Google Business Profile. Would you like me to use the information from your listing, including photos, reviews, and contact details?"
+    },
+    {
+      "role": "user",
+      "content": "Yes, that would be perfect"
+    }
+  ],
+  "ai_customization": {
+    "hero_title": "Austin Premier Dental - Your Trusted Smile Partners",
+    "hero_subtitle": "Comprehensive dental care in the heart of Austin, combining advanced technology with compassionate patient care",
+    "services_title": "Our Dental Services",
+    "about_title": "About Austin Premier Dental",
+    "about_text": "Located in Austin, Texas, Austin Premier Dental has been serving the community with exceptional dental care for over a decade. Our state-of-the-art facility combines the latest dental technology with a warm, welcoming environment where patients feel comfortable and confident in their care.",
+    "gallery_title": "Our Modern Dental Office",
+    "reviews_title": "What Our Patients Say", 
+    "contact_title": "Schedule Your Appointment",
+    "reviewer_label": "Patients",
+    "cta_text": "Schedule Your Visit",
+    "map_query": "Austin Premier Dental 2901 S Capital of Texas Hwy Austin TX"
+  },
+  "stock_images_config": {
+    "queries": [
+      "modern dental office interior",
+      "dental equipment technology", 
+      "smiling patients dental care",
+      "professional dentist team"
+    ],
+    "fallback_used": false,
+    "source": "google_business_profile"
+  }
+}

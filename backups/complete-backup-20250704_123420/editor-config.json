@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "enableInlineEditing": true,
+  "autoSave": true,
+  "autoSaveInterval": 2000,
+  "showRedDots": true,
+  "enableToolbar": true,
+  "enableAIChat": true,
+  "enableColorPicker": true,
+  "enableVideoUpload": true,
+  "enableImageUpload": true,
+  "keyboardShortcuts": {
+    "save": "Ctrl+S",
+    "undo": "Ctrl+Z",
+    "redo": "Ctrl+Y",
+    "bold": "Ctrl+B",
+    "italic": "Ctrl+I",
+    "underline": "Ctrl+U"
+  },
+  "toolbarButtons": [
+    "bold",
+    "italic",
+    "underline",
+    "color",
+    "background",
+    "heading",
+    "list",
+    "image",
+    "video",
+    "ai-chat",
+    "delete",
+    "undo",
+    "redo"
+  ],
+  "aiChatEndpoint": "/api/ai-chat",
+  "previewRoutes": [
+    "/preview",
+    "/t/v1/"
+  ],
+  "excludeSelectors": [
+    ".no-edit",
+    ".system-ui",
+    ".toolbar",
+    ".chat-container"
+  ],
+  "created": "2025-07-04T07:30:34.428Z",
+  "lastModified": "2025-07-04T07:30:34.440Z"
+}

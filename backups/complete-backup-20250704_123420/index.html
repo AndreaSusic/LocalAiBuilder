@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="71f7f786-b63f-406c-af07-1cf0169d109f" data-blockingmode="auto" type="text/javascript"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="pageTitle">GoAISite - Create Your Website in Minutes</title>
+    <!-- sr: GoAISite - Kreirajte sajt za nekoliko minuta -->
+    <meta name="description" content="AI-powered website builder that creates professional websites in minutes">
+    <link href="https://fonts.cdnfonts.com/css/cooper-hewitt" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lato&family=Montserrat&family=Source+Sans+Pro&family=Raleway&family=PT+Sans&family=Noto+Sans&family=Merriweather&family=Ubuntu&family=Poppins&family=Oswald&family=Mulish&family=Nunito&family=Karla&family=Inconsolata&family=Playfair+Display&family=Abril+Fatface&family=Rubik&family=Oxygen&family=Quicksand&family=Cabin&family=Work+Sans&family=Fira+Sans&family=Alegreya&family=Arimo&family=Josefin+Sans&family=Anton&family=Fjalla+One&family=Cinzel&family=PT+Serif&family=Noto+Serif&family=Lora&family=Alegreya+Sans&family=Barlow&family=Barlow+Condensed&family=EB+Garamond&family=Josefin+Slab&family=Cormorant+Garamond&family=Zilla+Slab&family=Hind&family=Cabin+Condensed&family=Pacifico&family=Dancing+Script&family=Indie+Flower&family=Great+Vibes&family=Satisfy&family=Comfortaa&family=Exo+2&display=swap"
+      rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=1751631000">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/" class="brand">
+                    <img src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo-transparent.png" alt="GoAISite logo" class="logo">
+                    <span class="wordmark">GoAISite</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-lang="navHome">Home</a></li> <!-- sr: Početna -->
+                    <li><a href="pricing.html" data-lang="navPricing">Pricing</a></li> <!-- sr: Cene -->
+                    <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li> <!-- sr: Industrije -->
+                    <li><a href="#faq" data-lang="navFAQ">FAQ</a></li> <!-- sr: Česta pitanja -->
+                    <li class="language-dropdown">
+                        <button class="language-btn" id="languageBtn">
+                            🌐 EN ▼
+                        </button>
+                        <div class="language-menu" id="languageMenu">
+                            <a href="#" data-lang="en">🇺🇸 English</a>
+                            <a href="#" data-lang="de">🇩🇪 German</a>
+                            <a href="#" data-lang="sr">🇷🇸 Serbian</a>
+                            <a href="#" data-lang="hr">🇭🇷 Croatian</a>
+                        </div>
+                    </li>
+                    <li><button id="loginBtn" class="btn-secondary" data-lang="navLogin">Login</button></li> <!-- sr: Prijavite se -->
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="chatContainer">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <h1 data-lang="heroHead">Create Your Website in Minutes</h1>
+                        <!-- sr: Kreirajte sajt za nekoliko minuta -->
+                        <p data-lang="heroUSP">AI-powered website builder that transforms your ideas into professional websites instantly</p>
+                        <!-- sr: AI graditelj sajtova koji trenutno pretvara vaše ideje u profesionalne sajtove -->
+                    </div>
+                    <div class="hero-form">
+                        <div class="prompt-container">
+                            <label for="aiPrompt" data-lang="promptLabel">Describe your business or website idea:</label>
+                            <!-- sr: Opišite vašu ideju za posao ili sajt: -->
+                            <textarea id="aiPrompt" rows="4" placeholder="Be as specific as possible: &quot;A modern dental clinic, My Dents, in Chicago offering ceramic veneers, Invisalign, whitening, Botox…&quot;" data-lang="promptPlaceholder"></textarea>
+                            <!-- sr placeholder: Npr., Moderna stomatološka ordinacija u Beogradu koja pruža porodičnu stomatologiju i kozmetičke tretmane... -->
+                            <div class="word-count">
+                                <span id="wordCount">0</span> <span data-lang="wordsLabel">words</span>
+                                <!-- sr: reči -->
+                            </div>
+
+                            <p class="prompt-help">
+                                Optional: add company images (logo, team photos).
+                            </p>
+
+                            <div id="dropArea" class="drop-zone">
+                                <p>📷 Drop images here or
+                                   <label class="file-label">browse
+                                     <input type="file" id="promptImages" accept="image/*" multiple hidden>
+                                   </label>
+                                </p>
+                            </div>
+
+                            <div id="thumbs"></div>
+
+                            <!-- Follow-up panel for additional inputs -->
+                            <div id="followUp" class="followup hidden">
+                                <fieldset id="wrapColours" class="colorset hidden">
+                                    <legend>Please pick two brand colours:</legend>
+                                    <div class="color-picker">
+                                        <label for="col1">Primary Color:</label>
+                                        <input type="color" id="col1" value="#ffc000">
+                                    </div>
+                                    <div class="color-picker">
+                                        <label for="col2">Secondary Color:</label>
+                                        <input type="color" id="col2" value="#000000">
+ </div>
+  </fieldset>
+
+
+ <label id="wrapFont" class="hidden">
+Choose your font
+                                    <select id="fontSelect">
+                                        <option value="Roboto, sans-serif">Roboto</option>
+                                        <option value="Open Sans, sans-serif">Open Sans</option>
+                                        <option value="Lato, sans-serif">Lato</option>
+                                        <option value="Montserrat, sans-serif">Montserrat</option>
+                                        <option value="Source Sans Pro, sans-serif">Source Sans Pro</option>
+                                        <option value="Raleway, sans-serif">Raleway</option>
+                                        <option value="PT Sans, sans-serif">PT Sans</option>
+                                        <option value="Noto Sans, sans-serif">Noto Sans</option>
+                                        <option value="Merriweather, serif">Merriweather</option>
+                                        <option value="Ubuntu, sans-serif">Ubuntu</option>
+                                        <option value="Poppins, sans-serif">Poppins</option>
+                                        <option value="Oswald, sans-serif">Oswald</option>
+                                        <option value="Mulish, sans-serif">Mulish</option>
+                                        <option value="Nunito, sans-serif">Nunito</option>
+                                        <option value="Karla, sans-serif">Karla</option>
+                                        <option value="Inconsolata, monospace">Inconsolata</option>
+                                        <option value="Playfair Display, serif">Playfair Display</option>
+                                        <option value="Abril Fatface, display">Abril Fatface</option>
+                                        <option value="Rubik, sans-serif">Rubik</option>
+                                        <option value="Oxygen, sans-serif">Oxygen</option>
+                                        <option value="Quicksand, sans-serif">Quicksand</option>
+                                        <option value="Cabin, sans-serif">Cabin</option>
+                                        <option value="Work Sans, sans-serif">Work Sans</option>
+                                        <option value="Fira Sans, sans-serif">Fira Sans</option>
+                                        <option value="Alegreya, serif">Alegreya</option>
+                                        <option value="Arimo, sans-serif">Arimo</option>
+                                        <option value="Josefin Sans, sans-serif">Josefin Sans</option>
+                                        <option value="Anton, display">Anton</option>
+                                        <option value="Fjalla One, sans-serif">Fjalla One</option>
+                                        <option value="Cinzel, serif">Cinzel</option>
+                                        <option value="PT Serif, serif">PT Serif</option>
+                                        <option value="Noto Serif, serif">Noto Serif</option>
+                                        <option value="Lora, serif">Lora</option>
+                                        <option value="Alegreya Sans, sans-serif">Alegreya Sans</option>
+                                        <option value="Barlow, sans-serif">Barlow</option>
+                                        <option value="Barlow Condensed, sans-serif">Barlow Condensed</option>
+                                        <option value="EB Garamond, serif">EB Garamond</option>
+                                        <option value="Josefin Slab, serif">Josefin Slab</option>
+                                        <option value="Cormorant Garamond, serif">Cormorant Garamond</option>
+                                        <option value="Zilla Slab, serif">Zilla Slab</option>
+                                        <option value="Hind, sans-serif">Hind</option>
+                                        <option value="Cabin Condensed, sans-serif">Cabin Condensed</option>
+                                        <option value="Pacifico, handwriting">Pacifico</option>
+                                        <option value="Dancing Script, script">Dancing Script</option>
+                                        <option value="Indie Flower, handwriting">Indie Flower</option>
+                                        <option value="Great Vibes, script">Great Vibes</option>
+                                        <option value="Satisfy, script">Satisfy</option>
+                                        <option value="Comfortaa, display">Comfortaa</option>
+                                        <option value="Exo 2, sans-serif">Exo 2</option>
+                                    </select>
+                                </label>
+                            </div>
+                              </div>
+                        <button id="btnStart" class="btn-primary" data-lang="ctaStart">Start Building →</button>
+                        <!-- sr: Počni gradnju → -->
+                    </div>
+
+                </div>
+            </div>
+            </section>
+
+            <iframe src="/chat" class="chatPane" title="Builder Chat"></iframe>
+        </div>
+
+        <script>
+        window.addEventListener('message', event => {
+            if (event.data?.type === 'chat-height') {
+                const iframe = document.querySelector('iframe.chatPane');
+                if (iframe) iframe.style.height = (event.data.height + 20) + 'px';
+            }
+            if (event.data?.type === 'trigger-login') {
+                const loginBtn = document.getElementById('loginBtn');
+                if (loginBtn) loginBtn.click();
+            }
+        });
+        </script>
+
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <div class="container">
+                <h2 data-lang="benefitsTitle">Why Choose GoAISite?</h2>
+                <!-- sr: Zašto izabrati GoAISite? -->
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                <circle cx="24" cy="24" r="20" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                                <path d="M16 24l6 6 12-12" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="benefit1Title">Lightning Fast</h3>
+                        <!-- sr: Munjevito brzo -->
+                        <p data-lang="benefit1Desc">Generate professional websites in under 5 minutes with AI-powered automation</p>
+                        <!-- sr: Generiši profesionalne sajtove za manje od 5 minuta sa AI automatizacijom -->
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                <rect x="8" y="12" width="32" height="24" rx="4" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                                <path d="M8 20h32M16 28h16" stroke="var(--primary-color)" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="benefit2Title">Mobile-First Design</h3>
+                        <!-- sr: Mobilni dizajn -->
+                        <p data-lang="benefit2Desc">Every website is optimized for mobile devices and loads instantly</p>
+                        <!-- sr: Svaki sajt je optimizovan za mobilne uređaje i učitava se trenutno -->
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                <circle cx="24" cy="24" r="20" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                                <path d="M18 24h12M24 18v12" stroke="var(--primary-color)" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="benefit3Title">SEO Optimized</h3>
+                        <!-- sr: SEO optimizovano -->
+                        <p data-lang="benefit3Desc">Built-in SEO best practices to help your business get found online</p>
+                        <!-- sr: Ugrađene SEO najbolje prakse da pomognu vašem poslu da bude pronađen online -->
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                <path d="M24 8v32M8 24h32" stroke="var(--primary-color)" stroke-width="2"/>
+                                <circle cx="24" cy="24" r="16" stroke="var(--primary-color)" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
+                        <h3 data-lang="benefit4Title">Local Business Focus</h3>
+                        <!-- sr: Fokus na lokalni biznis -->
+                        <p data-lang="benefit4Desc">Specialized templates and features for local Serbian businesses</p>
+                        <!-- sr: Specijalizovani template-i i funkcije za lokalne srpske biznise -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <!-- HOW IT WORKS -->
+        <section class="how-it-works">
+      <div class="container">
+        <h2>How It Works</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="marker">1</div>
+            <div class="content">
+              <h3>Describe Your Vision</h3>
+              <p>Tell us about your business, services, and target audience in a few sentences.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="marker">2</div>
+            <div class="content">
+              <h3>AI Generates Your Site</h3>
+              <p>Our AI builds a custom website—content, layout, and images—in seconds.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="marker">3</div>
+            <div class="content">
+              <h3>Customize</h3>
+              <p>Swap colors, fonts, and images with click-to-edit ease to match your brand.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="marker">4</div>
+            <div class="content">
+              <h3>Launch</h3>
+              <p>Connect your domain and go live—hosting and SSL are included.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+      <!-- FAQ Section -->
+      <section id="faq" class="faq">
+          <div class="container">
+              <h2 data-lang="faqTitle">Frequently Asked Questions</h2>
+              <!-- sr: Često postavljana pitanja -->
+              <div class="faq-accordion">
+                  <div class="faq-item">
+                      <button class="faq-question" aria-expanded="false">
+                          <span data-lang="faq1Q">How long does it take to create a website?</span>
+                          <!-- sr: Koliko vremena je potrebno da se kreira sajt? -->
+                          <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                          </svg>
+                      </button>
+                      <div class="faq-answer">
+                          <p data-lang="faq1A">Most websites are generated in under 5 minutes. Complex sites with multiple pages may take up to 15 minutes.</p>
+                          <!-- sr: Većina sajtova se generiše za manje od 5 minuta. Složeni sajtovi sa više stranica mogu potrajati do 15 minuta. -->
+                      </div>
+                  </div>
+                  <div class="faq-item">
+                      <button class="faq-question" aria-expanded="false">
+                          <span data-lang="faq2Q">Can I customize the generated website?</span>
+                          <!-- sr: Mogu li da prilagodim generisani sajt? -->
+                          <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                          </svg>
+                      </button>
+                      <div class="faq-answer">
+                          <p data-lang="faq2A">Yes! You can edit content, change colors, upload your own images, and modify layouts after generation.</p>
+                          <!-- sr: Da! Možete da editujete sadržaj, menjate boje, otpremate vaše slike i modifikujete raspored nakon generisanja. -->
+                      </div>
+                  </div>
+                  <div class="faq-item">
+                      <button class="faq-question" aria-expanded="false">
+                          <span data-lang="faq3Q">Do you offer hosting and domain services?</span>
+                          <!-- sr: Da li nudite hosting i domain usluge? -->
+                          <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                          </svg>
+                      </button>
+                      <div class="faq-answer">
+                          <p data-lang="faq3A">Yes, all plans include free hosting. Premium plans include a free custom domain for the first year.</p>
+                          <!-- sr: Da, svi planovi uključuju besplatan hosting. Premium planovi uključuju besplatan prilagođeni domen za prvu godinu. -->
+                      </div>
+                  </div>
+                  <div class="faq-item">
+                      <button class="faq-question" aria-expanded="false">
+                          <span data-lang="faq4Q">Is there customer support available?</span>
+                          <!-- sr: Da li je dostupna korisnička podrška? -->
+                          <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                          </svg>
+                      </button>
+                      <div class="faq-answer">
+                          <p data-lang="faq4A">We provide 24/7 email support for all users and priority phone support for Pro and Agency plan subscribers.</p>
+                          <!-- sr: Pružamo 24/7 email podršku za sve korisnike i prioritetnu telefonsku podršku za Pro i Agency plan pretplatnike. -->
+                      </div>
+                  </div>
+                  <div class="faq-item">
+                      <button class="faq-question" aria-expanded="false">
+                          <span data-lang="faq5Q">Can I cancel my subscription anytime?</span>
+                          <!-- sr: Mogu li da otkažem pretplatu bilo kada? -->
+                          <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                          </svg>
+                      </button>
+                      <div class="faq-answer">
+                          <p data-lang="faq5A">Yes, you can cancel your subscription at any time. Your websites will remain active until the end of your current billing period.</p>
+                          <!-- sr: Da, možete otkazati pretplatu bilo kada. Vaši sajtovi će ostati aktivni do kraja trenutnog perioda naplate. -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- Reviews Section -->
+      <section class="reviews">
+          <div class="container">
+              <h2 data-lang="reviewsTitle">What Our Customers Say</h2>
+              <!-- sr: Šta kažu naši korisnici -->
+              <div class="reviews-carousel">
+                  <div class="review-track">
+                      <div class="review-card active">
+                          <div class="stars">★★★★★</div>
+                          <p data-lang="review1Text">"GoAISite transformed my landscaping business online presence in just minutes. The generated website looks professional and already brings new customers!"</p>
+                          <!-- sr: "GoAISite je transformisao online prisustvo moje pejzažne firme za nekoliko minuta. Generisani sajt izgleda profesionalno i već dovodi nove kupce!" -->
+                          <div class="review-author">
+                              <strong data-lang="review1Author">Marko Petrović</strong>
+                              <!-- sr: Marko Petrović -->
+                              <span data-lang="review1Business">Green Gardens Landscaping</span>
+                              <!-- sr: Green Gardens Landscaping -->
+                          </div>
+                      </div>
+                      <div class="review-card">
+                          <div class="stars">★★★★★</div>
+                          <p data-lang="review2Text">"As a dentist, I needed a website that looked trustworthy and professional. The AI understood exactly what I needed and delivered beyond expectations."</p>
+                          <!-- sr: "Kao stomatolog, trebao mi je sajt koji izgleda pouzdano i profesionalno. AI je razumeo tačno šta mi je potrebno i isporučio više od očekivanja." -->
+                          <div class="review-author">
+                              <strong data-lang="review2Author">Dr. Ana Nikolić</strong>
+                              <!-- sr: Dr Ana Nikolić -->
+                              <span data-lang="review2Business">Smile Dental Clinic</span>
+                              <!-- sr: Smile Dental Clinic -->
+                          </div>
+                      </div>
+                      <div class="review-card">
+                          <div class="stars">★★★★★</div>
+                          <p data-lang="review3Text">"Incredible value for money. The website generated for our law firm rivals sites that cost thousands. Highly recommend to any local business!"</p>
+                          <!-- sr: "Neverojatn odnos cene i vrednosti. Sajt generisan za našu advokatsku kancelariju parira sajtovima koji koštaju hiljade. Toplo preporučujem bilo kom lokalnom biznisu!" -->
+                          <div class="review-author">
+                              <strong data-lang="review3Author">Miloš Jovanović</strong>
+                              <!-- sr: Miloš Jovanović -->
+                              <span data-lang="review3Business">Jovanović Law Office</span>
+                              <!-- sr: Advokatska kancelarija Jovanović -->
+                          </div>
+                      </div>
+                  </div>
+                  <div class="carousel-controls">
+                      <button class="carousel-btn prev" aria-label="Previous review">‹</button>
+                      <div class="carousel-indicators">
+                          <button class="indicator active" data-slide="0"></button>
+                          <button class="indicator" data-slide="1"></button>
+                          <button class="indicator" data-slide="2"></button>
+                      </div>
+                      <button class="carousel-btn next" aria-label="Next review">›</button>
+                  </div>
+              </div>
+          </div>
+      </section>
+    </main>
+        …
+        <!-- INDUSTRIES grid section inserted → six .industry-box links -->
+
+        <section id="industries" class="industries">
+        <div class="container">
+          <h2>Industries We Cover</h2>
+
+          <div class="industries-grid">
+            <!-- first row -->
+            <a href="/industries/home-garden.html"        class="box home-garden">Home&nbsp;&amp;&nbsp;Garden</a>
+            <a href="/industries/medical-dental.html"     class="box medical">Medical&nbsp;&amp;&nbsp;Dental</a>
+            <a href="/industries/consulting.html"         class="box consulting">Finances & Consulting</a>
+
+            <!-- second row -->
+            <a href="/industries/marketing.html"          class="box marketing">Marketing</a>
+            <a href="/industries/it-tech.html"            class="box it">IT&nbsp;&amp;&nbsp;Technology</a>
+
+            <!-- third row -->
+            <a href="/industries/restaurant.html"         class="box restaurant">HoReCa (Restaurants)</a>
+            <a href="/industries/legal.html"              class="box legal">Law&nbsp;Firm</a>
+            <a href="/industries/craftsmen.html"          class="box craftsmen">Craftsmen</a>
+
+            <!-- fourth row -->
+            <a href="/industries/health-fitness.html"     class="box health">Health&nbsp;&amp;&nbsp;Fitness</a>
+            <a href="/industries/real-estate.html"        class="box real-estate">Real&nbsp;Estate</a>
+            <a href="/industries/beauty-spa.html"         class="box beauty">Beauty&nbsp;&amp;&nbsp;Spa</a>
+
+            <!-- fifth row -->
+            <a href="/industries/ecommerce.html"          class="box ecommerce">E-comm & Retail</a>
+          </div>
+        </div>
+      </section>
+        …
+        <!-- CTA banner above footer -->
+        <section class="cta-banner">
+          <h2>Ready to wow your customers?</h2>
+          <a href="/chat">Start for free →</a>
+        </section>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="footer-top">
+          <div class="footer-col">
+            <div class="footer-brand">
+              <img src="/assets/logo-transparent.png" alt="Site Logo" class="footer-logo">
+              <h2 class="site-title footer">GoAISite</h2>
+            </div>
+            <p class="footer-description">Your personal AI that transforms your ideas into professional websites instantly.</p>
+          </div>
+          <div class="footer-col">
+            <h3>About us</h3>
+            <ul>
+              <li><a href="/pricing">Pricing</a></li>
+              <li><a href="/faq">FAQ</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3>Some of Industries</h3>
+            <ul>
+              <li>Lawn Care</li>
+              <li>Legal</li>
+              <li>Dentist</li>
+              <li>Ecommerce</li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3>Legal</h3>
+            <ul>
+              <li><a href="/tos.html">Terms of Service</a></li>
+              <li><a href="/privacy.html">Privacy Policy</a></li>
+              <li><a href="/cookies.html">Cookie Policy</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          © 2025 Powered by <a href="https://asymmetric.digital/" target="_blank" rel="noopener">Asymmetric Digital</a>
+        </div>
+      </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+(async()=>{
+  try {
+    const r = await fetch('/api/me', { credentials: 'include' });
+    if (r.ok) {
+      const user = await r.json();
+      const banner = document.createElement('div');
+      banner.className = 'continue-banner';
+      banner.innerHTML = `
+        Welcome back, ${user.name}!
+        <a href="/chat?draft=true">Continue where you left off</a>
+        or <a href="/chat?fresh=true">Start fresh</a>`;
+      document.body.prepend(banner);
+    }
+  } catch(err) {
+    console.warn('No session:', err);
+  }
+})();
+    </script>
+
+
+    <script>
+      // Mobile nav toggle
+      const navToggle   = document.querySelector('.nav-toggle');
+      const navLinks    = document.querySelector('.nav-links');
+
+      navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('open');   // animate hamburger
+        navLinks.classList.toggle('active');  // slide menu in/out
+      });
+
+      // Optional: close menu when a link is clicked (single-page feel)
+      navLinks.addEventListener('click', e => {
+        if (e.target.tagName === 'A') {
+          navLinks.classList.remove('active');
+          navToggle.classList.remove('open');
+        }
+      });
+    </script>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Sign In to Your Account</h3>
+          <span id="closeModal" class="modal-close">&times;</span>
+        </div>
+        <div class="modal-body">
+          <!-- Google OAuth Button -->
+          <a href="/auth/google" class="btn-google">
+            <svg width="18" height="18" viewBox="0 0 18 18" style="margin-right: 8px;">
+              <path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/>
+              <path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.04a4.8 4.8 0 0 1-2.7.75 4.8 4.8 0 0 1-4.52-3.26H1.83v2.07A8 8 0 0 0 8.98 17z"/>
+              <path fill="#FBBC05" d="M4.46 10.51a4.8 4.8 0 0 1-.25-1.51c0-.52.09-1.03.25-1.51V5.42H1.83a8 8 0 0 0 0 7.16l2.63-2.07z"/>
+              <path fill="#EA4335" d="M8.98 3.58c1.32 0 2.5.45 3.44 1.35l2.54-2.54A8 8 0 0 0 8.98 1 8 8 0 0 0 1.83 5.42L4.46 7.5a4.77 4.77 0 0 1 4.52-3.92z"/>
+            </svg>
+            Continue with Google
+          </a>
+          
+          <!-- Divider -->
+          <div class="auth-divider">
+            <span>OR</span>
+          </div>
+          
+          <!-- Email/Password Form -->
+          <form class="login-form" id="loginForm">
+            <div class="form-group">
+              <label for="loginEmail">Email Address</label>
+              <input type="email" id="loginEmail" name="email" required placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <input type="password" id="loginPassword" name="password" required placeholder="Enter your password">
+            </div>
+            
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="rememberMe" name="rememberMe">
+                <span class="checkmark"></span>
+                <span>Remember me</span>
+              </label>
+            </div>
+            
+            <button type="submit" class="btn-primary">Sign In</button>
+            
+            <div class="auth-links">
+              <a href="/forgot-password">Forgot your password?</a>
+              <span>•</span>
+              <a href="/signup.html">Create new account</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

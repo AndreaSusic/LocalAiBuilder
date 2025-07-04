@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="signupPageTitle">Sign Up for Free Trial - LocalAI Builder</title>
+    <!-- sr: Registruj se za besplatno probno - LocalAI Builder -->
+    <meta name="description" content="Start your free trial with 15 AI prompts and subdomain hosting">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="40" rx="8" fill="var(--primary-color)"/>
+                        <path d="M12 28L20 12L28 28H12Z" fill="white"/>
+                        <circle cx="20" cy="20" r="3" fill="var(--accent-color)"/>
+                    </svg>
+                    <span data-lang="brandName">LocalAI Builder</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-lang="navHome">Home</a></li>
+                    <li><a href="pricing.html" data-lang="navPricing">Pricing</a></li>
+                    <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li>
+                    <li><a href="index.html#faq" data-lang="navFAQ">FAQ</a></li>
+                    <li><a href="account.html" class="btn-secondary" data-lang="navLogin">Login</a></li>
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="signup-section">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-header">
+                        <h1 data-lang="signupTitle">Start Your Free Trial</h1>
+                        <!-- sr: Počnite vaše besplatno probno -->
+                        <p data-lang="signupSubtitle">Get 15 AI prompts and subdomain hosting at no cost. No credit card required.</p>
+                        <!-- sr: Dobijte 15 AI prompt-ova i poddomen hosting bez troška. Kreditna kartica nije potrebna. -->
+                    </div>
+
+                    <div class="signup-form-container">
+                        <form class="signup-form" id="signupForm">
+                            <div class="form-group">
+                                <label for="firstName" data-lang="firstNameLabel">First Name</label>
+                                <!-- sr: Ime -->
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastName" data-lang="lastNameLabel">Last Name</label>
+                                <!-- sr: Prezime -->
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" data-lang="emailLabel">Email Address</label>
+                                <!-- sr: Email adresa -->
+                                <input type="email" id="email" name="email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" data-lang="passwordLabel">Password</label>
+                                <!-- sr: Lozinka -->
+                                <input type="password" id="password" name="password" required minlength="8">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="company" data-lang="companyLabel">Company (Optional)</label>
+                                <!-- sr: Kompanija (opciono) -->
+                                <input type="text" id="company" name="company">
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="terms" name="terms" required>
+                                    <span class="checkmark"></span>
+                                    <span data-lang="termsText">I agree to the <a href="tos.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></span>
+                                    <!-- sr: Slažem se sa <a href="tos.html">Uslovima korišćenja</a> i <a href="privacy.html">Politikom privatnosti</a> -->
+                                </label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="newsletter" name="newsletter">
+                                    <span class="checkmark"></span>
+                                    <span data-lang="newsletterText">Send me updates and tips about website building</span>
+                                    <!-- sr: Pošaljite mi ažuriranja i savete o pravljenju sajtova -->
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn-primary signup-btn" data-lang="createAccountBtn">
+                                Create Free Account
+                                <!-- sr: Kreiraj besplatan nalog -->
+                            </button>
+                        </form>
+
+                        <div class="trial-benefits">
+                            <h3 data-lang="trialBenefitsTitle">What's included in your free trial:</h3>
+                            <!-- sr: Šta je uključeno u vašem besplatnom probnom: -->
+                            <ul>
+                                <li data-lang="benefit1">✓ 15 AI-powered website prompts</li>
+                                <!-- sr: ✓ 15 AI prompt-ova za sajtove -->
+                                <li data-lang="benefit2">✓ Free subdomain hosting</li>
+                                <!-- sr: ✓ Besplatan poddomen hosting -->
+                                <li data-lang="benefit3">✓ Basic website templates</li>
+                                <!-- sr: ✓ Osnovni template-i za sajtove -->
+                                <li data-lang="benefit4">✓ 24/7 email support</li>
+                                <!-- sr: ✓ 24/7 email podrška -->
+                                <li data-lang="benefit5">✓ No credit card required</li>
+                                <!-- sr: ✓ Kreditna kartica nije potrebna -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="login-link">
+                        <p data-lang="alreadyAccount">Already have an account? <a href="account.html" data-lang="loginLink">Log in here</a></p>
+                        <!-- sr: Već imate nalog? <a href="account.html">Prijavite se ovde</a> -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 LocalAI Builder • <a href="tos.html">ToS</a> • <a href="privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <!-- Chatislav 24/7 Support Chat -->
+    <script>
+      (function (w, d, o, f) {
+        w[o] =
+          w[o] ||
+          function (config) {
+            var js = d.createElement("script");
+            js.src = f;
+            js.async = true;
+            js.onload = function () {
+              var e = d.createElement("div");
+              e.id = o;
+              d.body.appendChild(e);
+              w.init_chatislav
+                ? w.init_chatislav(o, config)
+                : console.error("chatislav init function not available.");
+            };
+            d.body.appendChild(js);
+          };
+      })(
+        window,
+        document,
+        "ctslv_bbl",
+        "https://chatislav.ai/api/static/chat-bot/index.js"
+      );
+
+      /* Initialize widget */
+      ctslv_bbl({
+        base_url: "https://chatislav.ai/api",
+        token: "92072c32-e8e4-4e76-9aca-a4f3c635c64e"
+      });
+    </script>
+</body>
+</html>

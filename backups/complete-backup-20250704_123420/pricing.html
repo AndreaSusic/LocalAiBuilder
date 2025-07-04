@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="pricingPageTitle">Pricing Plans - GoAISite</title>
+    <!-- sr: Cenovni planovi - GoAISite -->
+    <meta name="description" content="Choose the perfect plan for your business. Start from $29/month with full website generation and hosting included.">
+    <link href="https://fonts.cdnfonts.com/css/cooper-hewitt" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/" class="brand">
+                    <img src="/assets/logo.svg" alt="GoAISite logo" class="logo">
+                    <span class="wordmark">GoAISite</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-lang="navHome">Home</a></li>
+                    <li><a href="pricing.html" data-lang="navPricing" class="active">Pricing</a></li>
+                    <li><a href="industries/index.html" data-lang="navIndustries">Industries</a></li>
+                    <li><a href="index.html#faq" data-lang="navFAQ">FAQ</a></li>
+                    <li><a href="account.html" class="btn-secondary" data-lang="navLogin">Login</a></li>
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="pricing-hero">
+            <div class="container">
+                <h1 data-lang="pricingTitle">Pricing Plans</h1>
+                <!-- sr: Cenovni planovi -->
+                <p data-lang="pricingSubtitle">Start building professional websites today with our AI-powered platform</p>
+                <!-- sr: Počnite gradnju profesionalnih sajtova danas sa našom AI platformom -->
+            </div>
+        </section>
+
+        <section class="pricing-plans">
+            <div class="container">
+                <!-- Billing Toggle -->
+                <div class="billing-toggle-container">
+                    <div class="toggle-btn" data-lang-container>
+                        <span data-lang="labelAnnually">Annually</span>
+                        <!-- sr: Godišnje -->
+                        <label class="switch" role="switch" aria-checked="false" for="billingToggle">
+                            <input type="checkbox" id="billingToggle" aria-label="Toggle billing frequency">
+                            <span class="slider round"></span>
+                        </label>
+                        <span data-lang="labelMonthly">Monthly</span>
+                        <!-- sr: Mesečno -->
+                    </div>
+                </div>
+
+                <div class="plans-grid" id="plansWrapper">
+
+                    <!-- Starter Plan -->
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h3 data-lang="starterPlanName">Starter</h3>
+                            <!-- sr: Početni -->
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="amount" data-monthly="10" data-annual="108">10</span>
+                                <span class="period" data-lang="perMonth">/month</span>
+                                <!-- sr: /mesečno -->
+                            </div>
+                            <p data-lang="starterPlanDesc">Perfect for individuals</p>
+                            <!-- sr: Savršeno za pojedince -->
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li data-lang="feature1">✓ Prompt-driven site generation</li>
+                                <!-- sr: ✓ Generisanje sajtova preko prompt-a -->
+                                <li data-lang="feature2">✓ Custom domain & HTTPS hosting</li>
+                                <!-- sr: ✓ Prilagođeni domen i HTTPS hosting -->
+                                <li data-lang="feature3">✓ Membership & Login areas</li>
+                                <!-- sr: ✓ Oblasti za članstvo i prijavu -->
+                                <li data-lang="feature4">✓ 24/7 AI Chat support</li>
+                                <!-- sr: ✓ 24/7 AI Chat podrška -->
+                                <li data-lang="feature5">✓ Industry SEO landing pages</li>
+                                <!-- sr: ✓ Industrijske SEO landing stranice -->
+                                <li data-lang="feature6">✓ Stripe & PayPal payments</li>
+                                <!-- sr: ✓ Stripe i PayPal plaćanja -->
+                                <li data-lang="starter7">✓ 1 team seat</li>
+                                <!-- sr: ✓ 1 mesto u timu -->
+                            </ul>
+                        </div>
+                        <a href="signup.html?plan=starter" class="btn-primary plan-btn" data-lang="tryForFree" aria-label="Try Starter for Free">
+                            Try for Free
+                            <!-- sr: Probaj besplatno -->
+                        </a>
+                    </div>
+
+                    <!-- Pro Plan -->
+                    <div class="plan-card featured">
+                        <div class="plan-badge" data-lang="mostPopular">Most Popular</div>
+                        <!-- sr: Najpopularniji -->
+                        <div class="plan-header">
+                            <h3 data-lang="proPlanName">Pro</h3>
+                            <!-- sr: Pro -->
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="amount" data-monthly="20" data-annual="216">20</span>
+                                <span class="period" data-lang="perMonth">/month</span>
+                                <!-- sr: /mesečno -->
+                            </div>
+                            <p data-lang="proPlanDesc">Great for small teams</p>
+                            <!-- sr: Odlično za male timove -->
+                        </div>
+                        <div class="plan-features">
+                            <p class="plan-extra" data-lang="proExtra">Everything in Starter, plus:</p>
+                            <!-- sr: Sve iz Starter paketa, plus: -->
+                            <ul>
+                                <li data-lang="feature1">✓ Prompt-driven site generation</li>
+                                <!-- sr: ✓ Generisanje sajtova preko prompt-a -->
+                                <li data-lang="feature2">✓ Custom domain & HTTPS hosting</li>
+                                <!-- sr: ✓ Prilagođeni domen i HTTPS hosting -->
+                                <li data-lang="feature3">✓ Membership & Login areas</li>
+                                <!-- sr: ✓ Oblasti za članstvo i prijavu -->
+                                <li data-lang="feature4">✓ 24/7 AI Chat support</li>
+                                <!-- sr: ✓ 24/7 AI Chat podrška -->
+                                <li data-lang="feature5">✓ Industry SEO landing pages</li>
+                                <!-- sr: ✓ Industrijske SEO landing stranice -->
+                                <li data-lang="feature6">✓ Stripe & PayPal payments</li>
+                                <!-- sr: ✓ Stripe i PayPal plaćanja -->
+                                <li data-lang="pro7">✓ 3 team seats</li>
+                                <!-- sr: ✓ 3 mesta u timu -->
+                            </ul>
+                        </div>
+                        <a href="signup.html?plan=pro" class="btn-primary plan-btn" data-lang="tryForFree" aria-label="Try Pro for Free">
+                            Try for Free
+                            <!-- sr: Probaj besplatno -->
+                        </a>
+                    </div>
+
+                    <!-- Agency Plan -->
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h3 data-lang="agencyPlanName">Agency</h3>
+                            <!-- sr: Agencija -->
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="amount" data-monthly="40" data-annual="432">40</span>
+                                <span class="period" data-lang="perMonth">/month</span>
+                                <!-- sr: /mesečno -->
+                            </div>
+                            <p data-lang="agencyPlanDesc">For growing agencies</p>
+                            <!-- sr: Za rastuće agencije -->
+                        </div>
+                        <div class="plan-features">
+                            <p class="plan-extra" data-lang="agencyExtra">Everything in Pro, plus:</p>
+                            <!-- sr: Sve iz Pro paketa, plus: -->
+                            <ul>
+                                <li data-lang="feature1">✓ Prompt-driven site generation</li>
+                                <!-- sr: ✓ Generisanje sajtova preko prompt-a -->
+                                <li data-lang="feature2">✓ Custom domain & HTTPS hosting</li>
+                                <!-- sr: ✓ Prilagođeni domen i HTTPS hosting -->
+                                <li data-lang="feature3">✓ Membership & Login areas</li>
+                                <!-- sr: ✓ Oblasti za članstvo i prijavu -->
+                                <li data-lang="feature4">✓ 24/7 AI Chat support</li>
+                                <!-- sr: ✓ 24/7 AI Chat podrška -->
+                                <li data-lang="feature5">✓ Industry SEO landing pages</li>
+                                <!-- sr: ✓ Industrijske SEO landing stranice -->
+                                <li data-lang="feature6">✓ Stripe & PayPal payments</li>
+                                <!-- sr: ✓ Stripe i PayPal plaćanja -->
+                                <li data-lang="agency7">✓ 10 team seats</li>
+                                <!-- sr: ✓ 10 mesta u timu -->
+                            </ul>
+                        </div>
+                        <a href="signup.html?plan=agency" class="btn-primary plan-btn" data-lang="tryForFree" aria-label="Try Agency for Free">
+                            Try for Free
+                            <!-- sr: Probaj besplatno -->
+                        </a>
+                    </div>
+                </div>
+
+                <div class="payment-info">
+                    <div class="payment-methods">
+                        <h3 data-lang="paymentMethodsTitle">Secure Payment Options</h3>
+                        <!-- sr: Sigurne opcije plaćanja -->
+                        <p data-lang="paymentMethodsDesc">We accept all major payment methods for your convenience:</p>
+                        <!-- sr: Prihvatamo sve glavne načine plaćanja za vašu pogodnost: -->
+                        <div class="payment-icons">
+                            <span>💳 Stripe</span>
+                            <span>💰 PayPal</span>
+                            <span>📱 Apple Pay</span>
+                            <span>🤖 Google Pay</span>
+                        </div>
+                    </div>
+                    <div class="money-back">
+                        <h4 data-lang="moneyBackTitle">30-Day Money-Back Guarantee</h4>
+                        <!-- sr: 30-dnevna garancija povraćaja novca -->
+                        <p data-lang="moneyBackDesc">Not satisfied? Get a full refund within 30 days, no questions asked.</p>
+                        <!-- sr: Niste zadovoljni? Dobijte pun povraćaj novca u roku od 30 dana, bez pitanja. -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 LocalAI Builder • <a href="/tos.html">ToS</a> • <a href="/privacy.html">Privacy</a> • <a href="mailto:contact@localai-builder.com">Contact</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <!-- Chatislav 24/7 Support Chat -->
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-top">
+          <div class="footer-col">
+            <div class="footer-brand">
+              <img src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo-transparent.png" alt="Site Logo" class="footer-logo">
+              <h2 class="site-title footer">GoAISite</h2>
+            </div>
+            <p class="footer-description">Your personal AI that transforms your ideas into professional websites instantly.</p>
+          </div>
+          <div class="footer-col">
+            <h3>About us</h3>
+            <ul>
+              <li><a href="/pricing">Pricing</a></li>
+              <li><a href="/faq">FAQ</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3>Some of Industries</h3>
+            <ul>
+              <li>Lawn Care</li>
+              <li>Legal</li>
+              <li>Dentist</li>
+              <li>Ecommerce</li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3>Legal</h3>
+            <ul>
+              <li><a href="/tos.html">Terms of Service</a></li>
+              <li><a href="/privacy.html">Privacy Policy</a></li>
+              <li><a href="/cookies.html">Cookie Policy</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          © 2025 Powered by <a href="https://asymmetric.digital/" target="_blank" rel="noopener">Asymmetric Digital</a>
+        </div>
+    </footer>
+
+    <script>
+      (function (w, d, o, f) {
+        w[o] =
+          w[o] ||
+          function (config) {
+            var js = d.createElement("script");
+            js.src = f;
+            js.async = true;
+            js.onload = function () {
+              var e = d.createElement("div");
+              e.id = o;
+              d.body.appendChild(e);
+              w.init_chatislav
+                ? w.init_chatislav(o, config)
+                : console.error("chatislav init function not available.");
+            };
+            d.body.appendChild(js);
+          };
+      })(
+        window,
+        document,
+        "ctslv_bbl",
+        "https://chatislav.ai/api/static/chat-bot/index.js"
+      );
+
+      /* Initialize widget */
+      ctslv_bbl({
+        base_url: "https://chatislav.ai/api",
+        token: "92072c32-e8e4-4e76-9aca-a4f3c635c64e"
+      });
+    </script>
+</body>
+</html>
