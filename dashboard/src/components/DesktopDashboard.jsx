@@ -90,7 +90,79 @@ function injectWorkingEditor(iframe) {
           document.head.appendChild(style);
         }
         
-        // Create toolbar
+        // Color picker functions
+        function pickColor(command) {
+          const color = prompt('Enter color (hex, rgb, or name):');
+          if (color) {
+            exec(command, color);
+          }
+        }
+        
+        // Media insertion functions
+        function insertMedia(type) {
+          if (type === 'image') {
+            const url = prompt('Enter image URL:');
+            if (url) {
+              exec('insertImage', url);
+            }
+          } else if (type === 'video') {
+            const url = prompt('Enter video URL:');
+            if (url) {
+              const video = \`<video controls src="\${url}" style="max-width:100%"></video>\`;
+              exec('insertHTML', video);
+            }
+          }
+        }
+        
+        // Component insertion functions
+        function insertComponent(type) {
+          if (type === 'card') {
+            const html = '<div style="border:1px solid #ddd;padding:20px;margin:10px;border-radius:8px;"><h3>Card Title</h3><p>Card content goes here...</p></div>';
+            exec('insertHTML', html);
+          } else if (type === 'button') {
+            const text = prompt('Button text:', 'Click me');
+            const html = \`<button style="background:#ffc000;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;">\${text}</button>\`;
+            exec('insertHTML', html);
+          }
+        }
+        
+        // Toggle functions
+        function toggleResizeBox() {
+          // Add resize handles to selected element
+          if (activeElement) {
+            activeElement.style.resize = activeElement.style.resize === 'both' ? 'none' : 'both';
+            activeElement.style.overflow = 'auto';
+          }
+        }
+        
+        function openSpacingPanel() {
+          const margin = prompt('Enter margin (e.g., 10px, 1em):', '10px');
+          const padding = prompt('Enter padding (e.g., 10px, 1em):', '10px');
+          if (activeElement) {
+            if (margin) activeElement.style.margin = margin;
+            if (padding) activeElement.style.padding = padding;
+          }
+        }
+        
+        function pastePlain() {
+          exec('insertText', '');
+          document.execCommand('paste');
+        }
+        
+        function toggleCodeView() {
+          if (activeElement) {
+            const isCode = activeElement.dataset.codeView === 'true';
+            if (isCode) {
+              activeElement.innerHTML = activeElement.textContent;
+              activeElement.dataset.codeView = 'false';
+            } else {
+              activeElement.textContent = activeElement.innerHTML;
+              activeElement.dataset.codeView = 'true';
+            }
+          }
+        }
+        
+        // Create comprehensive toolbar
         function createEditorToolbar() {
           if (toolbar) return;
           
@@ -100,15 +172,22 @@ function injectWorkingEditor(iframe) {
           
           const commands = [
             { label: '𝐁', action: () => exec('bold') },
-            { label: '𝐈', action: () => exec('italic') },
-            { label: '𝐔', action: () => exec('underline') },
-            { label: 'Color', action: () => {
-              const color = prompt('Enter color (hex, rgb, or name):');
-              if (color) exec('foreColor', color);
-            }},
-            { label: '💬', action: () => {
-              alert('AI Chat feature - coming soon!');
-            }}
+            { label: '𝑰', action: () => exec('italic') },
+            { label: '𝑼', action: () => exec('underline') },
+            { label: 'List', action: () => exec('insertUnorderedList') },
+            { label: '8px', action: () => exec('fontSize', 1) },
+            { label: 'A🖌️', action: () => pickColor('foreColor') },
+            { label: '🖍️', action: () => pickColor('hiliteColor') },
+            { label: '🖼️', action: () => insertMedia('image') },
+            { label: '🎥', action: () => insertMedia('video') },
+            { label: '↔️↕️', action: () => toggleResizeBox() },
+            { label: '📐', action: () => openSpacingPanel() },
+            { label: 'H₁', action: () => exec('formatBlock','H1') },
+            { label: '¶', action: () => exec('formatBlock','P') },
+            { label: '🔲', action: () => insertComponent('card') },
+            { label: '📋', action: () => pastePlain() },
+            { label: '</>', action: () => toggleCodeView() },
+            { label: '🔘', action: () => insertComponent('button') }
           ];
           
           commands.forEach(cmd => {
@@ -427,7 +506,7 @@ function DesktopDashboard({ bootstrap }) {
           </button>
         </div>
 
-        {/* Right Panel - Editor */}
+        {/* Right Panel - Editor and Chat */}
         <div className="right-panel-wireframe">
           <div className="editor-panel">
             <h3>Editor</h3>
@@ -440,50 +519,65 @@ function DesktopDashboard({ bootstrap }) {
               <p>Click on elements in the preview to edit them.</p>
             </div>
           </div>
+          
+          {/* Chat Panel in Right Column */}
+          <div className="chat-panel-section">
+            <h3>AI Assistant</h3>
+            <div className="chat-history">
+              {chatHistory.map((message, index) => (
+                <div key={index} className={`chat-bubble ${message.role}`}>
+                  <div className="bubble-content">
+                    {message.content}
+                  </div>
+                </div>
+              ))}
+              {isProcessing && (
+                <div className="chat-bubble ai">
+                  <div className="bubble-content">
+                    <span className="typing-indicator">●●●</span>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <div className="chat-input-container">
+              <input
+                type="text"
+                value={chatMessage}
+                onChange={(e) => setChatMessage(e.target.value)}
+                placeholder="Type a message to AI..."
+                className="chat-input"
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSendMessage();
+                  }
+                }}
+                disabled={isProcessing}
+              />
+              <button 
+                className="send-btn"
+                onClick={handleSendMessage}
+                disabled={isProcessing}
+              >
+                Send
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Bottom Chat Panel */}
-      <div className="bottom-chat-panel">
-        <div className="chat-history">
-          {chatHistory.map((message, index) => (
-            <div key={index} className={`chat-bubble ${message.role}`}>
-              <div className="bubble-content">
-                {message.content}
-              </div>
-            </div>
-          ))}
-          {isProcessing && (
-            <div className="chat-bubble ai">
-              <div className="bubble-content">
-                <span className="typing-indicator">●●●</span>
-              </div>
-            </div>
-          )}
-        </div>
-        
-        <div className="chat-input-container">
-          <input
-            type="text"
-            value={chatMessage}
-            onChange={(e) => setChatMessage(e.target.value)}
-            placeholder="Type a message to AI..."
-            className="chat-input"
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                handleSendMessage();
-              }
-            }}
-            disabled={isProcessing}
-          />
-          <button 
-            className="send-btn"
-            onClick={handleSendMessage}
-            disabled={isProcessing}
-          >
-            Send
-          </button>
-        </div>
+      
+      {/* Sticky View Live Site Button */}
+      <div className="sticky-view-site">
+        <button 
+          className="sticky-view-btn" 
+          onClick={() => {
+            if (previewContent) {
+              window.open(previewContent, '_blank');
+            }
+          }}
+        >
+          View Live Site
+        </button>
       </div>
     </div>
   );
