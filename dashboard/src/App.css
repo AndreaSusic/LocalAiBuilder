@@ -349,7 +349,7 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   border-radius: 0 0 10px 10px;
 }
 
-.view-live-site-btn-sticky {
+.view-live-btn-mobile {
   width: 100%;
   background: #ffc000;
   color: white;
@@ -363,7 +363,7 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   transition: all 0.3s ease;
 }
 
-.view-live-site-btn-sticky:hover {
+.view-live-btn-mobile:hover {
   background: #e6ad00;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
