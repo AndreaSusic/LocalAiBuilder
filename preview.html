@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Preview</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        .loading { text-align: center; padding: 50px; }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading">Loading preview...</div>
+    <div id="root"></div>
+    
+    <script>
+        // Load bootstrap data from server
+        fetch('/api/bootstrap-data')
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+                // Set up window.bootstrapData for the React app
+                window.bootstrapData = data;
+                
+                // Load the React app
+                loadReactApp();
+            })
+            .catch(error => {
+                console.error('Error loading bootstrap data:', error);
+                document.getElementById('loading').innerHTML = 'Error loading preview';
+            });
+        
+        function loadReactApp() {
+            // Create script element to load React app
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.src = 'http://localhost:5173/src/main.jsx';
+            document.head.appendChild(script);
+            
+            // Also load the CSS
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'http://localhost:5173/src/index.css';
+            document.head.appendChild(link);
+        }
+    </script>
+</body>
+</html>
