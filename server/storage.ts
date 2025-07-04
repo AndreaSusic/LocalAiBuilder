@@ -2,13 +2,16 @@ import {
   users,
   websites,
   drafts,
+  pageEdits,
   type User,
   type UpsertUser,
   type Website,
   type Draft,
+  type PageEdit,
+  type InsertPageEdit,
 } from "../shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 // Interface for storage operations
 export interface IStorage {
@@ -24,6 +27,11 @@ export interface IStorage {
   // Draft operations
   getDraftByUserId(userId: string): Promise<Draft | undefined>;
   saveDraft(userId: string, draftData: any): Promise<Draft>;
+  
+  // Page edit operations for auto-save
+  getPageEditsByUser(userId: string, pageId: string): Promise<PageEdit[]>;
+  savePageEdit(userId: string, pageId: string, elementId: string, editType: string, originalContent: any, editedContent: any): Promise<PageEdit>;
+  getUserPageEdits(userId: string): Promise<PageEdit[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -100,6 +108,58 @@ export class DatabaseStorage implements IStorage {
       })
       .returning();
     return draft;
+  }
+
+  // Page edit operations for auto-save
+  async getPageEditsByUser(userId: string, pageId: string): Promise<PageEdit[]> {
+    const edits = await db
+      .select()
+      .from(pageEdits)
+      .where(and(eq(pageEdits.userId, userId), eq(pageEdits.pageId, pageId)))
+      .orderBy(pageEdits.createdAt);
+    return edits;
+  }
+
+  async savePageEdit(
+    userId: string,
+    pageId: string,
+    elementId: string,
+    editType: string,
+    originalContent: any,
+    editedContent: any
+  ): Promise<PageEdit> {
+    const editId = `edit_${userId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const [edit] = await db
+      .insert(pageEdits)
+      .values({
+        id: editId,
+        userId,
+        pageId,
+        elementId,
+        editType,
+        originalContent,
+        editedContent,
+      })
+      .onConflictDoUpdate({
+        target: [pageEdits.userId, pageEdits.pageId, pageEdits.elementId],
+        set: {
+          editType,
+          originalContent,
+          editedContent,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return edit;
+  }
+
+  async getUserPageEdits(userId: string): Promise<PageEdit[]> {
+    const edits = await db
+      .select()
+      .from(pageEdits)
+      .where(eq(pageEdits.userId, userId))
+      .orderBy(pageEdits.createdAt);
+    return edits;
   }
 }
 
