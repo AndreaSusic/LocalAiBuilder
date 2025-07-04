@@ -97,8 +97,9 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   grid-template-columns: 3fr 1fr;
   gap: 10px;
   padding: 10px;
-  height: calc(100vh - 160px);
+  height: calc(100vh - 70px);
   overflow: hidden;
+  flex: 1;
 }
 
 /* PREVIEW PANEL */

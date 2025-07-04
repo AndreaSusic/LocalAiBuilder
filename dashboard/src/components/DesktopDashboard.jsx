@@ -413,7 +413,7 @@ function DesktopDashboard({ bootstrap }) {
       <header className="header-wireframe">
         <div className="logo-section">
           <a href="/" className="logo-link">
-            <img src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo.svg" alt="LocalAI Builder" className="dashboard-logo" />
+            <img src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo-transparent.png" alt="LocalAI Builder" className="dashboard-logo" />
           </a>
         </div>
         
@@ -516,7 +516,7 @@ function DesktopDashboard({ bootstrap }) {
             <div className="editor-header">
               <h3>Editor</h3>
               <img 
-                src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo.svg" 
+                src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo-transparent.png" 
                 alt="Logo" 
                 className="editor-logo"
               />

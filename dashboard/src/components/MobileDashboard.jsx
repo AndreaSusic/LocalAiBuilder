@@ -186,7 +186,7 @@ export default function MobileDashboard({ bootstrap }) {
       <header className="mobile-header-wireframe">
         <div style={{display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-start'}}>
           <a href="/" className="mobile-logo-link">
-            <img src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo.svg" alt="LocalAI Builder" className="mobile-dashboard-logo" />
+            <img src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo-transparent.png" alt="LocalAI Builder" className="mobile-dashboard-logo" />
           </a>
           <button className="icon-btn-wireframe">🔔</button>
           <button className="small-btn-wireframe">Publish</button>
