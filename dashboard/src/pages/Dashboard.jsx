@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { loadTemplate } from "../utils/templateLoader";
 import "../styles/templateSelector.css";
 
-export default function DashboardPage() {
+export default function DashboardPage({ bootstrap }) {
   const [pageType] = useState("homepage");
   const [version, setVersion] = useState(1);
   const [Template, setTemplate] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Default site tokens that can be customized
-  const siteTokens = {
+  // Use bootstrap data if available, otherwise fall back to defaults
+  const siteTokens = bootstrap || {
     companyName: "Your Practice Name",
     tagline: "High-quality care in a welcoming environment—expertise you can trust.",
     primaryColor: "#5DD39E",
@@ -53,7 +53,7 @@ export default function DashboardPage() {
         {loading ? (
           <div style={{ padding: "2rem", textAlign: "center" }}>Loading template...</div>
         ) : Template ? (
-          <Template tokens={siteTokens} />
+          <Template bootstrap={siteTokens} />
         ) : (
           <div style={{ padding: "2rem", textAlign: "center" }}>Failed to load template</div>
         )}

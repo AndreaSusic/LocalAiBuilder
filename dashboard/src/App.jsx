@@ -51,10 +51,10 @@ export default function App({ bootstrap }) {
     <BrowserRouter>
       <Routes>
         {/* Dashboard as default route */}
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<DashboardPage bootstrap={bootstrap} />} />
         
         {/* Dashboard route alias */}
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/dashboard" element={<DashboardPage bootstrap={bootstrap} />} />
         
         {/* Preview route for OAuth redirect - shows template directly */}
         <Route path="/preview" element={<HomepageV1 bootstrap={bootstrap} />} />
