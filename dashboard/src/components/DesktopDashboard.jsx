@@ -269,7 +269,7 @@ function injectWorkingEditor(iframe) {
           console.log('✅ Click handlers setup');
         }
         
-        // Listen for content change messages from AI chat
+        // Listen for messages from parent dashboard
         window.addEventListener('message', function(event) {
           if (event.data.type === 'contentChange') {
             const { action, selector, newContent } = event.data;
@@ -278,6 +278,7 @@ function injectWorkingEditor(iframe) {
               const element = document.querySelector(selector);
               if (element) {
                 element.textContent = newContent;
+                saveState('AI content change');
                 console.log('✅ Content updated via AI:', selector, newContent);
                 
                 // Add visual feedback
@@ -287,6 +288,13 @@ function injectWorkingEditor(iframe) {
                   element.style.background = '';
                 }, 1000);
               }
+            }
+          } else if (event.data.type === 'keyboardShortcut') {
+            const { action } = event.data;
+            if (action === 'undo') {
+              undo();
+            } else if (action === 'redo') {
+              redo();
             }
           }
         });
@@ -430,33 +438,42 @@ function injectWorkingEditor(iframe) {
             transition: all 0.2s ease !important;
           \`;
           
-          // Add delete button
+          // Add delete button with proper positioning
           const deleteBtn = document.createElement('button');
           deleteBtn.className = 'delete-btn';
           deleteBtn.innerHTML = '×';
           deleteBtn.style.cssText = \`
             position: absolute !important;
-            top: -8px !important;
-            right: -8px !important;
-            width: 20px !important;
-            height: 20px !important;
+            top: -10px !important;
+            right: -10px !important;
+            width: 24px !important;
+            height: 24px !important;
             background: #ff4444 !important;
             color: white !important;
             border: none !important;
             border-radius: 50% !important;
             cursor: pointer !important;
-            font-size: 12px !important;
+            font-size: 14px !important;
+            font-weight: bold !important;
             line-height: 1 !important;
             display: none !important;
             z-index: 10000 !important;
             font-family: Arial, sans-serif !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
           \`;
           deleteBtn.onclick = (e) => {
             e.stopPropagation();
+            e.preventDefault();
             const tagName = element.tagName;
             element.remove();
             saveState(\`Delete \${tagName}\`);
           };
+          
+          // Ensure element has relative positioning for absolute delete button
+          if (window.getComputedStyle(element).position === 'static') {
+            element.style.position = 'relative';
+          }
+          
           element.appendChild(deleteBtn);
           
           // Add hover effects
@@ -490,6 +507,9 @@ function injectWorkingEditor(iframe) {
         }
         
         function selectElement(element) {
+          // Don't reselect the same element
+          if (activeElement === element) return;
+          
           // Deactivate previous
           if (activeElement) {
             activeElement.classList.remove('active');
@@ -509,10 +529,10 @@ function injectWorkingEditor(iframe) {
           const deleteBtn = element.querySelector('.delete-btn');
           if (deleteBtn) deleteBtn.style.display = 'block';
           
-          // Show toolbar
-          showEditorToolbar(element);
+          // Show toolbar with delay to prevent multiple triggers
+          setTimeout(() => showEditorToolbar(element), 50);
           
-          console.log('✅ Selected element:', element.tagName);
+          console.log('✅ Selected element:', element.tagName, element.textContent?.substring(0, 30));
         }
         
         function isTextElement(element) {
