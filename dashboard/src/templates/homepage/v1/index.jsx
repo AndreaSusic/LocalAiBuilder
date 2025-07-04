@@ -92,7 +92,9 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
           }
         `}</style>
         <NavigationSection bootstrap={bootstrap} />
+        {console.log('🔥 About to render HeroSection')}
         <HeroSection bootstrap={bootstrap} />
+        {console.log('🔥 HeroSection rendered, moving to ServicesSection')}
         <ServicesSection bootstrap={bootstrap} />
         <AboutSection bootstrap={bootstrap} />
         <GallerySection bootstrap={bootstrap} />

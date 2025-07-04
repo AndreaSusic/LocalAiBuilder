@@ -6,15 +6,16 @@ import Editable from '../components/Editable.jsx';
 export default function HeroSection() {
   console.log('🎯 HeroSection is rendering!');
   
-  const { 
-    company_name, 
-    services = [], 
-    images = [], 
-    google_profile = {},
-    ai_customization = {} 
-  } = useContext(SiteDataContext) || {};
-  
-  console.log('🎯 HeroSection data:', { company_name, services, images: images.length });
+  try {
+    const { 
+      company_name, 
+      services = [], 
+      images = [], 
+      google_profile = {},
+      ai_customization = {} 
+    } = useContext(SiteDataContext) || {};
+    
+    console.log('🎯 HeroSection data:', { company_name, services, images: images.length });
   
   // Extract hero image URL properly from GBP photos or provided images
   const getImageUrl = (img) => {
@@ -36,13 +37,22 @@ export default function HeroSection() {
   const heroSubtitle = ai_customization.heroSubtitle || 
                       `Professional ${services[0]?.toLowerCase() || 'services'} in ${google_profile.address ? google_profile.address.split(',')[1]?.trim() : 'your area'}`;
   
-  const ctaText = ai_customization.ctaText || 'Contact Us';
-  
-  return (
-    <section className="hero" style={{ backgroundImage: `url('${heroImg}')` }}>
-      <Editable as="h1" path="heroTitle" className="editable-test">{heroTitle}</Editable>
-      <Editable as="p" path="heroSubtitle">{heroSubtitle}</Editable>
-      <Editable as="button" path="ctaText" className="btn-cta">{ctaText}</Editable>
-    </section>
-  );
+    const ctaText = ai_customization.ctaText || 'Contact Us';
+    
+    return (
+      <section className="hero" style={{ backgroundImage: `url('${heroImg}')` }}>
+        <Editable as="h1" path="heroTitle" className="editable-test">{heroTitle}</Editable>
+        <Editable as="p" path="heroSubtitle">{heroSubtitle}</Editable>
+        <Editable as="button" path="ctaText" className="btn-cta">{ctaText}</Editable>
+      </section>
+    );
+  } catch (error) {
+    console.error('🎯 HeroSection error:', error);
+    return (
+      <section className="hero" style={{ background: '#f0f0f0', padding: '60px 20px' }}>
+        <h1 style={{ color: 'red' }}>HeroSection Error: {error.message}</h1>
+        <p>Check console for details</p>
+      </section>
+    );
+  }
 }
