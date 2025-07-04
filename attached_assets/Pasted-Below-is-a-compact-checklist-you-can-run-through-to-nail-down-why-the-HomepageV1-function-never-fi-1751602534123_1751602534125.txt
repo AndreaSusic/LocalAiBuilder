@@ -1,0 +1,86 @@
+Below is a compact checklist you can run through to nail down why the <HomepageV1> function never fires, ordered from the most-common React gotchas to the more exotic edge-cases. You should be able to tick each item off in a couple of minutes.
+
+⸻
+
+1  Is the import actually delivering a function?
+
+import HomepageV1 from '@/templates/homepage/v1';   // or your relative path
+console.log('🔍 HomepageV1 import:', HomepageV1);       // should log ƒ
+console.log('🔍 HomepageV1 is function:', typeof HomepageV1 === 'function');
+
+	•	If the second log is false (or the first one is undefined):
+– Path or filename case is wrong (macOS ≠ Linux in CI).
+– The file exports with export { HomepageV1 } but you imported default, or vice-versa.
+– There’s a circular import → the reference ends up undefined.
+Fix: ensure export default function HomepageV1 … and the path’s exact casing.
+
+⸻
+
+2  Does React ever try to mount it?
+
+Add a boundary just above the component call:
+
+// TemplatePreview.jsx
+try {
+  console.log('📋 TemplatePreview about to render HomepageV1 with bootstrap:', templateData);
+  return <HomepageV1 bootstrap={templateData} />;
+} catch (err) {
+  console.error('💥 TemplatePreview render error:', err);
+  return <div style={{color:'red'}}>Template crashed</div>;
+}
+
+	•	If you still get no console output from inside HomepageV1, React never even attempted to run the function, which means the return above was never executed → the component tree bailed out earlier ( conditional render / early return null / route mismatch ).
+
+⸻
+
+3  Early return inside HomepageV1
+
+Open templates/homepage/v1/index.jsx and search for any guard like:
+
+if (!bootstrap) return null;
+if (!bootstrap.company_name) return null;
+
+A truthy check that fails will silently skip the rest of the component and you’ll never hit your “🚀 HomepageV1 function started” log.
+
+▶ Quick test – move the log to the very first line:
+
+export default function HomepageV1({ bootstrap }) {
+  console.log('🚀 HomepageV1 function started, bootstrap:', bootstrap);
+  …
+}
+
+If it shows up now, the second log “🏠 HomepageV1 rendering with data” will tell you exactly where you drop out.
+
+⸻
+
+4  Error swallowed by an ErrorBoundary or Suspense
+
+If you see red error overlays in the preview iframe but nothing propagates upward, the component may be wrapped in an error boundary that catches and replaces it with fallback UI (possibly null). Inspect the React DevTools ▶ Components tab inside the iframe context to see whether <HomepageV1> is mounted.
+
+⸻
+
+5  Check for build-time / compile errors
+
+Run the dev server in terminal (npm run dev or vite / next dev) and look for warnings about export not found, circular dependency, or failed to compile in the console; those sometimes don’t surface in the browser logs.
+
+⸻
+
+6  Confirm routing hits the component
+
+In App.jsx (or your router file) temporarily hard-wire the route:
+
+<Route path="debug" element={<HomepageV1 bootstrap={{ company_name:'Debug Co.' }} />} />
+
+Navigate to /debug in the dashboard iframe. If the logs now appear, your real template route never matched.
+
+⸻
+
+What to do next
+	1.	Run the import type check (#1).
+• If it’s not a function, fix the export/path and you’re done.
+	2.	If it is a function, move the first log line to the very top inside HomepageV1 (#3) to see whether the code bails early.
+	3.	Watch the React DevTools inside the iframe – is <HomepageV1> in the tree?
+• No → routing/guard issue.
+• Yes but collapsed with “” → lazy load failed.
+
+Ping me with the exact result of step 1 (what did the two logs print?) and we’ll zoom into the right branch.

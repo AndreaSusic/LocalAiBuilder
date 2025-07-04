@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { SiteDataContext } from '../../../context/SiteDataContext';
+import React, { useState, useEffect, createContext } from 'react';
 import { validateBeforeRender } from '../../../utils/dataValidation.js';
 import NavigationSection from '../../../sections/NavigationSection.jsx';
 import HeroSection from '../../../sections/HeroSection.jsx';
@@ -10,6 +9,9 @@ import ReviewsSection from '../../../sections/ReviewsSection.jsx';
 import ContactSection from '../../../sections/ContactSection.jsx';
 import ColorContrastAnalyzer from '../../../components/ColorContrastAnalyzer.jsx';
 import '../../../styles/template.css';
+
+// Create a local context to avoid circular imports
+const LocalSiteDataContext = createContext(null);
 
 // Helper function to handle placeholder images
 const safeImg = (url) => {
@@ -98,7 +100,7 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
     console.log('🏠 HomepageV1 rendering with data:', Object.keys(data));
     
     return (
-      <SiteDataContext.Provider value={{...data, safeImg}}>
+      <LocalSiteDataContext.Provider value={{...data, safeImg}}>
         <div>
           <style>{`
             :root {
@@ -157,7 +159,7 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
             onClose={() => setShowContrastAnalyzer(false)}
           />
         </div>
-      </SiteDataContext.Provider>
+      </LocalSiteDataContext.Provider>
     );
     
   } catch (error) {
