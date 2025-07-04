@@ -1,0 +1,49 @@
+{
+  "hero": {
+    "title": "Your Practice Name",
+    "subtitle": "High-quality care in a welcoming environment—expertise you can trust.",
+    "ctaLabel": "Schedule Now",
+    "bgImage": "https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?q=80&auto=format&fit=crop&w=1740"
+  },
+  "features": [
+    { "icon": "🦷", "title": "Experienced Dentists", "text": "Our highly skilled dentists provide compassionate and personalized care." },
+    { "icon": "🖥️", "title": "State-of-the-Art Facility", "text": "Advanced technology ensures accurate diagnoses and effective treatments." },
+    { "icon": "😊", "title": "Patient-Centered Care", "text": "A friendly team dedicated to making your visit comfortable." }
+  ],
+  "services": [
+    { "img": "https://plus.unsplash.com/premium_photo-1681997265061-0f44c165ac67?w=900", "title": "General Dentistry", "text": "Comprehensive exams, cleanings, and preventative care." },
+    { "img": "https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900", "title": "Cosmetic Veneers", "text": "Transform your smile with porcelain veneers." },
+    { "img": "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900", "title": "Invisalign®", "text": "Clear aligner therapy for discreet straightening." }
+  ],
+  "testimonials": [
+    { "text": "Fantastic experience—couldn't be happier!", "stars": 5 },
+    { "text": "Professional, friendly staff—highly recommend!", "stars": 4 },
+    { "text": "Top-quality care in a comfortable environment.", "stars": 5 }
+  ],
+  "team": [
+    { "img": "https://images.unsplash.com/photo-1665080954352-5a12ef53017a?w=900", "name": "Dr. Smith", "role": "DDS, Founder" },
+    { "img": "https://images.unsplash.com/photo-1620928269189-dc4ee9d981c0?w=900", "name": "Dr. Jones", "role": "Orthodontist" },
+    { "img": "https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=900", "name": "Dr. Lee", "role": "Oral Surgeon" }
+  ],
+  "gallery": [
+    "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900",
+    "https://images.unsplash.com/photo-1616391182219-e080b4d1043a?w=900",
+    "https://plus.unsplash.com/premium_photo-1672922646298-3afc6c6397c9?w=900"
+  ],
+  "contact": {
+    "headline": "Get in Touch",
+    "address": "123 Dental St., Austin, TX",
+    "map": "https://maps.google.com/maps?q=Austin&t=&z=13&ie=UTF8&iwloc=&output=embed"
+  },
+  "cta": {
+    "headline": "Ready to Transform Your Smile?",
+    "sub": "View available appointments and enjoy dentistry done right.",
+    "button": "Contact Us Today"
+  },
+  "footer": {
+    "practice": "YourPractice",
+    "address": "123 Dental St.\nAustin, TX 78701",
+    "services": ["General Dentistry", "Cosmetic Veneers", "Invisalign®"],
+    "links": ["Home", "About", "Contact"]
+  }
+}

@@ -224,9 +224,6 @@ function injectWorkingEditor(iframe) {
 function DesktopDashboard({ bootstrap }) {
   const navigate = useNavigate();
   const [previewContent, setPreviewContent] = useState(null);
-  const [chatMessage, setChatMessage] = useState("");
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const createPreviewUrl = async () => {
@@ -294,15 +291,6 @@ function DesktopDashboard({ bootstrap }) {
     window.open('/t/v1/demo', '_blank');
   };
 
-  const handleSendMessage = async () => {
-    if (!chatMessage.trim()) return;
-    
-    console.log('Sending message:', chatMessage);
-    // Here you can add actual chat functionality
-    // For now, just clear the input
-    setChatMessage("");
-  };
-
   return (
     <div className="dashboard-wireframe">
       {/* Header */}
@@ -355,9 +343,24 @@ function DesktopDashboard({ bootstrap }) {
 
       {/* Main Content */}
       <div className="main-content-wireframe">
-        {/* Live Preview Panel */}
+        {/* Live Preview */}
         <div className="preview-panel-wireframe">
-          <div className="preview-container">
+          <div className="panel-header">
+            <h2>Live Preview</h2>
+            <div className="preview-controls">
+              <button className="small-btn-wireframe" onClick={() => showTemplatePreview('/templates/homepage/v1/index.jsx')}>
+                Version 1
+              </button>
+              <button className="small-btn-wireframe" onClick={() => showTemplatePreview('/templates/homepage/v2/index.jsx')}>
+                Version 2
+              </button>
+              <button className="small-btn-wireframe" onClick={() => showTemplatePreview('/templates/homepage/v3/index.jsx')}>
+                Version 3
+              </button>
+            </div>
+          </div>
+          
+          <div className="preview-area">
             {previewContent && (
               <iframe
                 key={previewContent}
@@ -370,39 +373,20 @@ function DesktopDashboard({ bootstrap }) {
           </div>
           
           <button 
-            className="view-site-btn" 
+            className="view-live-btn" 
             onClick={() => {
               if (previewContent) {
                 window.open(previewContent, '_blank');
               }
             }}
           >
-            View Site
+            View Live Site
           </button>
         </div>
 
-        {/* Chat Panel */}
-        <div className="chat-panel-wireframe">
-          <div className="chat-input-container">
-            <input
-              type="text"
-              value={chatMessage}
-              onChange={(e) => setChatMessage(e.target.value)}
-              placeholder="Type a message..."
-              className="chat-input"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  handleSendMessage();
-                }
-              }}
-            />
-            <button 
-              className="send-btn"
-              onClick={handleSendMessage}
-            >
-              Send
-            </button>
-          </div>
+        {/* Command Chat Panel */}
+        <div className="right-panel-wireframe">
+          <UnifiedCommandChatPanel />
         </div>
       </div>
     </div>

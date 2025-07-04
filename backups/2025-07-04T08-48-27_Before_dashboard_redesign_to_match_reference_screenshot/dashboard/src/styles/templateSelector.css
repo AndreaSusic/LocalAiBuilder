@@ -1,0 +1,13 @@
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+
+
+.preview-canvas {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+  background: #fff;
+}
