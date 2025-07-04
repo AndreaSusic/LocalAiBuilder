@@ -257,19 +257,17 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 }
 
 .btn-primary {
-  background: #ffc000;
-  color: white;
-  border: 1px solid #ffc000;
+  background: white;
+  color: #2a2a2a;
+  border: 1px solid #2a2a2a;
   border-radius: 6px;
-  padding: 8px 16px;
+  padding: 8px 12px;
   font-size: 0.9rem;
   cursor: pointer;
-  font-weight: 500;
 }
 
 .btn-primary:hover {
-  background: #e6ac00;
-  border-color: #e6ac00;
+  background: #f8f9fa;
 }
 
 .btn-wireframe {
@@ -288,7 +286,7 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 .main-content-wireframe {
   flex: 1;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 3fr 1fr;
   gap: 20px;
   padding: 20px;
   overflow: hidden;

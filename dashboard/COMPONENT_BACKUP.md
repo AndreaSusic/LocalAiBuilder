@@ -58,8 +58,9 @@ This file contains backup layouts for critical dashboard components to prevent a
 - `.header-center` - Center buttons area (flex: 1, justify-content: center)
 - `.header-actions` - Right actions area (flex: 0 0 auto)
 - `.credits-info` - Credits display box
-- `.btn-primary` - Yellow primary button (#ffc000)
+- `.btn-primary` - Standard button styling (same as btn-wireframe)
 - `.btn-wireframe` - Standard gray buttons
+- `.main-content-wireframe` - Grid layout (3fr 1fr) for full-width preview
 
 ### Critical Elements (NEVER DELETE):
 1. **+ New Site** button (center, yellow)
