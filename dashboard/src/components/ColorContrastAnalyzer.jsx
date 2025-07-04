@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { SiteDataContext } from '../context/SiteDataContext';
+import SiteDataContext from '../context/SiteDataContext';
 
 // Color contrast utility functions
 const hexToRgb = (hex) => {
