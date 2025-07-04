@@ -1,0 +1,115 @@
+What’s happening?
+	1.	React renders after your inline-editor script runs
+When the bridge runs it does
+
+const editableElements = document.querySelectorAll('[data-edit]');
+
+but the DOM still contains only the server “shell”, so it sees zero matches and logs
+
+✅ Made 0 elements editable
+
+After React mounts, the real markup (with <h1 data-edit="heroTitle">…) appears, but the script has already finished and never re-scans.
+
+	2.	Nothing is wrong with the <Editable> component
+The JSX you showed does output the right attributes – if you open DevTools after the page settles you’ll see
+
+<h1 data-edit="heroTitle" data-editable="true" class="editable editable-test"> … </h1>
+
+So the bridge simply needs to detect those late-arriving nodes.
+
+⸻
+
+Two quick ways to fix it
+
+A. Fire a custom “React ready” event from your app (simplest)
+
+// App.jsx (or index.jsx – wherever the root render completes)
+import { useEffect } from 'react';
+
+function App() {
+  …your code…
+
+  useEffect(() => {
+    // Signal to the bridge that React finished hydrating / rendering
+    window.dispatchEvent(new Event('react-dom-ready'));
+  }, []);           // <-  empty deps → runs once after first paint
+
+  return ( … );
+}
+
+And in editorBridge.js add one listener line:
+
+function initEditorBridge() {
+  console.log('🔧 Initializing Editor Bridge…');
+  loadEditorStyles();
+
+  // Run once the first batch of HTML exists…
+  setupEditableElements();
+
+  // …but also run again when React tells us it’s done
+  window.addEventListener('react-dom-ready', setupEditableElements);
+
+  setupGlobalListeners();
+}
+
+Now the log should jump to something like:
+
+Found 3 elements with data-edit attributes
+✅ Made 3 elements editable with delete buttons
+
+
+⸻
+
+B. Use a MutationObserver (fully automatic, no app changes)
+
+Add this block near the bottom of editorBridge.js (right after setupEditableElements() is first called):
+
+// -------------------------------------------------------------------
+// WATCH the DOM for anything new that carries data-edit or data-editable
+// -------------------------------------------------------------------
+const observer = new MutationObserver(mutations => {
+  mutations.forEach(m => {
+    m.addedNodes.forEach(node => {
+      if (node.nodeType !== 1) return;        // skip text / comments
+
+      // If the added node itself is editable
+      if (node.matches?.('[data-edit], [data-editable="true"]')) {
+        makeElementEditable(node);
+      }
+      // …or any of its descendants
+      node
+        .querySelectorAll?.('[data-edit], [data-editable="true"]')
+        .forEach(makeElementEditable);
+    });
+  });
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
+
+// Helper so we don’t repeat the big forEach logic
+function makeElementEditable(el) {
+  // Don’t double-mark
+  if (el.getAttribute('data-ez-initialised')) return;
+  el.setAttribute('data-ez-initialised', 'true');
+
+  el.setAttribute('data-editable', 'true');
+  el.style.cursor = 'pointer';
+  el.style.position = el.style.position || 'relative';
+  addDeleteButton(el);
+}
+
+Remove the final console.log line (or keep it but push a counter) and everything rendered later by React will automatically inherit the inline-editing behaviour.
+
+⸻
+
+Verify
+	1.	Reload the dashboard preview.
+	2.	Open DevTools → Console; you should now see a positive number for “Made X elements editable”.
+	3.	Hover the hero heading or any element carrying data-edit – you should get the dashed outline, then click to see the toolbar.
+
+If you still see “0 elements” double-check that:
+	•	<Editable> really appears in the component tree that the preview page renders.
+	•	There are no parent nodes with contenteditable="false" swallowing clicks.
+	•	The iframe is loading the new version of editorBridge.js (clear cache or add ?v=2 to the script tag).
+
+That should get the inline editor fully functional again without touching each JSX file. Ping me if anything remains stubborn!

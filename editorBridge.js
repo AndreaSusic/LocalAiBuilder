@@ -63,6 +63,12 @@ function initEditorBridge() {
     setupEditableElements();
   }
   
+  // Listen for React ready event and scan again
+  window.addEventListener('react-dom-ready', () => {
+    console.log('🔄 React DOM ready - re-scanning for editable elements');
+    setupEditableElements();
+  });
+  
   // Setup global event listeners
   setupGlobalListeners();
 }
