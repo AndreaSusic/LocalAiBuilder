@@ -2,15 +2,15 @@ import React, { useState, useEffect, createContext } from 'react';
 // import { validateBeforeRender } from '../../../utils/dataValidation.js';
 
 console.log('🕵️‍♀️ HomepageV1 module evaluated');
-// import NavigationSection from '../../../sections/NavigationSection.jsx';
+import NavigationSection from '../../../sections/NavigationSection.jsx';
 import HeroSection from '../../../sections/HeroSection.jsx';
-// import ServicesSection from '../../../sections/ServicesSection.jsx';
-// import AboutSection from '../../../sections/AboutSection.jsx';
-// import GallerySection from '../../../sections/GallerySection.jsx';
-// import ReviewsSection from '../../../sections/ReviewsSection.jsx';
-// import ContactSection from '../../../sections/ContactSection.jsx';
-// import ColorContrastAnalyzer from '../../../components/ColorContrastAnalyzer.jsx';
-// import '../../../styles/template.css';
+import ServicesSection from '../../../sections/ServicesSection.jsx';
+import AboutSection from '../../../sections/AboutSection.jsx';
+import GallerySection from '../../../sections/GallerySection.jsx';
+import ReviewsSection from '../../../sections/ReviewsSection.jsx';
+import ContactSection from '../../../sections/ContactSection.jsx';
+import ColorContrastAnalyzer from '../../../components/ColorContrastAnalyzer.jsx';
+import '../../../styles/template.css';
 
 // Create a local context to avoid circular imports
 const LocalSiteDataContext = createContext(null);
@@ -110,10 +110,15 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
               --secondary: ${data.colours?.[1] || '#EFD5BD'};
             }
           `}</style>
-          {/* <NavigationSection bootstrap={bootstrap} /> */}
+          <NavigationSection bootstrap={bootstrap} />
           {console.log('🔥 About to render HeroSection')}
           <HeroSection bootstrap={bootstrap} />
-          {console.log('🔥 HeroSection rendered')}
+          {console.log('🔥 HeroSection rendered, moving to ServicesSection')}
+          <ServicesSection bootstrap={bootstrap} />
+          <AboutSection bootstrap={bootstrap} />
+          <GallerySection bootstrap={bootstrap} />
+          <ReviewsSection bootstrap={bootstrap} />
+          <ContactSection bootstrap={bootstrap} />
           
           {/* Floating Color Contrast Analyzer Button */}
           <button
@@ -151,10 +156,10 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
           </button>
           
           {/* Color Contrast Analyzer Modal */}
-          {/* <ColorContrastAnalyzer 
+          <ColorContrastAnalyzer 
             isVisible={showContrastAnalyzer}
             onClose={() => setShowContrastAnalyzer(false)}
-          /> */}
+          />
         </div>
       </LocalSiteDataContext.Provider>
     );
