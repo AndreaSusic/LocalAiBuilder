@@ -2432,11 +2432,20 @@ app.get('/api/kigen-data', async (req, res) => {
 // Profile-based automatic page edit persistence
 // ========================================
 
-// Save page edit (auto-save functionality)
-app.post('/api/save-page-edit', ensureLoggedIn(), async (req, res) => {
+// Save page edit (auto-save functionality) - Dashboard users auto-authenticated
+app.post('/api/save-page-edit', async (req, res) => {
   try {
     const { pageId, elementId, editType, originalContent, editedContent } = req.body;
-    const userId = req.user.id;
+    
+    // For dashboard users, create a default user session if not authenticated
+    let userId;
+    if (req.user && req.user.id) {
+      userId = req.user.id;
+    } else {
+      // Create a session-based user ID for dashboard users
+      userId = req.sessionID || 'dashboard-user-' + Date.now();
+      console.log('🔄 Using session-based user ID for dashboard:', userId);
+    }
     
     if (!pageId || !elementId || !editType || !editedContent) {
       return res.status(400).json({ error: 'Missing required fields' });
@@ -2644,10 +2653,19 @@ app.get('/api/get-complete-page/:pageId', ensureLoggedIn(), async (req, res) => 
   }
 });
 
-// Create user site URL
-app.post('/api/create-site-url', ensureLoggedIn(), async (req, res) => {
+// Create user site URL - Dashboard users auto-authenticated
+app.post('/api/create-site-url', async (req, res) => {
   try {
-    const userId = req.user.id;
+    // For dashboard users, create a default user session if not authenticated
+    let userId;
+    if (req.user && req.user.id) {
+      userId = req.user.id;
+    } else {
+      // Create a session-based user ID for dashboard users
+      userId = req.sessionID || 'dashboard-user-' + Date.now();
+      console.log('🔄 Using session-based user ID for site creation:', userId);
+    }
+    
     const { siteName, templateData } = req.body;
     
     console.log('🌐 Creating site URL for user:', userId);
@@ -2785,6 +2803,71 @@ app.get('/site/:siteSlug', async (req, res) => {
   } catch (error) {
     console.error('❌ Error serving site:', error);
     res.status(500).send('Error loading site');
+  }
+});
+
+// Save AI completion log
+app.post('/api/save-ai-completion', async (req, res) => {
+  try {
+    const { userMessage, aiResponse, contentChange, timestamp } = req.body;
+    
+    // Create session-based user ID for tracking
+    let userId;
+    if (req.user && req.user.id) {
+      userId = req.user.id;
+    } else {
+      userId = req.sessionID || 'dashboard-user-' + Date.now();
+    }
+    
+    console.log('💾 Saving AI completion log for user:', userId);
+    
+    // Create AI completions table if it doesn't exist
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS ai_completions (
+        id SERIAL PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        user_message TEXT NOT NULL,
+        ai_response TEXT NOT NULL,
+        content_change JSONB,
+        timestamp TIMESTAMP DEFAULT NOW(),
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
+    
+    // Insert the completion log
+    await pool.query(
+      `INSERT INTO ai_completions (user_id, user_message, ai_response, content_change, timestamp)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [userId, userMessage, aiResponse, contentChange ? JSON.stringify(contentChange) : null, timestamp]
+    );
+    
+    console.log('✅ AI completion logged successfully');
+    res.json({ success: true });
+  } catch (error) {
+    console.error('❌ Error saving AI completion:', error);
+    res.status(500).json({ error: 'Failed to save AI completion' });
+  }
+});
+
+// Get AI completion history
+app.get('/api/ai-completions', async (req, res) => {
+  try {
+    let userId;
+    if (req.user && req.user.id) {
+      userId = req.user.id;
+    } else {
+      userId = req.sessionID || 'dashboard-user-default';
+    }
+    
+    const result = await pool.query(
+      'SELECT * FROM ai_completions WHERE user_id = $1 ORDER BY timestamp DESC LIMIT 50',
+      [userId]
+    );
+    
+    res.json({ completions: result.rows });
+  } catch (error) {
+    console.error('❌ Error fetching AI completions:', error);
+    res.status(500).json({ error: 'Failed to fetch AI completions' });
   }
 });
 

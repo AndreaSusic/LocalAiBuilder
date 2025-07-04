@@ -282,20 +282,9 @@ function injectComprehensiveEditor(iframe) {
               <h3>✏️ Element Editor</h3>
               
               <div class="panel-section">
-                <label>Add New Section:</label>
-                <div class="format-buttons">
-                  <button class="format-btn add-section-btn" onclick="addNewSection('hero')" title="Add Hero Section">
-                    + Hero
-                  </button>
-                  <button class="format-btn add-section-btn" onclick="addNewSection('services')" title="Add Services Section">
-                    + Services
-                  </button>
-                  <button class="format-btn add-section-btn" onclick="addNewSection('about')" title="Add About Section">
-                    + About
-                  </button>
-                  <button class="format-btn add-section-btn" onclick="addNewSection('contact')" title="Add Contact Section">
-                    + Contact
-                  </button>
+                <label>Selected Element:</label>
+                <div id="element-info">
+                  <p>Click any element to edit it</p>
                 </div>
               </div>
               
@@ -320,7 +309,6 @@ function injectComprehensiveEditor(iframe) {
             window.undoEdit = undoEdit;
             window.redoEdit = redoEdit;
             window.saveChanges = saveChanges;
-            window.addNewSection = addNewSection;
           }
           
           function setupEvents() {
@@ -1702,8 +1690,26 @@ function DesktopDashboard({ bootstrap }) {
         }
       }
       
-      // Add AI response to chat history
-      setChatHistory(prev => [...prev, { role: 'ai', content: data.message || data.response }]);
+      // Add AI response to chat history and save completion log
+      const aiMessage = data.message || data.response;
+      setChatHistory(prev => [...prev, { role: 'ai', content: aiMessage }]);
+      
+      // Save AI action completion to database
+      try {
+        await fetch('/api/save-ai-completion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userMessage: userMessage,
+            aiResponse: aiMessage,
+            contentChange: data.contentChange,
+            timestamp: new Date().toISOString()
+          })
+        });
+        console.log('✅ AI completion logged successfully');
+      } catch (error) {
+        console.error('Error saving AI completion:', error);
+      }
     } catch (error) {
       console.error('Error sending message:', error);
       setChatHistory(prev => [...prev, { role: 'ai', content: 'Sorry, I encountered an error. Please try again.' }]);
@@ -1921,9 +1927,78 @@ function DesktopDashboard({ bootstrap }) {
               )}
               {activeTab === 'components' && (
                 <div className="editor-commands">
-                  <div className="command-group">
-                    <button className="editor-cmd-btn" title="Card">🔲</button>
-                    <button className="editor-cmd-btn" title="Button">🔘</button>
+                  <div className="component-section">
+                    <h4>Drag to Add Sections</h4>
+                    <div className="component-group">
+                      <button 
+                        className="add-section-btn draggable" 
+                        draggable="true"
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData('text/plain', 'hero');
+                          e.dataTransfer.effectAllowed = 'copy';
+                        }}
+                        onClick={() => {
+                          const iframe = document.querySelector('.preview-iframe');
+                          if (iframe && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({type: 'addSection', sectionType: 'hero'}, '*');
+                          }
+                        }}
+                        title="Add Hero Section"
+                      >
+                        + Hero Section
+                      </button>
+                      <button 
+                        className="add-section-btn draggable" 
+                        draggable="true"
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData('text/plain', 'services');
+                          e.dataTransfer.effectAllowed = 'copy';
+                        }}
+                        onClick={() => {
+                          const iframe = document.querySelector('.preview-iframe');
+                          if (iframe && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({type: 'addSection', sectionType: 'services'}, '*');
+                          }
+                        }}
+                        title="Add Services Section"
+                      >
+                        + Services
+                      </button>
+                      <button 
+                        className="add-section-btn draggable" 
+                        draggable="true"
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData('text/plain', 'about');
+                          e.dataTransfer.effectAllowed = 'copy';
+                        }}
+                        onClick={() => {
+                          const iframe = document.querySelector('.preview-iframe');
+                          if (iframe && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({type: 'addSection', sectionType: 'about'}, '*');
+                          }
+                        }}
+                        title="Add About Section"
+                      >
+                        + About
+                      </button>
+                      <button 
+                        className="add-section-btn draggable" 
+                        draggable="true"
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData('text/plain', 'contact');
+                          e.dataTransfer.effectAllowed = 'copy';
+                        }}
+                        onClick={() => {
+                          const iframe = document.querySelector('.preview-iframe');
+                          if (iframe && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({type: 'addSection', sectionType: 'contact'}, '*');
+                          }
+                        }}
+                        title="Add Contact Section"
+                      >
+                        + Contact
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
