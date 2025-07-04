@@ -1,0 +1,62 @@
+Your write-up is on the right track, but there are two small but important details that can still bite you:
+
+⸻
+
+1. Where you dispatch the event
+	•	Good: You added
+
+useEffect(() => {
+  window.dispatchEvent(new Event('react-dom-ready'));
+}, []);
+
+in homepage/v1/index.jsx.
+That file is rendered inside the preview iframe, so the event is emitted in the same window that the bridge script lives in. Perfect.
+
+	•	Potential issue:
+You mentioned also editing DesktopDashboard.jsx. That file runs in the parent dashboard, not in the iframe. Dispatching the event there won’t reach the bridge (different window object), so you can drop that change.
+
+⸻
+
+2. When you attach the listener in editorBridge.js
+
+Make sure your listener is registered before React fires the event. With the pattern below you’re safe even if the script loads after React:
+
+function initEditorBridge() {
+  console.log('🔧 Initializing Editor Bridge…');
+
+  loadEditorStyles();
+
+  // 1st pass (in case the DOM is already there)
+  setupEditableElements();
+
+  // ---- NEW: listen for React render completion ----
+  window.addEventListener('react-dom-ready', () => {
+    console.log('♻️ React finished mounting – rescan for editables');
+    setupEditableElements();
+  });
+
+  setupGlobalListeners();
+}
+
+setupEditableElements() can be idempotent (skip elements that already have data-ez-initialised) so calling it twice won’t duplicate anything.
+
+⸻
+
+Extra sanity-check
+
+After you push the changes:
+	1.	Hard-refresh the preview (⇧⌘R / Ctrl-F5) to avoid cached JS.
+	2.	In DevTools console you should see
+
+♻️ React finished mounting – rescan for editables
+Found N elements with data-edit attributes
+✅ Made N elements editable…
+
+
+	3.	Hover <h1 data-edit="heroTitle"> and confirm the dashed outline appears.
+
+If all that happens, the race condition is fixed. Otherwise, check:
+	•	The event name is identical in both files.
+	•	The bridge script included in the iframe is the updated version (add ?v=2 to its URL if needed to bust cache).
+
+Those are the only pitfalls I still see; the overall approach is sound.
