@@ -259,7 +259,6 @@ app.use('/vite.svg', express.static(path.join(__dirname, 'dashboard', 'dist', 'v
 
 // Serve SPA for dashboard routes only
 const dist = path.join(__dirname, 'dashboard', 'dist');
-const distExists = require('fs').existsSync(dist);
 
 // In-memory cache for preview data (in production, use Redis)
 const previewCache = new Map();
@@ -273,8 +272,8 @@ app.get('/t/v1/:id', async (req, res) => {
     return res.status(404).send('Preview expired or not found');
   }
   
-  // If dist doesn't exist, redirect to Vite dev server
-  if (!distExists) {
+  // Check if dist exists dynamically
+  if (!require('fs').existsSync(dist)) {
     return res.redirect(`http://localhost:5173/t/v1/${id}`);
   }
   
@@ -1919,8 +1918,8 @@ app.get('/preview', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-  // If dist doesn't exist, redirect to Vite dev server
-  if (!distExists) {
+  // Check if dist exists dynamically
+  if (!require('fs').existsSync(dist)) {
     console.log('🔄 Redirecting to Vite dev server');
     return res.redirect('http://localhost:5173/dashboard');
   }
