@@ -98,32 +98,62 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 - **API Integration**: Placeholder structure for backend services
 - **User Authentication**: Account system framework in place
 
-## UI Protection System
+## COMPREHENSIVE UI PROTECTION SYSTEM
 
-**Critical Protection Added:** July 4, 2025
-To prevent accidental deletion of dashboard UI elements during development:
+**System-Wide Protection Implemented:** July 4, 2025
+Prevents accidental deletion of UI elements across entire website during development.
 
-### Protection Files:
-- `dashboard/COMPONENT_BACKUP.md` - Complete backup of dashboard layout
-- `dashboard/src/utils/dashboardValidator.js` - Validation system for dashboard integrity
+### Master Protection Files:
+- `UI_PROTECTION.md` - Master protection registry and protocols
+- `validators/masterValidator.js` - Central validation system
+- `validators/dashboardValidator.js` - Dashboard component protection
+- `validators/templateValidator.js` - Template component protection  
+- `validators/chatValidator.js` - Chat interface protection
+- `validators/mainSiteValidator.js` - Landing page protection
 
-### Protected Elements (NEVER DELETE):
-1. **+ New Site** button (center, yellow)
-2. **Save** button (center)  
-3. **↶ Undo** button (center, connects to editor)
-4. **↷ Redo** button (center, connects to editor)
-5. **Credits remaining** display (right)
-6. **Pages ▼** dropdown (right)
-7. **🔔** notification bell (right)
-8. **Publish** button (right)
-9. **Logout** button (right)
+### Protected Component Categories:
 
-### Pre-Change Protocol:
-1. Check `COMPONENT_BACKUP.md` for current layout
-2. Run validation script before major changes
-3. Backup current working version
-4. Document all changes with date/time
-5. Test all button functionality after changes
+#### 1. Dashboard Components (CRITICAL)
+- Desktop header: New Site, Save, Undo, Redo, Credits, Pages, Publish, Logout buttons
+- Mobile dashboard: Logo, notification, publish, logout elements
+- Live preview iframe and editor functionality
+
+#### 2. Template Components (CRITICAL/IMPORTANT)
+- Homepage templates (v1-v3): Navigation, hero, services, reviews, contact sections
+- Service template: Navigation, hero CTA, gallery, FAQ accordion
+- Contact template: Form, contact info, map integration, hours
+
+#### 3. Chat Interface (CRITICAL)
+- AI chat bubbles and conversation flow
+- Input field with send functionality
+- Image upload zone and file handling
+- Color picker and font selection panels
+- GBP integration and business lookup
+
+#### 4. Main Website (CRITICAL/IMPORTANT)
+- Landing page: Header navigation, hero form, benefits, FAQ
+- Pricing page: Three-tier cards, billing toggle, feature comparison
+- Navigation: Desktop/mobile menus, authentication flows
+
+### Pre-Change Protocol (MANDATORY):
+1. **Check Protection Registry** (`UI_PROTECTION.md`)
+2. **Run Master Validator** (`validators/masterValidator.js`)
+3. **Create Backup Snapshot** of current working state
+4. **Document Changes** with component type and scope
+5. **Set Rollback Point** for emergency recovery
+
+### Post-Change Validation (AUTOMATIC):
+1. **Complete System Scan** across all protected components
+2. **Critical Issue Detection** with automatic rollback
+3. **Functionality Testing** of all buttons/forms/interactions
+4. **Visual Verification** of layout integrity
+5. **Update Protection Logs** with validation results
+
+### Emergency Recovery:
+- Automatic rollback for critical failures
+- Backup restoration from protection snapshots
+- Component reconstruction from backup documentation
+- System health monitoring and reporting
 
 ## Changelog
 
