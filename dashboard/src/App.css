@@ -283,21 +283,7 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   background: #f8f9fa;
 }
 
-.btn-new-site {
-  background: white;
-  color: black;
-  border: 1px solid #2a2a2a;
-  border-radius: 6px;
-  padding: 8px 12px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-}
 
-.btn-new-site:hover {
-  background: #f8f9fa;
-  border-color: #2a2a2a;
-}
 
 .main-content-wireframe {
   flex: 1;
