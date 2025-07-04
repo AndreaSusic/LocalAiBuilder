@@ -310,6 +310,7 @@ function DesktopDashboard({ bootstrap }) {
   const [currentDevice, setCurrentDevice] = useState("Desktop");
   const [chatHistory, setChatHistory] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [activeTab, setActiveTab] = useState('text');
 
   useEffect(() => {
     const createPreviewUrl = async () => {
@@ -494,29 +495,88 @@ function DesktopDashboard({ bootstrap }) {
             )}
           </div>
           
-          <button 
-            className="view-site-btn" 
-            onClick={() => {
-              if (previewContent) {
-                window.open(previewContent, '_blank');
-              }
-            }}
-          >
-            View Site
-          </button>
+          {/* Sticky button at bottom of preview panel */}
+          <div className="preview-panel-footer">
+            <button 
+              className="view-live-site-btn-sticky" 
+              onClick={() => {
+                if (previewContent) {
+                  window.open(previewContent, '_blank');
+                }
+              }}
+            >
+              View Live Site
+            </button>
+          </div>
         </div>
 
         {/* Right Panel - Editor and Chat */}
         <div className="right-panel-wireframe">
           <div className="editor-panel">
-            <h3>Editor</h3>
+            <div className="editor-header">
+              <h3>Editor</h3>
+              <img 
+                src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo.svg" 
+                alt="Logo" 
+                className="editor-logo"
+              />
+            </div>
             <div className="editor-tabs">
-              <button className="tab-btn active">HTML</button>
-              <button className="tab-btn">CSS</button>
-              <button className="tab-btn">JS</button>
+              <button 
+                className={`tab-btn ${activeTab === 'text' ? 'active' : ''}`} 
+                onClick={() => setActiveTab('text')}
+              >
+                Text
+              </button>
+              <button 
+                className={`tab-btn ${activeTab === 'media' ? 'active' : ''}`} 
+                onClick={() => setActiveTab('media')}
+              >
+                Media
+              </button>
+              <button 
+                className={`tab-btn ${activeTab === 'components' ? 'active' : ''}`} 
+                onClick={() => setActiveTab('components')}
+              >
+                Components
+              </button>
             </div>
             <div className="editor-content">
-              <p>Click on elements in the preview to edit them.</p>
+              {activeTab === 'text' && (
+                <div className="editor-commands">
+                  <div className="command-group">
+                    <button className="editor-cmd-btn" title="Bold">𝐁</button>
+                    <button className="editor-cmd-btn" title="Italic">𝑰</button>
+                    <button className="editor-cmd-btn" title="Underline">𝑼</button>
+                    <button className="editor-cmd-btn" title="List">List</button>
+                    <button className="editor-cmd-btn" title="Font Size">8px</button>
+                    <button className="editor-cmd-btn" title="Text Color">A🖌️</button>
+                    <button className="editor-cmd-btn" title="Highlight">🖍️</button>
+                    <button className="editor-cmd-btn" title="Heading">H₁</button>
+                    <button className="editor-cmd-btn" title="Paragraph">¶</button>
+                    <button className="editor-cmd-btn" title="Paste Plain">📋</button>
+                    <button className="editor-cmd-btn" title="Code View">{'</>'}</button>
+                  </div>
+                </div>
+              )}
+              {activeTab === 'media' && (
+                <div className="editor-commands">
+                  <div className="command-group">
+                    <button className="editor-cmd-btn" title="Image">🖼️</button>
+                    <button className="editor-cmd-btn" title="Video">🎥</button>
+                    <button className="editor-cmd-btn" title="Resize">↔️↕️</button>
+                    <button className="editor-cmd-btn" title="Spacing">📐</button>
+                  </div>
+                </div>
+              )}
+              {activeTab === 'components' && (
+                <div className="editor-commands">
+                  <div className="command-group">
+                    <button className="editor-cmd-btn" title="Card">🔲</button>
+                    <button className="editor-cmd-btn" title="Button">🔘</button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           
@@ -564,20 +624,6 @@ function DesktopDashboard({ bootstrap }) {
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Sticky View Live Site Button */}
-      <div className="sticky-view-site">
-        <button 
-          className="sticky-view-btn" 
-          onClick={() => {
-            if (previewContent) {
-              window.open(previewContent, '_blank');
-            }
-          }}
-        >
-          View Live Site
-        </button>
       </div>
     </div>
   );
