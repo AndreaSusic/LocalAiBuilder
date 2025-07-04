@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext } from 'react';
-import { validateBeforeRender } from '../../../utils/dataValidation.js';
+// import { validateBeforeRender } from '../../../utils/dataValidation.js';
 
 console.log('🕵️‍♀️ HomepageV1 module evaluated');
 import NavigationSection from '../../../sections/NavigationSection.jsx';
@@ -62,14 +62,14 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
           const userData = apiResponse.bootstrap || apiResponse;
           
           // Run data validation before setting data
-          try {
-            validateBeforeRender(userData);
+          // try {
+          //   validateBeforeRender(userData);
             setData(userData);
-          } catch (validationError) {
-            console.error('Data validation failed:', validationError);
-            // Use only safe fallback data if validation fails
-            setData(initialData);
-          }
+          // } catch (validationError) {
+          //   console.error('Data validation failed:', validationError);
+          //   // Use only safe fallback data if validation fails
+          //   setData(initialData);
+          // }
         })
         .catch(error => {
           console.log('Template using fallback data:', error);
@@ -77,13 +77,13 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
         });
     } else {
       // Validate bootstrap data as well
-      try {
-        validateBeforeRender(bootstrap);
+      // try {
+      //   validateBeforeRender(bootstrap);
         setData(bootstrap);
-      } catch (validationError) {
-        console.error('Bootstrap data validation failed:', validationError);
-        setData(initialData);
-      }
+      // } catch (validationError) {
+      //   console.error('Bootstrap data validation failed:', validationError);
+      //   setData(initialData);
+      // }
     }
   }, [bootstrap]);
 
