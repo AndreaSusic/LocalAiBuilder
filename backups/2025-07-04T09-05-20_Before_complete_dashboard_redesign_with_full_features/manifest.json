@@ -1,0 +1,17 @@
+{
+  "id": "2025-07-04T09-05-20_Before_complete_dashboard_redesign_with_full_features",
+  "timestamp": "2025-07-04T09-05-20",
+  "description": "Before complete dashboard redesign with full features",
+  "files": [
+    "dashboard/src/components/DesktopDashboard.jsx",
+    "dashboard/src/components/MobileDashboard.jsx",
+    "dashboard/src/App.jsx",
+    "dashboard/src/App.css",
+    "dashboard/COMPONENT_BACKUP.md",
+    "UI_PROTECTION.md",
+    "server.js",
+    "editorBridge.js",
+    "replit.md"
+  ],
+  "created": "2025-07-04T09:05:20.731Z"
+}

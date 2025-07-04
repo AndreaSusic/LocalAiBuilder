@@ -227,10 +227,6 @@ function DesktopDashboard({ bootstrap }) {
   const [chatMessage, setChatMessage] = useState("");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [currentLanguage, setCurrentLanguage] = useState("EN");
-  const [currentDevice, setCurrentDevice] = useState("Desktop");
-  const [chatHistory, setChatHistory] = useState([]);
-  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     const createPreviewUrl = async () => {
@@ -299,32 +295,12 @@ function DesktopDashboard({ bootstrap }) {
   };
 
   const handleSendMessage = async () => {
-    if (!chatMessage.trim() || isProcessing) return;
+    if (!chatMessage.trim()) return;
     
-    const userMessage = chatMessage.trim();
+    console.log('Sending message:', chatMessage);
+    // Here you can add actual chat functionality
+    // For now, just clear the input
     setChatMessage("");
-    setIsProcessing(true);
-    
-    // Add user message to chat history
-    setChatHistory(prev => [...prev, { role: 'user', content: userMessage }]);
-    
-    try {
-      const response = await fetch('/api/ai-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage })
-      });
-      
-      const data = await response.json();
-      
-      // Add AI response to chat history
-      setChatHistory(prev => [...prev, { role: 'ai', content: data.response }]);
-    } catch (error) {
-      console.error('Error sending message:', error);
-      setChatHistory(prev => [...prev, { role: 'ai', content: 'Sorry, I encountered an error. Please try again.' }]);
-    } finally {
-      setIsProcessing(false);
-    }
   };
 
   return (
@@ -333,7 +309,7 @@ function DesktopDashboard({ bootstrap }) {
       <header className="header-wireframe">
         <div className="logo-section">
           <a href="/" className="logo-link">
-            <img src="/assets/logo.svg" alt="LocalAI Builder" className="dashboard-logo" />
+            <img src="/logo.svg" alt="LocalAI Builder" className="dashboard-logo" />
           </a>
         </div>
         
@@ -351,28 +327,6 @@ function DesktopDashboard({ bootstrap }) {
           <button className="btn-wireframe" onClick={() => window.postMessage({type: 'redo'}, '*')}>
             ↷ Redo
           </button>
-        </div>
-
-        {/* Language and Device Switchers */}
-        <div className="header-switches">
-          <select 
-            value={currentLanguage} 
-            onChange={(e) => setCurrentLanguage(e.target.value)}
-            className="language-select"
-          >
-            <option value="EN">EN</option>
-            <option value="SR">SR</option>
-          </select>
-          
-          <select 
-            value={currentDevice} 
-            onChange={(e) => setCurrentDevice(e.target.value)}
-            className="device-select"
-          >
-            <option value="Desktop">Desktop</option>
-            <option value="Tablet">Tablet</option>
-            <option value="Mobile">Mobile</option>
-          </select>
         </div>
 
         {/* Right Side Actions */}
@@ -399,8 +353,8 @@ function DesktopDashboard({ bootstrap }) {
         </div>
       </header>
 
-      {/* Main Content Grid */}
-      <div className="main-content-grid">
+      {/* Main Content */}
+      <div className="main-content-wireframe">
         {/* Live Preview Panel */}
         <div className="preview-panel-wireframe">
           <div className="preview-container">
@@ -408,7 +362,7 @@ function DesktopDashboard({ bootstrap }) {
               <iframe
                 key={previewContent}
                 src={previewContent}
-                className={`preview-iframe preview-${currentDevice.toLowerCase()}`}
+                className="preview-iframe preview-desktop"
                 onLoad={handleIframeLoad}
                 title="Website Preview"
               />
@@ -427,62 +381,28 @@ function DesktopDashboard({ bootstrap }) {
           </button>
         </div>
 
-        {/* Right Panel - Editor */}
-        <div className="right-panel-wireframe">
-          <div className="editor-panel">
-            <h3>Editor</h3>
-            <div className="editor-tabs">
-              <button className="tab-btn active">HTML</button>
-              <button className="tab-btn">CSS</button>
-              <button className="tab-btn">JS</button>
-            </div>
-            <div className="editor-content">
-              <p>Click on elements in the preview to edit them.</p>
-            </div>
+        {/* Chat Panel */}
+        <div className="chat-panel-wireframe">
+          <div className="chat-input-container">
+            <input
+              type="text"
+              value={chatMessage}
+              onChange={(e) => setChatMessage(e.target.value)}
+              placeholder="Type a message..."
+              className="chat-input"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleSendMessage();
+                }
+              }}
+            />
+            <button 
+              className="send-btn"
+              onClick={handleSendMessage}
+            >
+              Send
+            </button>
           </div>
-        </div>
-      </div>
-
-      {/* Bottom Chat Panel */}
-      <div className="bottom-chat-panel">
-        <div className="chat-history">
-          {chatHistory.map((message, index) => (
-            <div key={index} className={`chat-bubble ${message.role}`}>
-              <div className="bubble-content">
-                {message.content}
-              </div>
-            </div>
-          ))}
-          {isProcessing && (
-            <div className="chat-bubble ai">
-              <div className="bubble-content">
-                <span className="typing-indicator">●●●</span>
-              </div>
-            </div>
-          )}
-        </div>
-        
-        <div className="chat-input-container">
-          <input
-            type="text"
-            value={chatMessage}
-            onChange={(e) => setChatMessage(e.target.value)}
-            placeholder="Type a message to AI..."
-            className="chat-input"
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                handleSendMessage();
-              }
-            }}
-            disabled={isProcessing}
-          />
-          <button 
-            className="send-btn"
-            onClick={handleSendMessage}
-            disabled={isProcessing}
-          >
-            Send
-          </button>
         </div>
       </div>
     </div>
