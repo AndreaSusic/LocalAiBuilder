@@ -119,6 +119,10 @@ export default function App({ bootstrap }) {
         <Route path="/templates/contact/v1/index.jsx" element={<ContactV1 bootstrap={bootstrap} />} />
         <Route path="/contact" element={<ContactV1 bootstrap={bootstrap} />} />
         
+        {/* Short URL template routes - these handle /t/v1/:id patterns */}
+        <Route path="/t/v1/:id" element={<TemplatePreview />} />
+        <Route path="/t/v1" element={<TemplatePreview fallbackBootstrap={bootstrap} />} />
+        
         {/* Catch-all route */}
         <Route path="*" element={<h1>404 – Not found</h1>} />
       </Routes>
