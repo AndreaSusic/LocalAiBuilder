@@ -513,14 +513,6 @@ function DesktopDashboard({ bootstrap }) {
         {/* Right Panel - Editor and Chat */}
         <div className="right-panel-wireframe">
           <div className="editor-panel">
-            <div className="editor-header">
-              <h3>Editor</h3>
-              <img 
-                src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo-transparent.png" 
-                alt="Logo" 
-                className="editor-logo"
-              />
-            </div>
             <div className="editor-tabs">
               <button 
                 className={`tab-btn ${activeTab === 'text' ? 'active' : ''}`} 
