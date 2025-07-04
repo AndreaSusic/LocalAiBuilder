@@ -2562,6 +2562,225 @@ app.delete('/api/delete-page-edit/:pageId/:elementId', ensureLoggedIn(), async (
   }
 });
 
+// Save complete page content
+app.post('/api/save-complete-page', ensureLoggedIn(), async (req, res) => {
+  try {
+    const { pageId, pageContent, timestamp } = req.body;
+    const userId = req.user.id;
+    
+    console.log('💾 Saving complete page for user:', userId, 'pageId:', pageId);
+    
+    // First, check if we have a complete_pages table, if not create it
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS complete_pages (
+        id SERIAL PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        page_id VARCHAR(255) NOT NULL,
+        page_content TEXT NOT NULL,
+        saved_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(user_id, page_id)
+      )
+    `);
+    
+    // Save or update the complete page
+    const result = await pool.query(`
+      INSERT INTO complete_pages (user_id, page_id, page_content, saved_at)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (user_id, page_id)
+      DO UPDATE SET 
+        page_content = EXCLUDED.page_content,
+        saved_at = EXCLUDED.saved_at
+      RETURNING id
+    `, [userId, pageId, pageContent, timestamp || new Date().toISOString()]);
+    
+    console.log('✅ Complete page saved successfully, ID:', result.rows[0].id);
+    res.json({ 
+      success: true, 
+      message: 'Page saved successfully',
+      saveId: result.rows[0].id,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('❌ Error saving complete page:', error);
+    res.status(500).json({ error: 'Failed to save page' });
+  }
+});
+
+// Get complete saved page
+app.get('/api/get-complete-page/:pageId', ensureLoggedIn(), async (req, res) => {
+  try {
+    const { pageId } = req.params;
+    const userId = req.user.id;
+    
+    console.log('📖 Loading complete page for user:', userId, 'pageId:', pageId);
+    
+    const result = await pool.query(
+      'SELECT page_content, saved_at FROM complete_pages WHERE user_id = $1 AND page_id = $2',
+      [userId, pageId]
+    );
+    
+    if (result.rows.length > 0) {
+      console.log('✅ Complete page found');
+      res.json({ 
+        success: true, 
+        pageContent: result.rows[0].page_content,
+        lastSaved: result.rows[0].saved_at
+      });
+    } else {
+      res.status(404).json({ error: 'Page not found' });
+    }
+    
+  } catch (error) {
+    console.error('❌ Error loading complete page:', error);
+    res.status(500).json({ error: 'Failed to load page' });
+  }
+});
+
+// Create user site URL
+app.post('/api/create-site-url', ensureLoggedIn(), async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { siteName, templateData } = req.body;
+    
+    console.log('🌐 Creating site URL for user:', userId);
+    
+    // Create unique site slug from user ID and timestamp
+    const siteSlug = `${userId}-${Date.now()}`.replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+    
+    // Store the site data
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS user_sites (
+        id SERIAL PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        site_slug VARCHAR(255) UNIQUE NOT NULL,
+        site_name VARCHAR(255),
+        template_data JSONB,
+        is_published BOOLEAN DEFAULT true,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
+    
+    const result = await pool.query(`
+      INSERT INTO user_sites (user_id, site_slug, site_name, template_data)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (site_slug) 
+      DO UPDATE SET 
+        site_name = EXCLUDED.site_name,
+        template_data = EXCLUDED.template_data,
+        updated_at = NOW()
+      RETURNING site_slug, created_at
+    `, [userId, siteSlug, siteName || 'My Website', templateData || {}]);
+    
+    const siteUrl = `${req.protocol}://${req.get('host')}/site/${siteSlug}`;
+    
+    console.log('✅ Site URL created:', siteUrl);
+    res.json({ 
+      success: true, 
+      siteUrl: siteUrl,
+      siteSlug: siteSlug,
+      createdAt: result.rows[0].created_at
+    });
+    
+  } catch (error) {
+    console.error('❌ Error creating site URL:', error);
+    res.status(500).json({ error: 'Failed to create site URL' });
+  }
+});
+
+// Serve user sites
+app.get('/site/:siteSlug', async (req, res) => {
+  try {
+    const { siteSlug } = req.params;
+    
+    console.log('🌐 Serving site:', siteSlug);
+    
+    const result = await pool.query(
+      'SELECT template_data, site_name, user_id FROM user_sites WHERE site_slug = $1 AND is_published = true',
+      [siteSlug]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).send('Site not found');
+    }
+    
+    const site = result.rows[0];
+    
+    // Load user's page edits if they exist
+    const editsResult = await pool.query(
+      'SELECT element_id, edited_content FROM page_edits WHERE user_id = $1',
+      [site.user_id]
+    );
+    
+    const userEdits = {};
+    editsResult.rows.forEach(edit => {
+      userEdits[edit.element_id] = edit.edited_content;
+    });
+    
+    // Generate the final site HTML with user edits applied
+    const templateData = site.template_data || {};
+    const siteHtml = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${site.site_name}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .hero { text-align: center; padding: 60px 0; }
+        .services { padding: 40px 0; }
+        .contact { padding: 40px 0; background: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <h1>${templateData.company_name || site.site_name}</h1>
+            <p>${templateData.tagline || 'Professional services you can trust'}</p>
+        </header>
+        
+        <section class="services">
+            <h2>Our Services</h2>
+            <div>
+                ${(templateData.services || ['Service 1', 'Service 2', 'Service 3']).map(service => 
+                  `<div style="margin: 20px 0;"><h3>${service}</h3></div>`
+                ).join('')}
+            </div>
+        </section>
+        
+        <section class="contact">
+            <h2>Contact Us</h2>
+            <p>Phone: ${templateData.phone || 'Contact us for more info'}</p>
+            <p>Address: ${templateData.address || 'Visit us today'}</p>
+        </section>
+    </div>
+    
+    <script>
+        // Apply user edits
+        const userEdits = ${JSON.stringify(userEdits)};
+        Object.keys(userEdits).forEach(elementId => {
+            const element = document.querySelector('[data-element-id="' + elementId + '"]');
+            if (element) {
+                element.textContent = userEdits[elementId];
+            }
+        });
+        
+        console.log('🌐 User site loaded successfully');
+    </script>
+</body>
+</html>`;
+    
+    res.send(siteHtml);
+    
+  } catch (error) {
+    console.error('❌ Error serving site:', error);
+    res.status(500).send('Error loading site');
+  }
+});
+
 app.listen(PORT, '0.0.0.0', function() {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
 });

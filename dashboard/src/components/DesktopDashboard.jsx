@@ -24,6 +24,8 @@ function injectComprehensiveEditor(iframe) {
           let activeEl = null;
           let panel = null;
           let timer = null;
+          let history = [];
+          let historyIndex = -1;
           
           function init() {
             addStyles();
@@ -294,9 +296,12 @@ function injectComprehensiveEditor(iframe) {
               </div>
               
               <div class="panel-section">
-                <button class="ai-button" onclick="openAI()" title="Get AI assistance">
-                  🤖 Get AI Help
-                </button>
+                <label>Actions:</label>
+                <div class="format-buttons">
+                  <button class="format-btn" onclick="undoEdit()" title="Undo">↶</button>
+                  <button class="format-btn" onclick="redoEdit()" title="Redo">↷</button>
+                  <button class="format-btn" onclick="saveChanges()" title="Save">💾</button>
+                </div>
               </div>
             \`;
             
@@ -308,7 +313,9 @@ function injectComprehensiveEditor(iframe) {
             window.changeFontSize = changeFontSize;
             window.changeHeading = changeHeading;
             window.changeColor = changeColor;
-            window.openAI = openAI;
+            window.undoEdit = undoEdit;
+            window.redoEdit = redoEdit;
+            window.saveChanges = saveChanges;
           }
           
           function setupEvents() {
@@ -345,6 +352,11 @@ function injectComprehensiveEditor(iframe) {
             
             if (activeEl) deactivate();
             
+            // Save initial state to history if not already done
+            if (history.length === 0) {
+              saveToHistory();
+            }
+            
             activeEl = el;
             el.classList.add('edit-active');
             el.contentEditable = true;
@@ -352,14 +364,22 @@ function injectComprehensiveEditor(iframe) {
             if (panel) {
               panel.classList.add('show');
               
-              // Update dropdowns
+              // Update dropdowns with current values
               const fontSize = parseInt(window.getComputedStyle(el).fontSize);
               const fontSelect = panel.querySelector('#fontSizeSelect');
-              if (fontSelect) fontSelect.value = fontSize;
+              if (fontSelect) {
+                fontSelect.value = fontSize.toString();
+                console.log(\`🔤 Current font size: \${fontSize}px\`);
+              }
               
               const headSelect = panel.querySelector('#headingSelect');
-              if (headSelect && el.tagName.match(/H[1-6]/)) {
-                headSelect.value = el.tagName;
+              if (headSelect) {
+                if (el.tagName.match(/H[1-6]/)) {
+                  headSelect.value = el.tagName;
+                  console.log(\`📝 Current heading: \${el.tagName}\`);
+                } else {
+                  headSelect.value = '';
+                }
               }
             }
             
@@ -385,14 +405,16 @@ function injectComprehensiveEditor(iframe) {
           
           function changeFontSize(size) {
             if (!activeEl) return;
+            saveToHistory();
             activeEl.style.fontSize = size + 'px';
-            console.log(\`🔤 Font size: \${size}px\`);
+            console.log(\`🔤 Font size changed to: \${size}px\`);
             scheduleAutoSave(activeEl);
           }
           
           function changeHeading(level) {
             if (!activeEl || !level) return;
             
+            saveToHistory();
             const newEl = document.createElement(level.toLowerCase());
             newEl.innerHTML = activeEl.innerHTML;
             newEl.className = activeEl.className;
@@ -400,13 +422,28 @@ function injectComprehensiveEditor(iframe) {
             newEl.setAttribute('data-original', activeEl.getAttribute('data-original'));
             newEl.style.cssText = activeEl.style.cssText;
             
+            // Ensure positioning for delete button
             if (window.getComputedStyle(newEl).position === 'static') {
               newEl.style.position = 'relative';
             }
             
+            // Add delete button to new element
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-x';
+            deleteBtn.innerHTML = '×';
+            deleteBtn.onclick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (confirm('Delete this element?')) {
+                newEl.remove();
+                console.log('🗑️ Element deleted');
+              }
+            };
+            newEl.appendChild(deleteBtn);
+            
             activeEl.parentNode.replaceChild(newEl, activeEl);
             activate(newEl);
-            console.log(\`📝 Changed to: \${level}\`);
+            console.log(\`📝 Changed to heading: \${level}\`);
           }
           
           function changeColor(c) {
@@ -416,19 +453,62 @@ function injectComprehensiveEditor(iframe) {
             scheduleAutoSave(activeEl);
           }
           
-          function openAI() {
-            if (!activeEl) return;
+          function saveToHistory() {
+            const state = document.body.innerHTML;
+            history = history.slice(0, historyIndex + 1);
+            history.push(state);
+            historyIndex = history.length - 1;
             
-            const text = activeEl.textContent;
-            console.log('🤖 AI request for:', text.substring(0, 50));
-            
-            if (window.parent !== window) {
-              window.parent.postMessage({
-                type: 'AI_CHAT_REQUEST',
-                message: \`Please improve this text: "\${text}"\`,
-                context: 'inline-editor'
-              }, '*');
+            if (history.length > 50) {
+              history.shift();
+              historyIndex--;
             }
+            console.log(\`💾 Saved to history, index: \${historyIndex}\`);
+          }
+          
+          function undoEdit() {
+            if (historyIndex > 0) {
+              historyIndex--;
+              document.body.innerHTML = history[historyIndex];
+              makeEditable(); // Re-initialize after restoration
+              console.log(\`↶ Undo executed, index: \${historyIndex}\`);
+            }
+          }
+          
+          function redoEdit() {
+            if (historyIndex < history.length - 1) {
+              historyIndex++;
+              document.body.innerHTML = history[historyIndex];
+              makeEditable(); // Re-initialize after restoration
+              console.log(\`↷ Redo executed, index: \${historyIndex}\`);
+            }
+          }
+          
+          function saveChanges() {
+            const pageData = document.body.innerHTML;
+            console.log('💾 Saving all changes...');
+            
+            fetch('/api/save-complete-page', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({
+                pageId: window.location.pathname.split('/').pop(),
+                pageContent: pageData,
+                timestamp: new Date().toISOString()
+              })
+            }).then(res => {
+              if (res.ok) {
+                console.log('✅ Page saved successfully');
+                alert('Page saved successfully!');
+              } else {
+                console.log('❌ Save failed');
+                alert('Save failed. Please try again.');
+              }
+            }).catch(e => {
+              console.log('❌ Save error:', e);
+              alert('Save error. Please try again.');
+            });
           }
           
           function scheduleAutoSave(el) {
@@ -474,6 +554,19 @@ function injectComprehensiveEditor(iframe) {
             const idx = [...document.querySelectorAll(tag)].indexOf(el);
             return \`\${tag}-\${cls}-\${txt}-\${idx}\`.toLowerCase();
           }
+          
+          // Listen for AI content updates from parent
+          window.addEventListener('message', (event) => {
+            if (event.data.type === 'AI_CONTENT_UPDATE') {
+              console.log('🤖 Received AI content update:', event.data.newContent);
+              
+              if (activeEl) {
+                activeEl.textContent = event.data.newContent;
+                console.log('✅ Applied AI content to active element');
+                scheduleAutoSave(activeEl);
+              }
+            }
+          });
           
           // Initialize
           if (document.readyState === 'loading') {
@@ -1352,6 +1445,19 @@ function DesktopDashboard({ bootstrap }) {
       } else if (event.data.type === 'historyUpdate') {
         // Could update undo/redo buttons in dashboard if needed
         console.log('📚 History update:', event.data);
+      } else if (event.data.type === 'AI_CHAT_REQUEST') {
+        // AI chat request from iframe
+        setActiveTab('ai');
+        setChatMessage(event.data.message);
+        
+        // Focus the chat input
+        setTimeout(() => {
+          const chatInput = document.querySelector('.chat-input');
+          if (chatInput) {
+            chatInput.focus();
+            chatInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
       }
     };
     
@@ -1572,26 +1678,29 @@ function DesktopDashboard({ bootstrap }) {
             <button 
               className="view-live-btn-mobile" 
               onClick={async () => {
-                // Create a new cache entry with current bootstrap data
-                const id = `custom-${Date.now()}`;
+                console.log('🌐 Creating user site URL...');
                 try {
-                  const response = await fetch('/api/cache-preview', {
+                  const response = await fetch('/api/create-site-url', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id, data: bootstrap || {} })
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                      siteName: bootstrap?.company_name || 'My Website',
+                      templateData: bootstrap || {}
+                    })
                   });
+                  
                   if (response.ok) {
-                    const customizedUrl = `/t/v1/${id}`;
-                    window.open(customizedUrl, '_blank');
+                    const result = await response.json();
+                    console.log('✅ User site created:', result.siteUrl);
+                    window.open(result.siteUrl, '_blank');
                   } else {
-                    console.error('Failed to cache preview data');
-                    // Fallback to permanent URL
-                    window.open('/t/v1/kigen-plastika-default', '_blank');
+                    console.error('Failed to create user site');
+                    alert('Please log in to create your site URL');
                   }
                 } catch (error) {
-                  console.error('Error creating preview URL:', error);
-                  // Fallback to permanent URL
-                  window.open('/t/v1/kigen-plastika-default', '_blank');
+                  console.error('Error creating user site:', error);
+                  alert('Error creating site URL. Please try again.');
                 }
               }}
             >
