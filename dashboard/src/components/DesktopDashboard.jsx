@@ -305,7 +305,7 @@ function DesktopDashboard({ bootstrap }) {
         
         {/* Main Action Buttons */}
         <div className="header-center">
-          <button className="btn-wireframe" onClick={() => window.open('/', '_blank')}>
+          <button className="btn-new-site" onClick={() => window.open('/', '_blank')}>
             + New Site
           </button>
           <button className="btn-wireframe" onClick={() => console.log('Save clicked')}>
