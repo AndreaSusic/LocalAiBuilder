@@ -891,8 +891,19 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
           <button class="auto-save-btn" onclick="toggleFormat('bold')" title="Bold (Ctrl+B)"><b>B</b></button>
           <button class="auto-save-btn" onclick="toggleFormat('italic')" title="Italic (Ctrl+I)"><i>I</i></button>
           <button class="auto-save-btn" onclick="toggleFormat('underline')" title="Underline (Ctrl+U)"><u>U</u></button>
+          <select class="auto-save-btn" onchange="changeFontSize(this.value)" title="Font Size" style="width: 60px;">
+            <option value="">Size</option>
+            <option value="10px">10px</option>
+            <option value="12px">12px</option>
+            <option value="14px">14px</option>
+            <option value="16px">16px</option>
+            <option value="18px">18px</option>
+            <option value="20px">20px</option>
+            <option value="24px">24px</option>
+            <option value="32px">32px</option>
+          </select>
+          <button class="auto-save-btn color-btn" onclick="openColorPicker()" title="Text Color" style="background: #000; color: #fff; width: 30px;">A</button>
           <button class="auto-save-btn" onclick="changeImage()" title="Change Image">🖼️</button>
-          <button class="auto-save-btn" onclick="openColorPicker()" title="Text Color">🎨</button>
           <button class="auto-save-btn" onclick="openAIAssist()" title="AI Assistant">🤖</button>
           <button class="auto-save-btn" onclick="deleteElement()" title="Delete Element">🗑️</button>
         \`;
@@ -928,6 +939,97 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
         } catch (error) {
           console.error('❌ Format command failed:', command, error);
         }
+      }
+      
+      function changeFontSize(size) {
+        if (!activeElement || !size) return;
+        
+        try {
+          if (window.getSelection().toString()) {
+            document.execCommand('fontSize', false, '7');
+            const fontElements = document.querySelectorAll('font[size="7"]');
+            fontElements.forEach(el => {
+              el.removeAttribute('size');
+              el.style.fontSize = size;
+            });
+          } else {
+            activeElement.style.fontSize = size;
+          }
+          scheduleAutoSave(activeElement);
+        } catch (error) {
+          console.error('❌ Font size change failed:', error);
+        }
+      }
+      
+      function openColorPicker() {
+        if (!activeElement) return;
+        
+        const existingPicker = document.querySelector('.color-picker-panel');
+        if (existingPicker) {
+          document.body.removeChild(existingPicker);
+          return;
+        }
+        
+        const colors = ['#000000', '#333333', '#666666', '#999999', '#cccccc', '#ffffff', 
+                       '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff',
+                       '#800000', '#008000', '#000080', '#808000', '#800080', '#008080'];
+        
+        const picker = document.createElement('div');
+        picker.className = 'color-picker-panel';
+        picker.style.cssText = \`
+          position: fixed;
+          background: white;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          padding: 10px;
+          z-index: 10002;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 4px;
+        \`;
+        
+        colors.forEach(color => {
+          const colorBtn = document.createElement('button');
+          colorBtn.style.cssText = \`
+            width: 24px;
+            height: 24px;
+            background: \${color};
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+          \`;
+          colorBtn.onclick = () => {
+            try {
+              if (window.getSelection().toString()) {
+                document.execCommand('foreColor', false, color);
+              } else {
+                activeElement.style.color = color;
+              }
+              document.body.removeChild(picker);
+              scheduleAutoSave(activeElement);
+            } catch (error) {
+              console.error('❌ Color change failed:', error);
+            }
+          };
+          picker.appendChild(colorBtn);
+        });
+        
+        const toolbarRect = toolbar.getBoundingClientRect();
+        picker.style.left = toolbarRect.left + 'px';
+        picker.style.top = (toolbarRect.bottom + 5) + 'px';
+        
+        document.body.appendChild(picker);
+        
+        setTimeout(() => {
+          const clickHandler = (e) => {
+            if (!picker.contains(e.target)) {
+              document.body.removeChild(picker);
+              document.removeEventListener('click', clickHandler);
+            }
+          };
+          document.addEventListener('click', clickHandler);
+        }, 100);
       }
 
       function scheduleAutoSave(element) {
@@ -1138,7 +1240,9 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       }
 
       // Start the editor with longer delay to ensure React is fully rendered
-      setTimeout(initAutoSaveEditor, 1500);
+      setTimeout(async () => {
+        await initAutoSaveEditor();
+      }, 1500);
     `;
     
     document.head.appendChild(script);

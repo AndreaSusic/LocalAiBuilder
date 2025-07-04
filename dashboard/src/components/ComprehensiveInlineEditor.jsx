@@ -211,25 +211,51 @@ const ComprehensiveInlineEditor = ({ previewId }) => {
                 return;
               }
               
-              // Check if element has meaningful text content
+              // Check if element has meaningful text content OR is an image
               const textContent = element.textContent.trim();
-              if (textContent.length > 0) {
+              const isImage = element.tagName === 'IMG';
+              
+              if (textContent.length > 0 || isImage) {
                 element.classList.add('editor-hoverable');
                 element.setAttribute('data-editable', 'true');
-                element.setAttribute('data-original-text', textContent);
                 
-                // Add delete button
+                if (isImage) {
+                  element.setAttribute('data-edit-type', 'image');
+                } else {
+                  element.setAttribute('data-edit-type', 'text');
+                  element.setAttribute('data-original-text', textContent);
+                }
+                
+                // Add delete button with proper styling
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'editor-delete-btn';
                 deleteBtn.innerHTML = '×';
                 deleteBtn.onclick = (e) => {
                   e.stopPropagation();
-                  if (confirm('Delete this element?')) {
+                  if (confirm(\`Delete this \${isImage ? 'image' : 'element'}?\`)) {
                     element.remove();
                   }
                 };
-                element.style.position = 'relative';
-                element.appendChild(deleteBtn);
+                
+                // For images, use absolute positioning to ensure visibility
+                if (isImage) {
+                  if (!element.parentElement.style.position) {
+                    element.parentElement.style.position = 'relative';
+                  }
+                  deleteBtn.style.cssText += '; top: 5px; right: 5px; opacity: 0;';
+                  element.parentElement.appendChild(deleteBtn);
+                  
+                  // Show/hide delete button on hover
+                  element.addEventListener('mouseenter', () => {
+                    deleteBtn.style.opacity = '1';
+                  });
+                  element.addEventListener('mouseleave', () => {
+                    deleteBtn.style.opacity = '0';
+                  });
+                } else {
+                  element.style.position = 'relative';
+                  element.appendChild(deleteBtn);
+                }
                 
                 editableCount++;
               }

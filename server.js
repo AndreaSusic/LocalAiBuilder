@@ -2579,10 +2579,18 @@ app.delete('/api/delete-page-edit/:pageId/:elementId', ensureLoggedIn(), async (
 });
 
 // Save complete page content
-app.post('/api/save-complete-page', ensureLoggedIn(), async (req, res) => {
+app.post('/api/save-complete-page', async (req, res) => {
   try {
     const { pageId, pageContent, timestamp } = req.body;
-    const userId = req.user.id;
+    
+    // For dashboard users, create session-based user ID
+    let userId;
+    if (req.user && req.user.id) {
+      userId = req.user.id;
+    } else {
+      userId = req.sessionID || 'dashboard-user-' + Date.now();
+      console.log('🔄 Using session-based user ID for complete page save:', userId);
+    }
     
     console.log('💾 Saving complete page for user:', userId, 'pageId:', pageId);
     
@@ -2770,9 +2778,20 @@ app.get('/site/:siteSlug', async (req, res) => {
         <section class="services">
             <h2>Our Services</h2>
             <div>
-                ${(templateData.services || ['Service 1', 'Service 2', 'Service 3']).map(service => 
-                  `<div style="margin: 20px 0;"><h3>${service}</h3></div>`
-                ).join('')}
+                ${(() => {
+                  const services = templateData.services;
+                  if (typeof services === 'string') {
+                    return `<div style="margin: 20px 0;"><h3>${services}</h3></div>`;
+                  } else if (Array.isArray(services)) {
+                    return services.map(service => 
+                      `<div style="margin: 20px 0;"><h3>${service}</h3></div>`
+                    ).join('');
+                  } else {
+                    return ['Service 1', 'Service 2', 'Service 3'].map(service => 
+                      `<div style="margin: 20px 0;"><h3>${service}</h3></div>`
+                    ).join('');
+                  }
+                })()}
             </div>
         </section>
         
