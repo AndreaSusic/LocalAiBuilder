@@ -99,6 +99,7 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       let currentPageId = '${previewId}';
       let saveTimeout = null;
       let isAuthenticated = false;
+      let editorEnabled = true; // Always enable editor in dashboard preview
 
       // Check authentication status
       async function checkAuthStatus() {
@@ -179,17 +180,47 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       }
 
       function markEditableElements() {
-        const textSelectors = [
-          'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-          'p', 'span', 'div[class*="text"]', 
-          '.hero-title', '.hero-subtitle', '.section-title',
-          '[class*="title"]', '[class*="heading"]',
-          '.about-text', '.service-description', '.review-text'
+        // Mark ALL text content as editable
+        const allTextElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, label, legend, summary, figcaption');
+        
+        allTextElements.forEach(element => {
+          // Only mark elements with text content, excluding interactive elements
+          if (element.textContent.trim() && 
+              !element.querySelector('input, button, select, textarea, a[href]') &&
+              !element.closest('button') &&
+              !element.closest('a[href]') &&
+              !element.hasAttribute('data-editable')) {
+            element.setAttribute('data-editable', 'true');
+            element.setAttribute('data-edit-type', 'text');
+            element.setAttribute('data-element-id', generateElementId(element));
+          }
+        });
+        
+        // Mark ALL images as editable
+        document.querySelectorAll('img').forEach(element => {
+          if (!element.hasAttribute('data-editable')) {
+            element.setAttribute('data-editable', 'true');
+            element.setAttribute('data-edit-type', 'image');
+            element.setAttribute('data-element-id', generateElementId(element));
+          }
+        });
+        
+        // Also mark elements with specific content classes
+        const contentSelectors = [
+          '[class*="content"]', '[class*="text"]', '[class*="description"]',
+          '[class*="title"]', '[class*="heading"]', '[class*="subtitle"]',
+          '[class*="review"]', '[class*="testimonial"]', '[class*="about"]',
+          '[class*="feature"]', '[class*="service"]', '[class*="contact"]',
+          '[class*="gallery"]', '[class*="footer"]'
         ];
         
-        textSelectors.forEach(selector => {
+        contentSelectors.forEach(selector => {
           document.querySelectorAll(selector).forEach(element => {
-            if (element.textContent.trim() && !element.querySelector('input, button, a')) {
+            if (element.textContent.trim() && 
+                !element.querySelector('input, button, select, textarea, a[href]') &&
+                !element.closest('button') &&
+                !element.closest('a[href]') &&
+                !element.hasAttribute('data-editable')) {
               element.setAttribute('data-editable', 'true');
               element.setAttribute('data-edit-type', 'text');
               element.setAttribute('data-element-id', generateElementId(element));
@@ -197,13 +228,17 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
           });
         });
         
-        document.querySelectorAll('img').forEach(element => {
-          element.setAttribute('data-editable', 'true');
-          element.setAttribute('data-edit-type', 'image');
-          element.setAttribute('data-element-id', generateElementId(element));
-        });
+        const editableCount = document.querySelectorAll('[data-editable="true"]').length;
+        console.log('🎯 Marked', editableCount, 'elements as editable');
         
-        console.log('🎯 Marked', document.querySelectorAll('[data-editable="true"]').length, 'elements as editable');
+        // Debug log sections
+        const sections = ['hero', 'services', 'about', 'features', 'reviews', 'gallery', 'contact', 'footer'];
+        sections.forEach(section => {
+          const sectionElements = document.querySelectorAll(\`[class*="\${section}"] [data-editable="true"]\`);
+          if (sectionElements.length > 0) {
+            console.log(\`📍 \${section.toUpperCase()} section: \${sectionElements.length} editable elements\`);
+          }
+        });
       }
 
       function generateElementId(element) {
@@ -502,11 +537,19 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       window.openAIAssist = function() {
         if (!activeElement) return;
         
-        const prompt = window.prompt('What would you like to change about this content?');
-        if (prompt) {
-          console.log('🤖 AI assistance requested:', prompt);
-          alert('AI assistance will be available in the next update!');
-        }
+        // Send message to parent dashboard to open AI chat with context
+        window.parent.postMessage({
+          type: 'openAIChat',
+          selectedElement: {
+            tagName: activeElement.tagName,
+            textContent: activeElement.textContent.substring(0, 100),
+            className: activeElement.className,
+            elementId: activeElement.getAttribute('data-element-id')
+          },
+          context: 'inline-editor'
+        }, '*');
+        
+        console.log('🤖 AI assistance requested for element:', activeElement.getAttribute('data-element-id'));
       };
 
       window.deleteElement = function() {
@@ -537,17 +580,35 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
 
       // Initialize auto-save editor
       async function initAutoSaveEditor() {
+        console.log('🔧 Starting auto-save editor initialization...');
+        
+        // Always enable in dashboard preview - no "direct view access" checks
+        if (window.location.pathname.includes('/t/v1/') || window.location.pathname.includes('/preview')) {
+          console.log('✅ Dashboard preview detected - enabling editor');
+          editorEnabled = true;
+        }
+        
+        if (!editorEnabled) {
+          console.log('🚫 Editor disabled for this environment');
+          return;
+        }
+        
         await checkAuthStatus();
         addEditorStyles();
-        markEditableElements();
+        
+        // Wait for React components to fully render
+        setTimeout(() => {
+          markEditableElements();
+        }, 1000);
+        
         await loadExistingEdits();
         setupEventListeners();
         createAutoSaveToolbar();
-        console.log('✅ Auto-save editor initialized');
+        console.log('✅ Auto-save editor fully initialized');
       }
 
-      // Start the editor
-      setTimeout(initAutoSaveEditor, 500);
+      // Start the editor with longer delay to ensure React is fully rendered
+      setTimeout(initAutoSaveEditor, 1500);
     `;
     
     document.head.appendChild(script);
