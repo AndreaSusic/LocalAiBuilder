@@ -785,6 +785,19 @@ function injectWorkingEditor(iframe) {
           console.log('✅ Universal editor initialized');
         }
         
+        // Listen for messages from parent dashboard
+        window.addEventListener('message', function(event) {
+          if (event.data.type === 'execCommand') {
+            exec(event.data.command);
+          } else if (event.data.type === 'showFontSizeDropdown') {
+            showFontSizeDropdown();
+          } else if (event.data.type === 'undo') {
+            undo();
+          } else if (event.data.type === 'redo') {
+            redo();
+          }
+        });
+        
         // Start when DOM is ready
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', initWorkingEditor);
@@ -924,8 +937,31 @@ function DesktopDashboard({ bootstrap }) {
       
       const data = await response.json();
       
+      // If AI returned a content change instruction, execute it in the iframe
+      if (data.contentChange) {
+        const iframe = document.querySelector('.preview-iframe');
+        if (iframe && iframe.contentWindow) {
+          try {
+            // Execute DOM changes in the iframe
+            const script = `
+              const element = document.querySelector('${data.contentChange.selector}');
+              if (element) {
+                element.textContent = '${data.contentChange.newContent}';
+                element.innerHTML = '${data.contentChange.newContent}';
+                console.log('✅ Content updated successfully');
+              } else {
+                console.log('❌ Element not found with selector: ${data.contentChange.selector}');
+              }
+            `;
+            iframe.contentWindow.eval(script);
+          } catch (error) {
+            console.error('Error executing content change:', error);
+          }
+        }
+      }
+      
       // Add AI response to chat history
-      setChatHistory(prev => [...prev, { role: 'ai', content: data.response }]);
+      setChatHistory(prev => [...prev, { role: 'ai', content: data.message || data.response }]);
     } catch (error) {
       console.error('Error sending message:', error);
       setChatHistory(prev => [...prev, { role: 'ai', content: 'Sorry, I encountered an error. Please try again.' }]);
@@ -1027,9 +1063,9 @@ function DesktopDashboard({ bootstrap }) {
             <button 
               className="view-live-btn-mobile" 
               onClick={() => {
-                if (previewContent) {
-                  window.open(previewContent, '_blank');
-                }
+                // Use permanent cache ID for Kigen Plastika
+                const permanentUrl = `/t/v1/kigen-plastika-default`;
+                window.open(permanentUrl, '_blank');
               }}
             >
               View Live Site
@@ -1070,11 +1106,37 @@ function DesktopDashboard({ bootstrap }) {
               {activeTab === 'text' && (
                 <div className="editor-commands">
                   <div className="command-group">
-                    <button className="editor-cmd-btn" title="Bold">𝐁</button>
-                    <button className="editor-cmd-btn" title="Italic">𝑰</button>
-                    <button className="editor-cmd-btn" title="Underline">𝑼</button>
-                    <button className="editor-cmd-btn" title="List">List</button>
-                    <button className="editor-cmd-btn" title="Font Size">8px</button>
+                    <button className="editor-cmd-btn" title="Bold" onClick={() => {
+                      const iframe = document.querySelector('.preview-iframe');
+                      if (iframe && iframe.contentWindow) {
+                        iframe.contentWindow.postMessage({type: 'execCommand', command: 'bold'}, '*');
+                      }
+                    }}>𝐁</button>
+                    <button className="editor-cmd-btn" title="Italic" onClick={() => {
+                      const iframe = document.querySelector('.preview-iframe');
+                      if (iframe && iframe.contentWindow) {
+                        iframe.contentWindow.postMessage({type: 'execCommand', command: 'italic'}, '*');
+                      }
+                    }}>𝑰</button>
+                    <button className="editor-cmd-btn" title="Underline" onClick={() => {
+                      const iframe = document.querySelector('.preview-iframe');
+                      if (iframe && iframe.contentWindow) {
+                        iframe.contentWindow.postMessage({type: 'execCommand', command: 'underline'}, '*');
+                      }
+                    }}>𝑼</button>
+                    <button className="editor-cmd-btn" title="List" onClick={() => {
+                      const iframe = document.querySelector('.preview-iframe');
+                      if (iframe && iframe.contentWindow) {
+                        iframe.contentWindow.postMessage({type: 'execCommand', command: 'insertUnorderedList'}, '*');
+                      }
+                    }}>List</button>
+                    <button className="editor-cmd-btn" title="Font Size" onClick={() => {
+                      // Send font size command to iframe
+                      const iframe = document.querySelector('.preview-iframe');
+                      if (iframe && iframe.contentWindow) {
+                        iframe.contentWindow.postMessage({type: 'showFontSizeDropdown'}, '*');
+                      }
+                    }}>Font Size</button>
                     <button className="editor-cmd-btn" title="Text Color">A🖌️</button>
                     <button className="editor-cmd-btn" title="Highlight">🖍️</button>
                     <button className="editor-cmd-btn" title="Heading">H₁</button>
