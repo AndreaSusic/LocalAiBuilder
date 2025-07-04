@@ -224,12 +224,52 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
 .logo-section {
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  justify-content: center;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 0 0 auto;
+}
+
+.credits-info {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: #f8f9fa;
+  border: 1px solid #e1e5e9;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.credits-label {
+  color: #495057;
+}
+
+.btn-primary {
+  background: #ffc000;
+  color: white;
+  border: 1px solid #ffc000;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background: #e6ac00;
+  border-color: #e6ac00;
 }
 
 .btn-wireframe {
