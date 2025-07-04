@@ -1,382 +1,116 @@
-/**
- * EDITOR TOOLBAR STYLES
- * Minimal styling for the inline editing toolbar
- */
+/* Framework-agnostic inline editor toolbar styles */
 
 .ez-toolbar {
-  position: absolute;
-  background: #ffffff;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  padding: 4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  display: none;
-  gap: 2px;
-  z-index: 10000;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  user-select: none;
-  flex-wrap: wrap;
-  max-width: 400px;
-  /* Ensure toolbar stays within viewport */
-  max-height: 100px;
-  overflow: visible;
+  position: absolute !important;
+  background: white !important;
+  border: 1px solid #aaa !important;
+  border-radius: 6px !important;
+  padding: 4px !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+  z-index: 10000 !important;
+  display: none !important;
+  flex-wrap: wrap !important;
+  gap: 2px !important;
+  min-width: 300px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
 .ez-btn {
-  font: 14px/1.2 sans-serif;
-  padding: 4px 6px;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  border-radius: 3px;
-  transition: background-color 0.15s ease;
-  min-width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  font: 14px/1 sans-serif !important;
+  padding: 4px 6px !important;
+  cursor: pointer !important;
+  border: 1px solid #ddd !important;
+  border-radius: 3px !important;
+  background: white !important;
+  min-width: 30px !important;
+  margin: 0 !important;
 }
 
 .ez-btn:hover {
-  background: #f0f0f0;
+  background: #f0f0f0 !important;
 }
 
-.ez-btn:active {
-  background: #e0e0e0;
-}
-
-.ez-btn:focus {
-  outline: 2px solid #007cff;
-  outline-offset: 1px;
-}
-
-/* Tooltip styles */
-.ez-btn::after {
-  content: attr(title);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s ease;
-  pointer-events: none;
-  z-index: 10001;
-}
-
-.ez-btn:hover::after {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(-2px);
-}
-
-/* Specific button styles */
-.ez-btn[title*="Bold"] {
-  font-weight: bold;
-}
-
-.ez-btn[title*="Italic"] {
-  font-style: italic;
-}
-
-.ez-btn[title*="Underline"] {
-  text-decoration: underline;
-}
-
-.ez-btn[title*="Color"] {
-  position: relative;
-}
-
-.ez-btn[title*="Color"]:after {
-  content: '';
-  position: absolute;
-  bottom: 2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 12px;
-  height: 2px;
-  background: currentColor;
-}
-
-/* Separator between button groups */
-.ez-toolbar .ez-btn:nth-child(4):after,
-.ez-toolbar .ez-btn:nth-child(7):after,
-.ez-toolbar .ez-btn:nth-child(11):after,
-.ez-toolbar .ez-btn:nth-child(15):after {
-  content: '';
-  position: absolute;
-  right: -2px;
-  top: 2px;
-  bottom: 2px;
-  width: 1px;
-  background: #ddd;
-}
-
-/* Editable element highlighting */
+/* Editable element styles */
 [data-editable="true"]:hover {
-  outline: 2px dashed #007cff !important;
+  outline: 2px dotted #ff0000 !important;
   outline-offset: 2px !important;
+  cursor: pointer !important;
 }
 
 [data-editable="true"][contenteditable="true"] {
-  outline: 2px solid #007cff !important;
+  outline: 2px solid #ffc000 !important;
   outline-offset: 2px !important;
-  background-color: rgba(0, 124, 255, 0.05) !important;
 }
 
-/* Responsive adjustments */
-@media (max-width: 480px) {
-  .ez-toolbar {
-    max-width: 300px;
-    padding: 3px;
-  }
-  
-  .ez-btn {
-    font-size: 12px;
-    padding: 3px 4px;
-    min-width: 20px;
-    height: 20px;
-  }
+/* Editor modal styles */
+.editor-modal {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: white !important;
+  border: 1px solid #ccc !important;
+  border-radius: 8px !important;
+  padding: 20px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+  z-index: 10001 !important;
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  overflow: auto !important;
 }
 
-/* Animation for toolbar appearance */
-.ez-toolbar {
-  opacity: 0;
-  transform: translateY(-10px);
-  animation: toolbarAppear 0.2s ease-out forwards;
+.editor-modal h3 {
+  margin: 0 0 10px 0 !important;
+  color: #333 !important;
 }
 
-@keyframes toolbarAppear {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.editor-modal button {
+  padding: 8px 16px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  background: white !important;
+  cursor: pointer !important;
+  margin: 5px !important;
 }
 
-/* Toolbar positioning fallbacks */
-.ez-toolbar.position-bottom {
-  transform: translateY(10px);
+.editor-modal button:hover {
+  background: #f0f0f0 !important;
 }
 
-.ez-toolbar.position-left {
-  transform: translateX(-10px);
+.editor-modal input, .editor-modal textarea {
+  padding: 8px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
 }
 
-.ez-toolbar.position-right {
-  transform: translateX(10px);
+/* Chat modal specific styles */
+#chatMessages {
+  background: #f9f9f9 !important;
+  border: 1px solid #eee !important;
+  border-radius: 4px !important;
+  padding: 10px !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  margin: 10px 0 !important;
 }
 
-/* Prevent toolbar from being accidentally selected */
+#chatInput {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.ai-response {
+  color: #333 !important;
+}
+
+/* Make sure toolbar buttons are always visible and clickable */
+.ez-toolbar button {
+  pointer-events: auto !important;
+  z-index: 10001 !important;
+}
+
+/* Override any site styles that might interfere */
 .ez-toolbar * {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .ez-toolbar {
-    border: 2px solid #000;
-    background: #fff;
-  }
-  
-  .ez-btn:hover {
-    background: #000;
-    color: #fff;
-  }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .ez-toolbar {
-    background: #2d2d2d;
-    border-color: #555;
-    color: #fff;
-  }
-  
-  .ez-btn:hover {
-    background: #404040;
-  }
-  
-  .ez-btn:active {
-    background: #505050;
-  }
-}
-
-/* Enhanced toolbar features */
-.ez-delete-btn {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #ff4757;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10001;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  transition: all 0.2s ease;
-}
-
-.ez-delete-btn:hover {
-  background: #ff3742;
-  transform: scale(1.1);
-}
-
-.ez-heading-dropdown {
-  padding: 4px 6px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  background: white;
-  font-size: 12px;
-  cursor: pointer;
-  margin-right: 8px;
-}
-
-.ez-heading-dropdown:focus {
-  outline: 2px solid #007cff;
-  outline-offset: 1px;
-}
-
-/* Video panel styles */
-.ez-video-panel {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.ez-video-panel h3 {
-  margin: 0 0 15px 0;
-  color: #333;
-  font-size: 18px;
-}
-
-.ez-video-panel label {
-  display: block;
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 5px;
-}
-
-.ez-video-panel input[type="url"],
-.ez-video-panel input[type="file"] {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.ez-video-panel input[type="url"]:focus,
-.ez-video-panel input[type="file"]:focus {
-  outline: none;
-  border-color: #007cff;
-  box-shadow: 0 0 0 2px rgba(0, 124, 255, 0.2);
-}
-
-.ez-video-panel button {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.ez-video-panel button:hover {
-  background: #f5f5f5;
-}
-
-/* AI chat panel styles */
-.ez-ai-chat-panel {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.ez-ai-chat-panel h3 {
-  margin: 0 0 10px 0;
-  color: #333;
-  font-size: 18px;
-}
-
-.ez-ai-chat-panel #chatMessages {
-  background: #fafafa;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.ez-ai-chat-panel #chatInput {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.ez-ai-chat-panel #chatInput:focus {
-  outline: none;
-  border-color: #007cff;
-  box-shadow: 0 0 0 2px rgba(0, 124, 255, 0.2);
-}
-
-.ez-ai-chat-panel button {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.ez-ai-chat-panel button:hover {
-  background: #f5f5f5;
-}
-
-/* Special styling for undo/redo buttons */
-.ez-btn[title*="Undo"],
-.ez-btn[title*="Redo"] {
-  font-weight: bold;
-  color: #666;
-}
-
-.ez-btn[title*="Undo"]:hover,
-.ez-btn[title*="Redo"]:hover {
-  color: #007cff;
-}
-
-/* Color picker button indicator */
-.ez-btn[title*="Color"]:before {
-  content: '';
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-/* AI chat button styling */
-.ez-btn[title*="AI Assistant"] {
-  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.ez-btn[title*="AI Assistant"]:hover {
-  background: linear-gradient(45deg, #5a6fd8 0%, #6a4190 100%);
-}
-
-/* Element deletion confirmation */
-.ez-element-deleting {
-  animation: deleteFlash 0.3s ease-in-out;
-}
-
-@keyframes deleteFlash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; background-color: #ff4757; }
+  box-sizing: border-box !important;
 }
