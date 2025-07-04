@@ -337,32 +337,87 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   cursor: pointer;
 }
 
-/* STICKY VIEW LIVE SITE BUTTON */
-.sticky-view-site {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
+/* PREVIEW PANEL FOOTER */
+.preview-panel-footer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 15px;
+  border-top: 1px solid #e0e0e0;
+  border-radius: 0 0 10px 10px;
 }
 
-.sticky-view-btn {
+.view-live-site-btn-sticky {
+  width: 100%;
   background: #ffc000;
   color: white;
   border: none;
   padding: 15px 30px;
-  border-radius: 25px;
+  border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
 }
 
-.sticky-view-btn:hover {
+.view-live-site-btn-sticky:hover {
   background: #e6ad00;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* EDITOR HEADER WITH LOGO */
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.editor-logo {
+  height: 30px;
+  width: auto;
+}
+
+/* EDITOR COMMAND BUTTONS */
+.editor-commands {
+  padding: 15px 0;
+}
+
+.command-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.editor-cmd-btn {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.editor-cmd-btn:hover {
+  background: #ffc000;
+  color: white;
+  border-color: #ffc000;
+}
+
+.editor-cmd-btn:active {
+  transform: translateY(1px);
+}
+
+/* TAB BUTTON ACTIVE STATE */
+.tab-btn.active {
+  background: #ffc000;
+  color: white;
+  border-color: #ffc000;
 }
 .panel{background:#fff;border-radius:10px;padding:10px;display:flex;flex-direction:column}
 .panel h2{font-size:1rem;margin-bottom:10px}
