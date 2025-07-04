@@ -858,12 +858,12 @@ function DesktopDashboard({ bootstrap }) {
           body: JSON.stringify({ id, data: bootstrap || {} })
         });
         const result = await response.json();
-        const shortUrl = `/t/v1/${id}`;
+        const shortUrl = `${window.location.origin}/t/v1/${id}`;
         setPreviewContent(shortUrl);
         console.log('Created short URL for desktop preview:', shortUrl);
       } catch (error) {
         console.error('Failed to create preview URL:', error);
-        setPreviewContent('/t/v1');
+        setPreviewContent(`${window.location.origin}/t/v1/kigen-plastika-default`);
       }
     };
 
