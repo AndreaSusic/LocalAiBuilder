@@ -365,7 +365,7 @@ function DesktopDashboard({ bootstrap }) {
               <iframe
                 key={previewContent}
                 src={previewContent}
-                className={`preview-iframe preview-${currentDevice.toLowerCase()}`}
+                className="preview-iframe preview-desktop"
                 onLoad={handleIframeLoad}
                 title="Website Preview"
               />
