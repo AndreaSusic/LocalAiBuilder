@@ -96,6 +96,19 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
   // Render the template with the fetched data
   console.log('🎨 Rendering template with data for:', templateData?.company_name || 'Unknown Company');
   console.log('📋 TemplatePreview about to render TestTemplate with bootstrap:', !!templateData);
+  console.log('🔍 TestTemplate component check:', TestTemplate);
+  
+  // If TestTemplate is null, render error instead of crashing
+  if (!TestTemplate) {
+    console.error('❌ TestTemplate is null, cannot render');
+    return (
+      <div style={{ padding: '20px', background: '#ffebee' }}>
+        <h2 style={{ color: '#c62828' }}>TestTemplate Import Error</h2>
+        <p>TestTemplate component failed to import properly</p>
+        <p>Import result: {String(TestTemplate)}</p>
+      </div>
+    );
+  }
   
   try {
     return (
