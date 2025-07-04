@@ -1062,10 +1062,28 @@ function DesktopDashboard({ bootstrap }) {
           <div className="preview-panel-footer">
             <button 
               className="view-live-btn-mobile" 
-              onClick={() => {
-                // Use permanent cache ID for Kigen Plastika
-                const permanentUrl = `/t/v1/kigen-plastika-default`;
-                window.open(permanentUrl, '_blank');
+              onClick={async () => {
+                // Create a new cache entry with current bootstrap data
+                const id = `custom-${Date.now()}`;
+                try {
+                  const response = await fetch('/api/cache-preview', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, data: bootstrap || {} })
+                  });
+                  if (response.ok) {
+                    const customizedUrl = `/t/v1/${id}`;
+                    window.open(customizedUrl, '_blank');
+                  } else {
+                    console.error('Failed to cache preview data');
+                    // Fallback to permanent URL
+                    window.open('/t/v1/kigen-plastika-default', '_blank');
+                  }
+                } catch (error) {
+                  console.error('Error creating preview URL:', error);
+                  // Fallback to permanent URL
+                  window.open('/t/v1/kigen-plastika-default', '_blank');
+                }
               }}
             >
               View Live Site
