@@ -135,8 +135,9 @@ function injectSimpleEditor(iframe) {
         let hasInitialized = false;
         
         // Listen for React ready event
-        window.addEventListener('react-dom-ready', () => {
-          console.log('🔄 React DOM ready - re-scanning for editable elements');
+        console.log('🎯 Setting up React DOM ready event listener...');
+        window.addEventListener('react-dom-ready', (event) => {
+          console.log('🔄 React DOM ready - re-scanning for editable elements', event);
           if (!hasInitialized) {
             const count = setupEditableElements();
             if (count > 0) {
