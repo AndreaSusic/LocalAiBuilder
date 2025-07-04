@@ -98,8 +98,36 @@ LocalAI Builder is a static marketing website for an AI-powered website building
 - **API Integration**: Placeholder structure for backend services
 - **User Authentication**: Account system framework in place
 
+## UI Protection System
+
+**Critical Protection Added:** July 4, 2025
+To prevent accidental deletion of dashboard UI elements during development:
+
+### Protection Files:
+- `dashboard/COMPONENT_BACKUP.md` - Complete backup of dashboard layout
+- `dashboard/src/utils/dashboardValidator.js` - Validation system for dashboard integrity
+
+### Protected Elements (NEVER DELETE):
+1. **+ New Site** button (center, yellow)
+2. **Save** button (center)  
+3. **↶ Undo** button (center, connects to editor)
+4. **↷ Redo** button (center, connects to editor)
+5. **Credits remaining** display (right)
+6. **Pages ▼** dropdown (right)
+7. **🔔** notification bell (right)
+8. **Publish** button (right)
+9. **Logout** button (right)
+
+### Pre-Change Protocol:
+1. Check `COMPONENT_BACKUP.md` for current layout
+2. Run validation script before major changes
+3. Backup current working version
+4. Document all changes with date/time
+5. Test all button functionality after changes
+
 ## Changelog
 
+- July 4, 2025: UI PROTECTION SYSTEM IMPLEMENTED - Created comprehensive backup and validation system to prevent accidental deletion of dashboard buttons, added COMPONENT_BACKUP.md with complete layout preservation, implemented dashboardValidator.js with pre/post change validation, documented protection protocol in replit.md, restored original dashboard header with all required buttons (New Site, Save, Undo, Redo, Credits, Pages, Publish, Logout)
 - July 4, 2025: DASHBOARD LAYOUT RESTORATION COMPLETED - Reverted dashboard to use DashboardPage component instead of MobileDashboard/DesktopDashboard setup, fixed bootstrap data passing to templates, restored /preview route to show templates directly, fixed URL generation for template previews by adding proper ID generation, prevented editor injection on non-editable pages to eliminate unwanted red borders, completed inline editor system with Editable component conversions across all sections
 - July 3, 2025: COMPREHENSIVE DASHBOARD EDITING SYSTEM IMPLEMENTED - Enhanced inline editing system with comprehensive features: delete buttons (X) in top-right corner of each element, interactive color picker on color icon click, video upload panel with URL field and file upload option, AI chat functionality with OpenAI integration, complete element editability with click-to-edit capability, undo/redo icons with history management for each element, heading dropdown (H1-H4) for text formatting, automatic GBP import system works for ANY user profile with strict data priority hierarchy enforcement
 - July 3, 2025: COMPREHENSIVE AUTOMATIC GBP IMPORT SYSTEM IMPLEMENTED - Created complete automatic GBP data import flow that works for ANY user profile (not hardcoded), implemented strict priority hierarchy enforcement: 1) User chat input 2) Website data 3) GBP content 4) Stock images, automatic import of contact information (phone, address, email), authentic reviews with reviewer names, business hours, maps URL, and photos when user provides GBP profile URL, created server/gbpAutoFlow.js module with executeAutoGbpFlow function, integrated into chat.js with automatic URL detection, enhanced /api/gbp-details endpoint to use automatic flow, completely removed Meet the Team section from homepage display, system now works for any business profile without hardcoded data
