@@ -79,6 +79,16 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
       }
     }
   }, [bootstrap]);
+
+  // Initialize editor bridge after React components have rendered
+  useEffect(() => {
+    // Signal that React DOM is ready for editor bridge
+    const reactReadyEvent = new CustomEvent('react-dom-ready', {
+      detail: { timestamp: Date.now() }
+    });
+    window.dispatchEvent(reactReadyEvent);
+    console.log('✅ React DOM ready event dispatched');
+  }, [data]); // Re-run when data changes
   
   console.log('HomepageV1 using data:', data);
 

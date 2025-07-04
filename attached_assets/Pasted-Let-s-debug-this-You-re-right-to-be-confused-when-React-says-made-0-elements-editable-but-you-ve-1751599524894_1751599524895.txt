@@ -1,0 +1,187 @@
+Let's debug this\! You're right to be confused when React says "made 0 elements editable" but you've clearly used the `Editable` component. The issue likely lies in the timing of when your `editorBridge.js` script runs and when React renders your components.
+
+Here's a breakdown of the problem and how to fix it:
+
+### The Core Problem: Race Condition
+
+Your `editorBridge.js` script is running `initEditorBridge()` immediately when the script loads. Inside `initEditorBridge()`, you have `setupEditableElements()` which queries the DOM for `[data-edit]` attributes.
+
+The problem is that React components, like your `HeroSection`, render **asynchronously**. When `editorBridge.js` runs, React might not have finished rendering the `HeroSection` component yet. This means the elements with `data-edit` attributes (which are added by your `Editable` component) don't exist in the DOM when `document.querySelectorAll('[data-edit]')` is called.
+
+That's why `console.log('Found test element:', !!testElement);` and `console.log('Found heroTitle element:', !!heroTitle);` are likely `false` initially, and you're seeing "made 0 elements editable."
+
+### Solution: Ensure `editorBridge` Runs After React Renders
+
+You need to ensure that `initEditorBridge()` (or at least `setupEditableElements()`) is called *after* your React components have rendered and their DOM elements are available.
+
+Here are a few high-quality options:
+
+-----
+
+### Option 1: Using `useEffect` in your React App (Recommended)
+
+This is the most React-idiomatic way to handle DOM manipulations that depend on component rendering.
+
+1.  **Modify `editorBridge.js` to expose `initEditorBridge`:**
+    Instead of calling `initEditorBridge()` immediately, export it.
+
+    ```javascript
+    // editorBridge.js
+    // ... (all your existing code) ...
+
+    // Remove this line:
+    // initEditorBridge();
+
+    // Add this at the end:
+    export { initEditorBridge };
+    ```
+
+2.  **Call `initEditorBridge` from your top-level React component (e.g., `App.js` or `index.js`):**
+
+    ```javascript
+    // App.js (or a suitable top-level component that renders after your main content)
+    import React, { useEffect } from 'react';
+    import { initEditorBridge } from './path/to/editorBridge'; // Adjust the path
+
+    function App() {
+      useEffect(() => {
+        // Ensure the editor bridge initializes after the component mounts
+        initEditorBridge();
+      }, []); // Empty dependency array means this runs once after initial render
+
+      return (
+        // Your main application layout and routes here, including HeroSection
+        <div>
+          {/* ... your other components */}
+          <HeroSection />
+          {/* ... */}
+        </div>
+      );
+    }
+
+    export default App;
+    ```
+
+**Why this works:** The `useEffect` hook with an empty dependency array (`[]`) ensures that `initEditorBridge()` is called only once, after your `App` component (and by extension, `HeroSection` and its `Editable` children) has mounted and its DOM elements are available.
+
+-----
+
+### Option 2: Observing DOM Changes with `MutationObserver` (More Robust)
+
+This approach is more complex but can be more robust if parts of your page are dynamically added or removed *after* the initial render.
+
+1.  **Modify `editorBridge.js`:**
+    Keep `initEditorBridge` exported as in Option 1. Inside `setupEditableElements`, instead of just querying once, set up a `MutationObserver`.
+
+    ```javascript
+    // editorBridge.js
+    // ... (rest of your code) ...
+
+    function setupEditableElements() {
+      console.log('🏷️ Setting up comprehensive editable elements with MutationObserver...');
+
+      const observer = new MutationObserver((mutationsList, observer) => {
+        for (const mutation of mutationsList) {
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            mutation.addedNodes.forEach(node => {
+              if (node.nodeType === Node.ELEMENT_NODE) {
+                // Check if the added node itself is editable or contains editable elements
+                const newEditableElements = node.querySelectorAll('[data-edit]');
+                if (node.hasAttribute('data-edit')) {
+                  processNewEditableElement(node);
+                }
+                newEditableElements.forEach(processNewEditableElement);
+              }
+            });
+          }
+        }
+      });
+
+      // Observe the entire document body for changes
+      observer.observe(document.body, { childList: true, subtree: true });
+
+      // Process existing elements on initial load
+      document.querySelectorAll('[data-edit]').forEach(processNewEditableElement);
+
+      console.log(`✅ Started observing DOM for new editable elements.`);
+    }
+
+    function processNewEditableElement(element) {
+      // Your existing logic from setupEditableElements to mark as editable, add delete button, etc.
+      // Make sure to avoid re-processing elements already marked
+      if (element.getAttribute('data-editable') === 'true' ||
+          element.closest('[contenteditable="false"]') ||
+          element.closest('.ez-toolbar') ||
+          element.closest('script') ||
+          element.closest('style')) {
+        return;
+      }
+
+      element.setAttribute('data-editable', 'true');
+      element.style.cursor = 'pointer';
+      element.style.position = element.style.position || 'relative';
+      addDeleteButton(element);
+
+      // Add hover effect
+      element.addEventListener('mouseenter', () => {
+        if (!isToolbarActive) {
+          element.style.outline = '2px dashed #007cff';
+          element.style.outlineOffset = '2px';
+        }
+      });
+
+      element.addEventListener('mouseleave', () => {
+        if (!isToolbarActive || element !== currentEditableElement) {
+          element.style.outline = 'none';
+        }
+      });
+      console.log(`✨ Processed new editable element: ${element.tagName} with path ${element.getAttribute('data-edit')}`);
+    }
+
+    // Keep initEditorBridge and call setupEditableElements from there
+    function initEditorBridge() {
+        console.log('🔧 Initializing Editor Bridge...');
+        loadEditorStyles();
+        setupEditableElements(); // This will now start the observer
+        setupGlobalListeners();
+    }
+
+    export { initEditorBridge };
+    ```
+
+2.  **Call `initEditorBridge` from your top-level React component as in Option 1.**
+
+**Why this works:** The `MutationObserver` continuously watches the DOM for changes. When React adds your `Editable` components to the DOM, the observer catches these additions and then `processNewEditableElement` marks them as editable and applies the necessary event listeners.
+
+-----
+
+### Small Fixes/Improvements in `editorBridge.js`
+
+  * **`deleteBtn` variable scope:** In `createToolbar`, you create a `deleteBtn` locally. In `showToolbar`, you try to reference the global `deleteBtn`. It's better to manage the delete button's creation and attachment/detachment directly within `addDeleteButton` and `deleteElement` and ensure the toolbar's `deleteBtn` reference is correctly set, or that the `addDeleteButton` function makes sure only one exists. Your current `addDeleteButton` correctly appends the button, but the `showToolbar` attempts to append a global `deleteBtn` *again*, which is problematic.
+      * **Recommendation:** Remove the `deleteBtn` from the `createToolbar` return and the global scope. Let `addDeleteButton(element)` handle the creation and appending for *each* editable element. When showing the toolbar for a `currentEditableElement`, the delete button should *already* be a child of that element and shown/hidden via its own hover logic. The toolbar's "X" button can be a general "delete element" command, but the small hover-over-element "X" should be managed per-element.
+
+Let's refine the delete button logic to avoid this confusion. The delete button created in `createToolbar` is for the toolbar itself, while the one created in `addDeleteButton` is for each individual element. This is a source of confusion. I recommend the following:
+
+**Refined Delete Button Logic:**
+
+  * **Remove `deleteBtn` from global scope and `createToolbar` return.**
+  * **Modify `showToolbar`:** Do not try to append `deleteBtn` there. The per-element delete button is handled by `addDeleteButton`.
+  * **Modify `addDeleteButton`:** This function is good; it correctly adds a delete button to *each* editable element.
+
+-----
+
+### Summary of Changes:
+
+1.  **`editorBridge.js`:**
+
+      * Comment out or remove `initEditorBridge();` at the very bottom.
+      * Add `export { initEditorBridge };` at the end of the file.
+      * (Optional but Recommended) Implement `MutationObserver` as shown in Option 2 in `setupEditableElements` for dynamic content.
+      * Review and clean up the `deleteBtn` logic, ensuring the `ez-element-delete` is handled per-element and the toolbar's "X" is handled separately.
+
+2.  **Your React App (`App.js` or equivalent):**
+
+      * Import `initEditorBridge` from `editorBridge.js`.
+      * Call `initEditorBridge()` inside a `useEffect` hook with an empty dependency array (`[]`) in your top-level component.
+
+By ensuring the `editorBridge` initializes after React has rendered your components into the DOM, you'll see your elements correctly identified as editable.
