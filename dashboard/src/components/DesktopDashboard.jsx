@@ -171,29 +171,32 @@ function injectWorkingEditor(iframe) {
           toolbar.contentEditable = false;
           
           const commands = [
-            { label: '𝐁', action: () => exec('bold') },
-            { label: '𝑰', action: () => exec('italic') },
-            { label: '𝑼', action: () => exec('underline') },
-            { label: 'List', action: () => exec('insertUnorderedList') },
-            { label: '8px', action: () => exec('fontSize', 1) },
-            { label: 'A🖌️', action: () => pickColor('foreColor') },
-            { label: '🖍️', action: () => pickColor('hiliteColor') },
-            { label: '🖼️', action: () => insertMedia('image') },
-            { label: '🎥', action: () => insertMedia('video') },
-            { label: '↔️↕️', action: () => toggleResizeBox() },
-            { label: '📐', action: () => openSpacingPanel() },
-            { label: 'H₁', action: () => exec('formatBlock','H1') },
-            { label: '¶', action: () => exec('formatBlock','P') },
-            { label: '🔲', action: () => insertComponent('card') },
-            { label: '📋', action: () => pastePlain() },
-            { label: '</>', action: () => toggleCodeView() },
-            { label: '🔘', action: () => insertComponent('button') }
+            { label: '𝐁', action: () => exec('bold'), title: 'Bold (Ctrl+B)' },
+            { label: '𝑰', action: () => exec('italic'), title: 'Italic (Ctrl+I)' },
+            { label: '𝑼', action: () => exec('underline'), title: 'Underline (Ctrl+U)' },
+            { label: 'List', action: () => exec('insertUnorderedList'), title: 'Bullet List' },
+            { label: '10px', action: () => showFontSizeDropdown(), title: 'Font Size' },
+            { label: 'A🖌️', action: () => pickColor('foreColor'), title: 'Text Color' },
+            { label: '🖍️', action: () => pickColor('hiliteColor'), title: 'Highlight Color' },
+            { label: '🖼️', action: () => insertMedia('image'), title: 'Insert Image' },
+            { label: '🎥', action: () => insertMedia('video'), title: 'Insert Video' },
+            { label: '↔️↕️', action: () => toggleResizeBox(), title: 'Resize Element' },
+            { label: '📐', action: () => openSpacingPanel(), title: 'Spacing' },
+            { label: 'H₁', action: () => exec('formatBlock','H1'), title: 'Heading 1' },
+            { label: '¶', action: () => exec('formatBlock','P'), title: 'Paragraph' },
+            { label: '🔲', action: () => insertComponent('card'), title: 'Insert Card' },
+            { label: '📋', action: () => pastePlain(), title: 'Paste Plain Text' },
+            { label: '</>', action: () => toggleCodeView(), title: 'Code View' },
+            { label: '🔘', action: () => insertComponent('button'), title: 'Insert Button' },
+            { label: '➕', action: () => addNewElement(), title: 'Add New Element' },
+            { label: '🤖', action: () => openAIChat(), title: 'AI Assistant' }
           ];
           
           commands.forEach(cmd => {
             const btn = document.createElement('button');
             btn.className = 'editor-btn';
             btn.textContent = cmd.label;
+            btn.title = cmd.title || '';
             btn.contentEditable = false;
             
             btn.addEventListener('mousedown', (e) => e.preventDefault());
@@ -267,6 +270,190 @@ function injectWorkingEditor(iframe) {
           }, true);
           
           console.log('✅ Click handlers setup');
+        }
+        
+        // Check if we should prevent editing (direct view access)
+        function shouldPreventEditing() {
+          const currentUrl = window.location.href;
+          const isDashboard = currentUrl.includes('/preview') || currentUrl.includes('/dashboard');
+          const isDirectAccess = !isDashboard && !window.parent !== window;
+          
+          return isDirectAccess;
+        }
+        
+        // Font size dropdown
+        function showFontSizeDropdown() {
+          const dropdown = document.createElement('div');
+          dropdown.className = 'font-size-dropdown';
+          dropdown.style.cssText = \`
+            position: fixed;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10001;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+          \`;
+          
+          const sizes = [10, 11, 12, 14, 16, 18];
+          sizes.forEach(size => {
+            const btn = document.createElement('button');
+            btn.textContent = size + 'px';
+            btn.style.cssText = \`
+              padding: 6px 12px;
+              border: none;
+              background: transparent;
+              cursor: pointer;
+              text-align: left;
+              border-radius: 4px;
+            \`;
+            btn.onmouseover = () => btn.style.background = '#f0f0f0';
+            btn.onmouseout = () => btn.style.background = 'transparent';
+            btn.onclick = () => {
+              exec('fontSize', size);
+              document.body.removeChild(dropdown);
+            };
+            dropdown.appendChild(btn);
+          });
+          
+          // Position near toolbar
+          const rect = toolbar.getBoundingClientRect();
+          dropdown.style.top = (rect.bottom + 5) + 'px';
+          dropdown.style.left = rect.left + 'px';
+          
+          document.body.appendChild(dropdown);
+          
+          // Close on click outside
+          setTimeout(() => {
+            document.addEventListener('click', function closeDropdown(e) {
+              if (!dropdown.contains(e.target)) {
+                document.body.removeChild(dropdown);
+                document.removeEventListener('click', closeDropdown);
+              }
+            });
+          }, 100);
+        }
+        
+        // Add new element
+        function addNewElement() {
+          const elementsMenu = document.createElement('div');
+          elementsMenu.className = 'elements-menu';
+          elementsMenu.style.cssText = \`
+            position: fixed;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10001;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 200px;
+          \`;
+          
+          const elements = [
+            { label: '📝 Text Block', action: () => insertElement('text') },
+            { label: '🔲 Card Section', action: () => insertElement('card') },
+            { label: '🔘 Button', action: () => insertElement('button') },
+            { label: '🖼️ Image', action: () => insertElement('image') },
+            { label: '📋 Contact Form', action: () => insertElement('form') },
+            { label: '⭐ Reviews Section', action: () => insertElement('reviews') },
+            { label: '📍 Map', action: () => insertElement('map') },
+            { label: '📞 Contact Info', action: () => insertElement('contact') }
+          ];
+          
+          elements.forEach(elem => {
+            const btn = document.createElement('button');
+            btn.textContent = elem.label;
+            btn.style.cssText = \`
+              padding: 8px 12px;
+              border: none;
+              background: transparent;
+              cursor: pointer;
+              text-align: left;
+              border-radius: 4px;
+            \`;
+            btn.onmouseover = () => btn.style.background = '#f0f0f0';
+            btn.onmouseout = () => btn.style.background = 'transparent';
+            btn.onclick = () => {
+              elem.action();
+              document.body.removeChild(elementsMenu);
+            };
+            elementsMenu.appendChild(btn);
+          });
+          
+          // Position near toolbar
+          const rect = toolbar.getBoundingClientRect();
+          elementsMenu.style.top = (rect.bottom + 5) + 'px';
+          elementsMenu.style.left = rect.left + 'px';
+          
+          document.body.appendChild(elementsMenu);
+          
+          // Close on click outside
+          setTimeout(() => {
+            document.addEventListener('click', function closeMenu(e) {
+              if (!elementsMenu.contains(e.target)) {
+                document.body.removeChild(elementsMenu);
+                document.removeEventListener('click', closeMenu);
+              }
+            });
+          }, 100);
+        }
+        
+        // Insert element
+        function insertElement(type) {
+          const templates = {
+            text: '<p>New text block - click to edit</p>',
+            card: '<div class="card" style="border: 1px solid #ddd; padding: 20px; margin: 10px 0; border-radius: 8px;"><h3>Card Title</h3><p>Card content goes here</p></div>',
+            button: '<button style="background: #ffc000; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">New Button</button>',
+            image: '<img src="https://via.placeholder.com/300x200" alt="New image" style="max-width: 100%; height: auto;">',
+            form: '<form style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 10px 0;"><h3>Contact Form</h3><input type="text" placeholder="Name" style="width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px;"><input type="email" placeholder="Email" style="width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px;"><textarea placeholder="Message" style="width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; height: 100px;"></textarea><button type="submit" style="background: #ffc000; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Send</button></form>',
+            reviews: '<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 10px 0;"><h3>Customer Reviews</h3><div style="border-left: 4px solid #ffc000; padding-left: 15px; margin: 10px 0;"><p>"Great service and quality work!"</p><p><strong>- Customer Name</strong></p></div></div>',
+            map: '<div style="background: #f0f0f0; padding: 40px; text-align: center; border-radius: 8px; margin: 10px 0;"><p>🗺️ Map placeholder - replace with actual map</p></div>',
+            contact: '<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 10px 0;"><h3>Contact Information</h3><p>📞 Phone: (555) 123-4567</p><p>📧 Email: info@business.com</p><p>📍 Address: 123 Main St, City, State</p></div>'
+          };
+          
+          const template = templates[type] || templates.text;
+          
+          if (activeElement) {
+            activeElement.insertAdjacentHTML('afterend', template);
+          } else {
+            document.body.insertAdjacentHTML('beforeend', template);
+          }
+          
+          saveState(\`Insert \${type} element\`);
+        }
+        
+        // Open AI Chat
+        function openAIChat() {
+          // Send message to parent dashboard to open AI chat
+          window.parent.postMessage({
+            type: 'openAIChat',
+            selectedElement: activeElement ? {
+              tagName: activeElement.tagName,
+              textContent: activeElement.textContent,
+              className: activeElement.className,
+              id: activeElement.id
+            } : null
+          }, '*');
+        }
+        
+        // Connect to dashboard right panel
+        function connectToDashboardPanel() {
+          // Send toolbar state to parent
+          window.parent.postMessage({
+            type: 'toolbarUpdate',
+            activeElement: activeElement ? {
+              tagName: activeElement.tagName,
+              textContent: activeElement.textContent?.substring(0, 50),
+              canFormat: true,
+              canDelete: true
+            } : null
+          }, '*');
         }
         
         // Listen for messages from parent dashboard
@@ -532,6 +719,9 @@ function injectWorkingEditor(iframe) {
           // Show toolbar with delay to prevent multiple triggers
           setTimeout(() => showEditorToolbar(element), 50);
           
+          // Connect to dashboard panel
+          connectToDashboardPanel();
+          
           console.log('✅ Selected element:', element.tagName, element.textContent?.substring(0, 30));
         }
         
@@ -577,6 +767,12 @@ function injectWorkingEditor(iframe) {
         
         // Initialize editor
         function initWorkingEditor() {
+          // Don't initialize editor on direct view access
+          if (shouldPreventEditing()) {
+            console.log('🚫 Editor disabled - direct view access detected');
+            return;
+          }
+          
           addEditorStyles();
           createEditorToolbar();
           createHistoryControls();
@@ -618,6 +814,27 @@ function DesktopDashboard({ bootstrap }) {
   const [activeTab, setActiveTab] = useState('text');
 
   useEffect(() => {
+    // Listen for messages from preview iframe
+    const handleMessage = (event) => {
+      if (event.data.type === 'openAIChat') {
+        // Focus the AI chat tab and input
+        setActiveTab('ai');
+        // Auto-populate with context if element is selected
+        if (event.data.selectedElement) {
+          const context = `Selected: ${event.data.selectedElement.tagName} "${event.data.selectedElement.textContent?.substring(0, 50)}..."`;
+          setChatMessage(context + " - ");
+        }
+      } else if (event.data.type === 'toolbarUpdate') {
+        // Update right panel with element info
+        console.log('🔗 Toolbar update from iframe:', event.data.activeElement);
+      } else if (event.data.type === 'historyUpdate') {
+        // Could update undo/redo buttons in dashboard if needed
+        console.log('📚 History update:', event.data);
+      }
+    };
+    
+    window.addEventListener('message', handleMessage);
+    
     const createPreviewUrl = async () => {
       try {
         // Generate a unique ID for the preview
@@ -638,6 +855,11 @@ function DesktopDashboard({ bootstrap }) {
     };
 
     createPreviewUrl();
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
   }, [bootstrap]);
 
   const handleIframeLoad = (event) => {
@@ -837,6 +1059,12 @@ function DesktopDashboard({ bootstrap }) {
               >
                 Components
               </button>
+              <button 
+                className={`tab-btn ${activeTab === 'ai' ? 'active' : ''}`} 
+                onClick={() => setActiveTab('ai')}
+              >
+                AI
+              </button>
             </div>
             <div className="editor-content">
               {activeTab === 'text' && (
@@ -871,6 +1099,49 @@ function DesktopDashboard({ bootstrap }) {
                   <div className="command-group">
                     <button className="editor-cmd-btn" title="Card">🔲</button>
                     <button className="editor-cmd-btn" title="Button">🔘</button>
+                  </div>
+                </div>
+              )}
+              {activeTab === 'ai' && (
+                <div className="ai-chat-section">
+                  <div className="chat-history">
+                    {chatHistory.map((message, index) => (
+                      <div key={index} className={`chat-bubble ${message.role}`}>
+                        <div className="bubble-content">
+                          {message.content}
+                        </div>
+                      </div>
+                    ))}
+                    {isProcessing && (
+                      <div className="chat-bubble ai">
+                        <div className="bubble-content">
+                          <span className="typing-indicator">●●●</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="chat-input-container">
+                    <input
+                      type="text"
+                      value={chatMessage}
+                      onChange={(e) => setChatMessage(e.target.value)}
+                      placeholder="Type a message to AI... (e.g., 'Change the title to Welcome')"
+                      className="chat-input"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          handleSendMessage();
+                        }
+                      }}
+                      disabled={isProcessing}
+                    />
+                    <button 
+                      onClick={handleSendMessage} 
+                      disabled={isProcessing || !chatMessage.trim()}
+                      className="send-btn"
+                    >
+                      Send
+                    </button>
                   </div>
                 </div>
               )}
