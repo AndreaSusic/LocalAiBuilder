@@ -858,12 +858,12 @@ function DesktopDashboard({ bootstrap }) {
           body: JSON.stringify({ id, data: bootstrap || {} })
         });
         const result = await response.json();
-        const iframeUrl = `${window.location.origin}/template-preview/${id}`;
-        setPreviewContent(iframeUrl);
-        console.log('Created iframe URL for desktop preview:', iframeUrl);
+        const shortUrl = `${window.location.origin}/t/v1/${id}`;
+        setPreviewContent(shortUrl);
+        console.log('Created short URL for desktop preview:', shortUrl);
       } catch (error) {
         console.error('Failed to create preview URL:', error);
-        setPreviewContent(`${window.location.origin}/template-preview/kigen-plastika-default`);
+        setPreviewContent(`${window.location.origin}/t/v1/kigen-plastika-default`);
       }
     };
 
