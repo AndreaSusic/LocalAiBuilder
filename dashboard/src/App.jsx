@@ -19,7 +19,20 @@ export default function App({ bootstrap }) {
   
   // Debug info
   console.log('App rendering with bootstrap:', bootstrap);
+  console.log('Window width:', window.innerWidth);
   console.log('isMobile:', isMobile);
+
+  // Update mobile detection on resize
+  useEffect(() => {
+    const handleResize = () => {
+      const newIsMobile = window.innerWidth < 800;
+      console.log('Resize detected - Window width:', window.innerWidth, 'isMobile:', newIsMobile);
+      setIsMobile(newIsMobile);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Data validation for templates
   useEffect(() => {
