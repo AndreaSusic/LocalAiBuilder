@@ -1,0 +1,115 @@
+✅ What the successful TestTemplate proves
+
+Because the dummy TestTemplate does render (and the editor detects its data-edit attributes), you’ve confirmed that:
+	1.	Routing, iframe injection and the inline-editor bridge are fine.
+	2.	The blocker is purely a JavaScript circular-import that zeroes-out HomepageV1 before React ever mounts it.
+
+⸻
+
+1 Where the loop almost always hides
+
+The usual pattern that triggers this in a React code-base looks like:
+
+TemplatePreview  ─▶ HomepageV1
+   ▲                  │
+   │                  ▼
+SiteDataContext ◀──── SectionX  (HeroSection, ServicesSection …)
+
+	•	HomepageV1 imports every section.
+	•	Every section imports SiteDataContext to useContext.
+	•	Inside SiteDataContext you likely import TemplatePreview (or something that in turn imports it) so you can wrap its JSX with a provider or supply defaults.
+That makes a perfect loop → when the bundler hits HomepageV1, the value it receives from import './SiteDataContext' is still {} (module not finished), so the default export is undefined → null.
+
+⸻
+
+2 Quick detective work
+
+Add one line at the very top of src/context/SiteDataContext.js (or wherever it lives):
+
+console.log('🕵️‍♂️ SiteDataContext loaded');
+
+and one at the top of HomepageV1:
+
+console.log('🕵️‍♀️ HomepageV1 module evaluated');
+
+Reload once. You’ll see SiteDataContext logs twice – first during the circular path (when its export object is still empty) and again when the module finally completes. That double-print is the smoking gun.
+
+⸻
+
+3 Three pragmatic ways to break the cycle
+
+Fix	How	Effort	Trade-offs
+A. Decouple the context	Make SiteDataContext.js a dead-simple file that only does: export const SiteDataContext = React.createContext(null); – nothing else.Put any provider logic (defaults, API calls, etc.) in a separate SiteDataProvider.jsx that imports the context but is never imported back by templates/sections.	🔹 10–15 min	Cleanest; no runtime cost.
+B. Prop-drill instead of useContext	Pass bootstrap down as props:<HeroSection data={bootstrap} />. Each section just destructures from props instead of reading context.	🔸 fastest	A bit more verbose; loses the convenience of useContext.
+C. Dynamic import / lazy	const HomepageV1 = React.lazy(() => import('./templates/homepage/v1')); so the module isn’t evaluated until after SiteDataContext is ready.	🔸 quick PoC	Adds a Suspense boundary & extra network chunk.
+
+Most teams go with A because it keeps the ergonomics of useContext but guarantees the file has zero upwards dependencies.
+
+⸻
+
+4 Implementation sketch for option A
+
+src/context/
+  ├─ SiteDataContext.js       # 6 lines
+  └─ SiteDataProvider.jsx     # all the logic
+
+SiteDataContext.js
+
+import { createContext } from 'react';
+
+const SiteDataContext = createContext(null);
+export default SiteDataContext;
+
+SiteDataProvider.jsx
+
+import React, { useMemo } from 'react';
+import SiteDataContext from './SiteDataContext';
+
+export default function SiteDataProvider({ bootstrap, children }) {
+  const value = useMemo(() => bootstrap, [bootstrap]);
+  return (
+    <SiteDataContext.Provider value={value}>
+      {children}
+    </SiteDataContext.Provider>
+  );
+}
+
+TemplatePreview.jsx
+
+import SiteDataProvider from '@/context/SiteDataProvider';
+import HomepageV1       from '@/templates/homepage/v1';
+
+return (
+  <SiteDataProvider bootstrap={templateData}>
+    <HomepageV1 />
+  </SiteDataProvider>
+);
+
+Any section
+
+import { useContext } from 'react';
+import SiteDataContext from '@/context/SiteDataContext';
+
+export default function HeroSection() {
+  const site = useContext(SiteDataContext);
+  …
+}
+
+No section (and not even SiteDataProvider) ever imports a template, so the circle disappears.
+
+⸻
+
+5 Next step for you
+	1.	Pick fix A (recommended) or C (quick patch).
+	2.	Refactor the context as above.
+	3.	Re-enable <HomepageV1> in TemplatePreview and reload.
+You should now see
+
+🕵️‍♀️ HomepageV1 module evaluated
+🚀 HomepageV1 function started, bootstrap: …
+🏠 HomepageV1 rendering with data: …
+
+
+	4.	The inline-editor bridge will again detect data-edit elements because the component finally renders.
+
+Ping me once you try it, or paste any new console output if something still blocks – we’ll squash it.

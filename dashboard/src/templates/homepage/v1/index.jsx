@@ -1,5 +1,7 @@
 import React, { useState, useEffect, createContext } from 'react';
 import { validateBeforeRender } from '../../../utils/dataValidation.js';
+
+console.log('🕵️‍♀️ HomepageV1 module evaluated');
 import NavigationSection from '../../../sections/NavigationSection.jsx';
 import HeroSection from '../../../sections/HeroSection.jsx';
 import ServicesSection from '../../../sections/ServicesSection.jsx';
