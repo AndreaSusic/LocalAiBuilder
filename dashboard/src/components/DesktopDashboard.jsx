@@ -24,9 +24,18 @@ function injectSimpleEditor(iframe) {
       script.innerHTML = `
         console.log('🚀 Simple inline editor starting...');
         
-        // Wait a moment for DOM to be ready
+        // Wait for React components to render
         function setupEditableElements() {
           console.log('📝 Setting up editable elements...');
+          
+          // First check if any elements exist
+          const allEditableElements = document.querySelectorAll('[data-edit]');
+          console.log('Found', allEditableElements.length, 'elements with data-edit attributes');
+          
+          if (allEditableElements.length === 0) {
+            console.log('❌ No editable elements found - React may not have finished rendering');
+            return 0;
+          }
           
           // First look for React components with data-edit attributes
           const dataEditElements = document.querySelectorAll('[data-edit]');
@@ -119,16 +128,41 @@ function injectSimpleEditor(iframe) {
           });
           
           console.log('✅ Made', editableCount, 'elements editable');
+          return editableCount;
         }
         
-        // Run initial setup
-        setTimeout(setupEditableElements, 1000);
+        // Initialize only after React is ready
+        let hasInitialized = false;
         
-        // Listen for React ready event and run again
+        // Listen for React ready event
         window.addEventListener('react-dom-ready', () => {
           console.log('🔄 React DOM ready - re-scanning for editable elements');
-          setupEditableElements();
+          if (!hasInitialized) {
+            const count = setupEditableElements();
+            if (count > 0) {
+              hasInitialized = true;
+            }
+          }
         });
+        
+        // Immediate check (in case React is already ready)
+        setTimeout(() => {
+          if (!hasInitialized) {
+            console.log('🔄 Initial scan for editable elements');
+            const count = setupEditableElements();
+            if (count > 0) {
+              hasInitialized = true;
+            }
+          }
+        }, 500);
+        
+        // Fallback after longer delay
+        setTimeout(() => {
+          if (!hasInitialized) {
+            console.log('🔄 Fallback scan - checking for React components');
+            setupEditableElements();
+          }
+        }, 2000);
         
         // Also run after a longer delay as fallback
         setTimeout(setupEditableElements, 3000);
