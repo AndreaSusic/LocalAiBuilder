@@ -273,7 +273,105 @@ const dist = path.join(__dirname, 'dashboard', 'dist');
 // In-memory cache for preview data (in production, use Redis)
 const previewCache = new Map();
 
-// Short-code template serving
+// Template preview for iframe (clean version without dashboard)
+app.get('/template-preview/:id', async (req, res) => {
+  const { id } = req.params;
+  const cachedData = previewCache.get(id);
+  
+  if (!cachedData) {
+    return res.status(404).send('Preview expired or not found');
+  }
+  
+  // Generate a clean HTML page with just the template
+  const templateHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${cachedData.company_name || 'Website Preview'}</title>
+      <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: #f8f9fa; padding: 20px; margin-bottom: 20px; }
+        .content { line-height: 1.6; }
+        .hero { background: #007bff; color: white; padding: 40px; text-align: center; }
+        .services { padding: 40px 20px; }
+        .footer { background: #343a40; color: white; padding: 20px; text-align: center; }
+        img { max-width: 100%; height: auto; }
+      </style>
+    </head>
+    <body>
+      <div class="hero">
+        <h1>${cachedData.company_name || 'Your Business'}</h1>
+        <p>${cachedData.services || 'Professional Services'}</p>
+        <p>${cachedData.city ? cachedData.city[0] : 'Your Location'}</p>
+      </div>
+      
+      <div class="container">
+        <div class="services">
+          <h2>Our Services</h2>
+          <p>${cachedData.services || 'We provide professional services to meet your needs.'}</p>
+          ${cachedData.images && cachedData.images.length > 0 ? 
+            `<img src="${cachedData.images[0]}" alt="Business image" style="margin: 20px 0;">` : 
+            ''
+          }
+        </div>
+        
+        ${cachedData.reviews && cachedData.reviews.length > 0 ? `
+        <div class="reviews">
+          <h2>Customer Reviews</h2>
+          <div style="background: #f8f9fa; padding: 20px; margin: 10px 0;">
+            <p><strong>${cachedData.reviews[0].author_name}:</strong></p>
+            <p>${cachedData.reviews[0].text}</p>
+            <p>⭐⭐⭐⭐⭐</p>
+          </div>
+        </div>
+        ` : ''}
+      </div>
+      
+      <div class="footer">
+        <p>&copy; 2025 ${cachedData.company_name || 'Your Business'}. All rights reserved.</p>
+        ${cachedData.phone ? `<p>Phone: ${cachedData.phone}</p>` : ''}
+        ${cachedData.address ? `<p>Address: ${cachedData.address}</p>` : ''}
+      </div>
+      
+      <script>
+        // Simple inline editor for template preview
+        document.addEventListener('DOMContentLoaded', function() {
+          const elements = document.querySelectorAll('h1, h2, p');
+          
+          elements.forEach(el => {
+            el.addEventListener('mouseenter', function() {
+              this.style.outline = '2px dotted #ff0000';
+              this.style.cursor = 'pointer';
+            });
+            
+            el.addEventListener('mouseleave', function() {
+              this.style.outline = 'none';
+            });
+            
+            el.addEventListener('click', function() {
+              this.contentEditable = true;
+              this.style.outline = '2px solid #ffc000';
+              this.focus();
+            });
+            
+            el.addEventListener('blur', function() {
+              this.contentEditable = false;
+              this.style.outline = 'none';
+            });
+          });
+        });
+      </script>
+    </body>
+    </html>
+  `;
+  
+  res.send(templateHtml);
+});
+
+// Short-code template serving (for direct access)
 app.get('/t/v1/:id', async (req, res) => {
   const { id } = req.params;
   const cachedData = previewCache.get(id);
