@@ -88,8 +88,24 @@ function setupEditableElements() {
     }
   });
   
-  // Find ALL elements that should be editable (text, images, buttons, links)
-  const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button, img, video');
+  // First try to find elements with data-edit attributes from React components
+  const editableElements = document.querySelectorAll('[data-edit]');
+  console.log(`Found ${editableElements.length} elements with data-edit attributes`);
+  
+  // Test specific elements
+  const testElement = document.querySelector('.editable-test');
+  const heroTitle = document.querySelector('[data-edit="heroTitle"]');
+  console.log('Found test element:', !!testElement);
+  console.log('Found heroTitle element:', !!heroTitle);
+  
+  if (heroTitle) {
+    console.log('🎯 HERO TITLE FOUND:', heroTitle.textContent, 'Tag:', heroTitle.tagName);
+  }
+  
+  // Use data-edit elements if found, otherwise fall back to general elements
+  const allElements = editableElements.length > 0 ? 
+    editableElements : 
+    document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, figcaption, blockquote, a, button, img, video');
   
   allElements.forEach(element => {
     // Skip if element is already marked as non-editable or is part of navigation/toolbar

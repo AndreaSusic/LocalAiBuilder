@@ -13,9 +13,10 @@ export default function Editable({
 }) {
   return (
     <Tag
-      data-edit={path}
-      className={`editable ${className}`}
       {...rest}
+      data-edit={path}
+      data-editable="true"
+      className={`editable ${className}`.trim()}
     >
       {children}
     </Tag>
