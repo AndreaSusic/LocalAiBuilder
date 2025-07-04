@@ -52,13 +52,34 @@ export default function UnifiedCommandChatPanel() {
       
       if (response.ok) {
         const data = await response.json();
-        const aiMessage = { 
-          speaker: 'ai', 
-          text: data.message || data.response || 'I understand your request.',
-          isCommand: false 
-        };
         
-        setHistory(prev => [...prev, aiMessage]);
+        // Check if this is a content modification request
+        if (data.contentChange) {
+          // Send content change to preview iframe
+          const previewIframe = document.querySelector('.preview-iframe');
+          if (previewIframe && previewIframe.contentWindow) {
+            previewIframe.contentWindow.postMessage({
+              type: 'contentChange',
+              action: data.contentChange.action,
+              selector: data.contentChange.selector,
+              newContent: data.contentChange.newContent
+            }, '*');
+          }
+          
+          const aiMessage = { 
+            speaker: 'ai', 
+            text: data.message || `✅ Updated ${data.contentChange.elementType} to "${data.contentChange.newContent}"`,
+            isCommand: false 
+          };
+          setHistory(prev => [...prev, aiMessage]);
+        } else {
+          const aiMessage = { 
+            speaker: 'ai', 
+            text: data.message || data.response || 'I understand your request.',
+            isCommand: false 
+          };
+          setHistory(prev => [...prev, aiMessage]);
+        }
       } else {
         const errorMessage = { 
           speaker: 'ai', 

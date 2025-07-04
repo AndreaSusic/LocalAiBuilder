@@ -269,6 +269,28 @@ function injectWorkingEditor(iframe) {
           console.log('✅ Click handlers setup');
         }
         
+        // Listen for content change messages from AI chat
+        window.addEventListener('message', function(event) {
+          if (event.data.type === 'contentChange') {
+            const { action, selector, newContent } = event.data;
+            
+            if (action === 'updateText') {
+              const element = document.querySelector(selector);
+              if (element) {
+                element.textContent = newContent;
+                console.log('✅ Content updated via AI:', selector, newContent);
+                
+                // Add visual feedback
+                element.style.background = '#ffc000';
+                element.style.transition = 'background 0.3s';
+                setTimeout(() => {
+                  element.style.background = '';
+                }, 1000);
+              }
+            }
+          }
+        });
+        
         // Initialize editor
         function initWorkingEditor() {
           addEditorStyles();
@@ -281,7 +303,16 @@ function injectWorkingEditor(iframe) {
             el.setAttribute('data-editable', 'true');
           });
           
-          console.log('✅ Working editor initialized with', editableElements.length, 'editable elements');
+          // Also make h1, h2, h3 elements clickable for AI modifications
+          const headings = document.querySelectorAll('h1, h2, h3, p, span, div[class*="title"], div[class*="heading"]');
+          headings.forEach(el => {
+            if (!el.hasAttribute('data-editable')) {
+              el.setAttribute('data-editable', 'true');
+              el.style.cursor = 'text';
+            }
+          });
+          
+          console.log('✅ Working editor initialized with', editableElements.length, 'data-edit elements and', headings.length, 'heading elements');
         }
         
         // Start when DOM is ready
