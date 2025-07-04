@@ -25,12 +25,29 @@ function injectSimpleEditor(iframe) {
         console.log('🚀 Simple inline editor starting...');
         
         // Wait a moment for DOM to be ready
-        setTimeout(() => {
-          console.log('📝 Making all text elements editable...');
+        function setupEditableElements() {
+          console.log('📝 Setting up editable elements...');
           
-          // Find ALL text elements and make them editable
-          const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li, td, th, div');
-          console.log('Found', textElements.length, 'text elements');
+          // First look for React components with data-edit attributes
+          const dataEditElements = document.querySelectorAll('[data-edit]');
+          console.log('Found', dataEditElements.length, 'elements with data-edit attributes');
+          
+          // If no data-edit elements, fall back to general text elements
+          const textElements = dataEditElements.length > 0 ? 
+            dataEditElements : 
+            document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, button, li, td, th, div');
+          
+          console.log('Processing', textElements.length, 'elements total');
+          
+          // Test for specific elements
+          const testElement = document.querySelector('.editable-test');
+          const heroTitle = document.querySelector('[data-edit="heroTitle"]');
+          console.log('Found test element:', !!testElement);
+          console.log('Found heroTitle element:', !!heroTitle);
+          
+          if (heroTitle) {
+            console.log('🎯 HERO TITLE FOUND:', heroTitle.textContent?.slice(0, 30), 'Tag:', heroTitle.tagName);
+          }
           
           let editableCount = 0;
           
@@ -102,8 +119,19 @@ function injectSimpleEditor(iframe) {
           });
           
           console.log('✅ Made', editableCount, 'elements editable');
-          
-        }, 2000); // Wait 2 seconds for everything to load
+        }
+        
+        // Run initial setup
+        setTimeout(setupEditableElements, 1000);
+        
+        // Listen for React ready event and run again
+        window.addEventListener('react-dom-ready', () => {
+          console.log('🔄 React DOM ready - re-scanning for editable elements');
+          setupEditableElements();
+        });
+        
+        // Also run after a longer delay as fallback
+        setTimeout(setupEditableElements, 3000);
       `;
       
       frameDoc.head.appendChild(script);
