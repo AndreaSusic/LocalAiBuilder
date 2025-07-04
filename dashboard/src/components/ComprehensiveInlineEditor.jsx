@@ -41,8 +41,8 @@ const ComprehensiveInlineEditor = ({ previewId }) => {
           // Setup event listeners
           setupEventListeners();
           
-          // Create editing panel
-          createEditingPanel();
+          // Create floating toolbar
+          createFloatingToolbar();
           
           console.log('✅ Comprehensive editor fully initialized');
         }
@@ -237,21 +237,55 @@ const ComprehensiveInlineEditor = ({ previewId }) => {
                   }
                 };
                 
-                // For images, use absolute positioning to ensure visibility
+                // For images, ensure proper positioning and visibility
                 if (isImage) {
-                  if (!element.parentElement.style.position) {
-                    element.parentElement.style.position = 'relative';
+                  // Create a wrapper for the image if needed
+                  let wrapper = element.parentElement;
+                  if (!wrapper || !wrapper.style.position || wrapper.style.position === 'static') {
+                    wrapper = document.createElement('div');
+                    wrapper.style.cssText = 'position: relative; display: inline-block;';
+                    element.parentNode.insertBefore(wrapper, element);
+                    wrapper.appendChild(element);
                   }
-                  deleteBtn.style.cssText += '; top: 5px; right: 5px; opacity: 0;';
-                  element.parentElement.appendChild(deleteBtn);
+                  
+                  // Style delete button for images
+                  deleteBtn.style.cssText = \`
+                    position: absolute !important;
+                    top: 8px !important;
+                    right: 8px !important;
+                    width: 24px !important;
+                    height: 24px !important;
+                    background: rgba(255, 68, 68, 0.9) !important;
+                    color: white !important;
+                    border: none !important;
+                    border-radius: 50% !important;
+                    cursor: pointer !important;
+                    font-size: 14px !important;
+                    line-height: 1 !important;
+                    z-index: 10001 !important;
+                    opacity: 0 !important;
+                    transition: opacity 0.2s ease !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                  \`;
+                  
+                  wrapper.appendChild(deleteBtn);
                   
                   // Show/hide delete button on hover
-                  element.addEventListener('mouseenter', () => {
+                  const showDeleteBtn = () => {
                     deleteBtn.style.opacity = '1';
-                  });
-                  element.addEventListener('mouseleave', () => {
+                  };
+                  const hideDeleteBtn = () => {
                     deleteBtn.style.opacity = '0';
-                  });
+                  };
+                  
+                  element.addEventListener('mouseenter', showDeleteBtn);
+                  element.addEventListener('mouseleave', hideDeleteBtn);
+                  wrapper.addEventListener('mouseenter', showDeleteBtn);
+                  wrapper.addEventListener('mouseleave', hideDeleteBtn);
+                  deleteBtn.addEventListener('mouseenter', showDeleteBtn);
+                  
                 } else {
                   element.style.position = 'relative';
                   element.appendChild(deleteBtn);
@@ -297,56 +331,58 @@ const ComprehensiveInlineEditor = ({ previewId }) => {
           });
         }
         
-        function createEditingPanel() {
-          const panel = document.createElement('div');
-          panel.className = 'editor-panel';
-          panel.innerHTML = \`
-            <h3>Element Editor</h3>
-            
-            <div class="editor-section">
-              <div class="editor-controls">
-                <button class="editor-btn" onclick="formatText('bold')">B</button>
-                <button class="editor-btn" onclick="formatText('italic')">I</button>
-                <button class="editor-btn" onclick="formatText('underline')">U</button>
-              </div>
-            </div>
-            
-            <div class="editor-section">
-              <label>Font Size:</label>
-              <select class="editor-dropdown" onchange="changeFontSize(this.value)">
+        function createFloatingToolbar() {
+          const toolbar = document.createElement('div');
+          toolbar.className = 'floating-editor-toolbar';
+          toolbar.style.cssText = \`
+            position: fixed;
+            z-index: 10000;
+            background: white;
+            border: 2px solid #ffc000;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            display: none;
+            min-width: 320px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+          \`;
+          
+          toolbar.innerHTML = \`
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <!-- Formatting buttons -->
+              <button class="toolbar-btn" onclick="formatText('bold')" title="Bold" style="font-weight: bold; width: 32px; height: 32px; border: 1px solid #ddd; background: #f8f9fa; border-radius: 4px; cursor: pointer;">B</button>
+              <button class="toolbar-btn" onclick="formatText('italic')" title="Italic" style="font-style: italic; width: 32px; height: 32px; border: 1px solid #ddd; background: #f8f9fa; border-radius: 4px; cursor: pointer;">I</button>
+              <button class="toolbar-btn" onclick="formatText('underline')" title="Underline" style="text-decoration: underline; width: 32px; height: 32px; border: 1px solid #ddd; background: #f8f9fa; border-radius: 4px; cursor: pointer;">U</button>
+              
+              <!-- Font size dropdown -->
+              <select class="toolbar-dropdown" onchange="changeFontSize(this.value)" title="Font Size" style="height: 32px; border: 1px solid #ddd; border-radius: 4px; padding: 4px;">
+                <option value="">Size</option>
                 \${fontSizeOptions.map(size => \`<option value="\${size}">\${size}px</option>\`).join('')}
               </select>
-            </div>
-            
-            <div class="editor-section">
-              <label>Heading Level:</label>
-              <select class="editor-dropdown" onchange="changeHeading(this.value)">
+              
+              <!-- Heading dropdown -->
+              <select class="toolbar-dropdown" onchange="changeHeading(this.value)" title="Heading" style="height: 32px; border: 1px solid #ddd; border-radius: 4px; padding: 4px;">
+                <option value="">Heading</option>
                 \${headingOptions.map(h => \`<option value="\${h}">\${h}</option>\`).join('')}
               </select>
-            </div>
-            
-            <div class="editor-section">
-              <label>Text Color:</label>
-              <div class="editor-color-picker">
-                <div class="editor-color-btn" style="background: #000000" onclick="changeColor('#000000')"></div>
-                <div class="editor-color-btn" style="background: #333333" onclick="changeColor('#333333')"></div>
-                <div class="editor-color-btn" style="background: #666666" onclick="changeColor('#666666')"></div>
-                <div class="editor-color-btn" style="background: #999999" onclick="changeColor('#999999')"></div>
-                <div class="editor-color-btn" style="background: #ffffff; border: 2px solid #000" onclick="changeColor('#ffffff')"></div>
-                <div class="editor-color-btn" style="background: #ffc000" onclick="changeColor('#ffc000')"></div>
-                <div class="editor-color-btn" style="background: #ff4444" onclick="changeColor('#ff4444')"></div>
-                <div class="editor-color-btn" style="background: #22c55e" onclick="changeColor('#22c55e')"></div>
-                <div class="editor-color-btn" style="background: #3b82f6" onclick="changeColor('#3b82f6')"></div>
+              
+              <!-- Color buttons -->
+              <div style="display: flex; gap: 4px;">
+                <div class="color-btn" style="width: 24px; height: 24px; background: #000000; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;" onclick="changeColor('#000000')" title="Black"></div>
+                <div class="color-btn" style="width: 24px; height: 24px; background: #666666; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;" onclick="changeColor('#666666')" title="Gray"></div>
+                <div class="color-btn" style="width: 24px; height: 24px; background: #ffc000; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;" onclick="changeColor('#ffc000')" title="Yellow"></div>
+                <div class="color-btn" style="width: 24px; height: 24px; background: #ff4444; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;" onclick="changeColor('#ff4444')" title="Red"></div>
+                <div class="color-btn" style="width: 24px; height: 24px; background: #22c55e; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;" onclick="changeColor('#22c55e')" title="Green"></div>
+                <div class="color-btn" style="width: 24px; height: 24px; background: #3b82f6; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;" onclick="changeColor('#3b82f6')" title="Blue"></div>
               </div>
-            </div>
-            
-            <div class="editor-section">
-              <button class="editor-btn" onclick="openAIChat()">🤖 AI Help</button>
+              
+              <!-- AI button -->
+              <button class="toolbar-btn" onclick="openAIChat()" title="AI Help" style="width: 32px; height: 32px; border: 1px solid #ddd; background: #f8f9fa; border-radius: 4px; cursor: pointer;">🤖</button>
             </div>
           \`;
           
-          document.body.appendChild(panel);
-          editingPanelElement = panel;
+          document.body.appendChild(toolbar);
+          editingPanelElement = toolbar;
           
           // Add global functions
           window.formatText = formatText;
@@ -369,20 +405,23 @@ const ComprehensiveInlineEditor = ({ previewId }) => {
           element.classList.add('editor-active');
           element.contentEditable = true;
           
-          // Show editing panel
+          // Show floating toolbar positioned near element
           if (editingPanelElement) {
-            editingPanelElement.classList.add('active');
+            const rect = element.getBoundingClientRect();
+            editingPanelElement.style.display = 'block';
+            editingPanelElement.style.left = Math.min(rect.left, window.innerWidth - 340) + 'px';
+            editingPanelElement.style.top = (rect.top - 60) + 'px';
             
-            // Update panel values based on current element
+            // Update dropdown values based on current element
             const fontSize = window.getComputedStyle(element).fontSize;
             const fontSizeValue = parseInt(fontSize);
-            const fontSizeSelect = editingPanelElement.querySelector('select');
+            const fontSizeSelect = editingPanelElement.querySelector('.toolbar-dropdown');
             if (fontSizeSelect) {
               fontSizeSelect.value = fontSizeValue;
             }
             
             // Update heading level
-            const headingSelect = editingPanelElement.querySelectorAll('select')[1];
+            const headingSelect = editingPanelElement.querySelectorAll('.toolbar-dropdown')[1];
             if (headingSelect && element.tagName.match(/H[1-6]/)) {
               headingSelect.value = element.tagName;
             }
@@ -402,9 +441,9 @@ const ComprehensiveInlineEditor = ({ previewId }) => {
             editorActiveElement = null;
           }
           
-          // Hide editing panel
+          // Hide floating toolbar
           if (editingPanelElement) {
-            editingPanelElement.classList.remove('active');
+            editingPanelElement.style.display = 'none';
           }
         }
         
@@ -448,19 +487,57 @@ const ComprehensiveInlineEditor = ({ previewId }) => {
           scheduleAutoSave(editorActiveElement);
         }
         
-        function openAIChat() {
+        async function openAIChat() {
           if (!editorActiveElement) return;
           
           const text = editorActiveElement.textContent;
-          const message = \`Please help me improve this text: "\${text}"\`;
+          const prompt = \`Improve this text for a business website: "\${text}". Make it more professional and engaging. Return only the improved text, no explanation.\`;
           
-          // Send to parent dashboard
-          if (window.parent !== window) {
-            window.parent.postMessage({
-              type: 'AI_CHAT_REQUEST',
-              message: message,
-              context: 'inline-editor'
-            }, '*');
+          try {
+            console.log('🤖 Requesting AI improvement for:', text);
+            
+            const response = await fetch('/api/ai-chat', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({
+                message: prompt,
+                stream: false
+              })
+            });
+            
+            if (response.ok) {
+              const data = await response.json();
+              const improvedText = data.response.trim();
+              
+              if (improvedText && improvedText !== text) {
+                // Apply the AI improvement directly
+                editorActiveElement.textContent = improvedText;
+                console.log('✅ AI improvement applied:', improvedText);
+                
+                // Save the change
+                scheduleAutoSave(editorActiveElement);
+                
+                // Log the AI completion
+                fetch('/api/ai-completion-log', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  credentials: 'include',
+                  body: JSON.stringify({
+                    action: 'AI text improvement',
+                    originalText: text,
+                    improvedText: improvedText,
+                    element: editorActiveElement.tagName
+                  })
+                });
+              }
+            } else {
+              console.error('AI request failed:', response.status);
+              alert('AI assistant is temporarily unavailable');
+            }
+          } catch (error) {
+            console.error('AI request error:', error);
+            alert('Error connecting to AI assistant');
           }
         }
         

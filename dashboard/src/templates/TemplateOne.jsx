@@ -325,9 +325,10 @@ export default function HomepageV1({ tokens = {} }) {
         .gallery-grid img {
           flex: 0 0 auto;
           width: 200px;
-          height: 150px;
+          height: 200px;
           object-fit: cover;
           border-radius: 6px;
+          aspect-ratio: 1/1;
         }
         
         /* Contact + Map */
@@ -494,7 +495,8 @@ export default function HomepageV1({ tokens = {} }) {
           }
           .gallery-grid img {
             width: 150px;
-            height: 100px;
+            height: 150px;
+            aspect-ratio: 1/1;
           }
         }
       `}</style>

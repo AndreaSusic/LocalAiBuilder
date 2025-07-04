@@ -1810,30 +1810,12 @@ function DesktopDashboard({ bootstrap }) {
           <div className="preview-panel-footer">
             <button 
               className="view-live-btn-mobile" 
-              onClick={async () => {
-                console.log('🌐 Creating user site URL...');
-                try {
-                  const response = await fetch('/api/create-site-url', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ 
-                      siteName: bootstrap?.company_name || 'My Website',
-                      templateData: bootstrap || {}
-                    })
-                  });
-                  
-                  if (response.ok) {
-                    const result = await response.json();
-                    console.log('✅ User site created:', result.siteUrl);
-                    window.open(result.siteUrl, '_blank');
-                  } else {
-                    console.error('Failed to create user site');
-                    alert('Please log in to create your site URL');
-                  }
-                } catch (error) {
-                  console.error('Error creating user site:', error);
-                  alert('Error creating site URL. Please try again.');
+              onClick={() => {
+                console.log('🌐 Opening identical preview in new tab...');
+                if (previewContent) {
+                  window.open(previewContent, '_blank');
+                } else {
+                  alert('Please wait for the preview to load');
                 }
               }}
             >
