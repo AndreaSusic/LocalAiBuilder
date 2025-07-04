@@ -291,28 +291,282 @@ function injectWorkingEditor(iframe) {
           }
         });
         
+        // History system
+        let history = [];
+        let historyIndex = -1;
+        const maxHistory = 50;
+        
+        function saveState(description = 'Edit') {
+          const state = {
+            html: document.documentElement.outerHTML,
+            timestamp: Date.now(),
+            description
+          };
+          
+          if (historyIndex < history.length - 1) {
+            history = history.slice(0, historyIndex + 1);
+          }
+          
+          history.push(state);
+          historyIndex = history.length - 1;
+          
+          if (history.length > maxHistory) {
+            history.shift();
+            historyIndex--;
+          }
+          
+          updateHistoryButtons();
+        }
+        
+        function undo() {
+          if (historyIndex > 0) {
+            historyIndex--;
+            restoreState(history[historyIndex]);
+          }
+        }
+        
+        function redo() {
+          if (historyIndex < history.length - 1) {
+            historyIndex++;
+            restoreState(history[historyIndex]);
+          }
+        }
+        
+        function restoreState(state) {
+          document.documentElement.innerHTML = state.html;
+          setTimeout(() => {
+            initWorkingEditor();
+            updateHistoryButtons();
+          }, 100);
+        }
+        
+        function updateHistoryButtons() {
+          // Send update to parent dashboard
+          window.parent.postMessage({
+            type: 'historyUpdate',
+            canUndo: historyIndex > 0,
+            canRedo: historyIndex < history.length - 1
+          }, '*');
+        }
+        
+        // Create history controls
+        function createHistoryControls() {
+          const historyDiv = document.createElement('div');
+          historyDiv.style.cssText = \`
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 10003;
+          \`;
+          
+          const undoBtn = document.createElement('button');
+          undoBtn.innerHTML = '↶';
+          undoBtn.title = 'Undo';
+          undoBtn.style.cssText = \`
+            width: 48px;
+            height: 48px;
+            border: 2px solid #ffc000;
+            background: white;
+            color: #ffc000;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+          \`;
+          undoBtn.onclick = undo;
+          
+          const redoBtn = document.createElement('button');
+          redoBtn.innerHTML = '↷';
+          redoBtn.title = 'Redo';
+          redoBtn.style.cssText = undoBtn.style.cssText;
+          redoBtn.onclick = redo;
+          
+          historyDiv.appendChild(undoBtn);
+          historyDiv.appendChild(redoBtn);
+          document.body.appendChild(historyDiv);
+          
+          window.undoBtn = undoBtn;
+          window.redoBtn = redoBtn;
+        }
+        
+        // Make all elements universally editable
+        function makeAllElementsEditable() {
+          const selectors = [
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+            'p', 'span', 'div', 'a', 'button',
+            'img', 'video', 'iframe',
+            'li', 'td', 'th',
+            '[data-edit]', '[data-editable]',
+            '.title', '.heading', '.text', '.content',
+            '.btn', '.button', '.link', '.menu-item',
+            '.nav-link', '.dropdown-item'
+          ];
+          
+          let editableCount = 0;
+          
+          selectors.forEach(selector => {
+            document.querySelectorAll(selector).forEach(element => {
+              if (element.closest('.editor-toolbar') || 
+                  element.classList.contains('delete-btn') ||
+                  element.getAttribute('data-universal-editor') === 'true') {
+                return;
+              }
+              
+              makeElementEditable(element);
+              editableCount++;
+            });
+          });
+          
+          console.log('✅ Made', editableCount, 'elements universally editable');
+        }
+        
+        function makeElementEditable(element) {
+          element.setAttribute('data-universal-editor', 'true');
+          element.style.cssText += \`
+            position: relative !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+          \`;
+          
+          // Add delete button
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'delete-btn';
+          deleteBtn.innerHTML = '×';
+          deleteBtn.style.cssText = \`
+            position: absolute !important;
+            top: -8px !important;
+            right: -8px !important;
+            width: 20px !important;
+            height: 20px !important;
+            background: #ff4444 !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            font-size: 12px !important;
+            line-height: 1 !important;
+            display: none !important;
+            z-index: 10000 !important;
+            font-family: Arial, sans-serif !important;
+          \`;
+          deleteBtn.onclick = (e) => {
+            e.stopPropagation();
+            const tagName = element.tagName;
+            element.remove();
+            saveState(\`Delete \${tagName}\`);
+          };
+          element.appendChild(deleteBtn);
+          
+          // Add hover effects
+          element.addEventListener('mouseenter', () => {
+            element.style.outline = '2px dashed #ff4444';
+            element.style.outlineOffset = '2px';
+            deleteBtn.style.display = 'block';
+          });
+          
+          element.addEventListener('mouseleave', () => {
+            if (element !== activeElement) {
+              element.style.outline = '';
+              element.style.outlineOffset = '';
+              deleteBtn.style.display = 'none';
+            }
+          });
+          
+          // Add click handler
+          element.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectElement(element);
+          });
+          
+          // Add double-click for text editing
+          if (isTextElement(element)) {
+            element.addEventListener('dblclick', (e) => {
+              e.stopPropagation();
+              enableInlineTextEdit(element);
+            });
+          }
+        }
+        
+        function selectElement(element) {
+          // Deactivate previous
+          if (activeElement) {
+            activeElement.classList.remove('active');
+            activeElement.style.outline = '';
+            activeElement.style.background = '';
+            const prevDeleteBtn = activeElement.querySelector('.delete-btn');
+            if (prevDeleteBtn) prevDeleteBtn.style.display = 'none';
+          }
+          
+          // Activate new
+          activeElement = element;
+          element.classList.add('active');
+          element.style.outline = '3px solid #ffc000';
+          element.style.outlineOffset = '2px';
+          element.style.background = 'rgba(255, 192, 0, 0.1)';
+          
+          const deleteBtn = element.querySelector('.delete-btn');
+          if (deleteBtn) deleteBtn.style.display = 'block';
+          
+          // Show toolbar
+          showEditorToolbar(element);
+          
+          console.log('✅ Selected element:', element.tagName);
+        }
+        
+        function isTextElement(element) {
+          const textTags = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'P', 'SPAN', 'DIV', 'A', 'BUTTON', 'LI', 'TD', 'TH'];
+          return textTags.includes(element.tagName);
+        }
+        
+        function enableInlineTextEdit(element) {
+          if (!isTextElement(element)) return;
+          
+          const originalText = element.textContent;
+          element.contentEditable = true;
+          element.focus();
+          
+          // Select all text
+          const range = document.createRange();
+          range.selectNodeContents(element);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          
+          const handleBlur = () => {
+            element.contentEditable = false;
+            element.removeEventListener('blur', handleBlur);
+            element.removeEventListener('keydown', handleKeydown);
+            
+            if (element.textContent !== originalText) {
+              saveState('Edit text');
+            }
+          };
+          
+          const handleKeydown = (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              element.blur();
+            }
+          };
+          
+          element.addEventListener('blur', handleBlur);
+          element.addEventListener('keydown', handleKeydown);
+        }
+        
         // Initialize editor
         function initWorkingEditor() {
           addEditorStyles();
           createEditorToolbar();
+          createHistoryControls();
           setupClickHandlers();
+          makeAllElementsEditable();
           
-          // Make existing data-edit elements clickable
-          const editableElements = document.querySelectorAll('[data-edit]');
-          editableElements.forEach(el => {
-            el.setAttribute('data-editable', 'true');
-          });
+          // Save initial state
+          saveState('Initial state');
           
-          // Also make h1, h2, h3 elements clickable for AI modifications
-          const headings = document.querySelectorAll('h1, h2, h3, p, span, div[class*="title"], div[class*="heading"]');
-          headings.forEach(el => {
-            if (!el.hasAttribute('data-editable')) {
-              el.setAttribute('data-editable', 'true');
-              el.style.cursor = 'text';
-            }
-          });
-          
-          console.log('✅ Working editor initialized with', editableElements.length, 'data-edit elements and', headings.length, 'heading elements');
+          console.log('✅ Universal editor initialized');
         }
         
         // Start when DOM is ready
