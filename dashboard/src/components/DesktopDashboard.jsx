@@ -223,8 +223,6 @@ function injectWorkingEditor(iframe) {
 
 function DesktopDashboard({ bootstrap }) {
   const navigate = useNavigate();
-  const [currentLanguage, setCurrentLanguage] = useState('EN');
-  const [currentDevice, setCurrentDevice] = useState('Desktop');
   const [previewContent, setPreviewContent] = useState(null);
 
   useEffect(() => {
@@ -325,38 +323,15 @@ function DesktopDashboard({ bootstrap }) {
             <span className="credits-label">Credits remaining: <strong>25</strong></span>
           </div>
           
-          {/* Language Dropdown */}
-          <div className="language-dropdown">
-            <select 
-              value={currentLanguage} 
-              onChange={(e) => setCurrentLanguage(e.target.value)}
-              className="icon-btn-wireframe"
-            >
-              <option value="EN">🇺🇸 EN</option>
-              <option value="SR">🇷🇸 SR</option>
-            </select>
-          </div>
-          
-          {/* Device Switcher */}
-          <div className="device-switcher">
-            <select 
-              value={currentDevice} 
-              onChange={(e) => setCurrentDevice(e.target.value)}
-              className="icon-btn-wireframe"
-            >
-              <option value="Desktop">🖥️ Desktop</option>
-              <option value="Tablet">📱 Tablet</option>
-              <option value="Mobile">📱 Mobile</option>
-            </select>
-          </div>
-
           <div className="pages-dropdown">
             <button className="btn-wireframe" onClick={() => console.log('Pages clicked')}>
               Pages ▼
             </button>
           </div>
 
-          <button className="btn-primary-wireframe" onClick={() => console.log('Publish clicked')}>
+          <button className="btn-wireframe">🔔</button>
+
+          <button className="btn-wireframe" onClick={() => console.log('Publish clicked')}>
             Publish
           </button>
 
