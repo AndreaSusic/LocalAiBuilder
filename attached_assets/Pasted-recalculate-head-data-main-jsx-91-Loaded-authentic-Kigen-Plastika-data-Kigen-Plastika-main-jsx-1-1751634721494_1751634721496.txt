@@ -1,0 +1,153 @@
+recalculate_head_data
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+main.jsx:154 BOOTSTRAP >> Object
+main.jsx:155 Current path: /preview/
+main.jsx:156 Root element exists: true
+main.jsx:170 React app rendered successfully
+App.jsx:21 App rendering with bootstrap: Object
+App.jsx:22 Window width: 1403
+App.jsx:23 isMobile: false
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: Object
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:613 Created short URL for desktop preview: /t/v1/cw6exrgws
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:176 ✅ React DOM ready event dispatched
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🕵️‍♂️ SiteDataContext loaded
+Console.js:61 🕵️‍♀️ HomepageV1 module evaluated
+Console.js:61 🔍 HomepageV1 import: ƒ ln({tokens:i={},bootstrap:u=null}){var o,c;console.log("🚀 HomepageV1 function started, bootstrap:",!!u);try{const f=u||{company_name:i.businessName||"Your Business Name",city:i.location?[i.location]…
+Console.js:61 🔍 HomepageV1 is function: true
+Console.js:61 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+Console.js:61 BOOTSTRAP >> Object
+Console.js:61 Current path: /t/v1/cw6exrgws
+Console.js:61 Root element exists: true
+Console.js:61 React app rendered successfully
+Console.js:61 App rendering with bootstrap: Object
+Console.js:61 Window width: 1030
+Console.js:61 isMobile: false
+Console.js:61 🔍 Fetching preview data for ID: cw6exrgws
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: Object
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 ✅ Loaded cached preview data for: Kigen Plastika
+Console.js:61 📊 Data includes reviews: true
+Console.js:61 📊 Data includes photos: true
+Console.js:61 🎨 Rendering template with data for: Kigen Plastika
+Console.js:61 📋 TemplatePreview about to render HomepageV1 with bootstrap: true
+Console.js:61 🔍 HomepageV1 component check: ƒ ln({tokens:i={},bootstrap:u=null}){var o,c;console.log("🚀 HomepageV1 function started, bootstrap:",!!u);try{const f=u||{company_name:i.businessName||"Your Business Name",city:i.location?[i.location]…
+Console.js:61 📦 SiteDataProvider wrapper mounted
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: Object
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+Console.js:61 🚀 HomepageV1 function started, bootstrap: true
+Console.js:61 HomepageV1 using data: Object
+Console.js:61 🏠 HomepageV1 rendering with data: Array(16)
+Console.js:61 🔥 About to render HeroSection
+Console.js:61 🔥 HeroSection rendered, moving to ServicesSection
+Console.js:61 🎯 HeroSection is rendering!
+Console.js:61 🎯 HeroSection data: Object
+Console.js:61 Editable rendering: h1 with path="heroTitle"
+Console.js:61 Editable rendering: p with path="heroSubtitle"
+Console.js:61 Editable rendering: button with path="ctaText"
+Console.js:61 ServicesSection DEBUG - Services data: Septic Tanks string
+Console.js:61 ServicesSection DEBUG - GBP products: undefined
+Console.js:61 🏅 APPLYING SERVICE PRIORITY HIERARCHY
+Console.js:61 🥇 PRIORITY 1: Using user input services text from chat: Septic Tanks
+Console.js:61 🖼️ APPLYING IMAGE PRIORITY HIERARCHY
+Console.js:61 🥇 PRIORITY 1: Using user uploaded images: 10
+Console.js:61 ServicesSection DEBUG - ServicesList: Array(1) Type: object
+Console.js:61 ServicesSection DEBUG - GBP Products: 0 Available: Array(0)
+Console.js:61 ServicesSection DEBUG - Processing service: Septic Tanks Type: string Index: 0
+Console.js:61 ServicesSection DEBUG - ServicesToShow: Array(1)
+Console.js:61 Editable rendering: h2 with path="servicesTitle"
+Console.js:61 Editable rendering: h4 with path="serviceTitle0"
+Console.js:61 Editable rendering: p with path="serviceDescription0"
+Console.js:61 AboutSection DEBUG - Team data: Array(0) Length: 0
+Console.js:61 Editable rendering: h2 with path="aboutTitle"
+Console.js:61 Editable rendering: p with path="aboutParagraph1"
+Console.js:61 Editable rendering: p with path="aboutParagraph2"
+Console.js:61 Editable rendering: p with path="aboutParagraph3"
+Console.js:61 Editable rendering: h3 with path="feature1Title"
+Console.js:61 Editable rendering: p with path="feature1Description"
+Console.js:61 Editable rendering: h3 with path="feature2Title"
+Console.js:61 Editable rendering: p with path="feature2Description"
+Console.js:61 Editable rendering: h3 with path="feature3Title"
+Console.js:61 Editable rendering: p with path="feature3Description"
+Console.js:61 🔍 ReviewsSection - Full siteData keys: Array(16)
+Console.js:61 🔍 ReviewsSection - google_profile: https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k
+Console.js:61 🔍 ReviewsSection - google_profile.reviews: undefined
+Console.js:61 🔍 ReviewsSection - reviews prop: Array(5)
+Console.js:61 🔍 ReviewsSection - team data: Array(0)
+Console.js:61 🔍 ReviewsSection - Has reviews in google_profile? false
+Console.js:61 🔍 ReviewsSection - Has reviews in main? true
+Console.js:61 🔍 ReviewsSection - GBP reviews found: 5 reviews
+Console.js:61 🔍 ReviewsSection - First review sample: Object
+Console.js:61 Editable rendering: h2 with path="reviewsTitle"
+Console.js:61 Editable rendering: p with path="testimonialText0"
+Console.js:61 Editable rendering: p with path="testimonialAuthor0"
+Console.js:61 Editable rendering: p with path="testimonialText1"
+Console.js:61 Editable rendering: p with path="testimonialAuthor1"
+Console.js:61 Editable rendering: p with path="testimonialText2"
+Console.js:61 Editable rendering: p with path="testimonialAuthor2"
+Console.js:61 ✅ React DOM ready event dispatched
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 🔧 Color Guard: Fixed contrast for element, bg: #ffffff, new color: #000000
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 ✅ React DOM ready event dispatched
+DesktopDashboard.jsx:8 🔧 Injecting working inline editor...
+Console.js:61 🚀 Working inline editor starting...
+Console.js:61 ✅ Toolbar created
+Console.js:61 ✅ Click handlers setup
+Console.js:61 ✅ Made 118 elements universally editable
+Console.js:61 ✅ Universal editor initialized
+DesktopDashboard.jsx:581 ✅ Working editor script injected
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎯 Activating element: H1 Welcome to Kigen Plastika×
+Console.js:61 ✅ Toolbar shown at 109 7
+Console.js:61 🎯 Activating element: H1 Welcome to Kigen Plastika×
+Console.js:61 ✅ Toolbar shown at 109 7
+Console.js:61 🎯 Activating element: H1 Welcome to Kigen Plastika×
+Console.js:61 ✅ Toolbar shown at 109 7
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎯 Activating element: H1 Welcome to Kigen Plastika×
+Console.js:61 ✅ Toolbar shown at 109 7
+Console.js:61 🎯 Activating element: H1 Welcome to Kigen Plastika×
+Console.js:61 ✅ Toolbar shown at 109 7
+Console.js:61 🎯 Activating element: H1 Welcome to Kigen Plastika×
+Console.js:61 ✅ Toolbar shown at 109 7
+Console.js:61 🎯 Activating element: H1 Welcome to Kigen Plastika×
+Console.js:61 ✅ Toolbar shown at 109 7
+Console.js:61 🎯 Activating element: H1 Welcome to Kigen Plastika×
+Console.js:61 ✅ Toolbar shown at 109 7
+Console.js:61 🎯 Activating element: H1 Welcome to Kigen Plastika×
+Console.js:61 ✅ Toolbar shown at 109 7
+Console.js:61 🎯 Activating element: H1 Welcome to Kigen Plastika×
+Console.js:61 ✅ Toolbar shown at 109 7
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎯 Activating element: H1 
+Console.js:61 ✅ Toolbar shown at 109 7
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+16App.jsx:29 Resize detected - Window width: 1403 isMobile: false
