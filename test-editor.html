@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inline Editor Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-section">
+        <h1>Inline Editor Test Page</h1>
+        <p>This is a test paragraph that should become editable when you hover over it (red dots) and click on it (yellow outline with toolbar).</p>
+        
+        <h2>Test Section</h2>
+        <p>Another test paragraph to verify the inline editor functionality is working correctly.</p>
+        
+        <h3>Features to Test</h3>
+        <ul>
+            <li>Hover to see red dotted outline</li>
+            <li>Click to activate editing (yellow outline)</li>
+            <li>Toolbar should appear with formatting options</li>
+            <li>AI Chat button (💬) should open chat modal</li>
+        </ul>
+        
+        <blockquote>
+            This is a blockquote that should also be editable.
+        </blockquote>
+        
+        <div>
+            <span>This span should be editable too.</span>
+        </div>
+        
+        <button type="button">This button text should be editable</button>
+    </div>
+
+    <script type="module" src="/editorBridge.js"></script>
+</body>
+</html>

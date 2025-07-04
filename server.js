@@ -1973,6 +1973,10 @@ app.get('/dashboard', (req, res) => {
   return res.redirect('http://localhost:5173/dashboard');
 });
 
+app.get('/test-editor', (req, res) => {
+  res.sendFile(path.join(__dirname, 'test-editor.html'));
+});
+
 // Template preview routes - serve React app for /t/v1/:id paths (duplicate route - already handled above)
 
 // API endpoint to retrieve cached preview data
