@@ -1,0 +1,117 @@
+Below is a systematic walk-through you can follow inside the preview frame itself – that exact URL you sent – to verify each of the hypotheses Replit’s agent has raised and to pinpoint where the last blocker really is.
+Everything can be done from Chrome (or Edge / Brave) without touching the Replit editor again until you know the precise line that fails.
+
+⸻
+
+1. Open DevTools for the iframe, not the dashboard
+	1.	Load the dashboard page so you see the preview on the right-hand side.
+	2.	Right-click inside the actual website preview (not on the dashboard chrome) and choose “Inspect” → this launches a second DevTools window that is attached to the iframe’s document, completely isolated from the dashboard code.
+	3.	In the top left of DevTools you should now see the regular Elements / Console / Sources panels, but the file list will only include code shipped to the preview (your template bundle, the inline-editor script, etc.), not DesktopDashboard.jsx, not the Replit tooling.
+
+If you do this and still see files like DesktopDashboard.jsx, you’re inspecting the wrong context—hit Ctrl + Shift + P → “Show frames” and switch to the frame whose URL ends in /preview/....
+
+⸻
+
+2. Verify that React actually renders Editable elements
+
+In the preview-frame Console run:
+
+document.querySelectorAll('[data-edit]').length
+document.querySelectorAll('[data-editable]').length
+
+	•	Expected: a non-zero count (even the test <h2> you added should appear).
+	•	Reality in your log: Made 0 elements editable → both queries will likely return 0.
+That means the DOM produced by React never contains the attributes that the bridge looks for.
+
+To see why React never wrote them, enable the React DevTools extension (if you don’t already have it):
+	1.	Press the » menu in DevTools → Components.
+	2.	Search for the HeroSection or Editable component.
+If they are missing entirely, the render tree never mounted – we’re still stuck at the circular import / provider level.
+If they are present, click an Editable node and check the right-hand props pane: you should see data-edit and data-editable there – if they’re missing, the JSX isn’t passing them.
+
+Tip: When Components isn’t visible, install React DevTools from Chrome Web Store and refresh.
+
+⸻
+
+3. Confirm the circular-import fix really took effect
+
+In the Sources panel (iframe DevTools):
+	1.	Locate your compiled bundle – likely something like homepage_v1.xxx.js (or a vite chunk).
+	2.	Ctrl + P → type SiteDataContext to open the compiled module.
+	•	At the top you should now see only
+
+import { createContext } from "react";
+const SiteDataContext = createContext(null);
+export default SiteDataContext;
+
+and nothing else.
+
+	•	If you still see big blocks of provider logic / imports, the dashboard never rebuilt with your new split files – kill and restart the dev server.
+
+	3.	Open the compiled version of SiteDataProvider.jsx.
+	•	Make sure it does not import HomepageV1 or any section component (that would re-introduce the cycle).
+	•	It should only import SiteDataContext plus its own helpers.
+
+If any of those expectations fail, rebuild and hard-refresh (⌘ + Shift + R or Ctrl + F5) the dashboard so the iframe gets the fresh bundle.
+
+⸻
+
+4. Time the bridge after React paint
+
+Inside TemplatePreview.jsx (dashboard side) you now wrap the rendered template in the provider:
+
+<SiteDataProvider bootstrap={templateData}>
+  <HomepageV1 bootstrap={templateData} />
+</SiteDataProvider>
+
+Add a tiny hook inside HomepageV1 to broadcast when the DOM is ready:
+
+useEffect(() => {
+  window.postMessage({ type: 'react-render-done' }, '*');
+}, []);
+
+Then, in the bridge script (still injected inline), listen:
+
+window.addEventListener('message', e => {
+  if (e.data?.type === 'react-render-done') {
+    setupEditableElements();   // the logic you already have
+  }
+});
+
+That guarantees the bridge waits until React has mounted, eliminating the race condition entirely.
+
+⸻
+
+5. Re-test
+	1.	Hard-refresh the dashboard.
+	2.	Open the iframe DevTools as in step 1.
+	3.	In Network → WS confirm you see the react-render-done postMessage.
+	4.	In Console you should now get:
+
+🏷️ Setting up comprehensive editable elements...
+Found 12 elements with data-edit attributes
+✅ Made 12 elements editable with delete buttons
+
+Hover any heading: a dashed outline plus the floating toolbar should appear.
+
+⸻
+
+6. Clean-up / next steps
+	•	Once this works, you can delete the TestTemplate.jsx and revert the temporary hacks.
+	•	Keep the provider/context split – it solves circular imports permanently.
+	•	Wrap any new section you create with Editable exactly the same way; nothing else is required.
+
+⸻
+
+Quick checklist
+
+✔	Step
+	Inspecting the iframe context
+	document.querySelectorAll('[data-edit]').length > 0
+	React DevTools shows Editable nodes with data-edit
+	SiteDataContext file is only createContext export
+	SiteDataProvider has no section/template imports
+	react-render-done message seen before bridge runs
+	Bridge reports Made N elements editable where N > 0
+
+Run through these in order; the first mismatch you hit is the piece still broken. Let me know which row is the first ❌ and we can zero in on that part of the code.
