@@ -5,6 +5,15 @@ import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 // Ultra-simple inline editor that just works
 function injectSimpleEditor(iframe) {
   try {
+    // Only inject editor for preview pages, not for direct template views
+    const currentUrl = window.location.href;
+    const isPreviewPage = currentUrl.includes('/preview') || currentUrl.includes('/dashboard');
+    
+    if (!isPreviewPage) {
+      console.log('🚫 Skipping editor injection - not in preview context');
+      return;
+    }
+    
     console.log('🔧 Injecting ultra-simple inline editor...');
     
     const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
@@ -189,13 +198,15 @@ export default function DesktopDashboard({ bootstrap }) {
   useEffect(() => {
     const createPreviewUrl = async () => {
       try {
+        // Generate a unique ID for the preview
+        const id = Math.random().toString(36).substr(2, 9);
         const response = await fetch('/api/cache-preview', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ data: bootstrap || {} })
+          body: JSON.stringify({ id, data: bootstrap || {} })
         });
         const result = await response.json();
-        const shortUrl = `/t/v1/${result.id}`;
+        const shortUrl = `/t/v1/${id}`;
         setPreviewContent(shortUrl);
         console.log('Created short URL for desktop preview:', shortUrl);
       } catch (error) {
