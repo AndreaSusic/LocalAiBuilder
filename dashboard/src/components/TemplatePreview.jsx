@@ -1211,6 +1211,18 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
         }
       };
 
+      // Check authentication status
+      async function checkAuthStatus() {
+        try {
+          const response = await fetch('/api/me');
+          autoSaveIsAuthenticated = response.ok;
+          console.log('🔐 User authentication status:', autoSaveIsAuthenticated ? 'Authenticated' : 'Not authenticated');
+        } catch (error) {
+          console.log('⚠️ Could not check auth status:', error.message);
+          autoSaveIsAuthenticated = false;
+        }
+      }
+
       // Initialize auto-save editor
       async function initAutoSaveEditor() {
         console.log('🔧 Starting auto-save editor initialization...');
@@ -1241,8 +1253,8 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       }
 
       // Start the editor with longer delay to ensure React is fully rendered
-      setTimeout(async () => {
-        await initAutoSaveEditor();
+      setTimeout(() => {
+        initAutoSaveEditor();
       }, 1500);
     `;
     
