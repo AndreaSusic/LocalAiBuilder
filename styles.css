@@ -665,8 +665,8 @@ line-height: 1.4;
   }
 
   .plan-card {
-    flex: 0 1 calc(33.333% - var(--spacing-xl));
-    max-width: 350px;
+    flex: 0 1 calc(25% - var(--spacing-lg));
+    max-width: 280px;
   }
 }
 
