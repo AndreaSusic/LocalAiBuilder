@@ -5,13 +5,14 @@ const FixedInlineEditor = ({ previewId }) => {
     const script = document.createElement('script');
     script.innerHTML = `
       (function() {
-        console.log('🚀 Fixed comprehensive inline editor starting...');
+        console.log('🚀 Complete inline editor with all features starting...');
         
         // Global variables
-        let editorActiveElement = null;
-        let editorToolbar = null;
+        let activeElement = null;
+        let floatingToolbar = null;
         let editHistory = [];
         let historyIndex = -1;
+        let isAuthenticated = false;
         
         // Check if we're in read-only mode (View Site pages)
         const isReadOnlyMode = window.location.href.includes('/t/v1/') && 
@@ -23,17 +24,19 @@ const FixedInlineEditor = ({ previewId }) => {
         }
         
         // Initialize editor
-        function initFixedEditor() {
+        function initCompleteEditor() {
           addEditorStyles();
           makeElementsEditable();
           setupEventListeners();
           createFloatingToolbar();
-          console.log('✅ Fixed editor fully initialized');
+          checkAuthStatus();
+          console.log('✅ Complete editor with all features initialized');
         }
         
         function addEditorStyles() {
           const style = document.createElement('style');
           style.textContent = \`
+            /* Hover and active states */
             .editor-hoverable {
               position: relative !important;
               cursor: pointer !important;
