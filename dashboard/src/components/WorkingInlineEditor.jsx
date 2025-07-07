@@ -25,7 +25,7 @@ const WorkingInlineEditor = ({ previewId }) => {
     // Save initial state
     saveHistoryState(iframeDoc, 'Initial state');
     
-    // Add CSS to hide duplicate delete buttons on menu items
+    // Add editor styles to iframe including duplicate button fix
     const style = iframeDoc.createElement('style');
     style.textContent = `
       /* CRITICAL FIX: Hide duplicate delete buttons on navigation menu items */
@@ -33,12 +33,7 @@ const WorkingInlineEditor = ({ previewId }) => {
       li[data-editable="true"] > .delete-btn {
         display: none !important;
       }
-    `;
-    iframeDoc.head.appendChild(style);
-
-    // Add editor styles to iframe
-    const style = iframeDoc.createElement('style');
-    style.textContent = `
+      
       .editor-element {
         position: relative;
         cursor: pointer;
