@@ -125,6 +125,19 @@ const WorkingInlineEditor = ({ previewId }) => {
           return;
         }
         
+        // CRITICAL: Only outermost editable element in nav item gets delete button
+        const li = element.closest('li[data-editable]');
+        if (li && li.querySelector(':scope > .delete-btn')) {
+          console.log(`🧭 Skipping ${element.tagName} - ancestor LI already has delete button`);
+          return;
+        }
+        
+        // CRITICAL: Skip nested editable anchors inside LI elements
+        if (element.tagName === 'A' && element.closest('li[data-editable]')) {
+          console.log(`🧭 Skipping anchor ${element.tagName} - nested inside editable LI`);
+          return;
+        }
+        
         editableCount++;
         
         element.classList.add('editor-element');
