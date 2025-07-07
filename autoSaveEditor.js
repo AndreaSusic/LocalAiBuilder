@@ -6,6 +6,15 @@
 
 console.log('🚀 Auto-save editor bridge starting...');
 
+/* -----------------------------------------------------------
+   SINGLETON GUARD – stop this file from running twice
+----------------------------------------------------------- */
+if (window.__goa_autoSaveInit) {
+  console.log('🛑 autoSaveEditor re-entry blocked');
+  return;
+}
+window.__goa_autoSaveInit = true;
+
 // COMPLETELY DISABLED to prevent duplicate delete buttons - WorkingInlineEditor.jsx is the only active system
 console.log('🔧 AutoSaveEditor COMPLETELY DISABLED to prevent double × delete buttons');
 console.log('✅ Only WorkingInlineEditor.jsx should be active for editing');

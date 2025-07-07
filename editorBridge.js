@@ -356,10 +356,16 @@ async function openAIChat() {
   };
 }
 
-// Prevent double-init (iframe reloads, hot-reload etc.)
-if (!window.__editorBridgeInitialized) {
-  window.__editorBridgeInitialized = true;
+/**
+ * Prevent double-boot when:
+ *   • the iframe hot-reloads
+ *   • autoSaveEditor injects its own bridge
+ */
+if (!window.__goa_editorBridgeInit) {
+  window.__goa_editorBridgeInit = true;
   initEditor();
+} else {
+  console.log('🛑 editorBridge second initialisation blocked');
 }
 
 console.log('✅ Editor bridge loaded successfully');

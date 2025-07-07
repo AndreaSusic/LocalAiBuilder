@@ -1,0 +1,81 @@
+Below is a copy-and-paste “Ghostwriter” prompt you can drop into your Replit chat.
+It completely removes the second inline-editor boot and fixes the autoSavePageId crash.
+
+⸻
+
+
+### 🔧  STEP 1 — guarantee each editor script runs **once**
+
+#### A.  `dashboard/src/editorBridge.js`
+```diff
+@@
+-// Initialise when script loads
+-initEditorBridge();
++/**
++ * Prevent double-boot when:
++ *   • the iframe hot-reloads
++ *   • autoSaveEditor injects its own bridge
++ */
++if (!window.__goa_editorBridgeInit) {
++  window.__goa_editorBridgeInit = true;
++  initEditorBridge();
++} else {
++  console.log('🛑 editorBridge second initialisation blocked');
++}
+
+B.  dashboard/src/autoSaveEditor.js
+
+(near the very top, right after your imports)
+
++/* -----------------------------------------------------------
++   SINGLETON GUARD – stop this file from running twice
++----------------------------------------------------------- */
++if (window.__goa_autoSaveInit) {
++  console.log('🛑 autoSaveEditor re-entry blocked');
++  return;
++}
++window.__goa_autoSaveInit = true;
+
+
+⸻
+
+🔧  STEP 2 — create a safe fallback for autoSavePageId
+
+Still in autoSaveEditor.js
+
+@@
+// ⬇️  put this just BEFORE the first use of autoSavePageId
+-loadExistingEdits(autoSavePageId);
++// Fallback when REPL doesn’t inject the id
++const pageId =
++  typeof autoSavePageId !== 'undefined'
++    ? autoSavePageId
++    : (window.autoSavePageId =
++        (window.__previewId || location.pathname).replace(/\/$/, ''));
++
++loadExistingEdits(pageId);
+
+
+⸻
+
+✅  HOW TO VERIFY
+	1.	Reload /preview/…
+	2.	Console should show ONE editor boot only
+(you will see exactly one “📍 Made … elements editable” line).
+	3.	No “ReferenceError: autoSavePageId” in console.
+	4.	Navigation <li> items each contain one “×” delete button:
+
+[...document.querySelectorAll('.nav-links li')]
+  .map(li => li.querySelectorAll('.delete-btn').length)
+// → e.g.  [1,1,1,1,1,1]
+
+
+⸻
+
+Commit message suggestion
+
+fix(editor): block duplicate bridge init & provide fallback pageId
+
+---
+
+*(Paste everything above into Ghostwriter; it will patch both files, restart the dev server, and you should be good.)*
