@@ -116,7 +116,8 @@ function injectSimpleEditor(iframe) {
             editableCount++;
           });
           
-          console.log('✅ Made', editableCount, 'elements editable');
+          console.log('⚠️ MobileDashboard editor DISABLED to prevent duplicate × buttons');
+          return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
           
         }, 2000); // Wait 2 seconds for everything to load
       `;
