@@ -99,15 +99,21 @@ const WorkingInlineEditor = ({ previewId }) => {
         // Skip toolbar elements and their children
         if (element.closest('.toolbar') || element.closest('.editor-toolbar')) return;
         
+        // CRITICAL: Skip if this element is inside another editable - we only want the outer-most one
+        if (element.closest('[data-editable="true"]') !== element) {
+          console.log(`⚠️ Skipping nested editable ${element.tagName} - only outer-most elements get delete buttons`);
+          return;
+        }
+        
         // Skip if already has delete button (prevent duplicates from other editors)
         if (element.querySelector('.delete-btn') || element.querySelector('.editor-delete-btn')) {
           console.log(`⚠️ Skipping ${element.tagName} - already has delete button from another editor`);
           return;
         }
         
-        // Skip navigation menu LI elements to prevent double delete buttons
-        if (element.closest('nav') && element.tagName === 'LI') {
-          console.log(`⚠️ Skipping nav LI element to prevent double delete buttons`);
+        // Skip if delete button already injected (safety flag)
+        if (element.dataset.deleteBtnInjected) {
+          console.log(`⚠️ Skipping ${element.tagName} - delete button already injected`);
           return;
         }
         
@@ -136,6 +142,10 @@ const WorkingInlineEditor = ({ previewId }) => {
         }
         
         element.appendChild(deleteBtn);
+        
+        // Mark as injected to prevent duplicates
+        element.dataset.deleteBtnInjected = '1';
+        
         console.log(`✅ Added delete button to ${element.tagName}${element.className ? '.' + element.className : ''}`);
         
         // Click handler
