@@ -1253,8 +1253,8 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
     console.log('⚠️ TemplatePreview auto-save editor DISABLED to prevent duplicate × buttons');
     return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
     
-    document.head.appendChild(script);
-    console.log('✅ Auto-save editor script injected');
+    // DISABLED: document.head.appendChild(script);
+    console.log('⚠️ Auto-save editor script injection COMPLETELY DISABLED');
   }, [templateData, loading, previewId]);
 
   if (loading) {
