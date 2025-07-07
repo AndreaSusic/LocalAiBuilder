@@ -212,7 +212,8 @@ const CleanTemplatePreview = ({ previewId, onReady }) => {
                   });
                 });
                 
-                console.log(\`📍 Made \${count} elements editable\`);
+                console.log('⚠️ CleanTemplatePreview editor DISABLED to prevent duplicate × buttons');
+                return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
               }
               
               function createPanel() {
