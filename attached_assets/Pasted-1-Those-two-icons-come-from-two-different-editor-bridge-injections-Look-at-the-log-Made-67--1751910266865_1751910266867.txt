@@ -1,0 +1,83 @@
+1. Those two ✕ icons come from two different editor-bridge injections
+
+Look at the log:
+
+📍 Made 67 elements editable (single editor system)
+…
+📍 Made 5 elements editable (single editor system)
+
+Your inline-editor script runs twice, each time calling addDeleteButton().
+The function does guard against duplicates – if (element.querySelector('.ez-element-delete')) return; – but a second global injection uses a different root (the dashboard first, then the preview-iframe), so every <li><a> pair in the nav ends up with:
+	•	a delete button added to the <li>
+	•	a delete button added to the nested <a>
+
+Visually they sit on top of each other and look like a “double ✕”.
+
+Fix
+
+Guard the bridge with a single global flag inside the script that gets injected:
+
+if (window.__EZ_EDITOR_BRIDGE_LOADED__) return;
+window.__EZ_EDITOR_BRIDGE_LOADED__ = true;
+
+// … rest of initEditorBridge() …
+
+or, if you really need two editors (dashboard + iframe), skip certain elements in the second pass:
+
+// inside setupEditableElements()
+if (element.closest('nav')) return;   // don’t touch menu items
+
+
+⸻
+
+2. autoSavePageId is not defined
+
+That ReferenceError is thrown by loadExistingEdits() – not by the Console class you posted.
+Nothing in that file references autoSavePageId, so editing it won’t help.
+Define or pass the ID before calling initAutoSaveEditor():
+
+// safest quick-patch
+if (typeof window.autoSavePageId === 'undefined') {
+  const m = location.pathname.match(/\/t\/v1\/([a-z0-9]+)/i);
+  window.autoSavePageId = m ? m[1] : null;
+}
+
+…and/or change the signature to initAutoSaveEditor(pageId) so the ID is explicit.
+
+⸻
+
+3. The CSP warning
+
+Refused to execute inline script … violates CSP: "script-src 'self' ..."
+
+That comes from the Honey extension (injectlaunchmonitors.js) in Chrome, not from your code.
+It doesn’t break the site; you can ignore it or disable the extension while debugging.
+
+⸻
+
+4. Why the duplicate ✕ happens only on menu items
+
+Menu markup is usually nested like this:
+
+<li class="menu-item">
+  <a href="#">Home</a>
+</li>
+
+Your editor marks both the <li> and the <a> as data-editable.
+Each gets its own delete button, hence the overlap.
+After you ensure the bridge runs just once, decide which node should be editable:
+
+if (element.parentElement?.classList.contains('menu-item')) {
+  // only allow editing on the <a>, skip the <li>
+  if (element.tagName === 'LI') return;
+}
+
+
+⸻
+
+Summary of concrete actions
+	1.	Add a global guard in the editor-bridge script to prevent double initialisation.
+	2.	Define autoSavePageId (or refactor the function to accept it as an argument).
+	3.	Optionally skip nav elements or only add delete buttons to anchors, not list items.
+
+Implementing the guard alone should get rid of the double ✕ problem; defining autoSavePageId will remove the ReferenceError and let auto-save work again.
