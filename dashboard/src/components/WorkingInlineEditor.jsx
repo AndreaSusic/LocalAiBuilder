@@ -84,6 +84,11 @@ const WorkingInlineEditor = ({ previewId }) => {
         background: #ff0000;
         transform: scale(1.1);
       }
+      
+      /* Hide inner delete buttons to prevent duplicates */
+      .delete-btn-inner {
+        display: none !important;
+      }
     `;
     iframeDoc.head.appendChild(style);
 
@@ -145,7 +150,18 @@ const WorkingInlineEditor = ({ previewId }) => {
         
         // Add delete button (including for images)
         const deleteBtn = iframeDoc.createElement('div');
-        deleteBtn.className = 'delete-btn';
+        
+        // Add distinguishing classes based on element context
+        if (element.tagName === 'LI' && element.closest('ul')) {
+          deleteBtn.className = 'delete-btn delete-btn-outer';
+          console.log(`🎯 Adding OUTER delete button to ${element.tagName}`);
+        } else if (element.closest('li')) {
+          deleteBtn.className = 'delete-btn delete-btn-inner';
+          console.log(`🎯 Adding INNER delete button to ${element.tagName}`);
+        } else {
+          deleteBtn.className = 'delete-btn';
+        }
+        
         deleteBtn.innerHTML = '×';
         deleteBtn.onclick = (e) => {
           e.stopPropagation();
