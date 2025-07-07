@@ -198,6 +198,113 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   flex-direction: column;
   gap: 20px;
   height: 100%;
+}
+
+/* Styled Dropdowns */
+.dropdown-styled {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 80px;
+}
+
+.dropdown-styled:focus {
+  outline: none;
+  border-color: #ffc000;
+  box-shadow: 0 0 0 2px rgba(255, 192, 0, 0.2);
+}
+
+/* Editor Panel Styles */
+.panel-section {
+  margin-bottom: 20px;
+}
+
+.panel-section h4 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.format-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.format-btn {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 36px;
+}
+
+.format-btn:hover {
+  background: #f5f5f5;
+  border-color: #ffc000;
+}
+
+.font-controls, .color-controls {
+  margin-bottom: 15px;
+}
+
+.font-controls label, .color-controls label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #666;
+}
+
+.font-size-select {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.color-swatches {
+  display: flex;
+  gap: 8px;
+}
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.color-swatch:hover {
+  border-color: #ffc000;
+  transform: scale(1.1);
+}
+
+.tool-buttons, .component-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tool-btn, .component-btn {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+}
+
+.tool-btn:hover, .component-btn:hover {
+  background: #f5f5f5;
+  border-color: #ffc000;
+}
   overflow: hidden;
 }
 
