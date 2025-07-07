@@ -1,0 +1,166 @@
+🕵️‍♂️ SiteDataContext loaded
+index.jsx:4 🕵️‍♀️ HomepageV1 module evaluated
+TemplatePreview.jsx:6 🔍 HomepageV1 import: ƒ ln({tokens:i={},bootstrap:u=null}){var r,c;console.log("🚀 HomepageV1 function started, bootstrap:",!!u);try{const d=u||{company_name:i.businessName||"Your Business Name",city:i.location?[i.location]…
+TemplatePreview.jsx:7 🔍 HomepageV1 is function: true
+extension_content.js:1 recalculate_head_data
+content.js:48 request OK
+extension_content.js:1 recalculate_head_data
+robots.txt:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+main.jsx:154 BOOTSTRAP >> Object
+main.jsx:155 Current path: /preview/
+main.jsx:156 Root element exists: true
+main.jsx:170 React app rendered successfully
+App.jsx:21 App rendering with bootstrap: Object
+App.jsx:22 Window width: 1403
+App.jsx:23 isMobile: false
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: Object
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:128 Created short URL for preview: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcsusj9zu8w7ldghpg
+api/auth/user:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:176 ✅ React DOM ready event dispatched
+Console.js:61 🕵️‍♂️ SiteDataContext loaded
+Console.js:61 🕵️‍♀️ HomepageV1 module evaluated
+Console.js:61 🔍 HomepageV1 import: ƒ ln({tokens:i={},bootstrap:u=null}){var r,c;console.log("🚀 HomepageV1 function started, bootstrap:",!!u);try{const d=u||{company_name:i.businessName||"Your Business Name",city:i.location?[i.location]…
+Console.js:61 🔍 HomepageV1 is function: true
+Console.js:61 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+Console.js:61 BOOTSTRAP >> Object
+Console.js:61 Current path: /t/v1/mcsusj9zu8w7ldghpg
+Console.js:61 Root element exists: true
+Console.js:61 React app rendered successfully
+Console.js:61 App rendering with bootstrap: Object
+Console.js:61 Window width: 1007
+Console.js:61 isMobile: false
+Console.js:61 🔍 Fetching preview data for ID: mcsusj9zu8w7ldghpg
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: Object
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+DesktopDashboard.jsx:47 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcsusj9zu8w7ldghpg
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 ✅ Loaded cached preview data for: Kigen Plastika
+Console.js:61 📊 Data includes reviews: true
+Console.js:61 📊 Data includes photos: true
+Console.js:61 🎨 Rendering template with data for: Kigen Plastika
+Console.js:61 📋 TemplatePreview about to render HomepageV1 with bootstrap: true
+Console.js:61 🔍 HomepageV1 component check: ƒ ln({tokens:i={},bootstrap:u=null}){var r,c;console.log("🚀 HomepageV1 function started, bootstrap:",!!u);try{const d=u||{company_name:i.businessName||"Your Business Name",city:i.location?[i.location]…
+Console.js:61 📦 SiteDataProvider wrapper mounted
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: Object
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+Console.js:61 🚀 HomepageV1 function started, bootstrap: true
+Console.js:61 HomepageV1 using data: Object
+Console.js:61 🏠 HomepageV1 rendering with data: Array(16)
+Console.js:61 🔥 About to render HeroSection
+Console.js:61 🔥 HeroSection rendered, moving to ServicesSection
+Console.js:61 🎯 HeroSection is rendering!
+Console.js:61 🎯 HeroSection data: Object
+Console.js:61 Editable rendering: h1 with path="heroTitle"
+Console.js:61 Editable rendering: p with path="heroSubtitle"
+Console.js:61 Editable rendering: button with path="ctaText"
+Console.js:61 ServicesSection DEBUG - Services data: Septic Tanks string
+Console.js:61 ServicesSection DEBUG - GBP products: undefined
+Console.js:61 🏅 APPLYING SERVICE PRIORITY HIERARCHY
+Console.js:61 🥇 PRIORITY 1: Using user input services text from chat: Septic Tanks
+Console.js:61 🖼️ APPLYING IMAGE PRIORITY HIERARCHY
+Console.js:61 🥇 PRIORITY 1: Using user uploaded images: 10
+Console.js:61 ServicesSection DEBUG - ServicesList: Array(1) Type: object
+Console.js:61 ServicesSection DEBUG - GBP Products: 0 Available: Array(0)
+Console.js:61 ServicesSection DEBUG - Processing service: Septic Tanks Type: string Index: 0
+Console.js:61 ServicesSection DEBUG - ServicesToShow: Array(1)
+Console.js:61 Editable rendering: h2 with path="servicesTitle"
+Console.js:61 Editable rendering: h4 with path="serviceTitle0"
+Console.js:61 Editable rendering: p with path="serviceDescription0"
+Console.js:61 AboutSection DEBUG - Team data: Array(0) Length: 0
+Console.js:61 Editable rendering: h2 with path="aboutTitle"
+Console.js:61 Editable rendering: p with path="aboutParagraph1"
+Console.js:61 Editable rendering: p with path="aboutParagraph2"
+Console.js:61 Editable rendering: p with path="aboutParagraph3"
+Console.js:61 Editable rendering: h3 with path="feature1Title"
+Console.js:61 Editable rendering: p with path="feature1Description"
+Console.js:61 Editable rendering: h3 with path="feature2Title"
+Console.js:61 Editable rendering: p with path="feature2Description"
+Console.js:61 Editable rendering: h3 with path="feature3Title"
+Console.js:61 Editable rendering: p with path="feature3Description"
+Console.js:61 🔍 ReviewsSection - Full siteData keys: Array(16)
+Console.js:61 🔍 ReviewsSection - google_profile: https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k
+Console.js:61 🔍 ReviewsSection - google_profile.reviews: undefined
+Console.js:61 🔍 ReviewsSection - reviews prop: Array(5)
+Console.js:61 🔍 ReviewsSection - team data: Array(0)
+Console.js:61 🔍 ReviewsSection - Has reviews in google_profile? false
+Console.js:61 🔍 ReviewsSection - Has reviews in main? true
+Console.js:61 🔍 ReviewsSection - GBP reviews found: 5 reviews
+Console.js:61 🔍 ReviewsSection - First review sample: Object
+Console.js:61 Editable rendering: h2 with path="reviewsTitle"
+Console.js:61 Editable rendering: p with path="testimonialText0"
+Console.js:61 Editable rendering: p with path="testimonialAuthor0"
+Console.js:61 Editable rendering: p with path="testimonialText1"
+Console.js:61 Editable rendering: p with path="testimonialAuthor1"
+Console.js:61 Editable rendering: p with path="testimonialText2"
+Console.js:61 Editable rendering: p with path="testimonialAuthor2"
+Console.js:61 ✅ React DOM ready event dispatched
+Console.js:61 🔧 Injecting auto-save inline editor...
+mcsusj9zu8w7ldghpg:512 Uncaught SyntaxError: Failed to execute 'appendChild' on 'Node': await is only valid in async functions and the top level bodies of modules
+    at TemplatePreview.jsx:1261:19
+    at bl (react-dom-client.production.js:8292:24)
+    at Zd (react-dom-client.production.js:9771:23)
+    at Ht (react-dom-client.production.js:9746:7)
+    at Zd (react-dom-client.production.js:9765:7)
+    at Ht (react-dom-client.production.js:9746:7)
+    at Zd (react-dom-client.production.js:9878:7)
+    at Ht (react-dom-client.production.js:9746:7)
+    at Zd (react-dom-client.production.js:9765:7)
+    at Ht (react-dom-client.production.js:9746:7)
+Console.js:61 ✅ Auto-save editor script injected
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 🔧 Color Guard: Fixed contrast for element, bg: #ffffff, new color: #000000
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 ✅ React DOM ready event dispatched
+Console.js:61 Editor bridge loaded
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 Resize detected - Window width: 960 isMobile: false
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 Resize detected - Window width: 1007 isMobile: false
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 Resize detected - Window width: 960 isMobile: false
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 Resize detected - Window width: 1007 isMobile: false
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+App.jsx:29 Resize detected - Window width: 1403 isMobile: false
+Console.js:61 Resize detected - Window width: 1007 isMobile: false
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
