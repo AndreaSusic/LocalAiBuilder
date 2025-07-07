@@ -586,7 +586,8 @@ const CompleteInlineEditor = ({ previewId }) => {
       })();
     `;
     
-    document.head.appendChild(script);
+    // DISABLED: document.head.appendChild(script); // Preventing duplicate editor systems
+    console.log('🔧 CompleteInlineEditor injection DISABLED to prevent double delete buttons');
     console.log('✅ Complete inline editor script injected');
   }, [previewId]);
 

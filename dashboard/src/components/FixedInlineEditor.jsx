@@ -475,7 +475,8 @@ export const injectFixedInlineEditor = (iframe) => {
     })();
   `;
   
-  frameDoc.head.appendChild(script);
+  // DISABLED: frameDoc.head.appendChild(script); // Preventing duplicate editor systems
+  console.log('🔧 FixedInlineEditor injection DISABLED to prevent double delete buttons');
   console.log('✅ Fixed inline editor injected');
 };
 

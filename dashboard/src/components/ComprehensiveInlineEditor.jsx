@@ -640,7 +640,8 @@ const ComprehensiveInlineEditor = ({ previewId }) => {
     // Inject the script into the iframe
     const iframe = document.querySelector('iframe');
     if (iframe && iframe.contentDocument) {
-      iframe.contentDocument.head.appendChild(script);
+      // DISABLED: iframe.contentDocument.head.appendChild(script); // Preventing duplicate editor systems
+      console.log('🔧 ComprehensiveInlineEditor injection DISABLED to prevent double delete buttons');
     }
   }, [previewId]);
 

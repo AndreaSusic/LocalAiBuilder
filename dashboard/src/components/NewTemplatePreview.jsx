@@ -587,7 +587,8 @@ const NewTemplatePreview = ({ previewId, onReady }) => {
           })();
         `;
         
-        iframeDoc.head.appendChild(script);
+        // DISABLED: iframeDoc.head.appendChild(script); // Preventing duplicate editor systems
+        console.log('🔧 NewTemplatePreview editor injection DISABLED to prevent double delete buttons');
         
         console.log('✅ Comprehensive inline editor injected');
         
