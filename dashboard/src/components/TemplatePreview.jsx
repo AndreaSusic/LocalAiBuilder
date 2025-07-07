@@ -105,6 +105,9 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
 
         // Initialize comprehensive editor
         function initEditor() {
+          console.log('⚠️ TemplatePreview built-in editor DISABLED to prevent duplicate × buttons');
+          return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
+          
           addStyles();
           makeElementsEditable();
           createEditingPanel();
