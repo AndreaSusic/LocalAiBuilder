@@ -2,1513 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
 import EditorPanel from "./EditorPanel";
-import { injectFixedInlineEditor } from "./FixedInlineEditor";
-
-// Inject the fixed inline editor
-function injectComprehensiveEditor(iframe) {
-  try {
-    console.log('🔧 Injecting fixed inline editor...');
-    
-    setTimeout(() => {
-      injectFixedInlineEditor(iframe);
-      console.log('✅ Fixed inline editor injected');
-    }, 1000);
-  } catch (error) {
-    console.error('❌ Error injecting editor:', error);
-  }
-          
-          function init() {
-            addStyles();
-            makeEditable();
-            createPanel();
-            setupEvents();
-            console.log('✅ Editor with visible delete buttons ready');
-          }
-          
-          function addStyles() {
-            const style = document.createElement('style');
-            style.textContent = \`
-              .edit-hover {
-                position: relative !important;
-                transition: outline 0.2s !important;
-              }
-              
-              .edit-hover:hover {
-                outline: 2px dashed #ff4444 !important;
-                outline-offset: 2px !important;
-              }
-              
-              .edit-active {
-                outline: 2px solid #ffc000 !important;
-                outline-offset: 2px !important;
-                background: rgba(255, 192, 0, 0.1) !important;
-              }
-              
-              .delete-x {
-                position: absolute !important;
-                top: -10px !important;
-                right: -10px !important;
-                width: 20px !important;
-                height: 20px !important;
-                background: #ff4444 !important;
-                color: white !important;
-                border: none !important;
-                border-radius: 50% !important;
-                cursor: pointer !important;
-                font-size: 14px !important;
-                font-weight: bold !important;
-                line-height: 1 !important;
-                z-index: 10000 !important;
-                display: none !important;
-                font-family: Arial, sans-serif !important;
-                text-align: center !important;
-              }
-              
-              .edit-hover:hover .delete-x {
-                display: block !important;
-              }
-              
-              .edit-active .delete-x {
-                display: block !important;
-              }
-              
-              .editor-panel {
-                position: fixed !important;
-                top: 50px !important;
-                right: 20px !important;
-                width: 300px !important;
-                background: white !important;
-                border: 1px solid #ddd !important;
-                border-radius: 8px !important;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-                z-index: 10001 !important;
-                display: none !important;
-                padding: 16px !important;
-                font-family: Arial, sans-serif !important;
-              }
-              
-              .editor-panel.show { 
-                display: block !important; 
-              }
-              
-              .editor-panel h3 {
-                margin: 0 0 12px 0 !important;
-                font-size: 14px !important;
-                font-weight: bold !important;
-                color: #333 !important;
-              }
-              
-              .panel-section {
-                margin-bottom: 12px !important;
-                padding-bottom: 12px !important;
-                border-bottom: 1px solid #eee !important;
-              }
-              
-              .panel-section:last-child { 
-                border-bottom: none !important; 
-              }
-              
-              .panel-section label {
-                display: block !important;
-                font-size: 11px !important;
-                color: #666 !important;
-                margin-bottom: 4px !important;
-                font-weight: bold !important;
-              }
-              
-              .format-buttons {
-                display: flex !important;
-                gap: 8px !important;
-                margin-bottom: 8px !important;
-              }
-              
-              .format-btn {
-                padding: 6px 12px !important;
-                border: 1px solid #ddd !important;
-                background: white !important;
-                border-radius: 4px !important;
-                cursor: pointer !important;
-                font-size: 12px !important;
-              }
-              
-              .format-btn:hover { 
-                background: #f5f5f5 !important; 
-              }
-              
-              .panel-dropdown {
-                width: 100% !important;
-                padding: 4px 8px !important;
-                border: 1px solid #ddd !important;
-                border-radius: 4px !important;
-                font-size: 12px !important;
-                margin-bottom: 8px !important;
-              }
-              
-              .color-palette {
-                display: flex !important;
-                gap: 4px !important;
-                flex-wrap: wrap !important;
-              }
-              
-              .color-swatch {
-                width: 24px !important;
-                height: 24px !important;
-                border: 1px solid #ddd !important;
-                border-radius: 4px !important;
-                cursor: pointer !important;
-              }
-              
-              .ai-button {
-                width: 100% !important;
-                padding: 8px !important;
-                background: #ffc000 !important;
-                color: white !important;
-                border: none !important;
-                border-radius: 4px !important;
-                cursor: pointer !important;
-                font-size: 12px !important;
-              }
-            \`;
-            document.head.appendChild(style);
-          }
-          
-          function makeEditable() {
-            const selectors = [
-              'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'a', 'button',
-              'nav a', 'nav span', 'nav div', 'nav li',
-              '.menu-item', '.nav-item', '.navbar-brand',
-              '[class*="title"]', '[class*="text"]', '[class*="heading"]',
-              '[class*="nav"]', '[class*="menu"]'
-            ];
-            
-            let count = 0;
-            selectors.forEach(sel => {
-              document.querySelectorAll(sel).forEach(el => {
-                if (el.classList.contains('edit-hover') || 
-                    el.tagName === 'SCRIPT' || 
-                    el.tagName === 'STYLE' ||
-                    el.classList.contains('delete-x') ||
-                    el.classList.contains('editor-panel')) return;
-                
-                const text = el.textContent.trim();
-                if (text.length > 0) {
-                  el.classList.add('edit-hover');
-                  el.setAttribute('data-editable', 'true');
-                  el.setAttribute('data-original', text);
-                  
-                  // Force relative positioning
-                  if (window.getComputedStyle(el).position === 'static') {
-                    el.style.position = 'relative';
-                  }
-                  
-                  // Create visible delete button
-                  const deleteBtn = document.createElement('button');
-                  deleteBtn.className = 'delete-x';
-                  deleteBtn.innerHTML = '×';
-                  deleteBtn.onclick = (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (confirm('Delete this element?')) {
-                      el.remove();
-                      console.log('🗑️ Element deleted');
-                    }
-                  };
-                  
-                  el.appendChild(deleteBtn);
-                  count++;
-                }
-              });
-            });
-            
-            // Also make images editable with delete buttons
-            document.querySelectorAll('img').forEach(img => {
-              if (img.src && 
-                  !img.classList.contains('delete-x') && 
-                  !img.classList.contains('dashboard-logo') &&
-                  !img.parentElement?.classList.contains('image-wrapper')) {
-                
-                img.classList.add('edit-hover');
-                img.setAttribute('data-editable', 'true');
-                img.setAttribute('data-original', img.src);
-                
-                // Create wrapper for image with delete button
-                const wrapper = document.createElement('div');
-                wrapper.className = 'image-wrapper';
-                wrapper.style.position = 'relative';
-                wrapper.style.display = 'inline-block';
-                wrapper.style.maxWidth = '100%';
-                
-                // Create delete button for image
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'delete-x image-delete';
-                deleteBtn.innerHTML = '×';
-                deleteBtn.style.position = 'absolute';
-                deleteBtn.style.top = '5px';
-                deleteBtn.style.right = '5px';
-                deleteBtn.style.zIndex = '1000';
-                deleteBtn.onclick = (e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (confirm('Delete this image?')) {
-                    wrapper.remove();
-                    console.log('🗑️ Image deleted');
-                  }
-                };
-                
-                img.parentNode.insertBefore(wrapper, img);
-                wrapper.appendChild(img);
-                wrapper.appendChild(deleteBtn);
-                count++;
-              }
-            });
-            
-            console.log(\`📍 Made \${count} elements editable with delete buttons\`);
-          }
-          
-          function createPanel() {
-            const p = document.createElement('div');
-            p.className = 'editor-panel';
-            p.innerHTML = \`
-              <h3>✏️ Element Editor</h3>
-              
-              <div class="panel-section">
-                <label>Selected Element:</label>
-                <div id="element-info">
-                  <p>Click any element to edit it</p>
-                </div>
-              </div>
-              
-              <div class="panel-section">
-                <label>Actions:</label>
-                <div class="format-buttons">
-                  <button class="format-btn" onclick="undoEdit()" title="Undo">↶</button>
-                  <button class="format-btn" onclick="redoEdit()" title="Redo">↷</button>
-                  <button class="format-btn" onclick="saveChanges()" title="Save">💾</button>
-                </div>
-              </div>
-            \`;
-            
-            document.body.appendChild(p);
-            panel = p;
-            
-            // Make functions global
-            window.formatText = formatText;
-            window.changeFontSize = changeFontSize;
-            window.changeHeading = changeHeading;
-            window.changeColor = changeColor;
-            window.undoEdit = undoEdit;
-            window.redoEdit = redoEdit;
-            window.saveChanges = saveChanges;
-          }
-          
-          function setupEvents() {
-            document.addEventListener('click', (e) => {
-              if (e.target.classList.contains('delete-x')) {
-                return; // Delete handles its own click
-              }
-              
-              const el = e.target.closest('[data-editable="true"]');
-              if (el) {
-                e.preventDefault();
-                e.stopPropagation();
-                activate(el);
-              } else {
-                deactivate();
-              }
-            });
-            
-            document.addEventListener('input', (e) => {
-              if (e.target.classList.contains('edit-active')) {
-                scheduleAutoSave(e.target);
-              }
-            });
-            
-            document.addEventListener('keydown', (e) => {
-              if (e.key === 'Escape' && activeEl) {
-                deactivate();
-              }
-            });
-          }
-          
-          function activate(el) {
-            console.log('🎯 Activating element:', el.tagName, el.textContent.substring(0, 30));
-            
-            if (activeEl) deactivate();
-            
-            // Save initial state to history if not already done
-            if (history.length === 0) {
-              saveToHistory();
-            }
-            
-            activeEl = el;
-            el.classList.add('edit-active');
-            el.contentEditable = true;
-            
-            if (panel) {
-              panel.classList.add('show');
-              
-              // Update dropdowns with current values
-              const fontSize = parseInt(window.getComputedStyle(el).fontSize);
-              const fontSelect = panel.querySelector('#fontSizeSelect');
-              if (fontSelect) {
-                fontSelect.value = fontSize.toString();
-                console.log(\`🔤 Current font size: \${fontSize}px\`);
-              }
-              
-              const headSelect = panel.querySelector('#headingSelect');
-              if (headSelect) {
-                if (el.tagName.match(/H[1-6]/)) {
-                  headSelect.value = el.tagName;
-                  console.log(\`📝 Current heading: \${el.tagName}\`);
-                } else {
-                  headSelect.value = '';
-                }
-              }
-            }
-            
-            el.focus();
-            scheduleAutoSave(el);
-          }
-          
-          function deactivate() {
-            if (activeEl) {
-              activeEl.classList.remove('edit-active');
-              activeEl.contentEditable = false;
-              activeEl = null;
-            }
-            if (panel) panel.classList.remove('show');
-          }
-          
-          function formatText(cmd) {
-            if (!activeEl) return;
-            document.execCommand(cmd, false, null);
-            console.log(\`✅ Applied format: \${cmd}\`);
-            scheduleAutoSave(activeEl);
-          }
-          
-          function changeFontSize(size) {
-            if (!activeEl) return;
-            saveToHistory();
-            activeEl.style.fontSize = size + 'px';
-            console.log(\`🔤 Font size changed to: \${size}px\`);
-            scheduleAutoSave(activeEl);
-          }
-          
-          function changeHeading(level) {
-            if (!activeEl || !level) return;
-            
-            saveToHistory();
-            const newEl = document.createElement(level.toLowerCase());
-            newEl.innerHTML = activeEl.innerHTML;
-            newEl.className = activeEl.className;
-            newEl.setAttribute('data-editable', 'true');
-            newEl.setAttribute('data-original', activeEl.getAttribute('data-original'));
-            newEl.style.cssText = activeEl.style.cssText;
-            
-            // Ensure positioning for delete button
-            if (window.getComputedStyle(newEl).position === 'static') {
-              newEl.style.position = 'relative';
-            }
-            
-            // Add delete button to new element
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-x';
-            deleteBtn.innerHTML = '×';
-            deleteBtn.onclick = (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (confirm('Delete this element?')) {
-                newEl.remove();
-                console.log('🗑️ Element deleted');
-              }
-            };
-            newEl.appendChild(deleteBtn);
-            
-            activeEl.parentNode.replaceChild(newEl, activeEl);
-            activate(newEl);
-            console.log(\`📝 Changed to heading: \${level}\`);
-          }
-          
-          function changeColor(c) {
-            if (!activeEl) return;
-            activeEl.style.color = c;
-            console.log(\`🎨 Color: \${c}\`);
-            scheduleAutoSave(activeEl);
-          }
-          
-          function saveToHistory() {
-            const state = document.body.innerHTML;
-            history = history.slice(0, historyIndex + 1);
-            history.push(state);
-            historyIndex = history.length - 1;
-            
-            if (history.length > 50) {
-              history.shift();
-              historyIndex--;
-            }
-            console.log(\`💾 Saved to history, index: \${historyIndex}\`);
-          }
-          
-          function undoEdit() {
-            if (historyIndex > 0) {
-              historyIndex--;
-              document.body.innerHTML = history[historyIndex];
-              makeEditable(); // Re-initialize after restoration
-              console.log(\`↶ Undo executed, index: \${historyIndex}\`);
-            }
-          }
-          
-          function redoEdit() {
-            if (historyIndex < history.length - 1) {
-              historyIndex++;
-              document.body.innerHTML = history[historyIndex];
-              makeEditable(); // Re-initialize after restoration
-              console.log(\`↷ Redo executed, index: \${historyIndex}\`);
-            }
-          }
-          
-          function saveChanges() {
-            const pageData = document.body.innerHTML;
-            console.log('💾 Saving all changes...');
-            
-            fetch('/api/save-complete-page', {
-              method: 'POST',
-              headers: { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-              },
-              credentials: 'include',
-              body: JSON.stringify({
-                pageId: 'homepage-v1',
-                pageContent: pageData,
-                timestamp: new Date().toISOString()
-              })
-            }).then(res => {
-              if (res.ok) {
-                console.log('✅ Page saved successfully');
-                alert('Page saved successfully!');
-              } else {
-                console.log('❌ Save failed');
-                alert('Save failed. Please try again.');
-              }
-            }).catch(e => {
-              console.log('❌ Save error:', e);
-              alert('Save error. Please try again.');
-            });
-          }
-          
-          function addNewSection(type) {
-            saveToHistory();
-            
-            const sectionTemplates = {
-              hero: \`
-                <section class="hero-section" style="padding: 60px 20px; text-align: center; background: #f8f9fa;">
-                  <div style="max-width: 800px; margin: 0 auto;">
-                    <h1 data-editable="true" style="font-size: 2.5rem; margin-bottom: 20px;">Welcome to Our Company</h1>
-                    <p data-editable="true" style="font-size: 1.2rem; margin-bottom: 30px;">We provide exceptional services to help your business grow.</p>
-                    <button data-editable="true" style="background: #ffc000; color: white; padding: 12px 30px; border: none; border-radius: 5px; font-size: 1.1rem;">Get Started</button>
-                  </div>
-                </section>
-              \`,
-              services: \`
-                <section class="services-section" style="padding: 60px 20px;">
-                  <div style="max-width: 1200px; margin: 0 auto;">
-                    <h2 data-editable="true" style="text-align: center; margin-bottom: 40px;">Our Services</h2>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-                      <div style="text-align: center; padding: 30px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                        <h3 data-editable="true">Service One</h3>
-                        <p data-editable="true">Description of your first service offering.</p>
-                      </div>
-                      <div style="text-align: center; padding: 30px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                        <h3 data-editable="true">Service Two</h3>
-                        <p data-editable="true">Description of your second service offering.</p>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              \`,
-              about: \`
-                <section class="about-section" style="padding: 60px 20px; background: #f8f9fa;">
-                  <div style="max-width: 1200px; margin: 0 auto;">
-                    <h2 data-editable="true" style="text-align: center; margin-bottom: 40px;">About Us</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-                      <div>
-                        <p data-editable="true" style="font-size: 1.1rem; line-height: 1.6;">We are a dedicated team committed to providing exceptional service and results for our clients.</p>
-                        <p data-editable="true" style="font-size: 1.1rem; line-height: 1.6;">With years of experience in the industry, we understand what it takes to deliver quality solutions.</p>
-                      </div>
-                      <div style="text-align: center;">
-                        <img src="https://via.placeholder.com/400x300" alt="About us" style="max-width: 100%; border-radius: 8px;" data-editable="true">
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              \`,
-              contact: \`
-                <section class="contact-section" style="padding: 60px 20px;">
-                  <div style="max-width: 800px; margin: 0 auto;">
-                    <h2 data-editable="true" style="text-align: center; margin-bottom: 40px;">Contact Us</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-                      <div>
-                        <h3 data-editable="true">Get in Touch</h3>
-                        <p data-editable="true">📞 Phone: (555) 123-4567</p>
-                        <p data-editable="true">📧 Email: info@company.com</p>
-                        <p data-editable="true">📍 Address: 123 Main Street, City, State 12345</p>
-                      </div>
-                      <div>
-                        <h3 data-editable="true">Business Hours</h3>
-                        <p data-editable="true">Monday - Friday: 9:00 AM - 6:00 PM</p>
-                        <p data-editable="true">Saturday: 10:00 AM - 4:00 PM</p>
-                        <p data-editable="true">Sunday: Closed</p>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              \`
-            };
-            
-            const template = sectionTemplates[type];
-            if (template) {
-              // Find a good place to insert the new section
-              const main = document.querySelector('main') || document.body;
-              const tempDiv = document.createElement('div');
-              tempDiv.innerHTML = template;
-              const newSection = tempDiv.firstElementChild;
-              
-              main.appendChild(newSection);
-              
-              // Make the new section's elements editable
-              setTimeout(() => {
-                makeEditable();
-                console.log(\`✅ Added new \${type} section\`);
-              }, 100);
-            }
-          }
-          
-          function scheduleAutoSave(el) {
-            if (timer) clearTimeout(timer);
-            
-            timer = setTimeout(async () => {
-              const id = generateId(el);
-              const orig = el.getAttribute('data-original') || '';
-              const edited = el.textContent || '';
-              
-              try {
-                console.log('💾 Auto-saving:', id);
-                
-                const res = await fetch('/api/save-page-edit', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  credentials: 'include',
-                  body: JSON.stringify({
-                    pageId: window.location.pathname.split('/').pop(),
-                    elementId: id,
-                    editType: 'text',
-                    originalContent: orig,
-                    editedContent: edited
-                  })
-                });
-                
-                if (res.ok) {
-                  el.setAttribute('data-original', edited);
-                  console.log('✅ Saved successfully');
-                } else {
-                  console.log('❌ Save failed');
-                }
-              } catch (e) {
-                console.log('❌ Save error');
-              }
-            }, 1000);
-          }
-          
-          function generateId(el) {
-            const tag = el.tagName.toLowerCase();
-            const cls = el.className.replace(/\\s+/g, '-') || 'no-cls';
-            const txt = el.textContent.trim().substring(0, 20).replace(/\\s+/g, '-') || 'no-txt';
-            const idx = [...document.querySelectorAll(tag)].indexOf(el);
-            return \`\${tag}-\${cls}-\${txt}-\${idx}\`.toLowerCase();
-          }
-          
-          // Listen for AI content updates from parent with fuzzy matching
-          window.addEventListener('message', (event) => {
-            if (event.data.type === 'AI_CONTENT_UPDATE') {
-              console.log('🤖 Received AI content update:', event.data);
-              
-              const { searchText, newContent } = event.data;
-              
-              // Find element by fuzzy text matching
-              let foundElement = null;
-              
-              // Try exact match first
-              const allElements = Array.from(document.querySelectorAll('[data-editable="true"]'));
-              foundElement = allElements.find(el => 
-                el.textContent.trim().toLowerCase() === searchText.toLowerCase()
-              );
-              
-              // If no exact match, try partial matching
-              if (!foundElement) {
-                foundElement = allElements.find(el => 
-                  el.textContent.trim().toLowerCase().includes(searchText.toLowerCase()) ||
-                  searchText.toLowerCase().includes(el.textContent.trim().toLowerCase())
-                );
-              }
-              
-              // If still no match, find by similarity (remove common words)
-              if (!foundElement) {
-                const cleanSearch = searchText.toLowerCase().replace(/[^a-z0-9]/g, '');
-                foundElement = allElements.find(el => {
-                  const cleanEl = el.textContent.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-                  return cleanEl.includes(cleanSearch.substring(0, 10)) || 
-                         cleanSearch.includes(cleanEl.substring(0, 10));
-                });
-              }
-              
-              if (foundElement) {
-                saveToHistory();
-                foundElement.textContent = newContent;
-                console.log('✅ Applied AI content using fuzzy matching to:', foundElement.tagName);
-                scheduleAutoSave(foundElement);
-                
-                // Briefly highlight the changed element
-                foundElement.style.backgroundColor = '#90EE90';
-                setTimeout(() => {
-                  foundElement.style.backgroundColor = '';
-                }, 2000);
-              } else {
-                console.log('❌ Could not find element with text:', searchText);
-              }
-            }
-          });
-          
-          // Initialize
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-          } else {
-            init();
-          }
-          
-          setTimeout(init, 1000);
-          
-        })();
-      `;
-      
-      frameDoc.head.appendChild(script);
-      console.log('✅ Comprehensive editor with visible delete buttons injected');
-    }, 1000);
-  } catch (error) {
-    console.error('❌ Error injecting comprehensive editor:', error);
-  }
-}
-
-function injectWorkingEditor(iframe) {
-  try {
-    console.log('🔧 Injecting working inline editor...');
-    
-    const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
-    if (!frameDoc) {
-      console.error('❌ Cannot access iframe document');
-      return;
-    }
-    
-    // Remove any existing editor scripts
-    const existingScripts = frameDoc.querySelectorAll('[id*="editor"], [id*="bridge"]');
-    existingScripts.forEach(script => script.remove());
-    
-    // Wait for React content to fully load
-    setTimeout(() => {
-      // Inject the working editor script directly
-      const script = frameDoc.createElement('script');
-      script.id = 'working-editor-script';
-      script.textContent = `
-        console.log('🚀 Working inline editor starting...');
-        
-        let activeElement = null;
-        let toolbar = null;
-        
-        // Simple command execution
-        function exec(command, value = null) {
-          try {
-            document.execCommand(command, false, value);
-            console.log('✅ Executed command:', command);
-          } catch (error) {
-            console.error('Command execution failed:', command, error);
-          }
-        }
-        
-        // Add editor styles
-        function addEditorStyles() {
-          if (document.getElementById('editor-styles')) return;
-          
-          const style = document.createElement('style');
-          style.id = 'editor-styles';
-          style.textContent = \`
-            [data-editable="true"]:hover {
-              outline: 2px dotted #ff0000 !important;
-              outline-offset: 2px !important;
-              cursor: pointer !important;
-            }
-            
-            [data-editable="true"][contenteditable="true"] {
-              outline: 2px solid #ffc000 !important;
-              outline-offset: 2px !important;
-            }
-            
-            .editor-toolbar {
-              position: fixed !important;
-              background: white !important;
-              border: 2px solid #333 !important;
-              border-radius: 8px !important;
-              padding: 8px !important;
-              box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-              z-index: 99999 !important;
-              display: none !important;
-              flex-wrap: wrap !important;
-              gap: 4px !important;
-              min-width: 300px !important;
-              font-family: sans-serif !important;
-            }
-            
-            .editor-btn {
-              font: 14px/1 sans-serif !important;
-              padding: 6px 10px !important;
-              cursor: pointer !important;
-              border: 1px solid #333 !important;
-              border-radius: 4px !important;
-              background: #f8f8f8 !important;
-              color: #333 !important;
-              font-weight: 500 !important;
-            }
-            
-            .editor-btn:hover {
-              background: #e8e8e8 !important;
-              border-color: #000 !important;
-            }
-          \`;
-          document.head.appendChild(style);
-        }
-        
-        // Color picker functions
-        function pickColor(command) {
-          const color = prompt('Enter color (hex, rgb, or name):');
-          if (color) {
-            exec(command, color);
-          }
-        }
-        
-        // Media insertion functions
-        function insertMedia(type) {
-          if (type === 'image') {
-            const url = prompt('Enter image URL:');
-            if (url) {
-              exec('insertImage', url);
-            }
-          } else if (type === 'video') {
-            const url = prompt('Enter video URL:');
-            if (url) {
-              const video = \`<video controls src="\${url}" style="max-width:100%"></video>\`;
-              exec('insertHTML', video);
-            }
-          }
-        }
-        
-        // Component insertion functions
-        function insertComponent(type) {
-          if (type === 'card') {
-            const html = '<div style="border:1px solid #ddd;padding:20px;margin:10px;border-radius:8px;"><h3>Card Title</h3><p>Card content goes here...</p></div>';
-            exec('insertHTML', html);
-          } else if (type === 'button') {
-            const text = prompt('Button text:', 'Click me');
-            const html = \`<button style="background:#ffc000;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;">\${text}</button>\`;
-            exec('insertHTML', html);
-          }
-        }
-        
-        // Toggle functions
-        function toggleResizeBox() {
-          // Add resize handles to selected element
-          if (activeElement) {
-            activeElement.style.resize = activeElement.style.resize === 'both' ? 'none' : 'both';
-            activeElement.style.overflow = 'auto';
-          }
-        }
-        
-        function openSpacingPanel() {
-          const margin = prompt('Enter margin (e.g., 10px, 1em):', '10px');
-          const padding = prompt('Enter padding (e.g., 10px, 1em):', '10px');
-          if (activeElement) {
-            if (margin) activeElement.style.margin = margin;
-            if (padding) activeElement.style.padding = padding;
-          }
-        }
-        
-        function pastePlain() {
-          exec('insertText', '');
-          document.execCommand('paste');
-        }
-        
-        function toggleCodeView() {
-          if (activeElement) {
-            const isCode = activeElement.dataset.codeView === 'true';
-            if (isCode) {
-              activeElement.innerHTML = activeElement.textContent;
-              activeElement.dataset.codeView = 'false';
-            } else {
-              activeElement.textContent = activeElement.innerHTML;
-              activeElement.dataset.codeView = 'true';
-            }
-          }
-        }
-        
-        // Create comprehensive toolbar
-        function createEditorToolbar() {
-          if (toolbar) return;
-          
-          toolbar = document.createElement('div');
-          toolbar.className = 'editor-toolbar';
-          toolbar.contentEditable = false;
-          
-          const commands = [
-            { label: '𝐁', action: () => exec('bold'), title: 'Bold (Ctrl+B)' },
-            { label: '𝑰', action: () => exec('italic'), title: 'Italic (Ctrl+I)' },
-            { label: '𝑼', action: () => exec('underline'), title: 'Underline (Ctrl+U)' },
-            { label: 'List', action: () => exec('insertUnorderedList'), title: 'Bullet List' },
-            { label: '10px', action: () => showFontSizeDropdown(), title: 'Font Size' },
-            { label: 'A🖌️', action: () => pickColor('foreColor'), title: 'Text Color' },
-            { label: '🖍️', action: () => pickColor('hiliteColor'), title: 'Highlight Color' },
-            { label: '🖼️', action: () => insertMedia('image'), title: 'Insert Image' },
-            { label: '🎥', action: () => insertMedia('video'), title: 'Insert Video' },
-            { label: '↔️↕️', action: () => toggleResizeBox(), title: 'Resize Element' },
-            { label: '📐', action: () => openSpacingPanel(), title: 'Spacing' },
-            { label: 'H₁', action: () => exec('formatBlock','H1'), title: 'Heading 1' },
-            { label: '¶', action: () => exec('formatBlock','P'), title: 'Paragraph' },
-            { label: '🔲', action: () => insertComponent('card'), title: 'Insert Card' },
-            { label: '📋', action: () => pastePlain(), title: 'Paste Plain Text' },
-            { label: '</>', action: () => toggleCodeView(), title: 'Code View' },
-            { label: '🔘', action: () => insertComponent('button'), title: 'Insert Button' },
-            { label: '➕', action: () => addNewElement(), title: 'Add New Element' },
-            { label: '🤖', action: () => openAIChat(), title: 'AI Assistant' }
-          ];
-          
-          commands.forEach(cmd => {
-            const btn = document.createElement('button');
-            btn.className = 'editor-btn';
-            btn.textContent = cmd.label;
-            btn.title = cmd.title || '';
-            btn.contentEditable = false;
-            
-            btn.addEventListener('mousedown', (e) => e.preventDefault());
-            btn.addEventListener('click', (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              cmd.action();
-            });
-            
-            toolbar.appendChild(btn);
-          });
-          
-          document.body.appendChild(toolbar);
-          console.log('✅ Toolbar created');
-        }
-        
-        // Show toolbar
-        function showEditorToolbar(element) {
-          if (!toolbar) return;
-          
-          const rect = element.getBoundingClientRect();
-          const top = rect.top + window.scrollY - 60;
-          const left = rect.left + window.scrollX;
-          
-          toolbar.style.top = top + 'px';
-          toolbar.style.left = left + 'px';
-          toolbar.style.display = 'flex';
-          
-          console.log('✅ Toolbar shown at', top, left);
-        }
-        
-        // Hide toolbar
-        function hideEditorToolbar() {
-          if (toolbar) {
-            toolbar.style.display = 'none';
-          }
-        }
-        
-        // Activate element for editing
-        function activateElement(element) {
-          console.log('🎯 Activating element:', element.tagName, element.textContent.substring(0, 30));
-          
-          if (activeElement) {
-            activeElement.contentEditable = false;
-            activeElement = null;
-          }
-          
-          activeElement = element;
-          element.contentEditable = true;
-          element.focus();
-          
-          setTimeout(() => showEditorToolbar(element), 10);
-        }
-        
-        // Setup click handlers
-        function setupClickHandlers() {
-          document.addEventListener('click', function(e) {
-            const element = e.target;
-            
-            if (element.hasAttribute('data-edit') || element.hasAttribute('data-editable')) {
-              e.preventDefault();
-              e.stopPropagation();
-              activateElement(element);
-            } else if (!element.closest('.editor-toolbar')) {
-              if (activeElement) {
-                activeElement.contentEditable = false;
-                activeElement = null;
-              }
-              hideEditorToolbar();
-            }
-          }, true);
-          
-          console.log('✅ Click handlers setup');
-        }
-        
-        // Check if we should prevent editing (direct view access)
-        function shouldPreventEditing() {
-          const currentUrl = window.location.href;
-          const isDashboard = currentUrl.includes('/preview') || currentUrl.includes('/dashboard');
-          const isDirectAccess = !isDashboard && !window.parent !== window;
-          
-          return isDirectAccess;
-        }
-        
-        // Font size dropdown
-        function showFontSizeDropdown() {
-          const dropdown = document.createElement('div');
-          dropdown.className = 'font-size-dropdown';
-          dropdown.style.cssText = \`
-            position: fixed;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 10001;
-            padding: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-          \`;
-          
-          const sizes = [10, 11, 12, 14, 16, 18];
-          sizes.forEach(size => {
-            const btn = document.createElement('button');
-            btn.textContent = size + 'px';
-            btn.style.cssText = \`
-              padding: 6px 12px;
-              border: none;
-              background: transparent;
-              cursor: pointer;
-              text-align: left;
-              border-radius: 4px;
-            \`;
-            btn.onmouseover = () => btn.style.background = '#f0f0f0';
-            btn.onmouseout = () => btn.style.background = 'transparent';
-            btn.onclick = () => {
-              exec('fontSize', size);
-              document.body.removeChild(dropdown);
-            };
-            dropdown.appendChild(btn);
-          });
-          
-          // Position near toolbar
-          const rect = toolbar.getBoundingClientRect();
-          dropdown.style.top = (rect.bottom + 5) + 'px';
-          dropdown.style.left = rect.left + 'px';
-          
-          document.body.appendChild(dropdown);
-          
-          // Close on click outside
-          setTimeout(() => {
-            document.addEventListener('click', function closeDropdown(e) {
-              if (!dropdown.contains(e.target)) {
-                document.body.removeChild(dropdown);
-                document.removeEventListener('click', closeDropdown);
-              }
-            });
-          }, 100);
-        }
-        
-        // Add new element
-        function addNewElement() {
-          const elementsMenu = document.createElement('div');
-          elementsMenu.className = 'elements-menu';
-          elementsMenu.style.cssText = \`
-            position: fixed;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 10001;
-            padding: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            min-width: 200px;
-          \`;
-          
-          const elements = [
-            { label: '📝 Text Block', action: () => insertElement('text') },
-            { label: '🔲 Card Section', action: () => insertElement('card') },
-            { label: '🔘 Button', action: () => insertElement('button') },
-            { label: '🖼️ Image', action: () => insertElement('image') },
-            { label: '📋 Contact Form', action: () => insertElement('form') },
-            { label: '⭐ Reviews Section', action: () => insertElement('reviews') },
-            { label: '📍 Map', action: () => insertElement('map') },
-            { label: '📞 Contact Info', action: () => insertElement('contact') }
-          ];
-          
-          elements.forEach(elem => {
-            const btn = document.createElement('button');
-            btn.textContent = elem.label;
-            btn.style.cssText = \`
-              padding: 8px 12px;
-              border: none;
-              background: transparent;
-              cursor: pointer;
-              text-align: left;
-              border-radius: 4px;
-            \`;
-            btn.onmouseover = () => btn.style.background = '#f0f0f0';
-            btn.onmouseout = () => btn.style.background = 'transparent';
-            btn.onclick = () => {
-              elem.action();
-              document.body.removeChild(elementsMenu);
-            };
-            elementsMenu.appendChild(btn);
-          });
-          
-          // Position near toolbar
-          const rect = toolbar.getBoundingClientRect();
-          elementsMenu.style.top = (rect.bottom + 5) + 'px';
-          elementsMenu.style.left = rect.left + 'px';
-          
-          document.body.appendChild(elementsMenu);
-          
-          // Close on click outside
-          setTimeout(() => {
-            document.addEventListener('click', function closeMenu(e) {
-              if (!elementsMenu.contains(e.target)) {
-                document.body.removeChild(elementsMenu);
-                document.removeEventListener('click', closeMenu);
-              }
-            });
-          }, 100);
-        }
-        
-        // Insert element
-        function insertElement(type) {
-          const templates = {
-            text: '<p>New text block - click to edit</p>',
-            card: '<div class="card" style="border: 1px solid #ddd; padding: 20px; margin: 10px 0; border-radius: 8px;"><h3>Card Title</h3><p>Card content goes here</p></div>',
-            button: '<button style="background: #ffc000; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">New Button</button>',
-            image: '<img src="https://via.placeholder.com/300x200" alt="New image" style="max-width: 100%; height: auto;">',
-            form: '<form style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 10px 0;"><h3>Contact Form</h3><input type="text" placeholder="Name" style="width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px;"><input type="email" placeholder="Email" style="width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px;"><textarea placeholder="Message" style="width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; height: 100px;"></textarea><button type="submit" style="background: #ffc000; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Send</button></form>',
-            reviews: '<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 10px 0;"><h3>Customer Reviews</h3><div style="border-left: 4px solid #ffc000; padding-left: 15px; margin: 10px 0;"><p>"Great service and quality work!"</p><p><strong>- Customer Name</strong></p></div></div>',
-            map: '<div style="background: #f0f0f0; padding: 40px; text-align: center; border-radius: 8px; margin: 10px 0;"><p>🗺️ Map placeholder - replace with actual map</p></div>',
-            contact: '<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 10px 0;"><h3>Contact Information</h3><p>📞 Phone: (555) 123-4567</p><p>📧 Email: info@business.com</p><p>📍 Address: 123 Main St, City, State</p></div>'
-          };
-          
-          const template = templates[type] || templates.text;
-          
-          if (activeElement) {
-            activeElement.insertAdjacentHTML('afterend', template);
-          } else {
-            document.body.insertAdjacentHTML('beforeend', template);
-          }
-          
-          saveState(\`Insert \${type} element\`);
-        }
-        
-        // Open AI Chat
-        function openAIChat() {
-          // Send message to parent dashboard to open AI chat
-          window.parent.postMessage({
-            type: 'openAIChat',
-            selectedElement: activeElement ? {
-              tagName: activeElement.tagName,
-              textContent: activeElement.textContent,
-              className: activeElement.className,
-              id: activeElement.id
-            } : null
-          }, '*');
-        }
-        
-        // Connect to dashboard right panel
-        function connectToDashboardPanel() {
-          // Send toolbar state to parent
-          window.parent.postMessage({
-            type: 'toolbarUpdate',
-            activeElement: activeElement ? {
-              tagName: activeElement.tagName,
-              textContent: activeElement.textContent?.substring(0, 50),
-              canFormat: true,
-              canDelete: true
-            } : null
-          }, '*');
-        }
-        
-        // Listen for messages from parent dashboard
-        window.addEventListener('message', function(event) {
-          if (event.data.type === 'contentChange') {
-            const { action, selector, newContent } = event.data;
-            
-            if (action === 'updateText') {
-              const element = document.querySelector(selector);
-              if (element) {
-                element.textContent = newContent;
-                saveState('AI content change');
-                console.log('✅ Content updated via AI:', selector, newContent);
-                
-                // Add visual feedback
-                element.style.background = '#ffc000';
-                element.style.transition = 'background 0.3s';
-                setTimeout(() => {
-                  element.style.background = '';
-                }, 1000);
-              }
-            }
-          } else if (event.data.type === 'keyboardShortcut') {
-            const { action } = event.data;
-            if (action === 'undo') {
-              undo();
-            } else if (action === 'redo') {
-              redo();
-            }
-          }
-        });
-        
-        // History system
-        let history = [];
-        let historyIndex = -1;
-        const maxHistory = 50;
-        
-        function saveState(description = 'Edit') {
-          const state = {
-            html: document.documentElement.outerHTML,
-            timestamp: Date.now(),
-            description
-          };
-          
-          if (historyIndex < history.length - 1) {
-            history = history.slice(0, historyIndex + 1);
-          }
-          
-          history.push(state);
-          historyIndex = history.length - 1;
-          
-          if (history.length > maxHistory) {
-            history.shift();
-            historyIndex--;
-          }
-          
-          updateHistoryButtons();
-        }
-        
-        function undo() {
-          if (historyIndex > 0) {
-            historyIndex--;
-            restoreState(history[historyIndex]);
-          }
-        }
-        
-        function redo() {
-          if (historyIndex < history.length - 1) {
-            historyIndex++;
-            restoreState(history[historyIndex]);
-          }
-        }
-        
-        function restoreState(state) {
-          document.documentElement.innerHTML = state.html;
-          setTimeout(() => {
-            initWorkingEditor();
-            updateHistoryButtons();
-          }, 100);
-        }
-        
-        function updateHistoryButtons() {
-          // Send update to parent dashboard
-          window.parent.postMessage({
-            type: 'historyUpdate',
-            canUndo: historyIndex > 0,
-            canRedo: historyIndex < history.length - 1
-          }, '*');
-        }
-        
-        // Create history controls
-        function createHistoryControls() {
-          const historyDiv = document.createElement('div');
-          historyDiv.style.cssText = \`
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 8px;
-            z-index: 10003;
-          \`;
-          
-          const undoBtn = document.createElement('button');
-          undoBtn.innerHTML = '↶';
-          undoBtn.title = 'Undo';
-          undoBtn.style.cssText = \`
-            width: 48px;
-            height: 48px;
-            border: 2px solid #ffc000;
-            background: white;
-            color: #ffc000;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.2s ease;
-          \`;
-          undoBtn.onclick = undo;
-          
-          const redoBtn = document.createElement('button');
-          redoBtn.innerHTML = '↷';
-          redoBtn.title = 'Redo';
-          redoBtn.style.cssText = undoBtn.style.cssText;
-          redoBtn.onclick = redo;
-          
-          historyDiv.appendChild(undoBtn);
-          historyDiv.appendChild(redoBtn);
-          document.body.appendChild(historyDiv);
-          
-          window.undoBtn = undoBtn;
-          window.redoBtn = redoBtn;
-        }
-        
-        // Make all elements universally editable
-        function makeAllElementsEditable() {
-          const selectors = [
-            'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-            'p', 'span', 'div', 'a', 'button',
-            'img', 'video', 'iframe',
-            'li', 'td', 'th',
-            '[data-edit]', '[data-editable]',
-            '.title', '.heading', '.text', '.content',
-            '.btn', '.button', '.link', '.menu-item',
-            '.nav-link', '.dropdown-item'
-          ];
-          
-          let editableCount = 0;
-          
-          selectors.forEach(selector => {
-            document.querySelectorAll(selector).forEach(element => {
-              if (element.closest('.editor-toolbar') || 
-                  element.classList.contains('delete-btn') ||
-                  element.getAttribute('data-universal-editor') === 'true') {
-                return;
-              }
-              
-              makeElementEditable(element);
-              editableCount++;
-            });
-          });
-          
-          console.log('✅ Made', editableCount, 'elements universally editable');
-        }
-        
-        function makeElementEditable(element) {
-          element.setAttribute('data-universal-editor', 'true');
-          element.style.cssText += \`
-            position: relative !important;
-            cursor: pointer !important;
-            transition: all 0.2s ease !important;
-          \`;
-          
-          // Add delete button with proper positioning
-          const deleteBtn = document.createElement('button');
-          deleteBtn.className = 'delete-btn';
-          deleteBtn.innerHTML = '×';
-          deleteBtn.style.cssText = \`
-            position: absolute !important;
-            top: -10px !important;
-            right: -10px !important;
-            width: 24px !important;
-            height: 24px !important;
-            background: #ff4444 !important;
-            color: white !important;
-            border: none !important;
-            border-radius: 50% !important;
-            cursor: pointer !important;
-            font-size: 14px !important;
-            font-weight: bold !important;
-            line-height: 1 !important;
-            display: none !important;
-            z-index: 10000 !important;
-            font-family: Arial, sans-serif !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
-          \`;
-          deleteBtn.onclick = (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            const tagName = element.tagName;
-            element.remove();
-            saveState(\`Delete \${tagName}\`);
-          };
-          
-          // Ensure element has relative positioning for absolute delete button
-          if (window.getComputedStyle(element).position === 'static') {
-            element.style.position = 'relative';
-          }
-          
-          element.appendChild(deleteBtn);
-          
-          // Add hover effects
-          element.addEventListener('mouseenter', () => {
-            element.style.outline = '2px dashed #ff4444';
-            element.style.outlineOffset = '2px';
-            deleteBtn.style.display = 'block';
-          });
-          
-          element.addEventListener('mouseleave', () => {
-            if (element !== activeElement) {
-              element.style.outline = '';
-              element.style.outlineOffset = '';
-              deleteBtn.style.display = 'none';
-            }
-          });
-          
-          // Add click handler
-          element.addEventListener('click', (e) => {
-            e.stopPropagation();
-            selectElement(element);
-          });
-          
-          // Add double-click for text editing
-          if (isTextElement(element)) {
-            element.addEventListener('dblclick', (e) => {
-              e.stopPropagation();
-              enableInlineTextEdit(element);
-            });
-          }
-        }
-        
-        function selectElement(element) {
-          // Don't reselect the same element
-          if (activeElement === element) return;
-          
-          // Deactivate previous
-          if (activeElement) {
-            activeElement.classList.remove('active');
-            activeElement.style.outline = '';
-            activeElement.style.background = '';
-            const prevDeleteBtn = activeElement.querySelector('.delete-btn');
-            if (prevDeleteBtn) prevDeleteBtn.style.display = 'none';
-          }
-          
-          // Activate new
-          activeElement = element;
-          element.classList.add('active');
-          element.style.outline = '3px solid #ffc000';
-          element.style.outlineOffset = '2px';
-          element.style.background = 'rgba(255, 192, 0, 0.1)';
-          
-          const deleteBtn = element.querySelector('.delete-btn');
-          if (deleteBtn) deleteBtn.style.display = 'block';
-          
-          // Show toolbar with delay to prevent multiple triggers
-          setTimeout(() => showEditorToolbar(element), 50);
-          
-          // Connect to dashboard panel
-          connectToDashboardPanel();
-          
-          console.log('✅ Selected element:', element.tagName, element.textContent?.substring(0, 30));
-        }
-        
-        function isTextElement(element) {
-          const textTags = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'P', 'SPAN', 'DIV', 'A', 'BUTTON', 'LI', 'TD', 'TH'];
-          return textTags.includes(element.tagName);
-        }
-        
-        function enableInlineTextEdit(element) {
-          if (!isTextElement(element)) return;
-          
-          const originalText = element.textContent;
-          element.contentEditable = true;
-          element.focus();
-          
-          // Select all text
-          const range = document.createRange();
-          range.selectNodeContents(element);
-          const selection = window.getSelection();
-          selection.removeAllRanges();
-          selection.addRange(range);
-          
-          const handleBlur = () => {
-            element.contentEditable = false;
-            element.removeEventListener('blur', handleBlur);
-            element.removeEventListener('keydown', handleKeydown);
-            
-            if (element.textContent !== originalText) {
-              saveState('Edit text');
-            }
-          };
-          
-          const handleKeydown = (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              element.blur();
-            }
-          };
-          
-          element.addEventListener('blur', handleBlur);
-          element.addEventListener('keydown', handleKeydown);
-        }
-        
-        // Initialize editor
-        function initWorkingEditor() {
-          // Don't initialize editor on direct view access
-          if (shouldPreventEditing()) {
-            console.log('🚫 Editor disabled - direct view access detected');
-            return;
-          }
-          
-          addEditorStyles();
-          createEditorToolbar();
-          createHistoryControls();
-          setupClickHandlers();
-          makeAllElementsEditable();
-          
-          // Save initial state
-          saveState('Initial state');
-          
-          console.log('✅ Universal editor initialized');
-        }
-        
-        // Listen for messages from parent dashboard
-        window.addEventListener('message', function(event) {
-          if (event.data.type === 'execCommand') {
-            exec(event.data.command);
-          } else if (event.data.type === 'showFontSizeDropdown') {
-            showFontSizeDropdown();
-          } else if (event.data.type === 'undo') {
-            undo();
-          } else if (event.data.type === 'redo') {
-            redo();
-          }
-        });
-        
-        // Start when DOM is ready
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initWorkingEditor);
-        } else {
-          initWorkingEditor();
-        }
-      `;
-      frameDoc.head.appendChild(script);
-      
-      console.log('✅ Working editor script injected');
-    }, 2000);
-  } catch (error) {
-    console.error('❌ Error injecting working editor:', error);
-  }
-}
 
 function DesktopDashboard({ bootstrap }) {
   const navigate = useNavigate();
@@ -1526,42 +19,7 @@ function DesktopDashboard({ bootstrap }) {
     // Listen for messages from preview iframe
     const handleMessage = (event) => {
       if (event.data.type === 'openAIChat') {
-        // Focus the AI chat tab and scroll to bottom chat input
         setActiveTab('ai');
-        
-        // Auto-populate with context if element is selected
-        if (event.data.selectedElement) {
-          const context = `Edit ${event.data.selectedElement.tagName.toLowerCase()}: "${event.data.selectedElement.textContent?.substring(0, 50)}..." - `;
-          setChatMessage(context);
-          
-          // Focus the chat input at bottom
-          setTimeout(() => {
-            const chatInput = document.querySelector('.chat-input');
-            if (chatInput) {
-              chatInput.focus();
-              chatInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-          }, 100);
-        }
-      } else if (event.data.type === 'requestAuthStatus') {
-        // Respond with authentication status to iframe
-        event.source.postMessage({
-          type: 'authStatusResponse',
-          isAuthenticated: !!user
-        }, '*');
-        console.log('🔐 Sent auth status to iframe:', !!user);
-      } else if (event.data.type === 'toolbarUpdate') {
-        // Update right panel with element info
-        console.log('🔗 Toolbar update from iframe:', event.data.activeElement);
-      } else if (event.data.type === 'historyUpdate') {
-        // Could update undo/redo buttons in dashboard if needed
-        console.log('📚 History update:', event.data);
-      } else if (event.data.type === 'AI_CHAT_REQUEST') {
-        // AI chat request from iframe
-        setActiveTab('ai');
-        setChatMessage(event.data.message);
-        
-        // Focus the chat input
         setTimeout(() => {
           const chatInput = document.querySelector('.chat-input');
           if (chatInput) {
@@ -1569,46 +27,80 @@ function DesktopDashboard({ bootstrap }) {
             chatInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         }, 100);
-      }
-    };
-    
-    window.addEventListener('message', handleMessage);
-    
-    const createPreviewUrl = async () => {
-      try {
-        // Generate a unique ID for the preview
-        const id = Math.random().toString(36).substr(2, 9);
-        const response = await fetch('/api/cache-preview', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, data: bootstrap || {} })
-        });
-        const result = await response.json();
-        const shortUrl = `${window.location.origin}/t/v1/${id}`;
-        setPreviewContent(shortUrl);
-        console.log('Created short URL for desktop preview:', shortUrl);
-      } catch (error) {
-        console.error('Failed to create preview URL:', error);
-        setPreviewContent(`${window.location.origin}/t/v1/kigen-plastika-default`);
+      } else if (event.data.type === 'requestAuthStatus') {
+        event.source.postMessage({
+          type: 'authStatusResponse',
+          isAuthenticated: !!user
+        }, '*');
+        console.log('Auth status sent to iframe:', !!user);
       }
     };
 
-    createPreviewUrl();
-    
-    // Cleanup
+    window.addEventListener('message', handleMessage);
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [bootstrap]);
+  }, [user]);
 
   const handleIframeLoad = (event) => {
     const iframe = event.target;
-    if (iframe && previewContent) {
-      // Inject simple editor after iframe loads
-      setTimeout(() => {
-        injectComprehensiveEditor(iframe);
-      }, 500);
-    }
+    console.log('iframe loaded:', iframe.src);
+    
+    // Simple editor injection without breaking syntax
+    setTimeout(() => {
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        if (iframeDoc) {
+          const script = iframeDoc.createElement('script');
+          script.textContent = `
+            console.log('Simple editor bridge loaded');
+            
+            // Add basic editing styles
+            const style = document.createElement('style');
+            style.textContent = \`
+              .edit-hover:hover {
+                outline: 2px dashed #ff4444 !important;
+                outline-offset: 2px !important;
+              }
+              .edit-active {
+                outline: 2px solid #ffc000 !important;
+                outline-offset: 2px !important;
+              }
+            \`;
+            document.head.appendChild(style);
+            
+            // Make elements editable
+            document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, li').forEach(el => {
+              if (el.textContent.trim() && !el.querySelector('img')) {
+                el.classList.add('edit-hover');
+                el.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  document.querySelectorAll('.edit-active').forEach(active => {
+                    active.classList.remove('edit-active');
+                  });
+                  el.classList.add('edit-active');
+                  el.contentEditable = true;
+                  el.focus();
+                });
+              }
+            });
+            
+            // Click outside to deactivate
+            document.addEventListener('click', (e) => {
+              if (!e.target.closest('.edit-hover')) {
+                document.querySelectorAll('.edit-active').forEach(active => {
+                  active.classList.remove('edit-active');
+                  active.contentEditable = false;
+                });
+              }
+            });
+          `;
+          iframeDoc.head.appendChild(script);
+        }
+      } catch (error) {
+        console.log('Could not inject editor (cross-origin):', error.message);
+      }
+    }, 1000);
   };
 
   const handleLogout = async () => {
@@ -1633,7 +125,8 @@ function DesktopDashboard({ bootstrap }) {
         
         if (response.ok) {
           const shortUrl = `/t/v1/${shortId}`;
-          window.open(shortUrl, '_blank');
+          console.log('Created short URL for preview:', window.location.origin + shortUrl);
+          setPreviewContent(window.location.origin + shortUrl);
           return;
         }
       } catch (error) {
@@ -1641,7 +134,7 @@ function DesktopDashboard({ bootstrap }) {
       }
     }
     
-    window.open('/t/v1/demo', '_blank');
+    setPreviewContent('/t/v1/demo');
   };
 
   const handleSendMessage = async () => {
@@ -1651,95 +144,156 @@ function DesktopDashboard({ bootstrap }) {
     setChatMessage("");
     setIsProcessing(true);
     
-    // Add user message to chat history
-    setChatHistory(prev => [...prev, { role: 'user', content: userMessage }]);
-    
+    setChatHistory(prev => [...prev, {
+      role: 'user',
+      content: userMessage,
+      timestamp: Date.now()
+    }]);
+
     try {
       const response = await fetch('/api/ai-chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage })
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          history: chatHistory.slice(-10)
+        }),
       });
-      
-      const data = await response.json();
-      
-      // Enhanced AI content change handling with fuzzy matching
-      if (data.contentChange) {
-        const iframe = document.querySelector('.preview-iframe');
-        if (iframe && iframe.contentWindow) {
-          try {
-            // Enhanced content update with fuzzy text matching
-            iframe.contentWindow.postMessage({
-              type: 'AI_CONTENT_UPDATE',
-              searchText: data.contentChange.searchText,
-              newContent: data.contentChange.newContent
-            }, '*');
-          } catch (error) {
-            console.error('Error sending AI content update:', error);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let aiResponse = '';
+
+      setChatHistory(prev => [...prev, {
+        role: 'assistant',
+        content: '',
+        timestamp: Date.now()
+      }]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.content) {
+                aiResponse += data.content;
+                setChatHistory(prev => {
+                  const newHistory = [...prev];
+                  if (newHistory[newHistory.length - 1].role === 'assistant') {
+                    newHistory[newHistory.length - 1].content = aiResponse;
+                  }
+                  return newHistory;
+                });
+              }
+            } catch (e) {
+              console.warn('Failed to parse streaming response:', e);
+            }
           }
         }
       }
-      
-      // Add AI response to chat history and save completion log
-      const aiMessage = data.message || data.response;
-      setChatHistory(prev => [...prev, { role: 'ai', content: aiMessage }]);
-      
-      // Save AI action completion to database
-      try {
-        await fetch('/api/save-ai-completion', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            userMessage: userMessage,
-            aiResponse: aiMessage,
-            contentChange: data.contentChange,
-            timestamp: new Date().toISOString()
-          })
-        });
-        console.log('✅ AI completion logged successfully');
-      } catch (error) {
-        console.error('Error saving AI completion:', error);
-      }
     } catch (error) {
-      console.error('Error sending message:', error);
-      setChatHistory(prev => [...prev, { role: 'ai', content: 'Sorry, I encountered an error. Please try again.' }]);
+      console.error('Chat error:', error);
+      setChatHistory(prev => [...prev, {
+        role: 'assistant',
+        content: 'Sorry, I encountered an error. Please try again.',
+        timestamp: Date.now()
+      }]);
     } finally {
       setIsProcessing(false);
     }
   };
 
+  useEffect(() => {
+    showTemplatePreview();
+    
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/user');
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, [bootstrap]);
+
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        fontSize: '18px'
+      }}>
+        Loading dashboard...
+      </div>
+    );
+  }
+
   return (
-    <div className="dashboard-wireframe">
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 400px',
+      gridTemplateRows: '60px 1fr',
+      height: '100vh',
+      fontFamily: 'Inter, system-ui, sans-serif'
+    }}>
       {/* Header */}
-      <header className="header-wireframe">
-        <div className="logo-section">
-          <a href="/" className="logo-link">
-            <img src="https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/assets/logo-transparent.png" alt="LocalAI Builder" className="dashboard-logo" />
-          </a>
-        </div>
-        
-        {/* Main Action Buttons */}
-        <div className="header-center">
-          <button className="btn-wireframe" onClick={() => window.open('/', '_blank')}>
-            + New Site
+      <div style={{
+        gridColumn: '1 / -1',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '0 20px',
+        borderBottom: '1px solid #e0e0e0',
+        background: '#ffffff'
+      }}>
+        {/* Left side buttons */}
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button className="btn-wireframe" onClick={() => navigate('/new')}>
+            New Site
           </button>
           <button className="btn-wireframe" onClick={() => console.log('Save clicked')}>
             Save
           </button>
-          <button className="btn-wireframe" onClick={() => window.postMessage({type: 'undo'}, '*')}>
+          <button className="btn-wireframe" onClick={() => console.log('Undo clicked')}>
             ↶ Undo
           </button>
-          <button className="btn-wireframe" onClick={() => window.postMessage({type: 'redo'}, '*')}>
+          <button className="btn-wireframe" onClick={() => console.log('Redo clicked')}>
             ↷ Redo
           </button>
         </div>
 
-        {/* Language and Device Switchers */}
-        <div className="header-switches">
+        {/* Right side controls */}
+        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
           <select 
             value={currentLanguage} 
             onChange={(e) => setCurrentLanguage(e.target.value)}
-            className="language-select"
+            style={{
+              padding: '5px 10px',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              background: '#fff'
+            }}
           >
             <option value="EN">EN</option>
             <option value="SR">SR</option>
@@ -1748,268 +302,240 @@ function DesktopDashboard({ bootstrap }) {
           <select 
             value={currentDevice} 
             onChange={(e) => setCurrentDevice(e.target.value)}
-            className="device-select"
+            style={{
+              padding: '5px 10px',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              background: '#fff'
+            }}
           >
             <option value="Desktop">Desktop</option>
             <option value="Tablet">Tablet</option>
             <option value="Mobile">Mobile</option>
           </select>
-        </div>
 
-        {/* Right Side Actions */}
-        <div className="header-actions">
-          <div className="credits-info">
-            <span className="credits-label">Credits remaining: <strong>25</strong></span>
-          </div>
-          
-          <div className="pages-dropdown">
-            <button className="btn-wireframe" onClick={() => console.log('Pages clicked')}>
-              Pages ▼
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button className="btn-wireframe" onClick={() => showTemplatePreview()}>
+              Visit Site
             </button>
-          </div>
-
-          <button className="btn-wireframe">🔔</button>
-
-          <button className="btn-wireframe" onClick={() => console.log('Publish clicked')}>
-            Publish
-          </button>
-
-          <button className="btn-wireframe" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
-      </header>
-
-      {/* Main Content Grid */}
-      <div className="main-content-grid">
-        {/* Live Preview Panel */}
-        <div className="preview-panel-wireframe">
-          <div className="preview-container">
-            {previewContent && (
-              <iframe
-                key={previewContent}
-                src={previewContent}
-                className={`preview-iframe preview-${currentDevice.toLowerCase()}`}
-                onLoad={handleIframeLoad}
-                title="Website Preview"
-              />
-            )}
-          </div>
-          
-          {/* Sticky button at bottom of preview panel */}
-          <div className="preview-panel-footer">
-            <button 
-              className="view-live-btn-mobile" 
-              onClick={() => {
-                console.log('🌐 Opening identical preview in new tab...');
-                if (previewContent) {
-                  window.open(previewContent, '_blank');
-                } else {
-                  alert('Please wait for the preview to load');
-                }
-              }}
-            >
-              View Live Site
+            <button className="btn-wireframe" onClick={handleLogout}>
+              Logout
             </button>
-          </div>
-        </div>
-
-        {/* Right Panel - Editor and Chat */}
-        <div className="right-panel-wireframe">
-          <div className="editor-panel">
-            <div className="editor-tabs">
-              <button 
-                className={`tab-btn ${activeTab === 'text' ? 'active' : ''}`} 
-                onClick={() => setActiveTab('text')}
-              >
-                Text
-              </button>
-              <button 
-                className={`tab-btn ${activeTab === 'media' ? 'active' : ''}`} 
-                onClick={() => setActiveTab('media')}
-              >
-                Media
-              </button>
-              <button 
-                className={`tab-btn ${activeTab === 'components' ? 'active' : ''}`} 
-                onClick={() => setActiveTab('components')}
-              >
-                Components
-              </button>
-              <button 
-                className={`tab-btn ${activeTab === 'ai' ? 'active' : ''}`} 
-                onClick={() => setActiveTab('ai')}
-              >
-                AI
-              </button>
-            </div>
-            <div className="editor-content">
-              {activeTab === 'text' && (
-                <EditorPanel />
-              )}
-              {activeTab === 'media' && (
-                <div className="editor-commands">
-                  <div className="command-group">
-                    <button className="editor-cmd-btn" title="Image">🖼️</button>
-                    <button className="editor-cmd-btn" title="Video">🎥</button>
-                    <button className="editor-cmd-btn" title="Resize">↔️↕️</button>
-                    <button className="editor-cmd-btn" title="Spacing">📐</button>
-                  </div>
-                </div>
-              )}
-              {activeTab === 'components' && (
-                <div className="editor-commands">
-                  <div className="component-section">
-                    <h4>Drag to Add Sections</h4>
-                    <div className="component-group">
-                      <button 
-                        className="add-section-btn draggable" 
-                        draggable="true"
-                        onDragStart={(e) => {
-                          e.dataTransfer.setData('text/plain', 'hero');
-                          e.dataTransfer.effectAllowed = 'copy';
-                        }}
-                        onClick={() => {
-                          const iframe = document.querySelector('.preview-iframe');
-                          if (iframe && iframe.contentWindow) {
-                            iframe.contentWindow.postMessage({type: 'addSection', sectionType: 'hero'}, '*');
-                          }
-                        }}
-                        title="Add Hero Section"
-                      >
-                        + Hero Section
-                      </button>
-                      <button 
-                        className="add-section-btn draggable" 
-                        draggable="true"
-                        onDragStart={(e) => {
-                          e.dataTransfer.setData('text/plain', 'services');
-                          e.dataTransfer.effectAllowed = 'copy';
-                        }}
-                        onClick={() => {
-                          const iframe = document.querySelector('.preview-iframe');
-                          if (iframe && iframe.contentWindow) {
-                            iframe.contentWindow.postMessage({type: 'addSection', sectionType: 'services'}, '*');
-                          }
-                        }}
-                        title="Add Services Section"
-                      >
-                        + Services
-                      </button>
-                      <button 
-                        className="add-section-btn draggable" 
-                        draggable="true"
-                        onDragStart={(e) => {
-                          e.dataTransfer.setData('text/plain', 'about');
-                          e.dataTransfer.effectAllowed = 'copy';
-                        }}
-                        onClick={() => {
-                          const iframe = document.querySelector('.preview-iframe');
-                          if (iframe && iframe.contentWindow) {
-                            iframe.contentWindow.postMessage({type: 'addSection', sectionType: 'about'}, '*');
-                          }
-                        }}
-                        title="Add About Section"
-                      >
-                        + About
-                      </button>
-                      <button 
-                        className="add-section-btn draggable" 
-                        draggable="true"
-                        onDragStart={(e) => {
-                          e.dataTransfer.setData('text/plain', 'contact');
-                          e.dataTransfer.effectAllowed = 'copy';
-                        }}
-                        onClick={() => {
-                          const iframe = document.querySelector('.preview-iframe');
-                          if (iframe && iframe.contentWindow) {
-                            iframe.contentWindow.postMessage({type: 'addSection', sectionType: 'contact'}, '*');
-                          }
-                        }}
-                        title="Add Contact Section"
-                      >
-                        + Contact
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {activeTab === 'ai' && (
-                <div className="ai-chat-section">
-                  <div className="chat-history">
-                    {chatHistory.map((message, index) => (
-                      <div key={index} className={`chat-bubble ${message.role}`}>
-                        <div className="bubble-content">
-                          {message.content}
-                        </div>
-                      </div>
-                    ))}
-                    {isProcessing && (
-                      <div className="chat-bubble ai">
-                        <div className="bubble-content">
-                          <span className="typing-indicator">●●●</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="ai-instructions">
-                    <p className="instruction-text">
-                      💡 <strong>AI Assistant activated!</strong> Use the chat field at the bottom to send messages.
-                      <br />
-                      Click any element in the preview and then click the 🤖 button to get AI help with that specific content.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          {/* Chat Panel in Right Column */}
-          <div className="chat-panel-section">
-            <h3>AI Assistant</h3>
-            <div className="chat-history">
-              {chatHistory.map((message, index) => (
-                <div key={index} className={`chat-bubble ${message.role}`}>
-                  <div className="bubble-content">
-                    {message.content}
-                  </div>
-                </div>
-              ))}
-              {isProcessing && (
-                <div className="chat-bubble ai">
-                  <div className="bubble-content">
-                    <span className="typing-indicator">●●●</span>
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <div className="chat-input-container">
-              <input
-                type="text"
-                value={chatMessage}
-                onChange={(e) => setChatMessage(e.target.value)}
-                placeholder="Type a message to AI..."
-                className="chat-input"
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSendMessage();
-                  }
-                }}
-                disabled={isProcessing}
-              />
-              <button 
-                className="send-btn"
-                onClick={handleSendMessage}
-                disabled={isProcessing}
-              >
-                Send
-              </button>
-            </div>
           </div>
         </div>
       </div>
+
+      {/* Main Content Area */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#f5f5f5',
+        padding: '20px'
+      }}>
+        <h3 style={{ margin: '0 0 15px 0', fontSize: '18px', fontWeight: '600' }}>
+          Live Preview
+        </h3>
+        <div style={{
+          flex: 1,
+          background: '#ffffff',
+          borderRadius: '8px',
+          overflow: 'hidden',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+        }}>
+          {previewContent && (
+            <iframe
+              className="preview-iframe"
+              src={previewContent}
+              style={{
+                width: '100%',
+                height: '100%',
+                border: 'none'
+              }}
+              onLoad={handleIframeLoad}
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Right Panel */}
+      <div style={{
+        borderLeft: '1px solid #e0e0e0',
+        background: '#ffffff'
+      }}>
+        <div style={{
+          display: 'flex',
+          borderBottom: '1px solid #e0e0e0'
+        }}>
+          <button 
+            className={`tab-btn ${activeTab === 'text' ? 'active' : ''}`} 
+            onClick={() => setActiveTab('text')}
+            style={{
+              flex: 1,
+              padding: '12px',
+              border: 'none',
+              background: activeTab === 'text' ? '#ffc000' : '#f5f5f5',
+              color: activeTab === 'text' ? '#ffffff' : '#666',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Text
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === 'media' ? 'active' : ''}`} 
+            onClick={() => setActiveTab('media')}
+            style={{
+              flex: 1,
+              padding: '12px',
+              border: 'none',
+              background: activeTab === 'media' ? '#ffc000' : '#f5f5f5',
+              color: activeTab === 'media' ? '#ffffff' : '#666',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Media
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === 'components' ? 'active' : ''}`} 
+            onClick={() => setActiveTab('components')}
+            style={{
+              flex: 1,
+              padding: '12px',
+              border: 'none',
+              background: activeTab === 'components' ? '#ffc000' : '#f5f5f5',
+              color: activeTab === 'components' ? '#ffffff' : '#666',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Components
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === 'ai' ? 'active' : ''}`} 
+            onClick={() => setActiveTab('ai')}
+            style={{
+              flex: 1,
+              padding: '12px',
+              border: 'none',
+              background: activeTab === 'ai' ? '#ffc000' : '#f5f5f5',
+              color: activeTab === 'ai' ? '#ffffff' : '#666',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            AI
+          </button>
+        </div>
+        
+        <div style={{ height: 'calc(100vh - 120px)', overflow: 'auto' }}>
+          {activeTab === 'text' && (
+            <EditorPanel />
+          )}
+          {activeTab === 'media' && (
+            <div style={{ padding: '20px' }}>
+              <h4>Media Tools</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <button style={{ padding: '10px', background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px' }}>
+                  Upload Image
+                </button>
+                <button style={{ padding: '10px', background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px' }}>
+                  Upload Video
+                </button>
+                <button style={{ padding: '10px', background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px' }}>
+                  Resize Media
+                </button>
+              </div>
+            </div>
+          )}
+          {activeTab === 'components' && (
+            <div style={{ padding: '20px' }}>
+              <h4>Add Sections</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <button style={{ 
+                  padding: '12px', 
+                  background: '#ffc000', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: '500'
+                }}>
+                  + Hero Section
+                </button>
+                <button style={{ 
+                  padding: '12px', 
+                  background: '#ffc000', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: '500'
+                }}>
+                  + Services
+                </button>
+                <button style={{ 
+                  padding: '12px', 
+                  background: '#ffc000', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: '500'
+                }}>
+                  + About Us
+                </button>
+                <button style={{ 
+                  padding: '12px', 
+                  background: '#ffc000', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: '500'
+                }}>
+                  + Contact
+                </button>
+              </div>
+            </div>
+          )}
+          {activeTab === 'ai' && (
+            <UnifiedCommandChatPanel
+              chatHistory={chatHistory}
+              chatMessage={chatMessage}
+              setChatMessage={setChatMessage}
+              handleSendMessage={handleSendMessage}
+              isProcessing={isProcessing}
+            />
+          )}
+        </div>
+      </div>
+
+      <style jsx>{`
+        .btn-wireframe {
+          padding: 8px 16px;
+          background: transparent;
+          border: 1px solid #333;
+          color: #333;
+          cursor: pointer;
+          font-size: 14px;
+          border-radius: 4px;
+          transition: all 0.2s ease;
+        }
+        
+        .btn-wireframe:hover {
+          background: #333;
+          color: #ffffff;
+        }
+        
+        .tab-btn:hover {
+          background: #e0e0e0 !important;
+        }
+        
+        .tab-btn.active:hover {
+          background: #ffc000 !important;
+        }
+      `}</style>
     </div>
   );
 }
