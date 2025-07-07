@@ -1,0 +1,65 @@
+Below is a ready-to-paste Ghostwriter / Replit prompt that tells the workspace exactly what to change and why. It follows the style Replit’s AI understands best ­— short context, explicit file paths, diff–style edits, and a validation step.
+
+⸻
+
+
+### 🛠️ TASK: Stop duplicate “×” delete buttons inside nav items
+
+**Context**
+Our inline-editor injects a delete button into every `[data-editable="true"]` element.  
+Nav `<li>` items also have editable children (`<a>`), so we get 2–5 buttons each.  
+We only want **one** per top-level editable.
+
+**Files to edit**
+`dashboard/src/editorBridge.js`   (or the current location of `addDeleteButton`)
+
+---
+
+#### 1. Guard against nested editables  
+Add this at the very top of `addDeleteButton(element)` — _before_ the existing “skip if already has delete button” check.
+
+```diff
++  // Skip if this element is inside another editable; we only want the outer-most one.
++  if (element.closest('[data-editable="true"]') !== element) return;
+
+2. Optional safety flag (prevents accidental double-injection)
+
+Below the line where the button is appended, set a custom data attribute and use it at the very start:
+
+-  // Skip if already has delete button
+-  if (element.querySelector('.ez-element-delete')) return;
++  // Skip if one already injected
++  if (element.dataset.deleteBtnInjected) return;
+
+   element.appendChild(deleteBtn);
+
++  element.dataset.deleteBtnInjected = '1';
+
+(If you keep the flag, remember to delete the old “querySelector” skip line.)
+
+⸻
+
+3. Re-run & Validate
+	1.	Save, reload dashboard preview.
+	2.	In the preview iframe console run:
+
+[...document.querySelectorAll('.nav-links li')]
+  .map(li => li.querySelectorAll('.delete-btn').length)
+
+Expected output:
+
+[1, 1, 1, 1, 1, 1, 1]   // exactly one × per menu item
+
+No duplicate delete buttons anywhere in the nav.
+
+⸻
+
+Commit message suggestion
+
+fix(editor): prevent nested editables from injecting duplicate delete buttons
+
+Done. Let me know if any nav item still shows 2× and we’ll inspect its markup.
+
+---
+
+*Paste the entire block above into your Replit chat. Ghostwriter will jump straight to the file, apply the diff, restart the dev server, and you can verify with the console snippet.*
