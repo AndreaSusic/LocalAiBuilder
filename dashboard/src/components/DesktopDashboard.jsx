@@ -260,12 +260,7 @@ function DesktopDashboard({ bootstrap }) {
           <button className="btn-wireframe" onClick={() => console.log('Save clicked')}>
             Save
           </button>
-          <button className="btn-wireframe" onClick={() => console.log('Undo clicked')}>
-            ↶ Undo
-          </button>
-          <button className="btn-wireframe" onClick={() => console.log('Redo clicked')}>
-            ↷ Redo
-          </button>
+
         </div>
 
         <div className="header-center">
@@ -277,7 +272,7 @@ function DesktopDashboard({ bootstrap }) {
           <select 
             value={currentLanguage} 
             onChange={(e) => setCurrentLanguage(e.target.value)}
-            className="header-select"
+            className="dropdown-styled"
           >
             <option value="EN">EN</option>
             <option value="SR">SR</option>
@@ -286,16 +281,13 @@ function DesktopDashboard({ bootstrap }) {
           <select 
             value={currentDevice} 
             onChange={(e) => setCurrentDevice(e.target.value)}
-            className="header-select"
+            className="dropdown-styled"
           >
             <option value="Desktop">Desktop</option>
             <option value="Tablet">Tablet</option>
             <option value="Mobile">Mobile</option>
           </select>
 
-          <button className="btn-primary" onClick={() => showTemplatePreview()}>
-            Visit Site
-          </button>
           <button className="btn-wireframe" onClick={handleLogout}>
             Logout
           </button>
@@ -306,9 +298,6 @@ function DesktopDashboard({ bootstrap }) {
       <div className="main-content-wireframe">
         {/* Left Side: Preview */}
         <div className="preview-panel-wireframe">
-          <button className="view-site-btn" onClick={() => showTemplatePreview()}>
-            Live Preview
-          </button>
           <div className="preview-container">
             {previewContent && (
               <iframe
@@ -318,6 +307,9 @@ function DesktopDashboard({ bootstrap }) {
               />
             )}
           </div>
+          <button className="view-site-btn" onClick={() => showTemplatePreview()}>
+            View Site
+          </button>
         </div>
 
         {/* Right Side: Editor Panel */}
@@ -352,15 +344,53 @@ function DesktopDashboard({ bootstrap }) {
           
           <div className="tab-content">
             {activeTab === 'text' && (
-              <EditorPanel />
+              <div className="panel-section">
+                <h4>Text Formatting</h4>
+                <div className="format-buttons">
+                  <button className="format-btn" onClick={() => console.log('Bold')}>
+                    <strong>B</strong>
+                  </button>
+                  <button className="format-btn" onClick={() => console.log('Italic')}>
+                    <em>I</em>
+                  </button>
+                  <button className="format-btn" onClick={() => console.log('Underline')}>
+                    <u>U</u>
+                  </button>
+                  <button className="format-btn" onClick={() => console.log('List')}>
+                    ≡
+                  </button>
+                </div>
+                
+                <div className="font-controls">
+                  <label>Font Size:</label>
+                  <select className="font-size-select">
+                    <option value="12">12px</option>
+                    <option value="14">14px</option>
+                    <option value="16" selected>16px</option>
+                    <option value="18">18px</option>
+                    <option value="20">20px</option>
+                    <option value="24">24px</option>
+                  </select>
+                </div>
+
+                <div className="color-controls">
+                  <label>Text Color:</label>
+                  <div className="color-swatches">
+                    <div className="color-swatch" style={{background: '#000000'}}></div>
+                    <div className="color-swatch" style={{background: '#ffc000'}}></div>
+                    <div className="color-swatch" style={{background: '#ff4444'}}></div>
+                    <div className="color-swatch" style={{background: '#0066cc'}}></div>
+                  </div>
+                </div>
+              </div>
             )}
             {activeTab === 'media' && (
               <div className="panel-section">
                 <h4>Media Tools</h4>
                 <div className="tool-buttons">
-                  <button className="tool-btn">Upload Image</button>
-                  <button className="tool-btn">Upload Video</button>
-                  <button className="tool-btn">Resize Media</button>
+                  <button className="tool-btn">📷 Upload Image</button>
+                  <button className="tool-btn">🎥 Upload Video</button>
+                  <button className="tool-btn">🔧 Resize Media</button>
                 </div>
               </div>
             )}
@@ -368,10 +398,10 @@ function DesktopDashboard({ bootstrap }) {
               <div className="panel-section">
                 <h4>Add Sections</h4>
                 <div className="component-buttons">
-                  <button className="component-btn">+ Hero Section</button>
-                  <button className="component-btn">+ Services</button>
-                  <button className="component-btn">+ About Us</button>
-                  <button className="component-btn">+ Contact</button>
+                  <button className="component-btn" style={{background: '#ffc000', color: 'white'}}>+ Hero Section</button>
+                  <button className="component-btn" style={{background: '#ffc000', color: 'white'}}>+ Services</button>
+                  <button className="component-btn" style={{background: '#ffc000', color: 'white'}}>+ About Us</button>
+                  <button className="component-btn" style={{background: '#ffc000', color: 'white'}}>+ Contact</button>
                 </div>
               </div>
             )}
