@@ -6,6 +6,11 @@
 
 console.log('🚀 Auto-save editor bridge starting...');
 
+// COMPLETELY DISABLED to prevent duplicate delete buttons - WorkingInlineEditor.jsx is the only active system
+console.log('🔧 AutoSaveEditor COMPLETELY DISABLED to prevent double × delete buttons');
+console.log('✅ Only WorkingInlineEditor.jsx should be active for editing');
+return; // Exit early to prevent any initialization
+
 let activeElement = null;
 let toolbar = null;
 let currentPageId = null;

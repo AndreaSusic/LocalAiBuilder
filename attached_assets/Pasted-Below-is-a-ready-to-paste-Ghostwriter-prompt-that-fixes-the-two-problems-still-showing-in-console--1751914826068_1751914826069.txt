@@ -1,0 +1,69 @@
+Below is a ready-to-paste Ghostwriter prompt that fixes the two problems still showing in console:
+	1.	ReferenceError: autoSavePageId is not defined
+	2.	A second editor still boots (you see “📍 Made 5 elements editable” right after the first 67).
+
+The prompt follows the diff-style format Replit’s AI prefers and includes validation steps.
+
+⸻
+
+
+### 🛠️ TASK #1 – stop the second editor from loading
+
+**File:** `dashboard/src/editorBridge.js`  (or wherever the “Starting comprehensive inline editor” log is)
+
+```diff
+@@
+-// Initialize when script loads
+-initEditorBridge();
++// Prevent double-init (iframe reloads, hot-reload etc.)
++if (!window.__editorBridgeInitialized) {
++  window.__editorBridgeInitialized = true;
++  initEditorBridge();
++}
+
+
+⸻
+
+🛠️ TASK #2 – define autoSavePageId (so loading edits no longer crashes)
+
+File: dashboard/src/autoSaveEditor.js
+
+@@
+-// ‼️ currently throws ReferenceError if autoSavePageId is missing
+-loadExistingEdits(autoSavePageId)
++// Compute a stable page-id if none pre-defined
++let pageId = typeof autoSavePageId !== 'undefined'
++  ? autoSavePageId
++  : (window.autoSavePageId = location.pathname.replace(/\/$/, ''));
++
++loadExistingEdits(pageId)
+
+Add this near the top (right after imports) so every reference gets it:
+
+// Guard against re-initialisation
+if (window.__autoSaveEditorInitialized) return;
+window.__autoSaveEditorInitialized = true;
+
+
+⸻
+
+✅ Validation
+	1.	Reload the dashboard preview.
+	2.	Console should show only one “📍 Made NN elements editable” line (NN≈67).
+	3.	No more autoSavePageId errors.
+	4.	Navigation items still have exactly one “×” delete button (use the check below):
+
+[...document.querySelectorAll('.nav-links li')]
+  .map(li => li.querySelectorAll('.delete-btn').length)
+// → [1,1,1,1,1,1,1]
+
+
+⸻
+
+Commit message suggestion
+
+fix(editor): guard against double-initialization & generate fallback autoSavePageId
+
+---
+
+*Paste everything above into your Replit chat. Ghostwriter will apply the diffs, restart the dev server, and you’ll immediately see a single editor instance and no `autoSavePageId` crash.*
