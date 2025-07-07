@@ -391,7 +391,7 @@ function DesktopDashboard({ bootstrap }) {
         {/* Right Side: Editor Panel */}
         <div className="right-panel-wireframe">
           {/* Tab Navigation */}
-          <div className="editor-navigation-tabs">
+          <div className="editor-navigation-removed">
             <button 
               className={`tab-btn ${activeTab === 'text' ? 'active' : ''}`} 
               onClick={() => setActiveTab('text')}
