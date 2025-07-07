@@ -625,8 +625,8 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
             }
           }
           
-          // Fallback to direct API check
-          const response = await fetch('/api/me', { credentials: 'include' });
+          // Fallback to direct API check  
+          const response = await fetch('https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5000/api/me', { credentials: 'include' });
           autoSaveIsAuthenticated = response.ok;
           console.log('🔐 Direct auth check:', autoSaveIsAuthenticated ? 'Authenticated' : 'Not authenticated');
         } catch (error) {
