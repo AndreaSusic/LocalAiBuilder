@@ -335,7 +335,6 @@ function DesktopDashboard({ bootstrap }) {
           <button className="btn-wireframe" onClick={() => console.log('Save clicked')}>
             Save
           </button>
-
         </div>
 
         <div className="header-center">
@@ -390,7 +389,7 @@ function DesktopDashboard({ bootstrap }) {
         {/* Right Side: Editor Panel */}
         <div className="right-panel-wireframe">
           {/* Tab Navigation */}
-          <div className="editor-tab-navigation">
+          <div className="editor-tabs">
             <button 
               className={`tab-btn ${activeTab === 'text' ? 'active' : ''}`} 
               onClick={() => setActiveTab('text')}
@@ -451,6 +450,31 @@ function DesktopDashboard({ bootstrap }) {
                 isProcessing={isProcessing}
               />
             )}
+          </div>
+
+          {/* Sticky Command Input at Bottom */}
+          <div className="sticky-command-input">
+            <input
+              type="text"
+              value={chatMessage}
+              onChange={(e) => setChatMessage(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSendMessage();
+                }
+              }}
+              placeholder="Type command or question..."
+              className="command-input-field"
+              disabled={isProcessing}
+            />
+            <button
+              onClick={handleSendMessage}
+              disabled={isProcessing || !chatMessage.trim()}
+              className="command-send-button"
+            >
+              Send
+            </button>
           </div>
         </div>
       </div>
