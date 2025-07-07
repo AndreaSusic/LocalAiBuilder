@@ -251,12 +251,7 @@ function CleanDesktopDashboard({ bootstrap }) {
           <button className="btn-wireframe" onClick={() => console.log('Save clicked')}>
             Save
           </button>
-          <button className="btn-wireframe" onClick={() => window.postMessage({type: 'undo'}, '*')}>
-            ↶ Undo
-          </button>
-          <button className="btn-wireframe" onClick={() => window.postMessage({type: 'redo'}, '*')}>
-            ↷ Redo
-          </button>
+          {/* Undo/Redo buttons removed as requested */}
         </div>
 
         {/* Language and Device Switchers */}

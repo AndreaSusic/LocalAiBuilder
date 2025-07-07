@@ -107,34 +107,7 @@ const EditorPanel = () => {
       </div>
 
       {/* Chat Input */}
-      <div style={{ 
-        marginTop: '10px',
-        display: 'flex',
-        gap: '8px' 
-      }}>
-        <input 
-          type="text" 
-          placeholder="Type command or question..."
-          style={{
-            flex: 1,
-            padding: '8px 12px',
-            border: '1px solid #ddd',
-            borderRadius: '20px',
-            fontSize: '14px'
-          }}
-        />
-        <button style={{
-          background: '#ffc000',
-          color: 'white',
-          border: 'none',
-          borderRadius: '20px',
-          padding: '8px 16px',
-          cursor: 'pointer',
-          fontSize: '14px'
-        }}>
-          Send
-        </button>
-      </div>
+      {/* Command input removed - using sticky input at bottom */}
     </div>
   );
 };
