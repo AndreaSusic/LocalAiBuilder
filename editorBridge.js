@@ -356,7 +356,10 @@ async function openAIChat() {
   };
 }
 
-// Initialize when script loads
-initEditor();
+// Prevent double-init (iframe reloads, hot-reload etc.)
+if (!window.__editorBridgeInitialized) {
+  window.__editorBridgeInitialized = true;
+  initEditor();
+}
 
 console.log('✅ Editor bridge loaded successfully');
