@@ -80,10 +80,16 @@ const WorkingInlineEditor = () => {
         // Skip toolbar elements and their children
         if (element.closest('.toolbar') || element.closest('.editor-toolbar')) return;
         
+        // Skip if already has delete button (prevent duplicates from other editors)
+        if (element.querySelector('.delete-btn') || element.querySelector('.editor-delete-btn')) {
+          console.log('⚠️ Skipping element - already has delete button from another editor');
+          return;
+        }
+        
         element.classList.add('editor-element');
         element.setAttribute('contenteditable', element.tagName === 'IMG' ? 'false' : 'true');
         
-        // Add delete button
+        // Add delete button (including for images)
         const deleteBtn = iframeDoc.createElement('div');
         deleteBtn.className = 'delete-btn';
         deleteBtn.innerHTML = '×';
@@ -95,6 +101,12 @@ const WorkingInlineEditor = () => {
           setShowToolbar(false);
           setActiveElement(null);
         };
+        
+        // Ensure delete button works for all elements including images
+        if (element.tagName === 'IMG') {
+          element.style.position = 'relative'; // Ensure relative positioning for image containers
+        }
+        
         element.appendChild(deleteBtn);
         
         // Click handler

@@ -10,6 +10,9 @@ const ComprehensiveInlineEditor = ({ previewId }) => {
   const headingOptions = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
 
   useEffect(() => {
+    console.log('⚠️ ComprehensiveInlineEditor DISABLED to prevent duplicate × buttons');
+    return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
+    
     const script = document.createElement('script');
     script.innerHTML = `
       (function() {
