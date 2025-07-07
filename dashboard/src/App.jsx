@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import CleanDesktopDashboard from "./components/CleanDesktopDashboard";
+import DesktopDashboard from "./components/DesktopDashboard";
 import MobileDashboard from "./components/MobileDashboard";
 import DashboardPage from "./pages/Dashboard";
 import TemplateOne from "./templates/TemplateOne";
@@ -66,7 +66,7 @@ export default function App({ bootstrap }) {
         {/* Dashboard as default route */}
         <Route path="/" element={
           <>
-            {isMobile ? <MobileDashboard bootstrap={bootstrap} /> : <CleanDesktopDashboard bootstrap={bootstrap} />}
+            {isMobile ? <MobileDashboard bootstrap={bootstrap} /> : <DesktopDashboard bootstrap={bootstrap} />}
             
             {/* Keep the full-screen preview overlay for both versions */}
             {isPreviewOpen && (
@@ -90,7 +90,7 @@ export default function App({ bootstrap }) {
         {/* Dashboard route alias */}
         <Route path="/dashboard" element={
           <>
-            {isMobile ? <MobileDashboard bootstrap={bootstrap} /> : <CleanDesktopDashboard bootstrap={bootstrap} />}
+            {isMobile ? <MobileDashboard bootstrap={bootstrap} /> : <DesktopDashboard bootstrap={bootstrap} />}
             
             {/* Keep the full-screen preview overlay for both versions */}
             {isPreviewOpen && (
@@ -114,7 +114,7 @@ export default function App({ bootstrap }) {
         {/* Preview route for OAuth redirect - shows dashboard */}
         <Route path="/preview" element={
           <>
-            {isMobile ? <MobileDashboard bootstrap={bootstrap} /> : <CleanDesktopDashboard bootstrap={bootstrap} />}
+            {isMobile ? <MobileDashboard bootstrap={bootstrap} /> : <DesktopDashboard bootstrap={bootstrap} />}
             
             {/* Keep the full-screen preview overlay for both versions */}
             {isPreviewOpen && (
