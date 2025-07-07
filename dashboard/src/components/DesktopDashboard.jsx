@@ -46,16 +46,16 @@ function DesktopDashboard({ bootstrap }) {
     const iframe = event.target;
     console.log('iframe loaded:', iframe.src);
     
-    // Simple editor injection without breaking syntax
+    // Simple editor injection
     setTimeout(() => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
         if (iframeDoc) {
           const script = iframeDoc.createElement('script');
           script.textContent = `
-            console.log('Simple editor bridge loaded');
+            console.log('Editor bridge loaded');
             
-            // Add basic editing styles
+            // Add editing styles
             const style = document.createElement('style');
             style.textContent = \`
               .edit-hover:hover {
@@ -250,25 +250,10 @@ function DesktopDashboard({ bootstrap }) {
   }
 
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: '1fr 400px',
-      gridTemplateRows: '60px 1fr',
-      height: '100vh',
-      fontFamily: 'Inter, system-ui, sans-serif'
-    }}>
+    <div className="dashboard-wireframe">
       {/* Header */}
-      <div style={{
-        gridColumn: '1 / -1',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '0 20px',
-        borderBottom: '1px solid #e0e0e0',
-        background: '#ffffff'
-      }}>
-        {/* Left side buttons */}
-        <div style={{ display: 'flex', gap: '10px' }}>
+      <div className="header-wireframe">
+        <div className="logo-section">
           <button className="btn-wireframe" onClick={() => navigate('/new')}>
             New Site
           </button>
@@ -283,17 +268,16 @@ function DesktopDashboard({ bootstrap }) {
           </button>
         </div>
 
-        {/* Right side controls */}
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+        <div className="header-center">
+          <span>Credits: ∞</span>
+          <button className="btn-outline">Pages ▼</button>
+        </div>
+
+        <div className="header-switches">
           <select 
             value={currentLanguage} 
             onChange={(e) => setCurrentLanguage(e.target.value)}
-            style={{
-              padding: '5px 10px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              background: '#fff'
-            }}
+            className="header-select"
           >
             <option value="EN">EN</option>
             <option value="SR">SR</option>
@@ -302,240 +286,107 @@ function DesktopDashboard({ bootstrap }) {
           <select 
             value={currentDevice} 
             onChange={(e) => setCurrentDevice(e.target.value)}
-            style={{
-              padding: '5px 10px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              background: '#fff'
-            }}
+            className="header-select"
           >
             <option value="Desktop">Desktop</option>
             <option value="Tablet">Tablet</option>
             <option value="Mobile">Mobile</option>
           </select>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button className="btn-wireframe" onClick={() => showTemplatePreview()}>
-              Visit Site
+          <button className="btn-primary" onClick={() => showTemplatePreview()}>
+            Visit Site
+          </button>
+          <button className="btn-wireframe" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content Grid - using 3fr 1fr as in CSS */}
+      <div className="main-content-wireframe">
+        {/* Left Side: Preview */}
+        <div className="preview-panel-wireframe">
+          <button className="view-site-btn" onClick={() => showTemplatePreview()}>
+            Live Preview
+          </button>
+          <div className="preview-container">
+            {previewContent && (
+              <iframe
+                className="preview-iframe"
+                src={previewContent}
+                onLoad={handleIframeLoad}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Right Side: Editor Panel */}
+        <div className="right-panel-wireframe">
+          {/* Tab Navigation */}
+          <div className="tab-nav">
+            <button 
+              className={`tab-btn ${activeTab === 'text' ? 'active' : ''}`} 
+              onClick={() => setActiveTab('text')}
+            >
+              Text
             </button>
-            <button className="btn-wireframe" onClick={handleLogout}>
-              Logout
+            <button 
+              className={`tab-btn ${activeTab === 'media' ? 'active' : ''}`} 
+              onClick={() => setActiveTab('media')}
+            >
+              Media
             </button>
+            <button 
+              className={`tab-btn ${activeTab === 'components' ? 'active' : ''}`} 
+              onClick={() => setActiveTab('components')}
+            >
+              Components
+            </button>
+            <button 
+              className={`tab-btn ${activeTab === 'ai' ? 'active' : ''}`} 
+              onClick={() => setActiveTab('ai')}
+            >
+              AI
+            </button>
+          </div>
+          
+          <div className="tab-content">
+            {activeTab === 'text' && (
+              <EditorPanel />
+            )}
+            {activeTab === 'media' && (
+              <div className="panel-section">
+                <h4>Media Tools</h4>
+                <div className="tool-buttons">
+                  <button className="tool-btn">Upload Image</button>
+                  <button className="tool-btn">Upload Video</button>
+                  <button className="tool-btn">Resize Media</button>
+                </div>
+              </div>
+            )}
+            {activeTab === 'components' && (
+              <div className="panel-section">
+                <h4>Add Sections</h4>
+                <div className="component-buttons">
+                  <button className="component-btn">+ Hero Section</button>
+                  <button className="component-btn">+ Services</button>
+                  <button className="component-btn">+ About Us</button>
+                  <button className="component-btn">+ Contact</button>
+                </div>
+              </div>
+            )}
+            {activeTab === 'ai' && (
+              <UnifiedCommandChatPanel
+                chatHistory={chatHistory}
+                chatMessage={chatMessage}
+                setChatMessage={setChatMessage}
+                handleSendMessage={handleSendMessage}
+                isProcessing={isProcessing}
+              />
+            )}
           </div>
         </div>
       </div>
-
-      {/* Main Content Area */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        background: '#f5f5f5',
-        padding: '20px'
-      }}>
-        <h3 style={{ margin: '0 0 15px 0', fontSize: '18px', fontWeight: '600' }}>
-          Live Preview
-        </h3>
-        <div style={{
-          flex: 1,
-          background: '#ffffff',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-        }}>
-          {previewContent && (
-            <iframe
-              className="preview-iframe"
-              src={previewContent}
-              style={{
-                width: '100%',
-                height: '100%',
-                border: 'none'
-              }}
-              onLoad={handleIframeLoad}
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Right Panel */}
-      <div style={{
-        borderLeft: '1px solid #e0e0e0',
-        background: '#ffffff'
-      }}>
-        <div style={{
-          display: 'flex',
-          borderBottom: '1px solid #e0e0e0'
-        }}>
-          <button 
-            className={`tab-btn ${activeTab === 'text' ? 'active' : ''}`} 
-            onClick={() => setActiveTab('text')}
-            style={{
-              flex: 1,
-              padding: '12px',
-              border: 'none',
-              background: activeTab === 'text' ? '#ffc000' : '#f5f5f5',
-              color: activeTab === 'text' ? '#ffffff' : '#666',
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
-          >
-            Text
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === 'media' ? 'active' : ''}`} 
-            onClick={() => setActiveTab('media')}
-            style={{
-              flex: 1,
-              padding: '12px',
-              border: 'none',
-              background: activeTab === 'media' ? '#ffc000' : '#f5f5f5',
-              color: activeTab === 'media' ? '#ffffff' : '#666',
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
-          >
-            Media
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === 'components' ? 'active' : ''}`} 
-            onClick={() => setActiveTab('components')}
-            style={{
-              flex: 1,
-              padding: '12px',
-              border: 'none',
-              background: activeTab === 'components' ? '#ffc000' : '#f5f5f5',
-              color: activeTab === 'components' ? '#ffffff' : '#666',
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
-          >
-            Components
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === 'ai' ? 'active' : ''}`} 
-            onClick={() => setActiveTab('ai')}
-            style={{
-              flex: 1,
-              padding: '12px',
-              border: 'none',
-              background: activeTab === 'ai' ? '#ffc000' : '#f5f5f5',
-              color: activeTab === 'ai' ? '#ffffff' : '#666',
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
-          >
-            AI
-          </button>
-        </div>
-        
-        <div style={{ height: 'calc(100vh - 120px)', overflow: 'auto' }}>
-          {activeTab === 'text' && (
-            <EditorPanel />
-          )}
-          {activeTab === 'media' && (
-            <div style={{ padding: '20px' }}>
-              <h4>Media Tools</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <button style={{ padding: '10px', background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px' }}>
-                  Upload Image
-                </button>
-                <button style={{ padding: '10px', background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px' }}>
-                  Upload Video
-                </button>
-                <button style={{ padding: '10px', background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px' }}>
-                  Resize Media
-                </button>
-              </div>
-            </div>
-          )}
-          {activeTab === 'components' && (
-            <div style={{ padding: '20px' }}>
-              <h4>Add Sections</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <button style={{ 
-                  padding: '12px', 
-                  background: '#ffc000', 
-                  color: '#ffffff', 
-                  border: 'none', 
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: '500'
-                }}>
-                  + Hero Section
-                </button>
-                <button style={{ 
-                  padding: '12px', 
-                  background: '#ffc000', 
-                  color: '#ffffff', 
-                  border: 'none', 
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: '500'
-                }}>
-                  + Services
-                </button>
-                <button style={{ 
-                  padding: '12px', 
-                  background: '#ffc000', 
-                  color: '#ffffff', 
-                  border: 'none', 
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: '500'
-                }}>
-                  + About Us
-                </button>
-                <button style={{ 
-                  padding: '12px', 
-                  background: '#ffc000', 
-                  color: '#ffffff', 
-                  border: 'none', 
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: '500'
-                }}>
-                  + Contact
-                </button>
-              </div>
-            </div>
-          )}
-          {activeTab === 'ai' && (
-            <UnifiedCommandChatPanel
-              chatHistory={chatHistory}
-              chatMessage={chatMessage}
-              setChatMessage={setChatMessage}
-              handleSendMessage={handleSendMessage}
-              isProcessing={isProcessing}
-            />
-          )}
-        </div>
-      </div>
-
-      <style jsx>{`
-        .btn-wireframe {
-          padding: 8px 16px;
-          background: transparent;
-          border: 1px solid #333;
-          color: #333;
-          cursor: pointer;
-          font-size: 14px;
-          border-radius: 4px;
-          transition: all 0.2s ease;
-        }
-        
-        .btn-wireframe:hover {
-          background: #333;
-          color: #ffffff;
-        }
-        
-        .tab-btn:hover {
-          background: #e0e0e0 !important;
-        }
-        
-        .tab-btn.active:hover {
-          background: #ffc000 !important;
-        }
-      `}</style>
     </div>
   );
 }
