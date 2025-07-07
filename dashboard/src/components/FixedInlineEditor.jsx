@@ -184,7 +184,8 @@ export const injectFixedInlineEditor = (iframe) => {
           });
         });
         
-        console.log('📍 Made elements editable with delete buttons');
+        console.log('⚠️ FixedInlineEditor DISABLED to prevent duplicate × buttons');
+        return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
       }
       
       // Setup event listeners

@@ -223,7 +223,10 @@ const CompleteInlineEditor = ({ previewId }) => {
           element.classList.add('editor-hoverable');
           element.setAttribute('contenteditable', 'false'); // Will be enabled on click
           
-          // Add delete button
+          // DISABLED: Add delete button
+          console.log('⚠️ CompleteInlineEditor delete button creation DISABLED to prevent duplicate × buttons');
+          return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
+          
           const deleteBtn = document.createElement('button');
           deleteBtn.innerHTML = '×';
           deleteBtn.className = 'editor-delete-btn';
