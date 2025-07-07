@@ -230,7 +230,6 @@ export default function SiteDataProvider({ bootstrap, children }) {
           blueup: null,
           bluedown: null,
           blueleft: null,
-          blueright: null,
           blueforward: null,
           bluebackward: null,
           bluein: null,

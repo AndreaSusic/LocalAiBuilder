@@ -5,41 +5,15 @@ const EditorPanel = () => {
 
   // Execute formatting command on iframe content
   const executeCommand = (command, value = null) => {
-    const iframe = document.querySelector('iframe');
-    if (!iframe) return;
+    const iframe = document.querySelector('.preview-iframe');
+    if (!iframe || !iframe.contentWindow) return;
 
-    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    if (!iframeDoc) return;
-
-    // Get the currently selected/active element
-    const activeEl = iframeDoc.querySelector('.editor-element.active');
-    if (!activeEl) return;
-
-    // Focus the element first
-    activeEl.focus();
-
-    // For font size, apply directly to element style
-    if (command === 'fontSize') {
-      activeEl.style.fontSize = value + 'px';
-      return;
-    }
-
-    // For heading changes
-    if (command === 'formatBlock') {
-      const newTag = document.createElement(value.toLowerCase());
-      newTag.innerHTML = activeEl.innerHTML;
-      newTag.className = activeEl.className;
-      newTag.style.cssText = activeEl.style.cssText;
-      activeEl.parentNode.replaceChild(newTag, activeEl);
-      return;
-    }
-
-    // For other formatting commands
-    try {
-      iframeDoc.execCommand(command, false, value);
-    } catch (e) {
-      console.warn('Command not supported:', command);
-    }
+    // Send command to iframe via postMessage
+    iframe.contentWindow.postMessage({
+      type: 'execCommand',
+      command: command,
+      value: value
+    }, '*');
   };
 
   const fontSizes = [10, 12, 14, 16, 18, 20, 24, 28, 32];
