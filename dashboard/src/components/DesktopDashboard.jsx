@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UnifiedCommandChatPanel from "./UnifiedCommandChatPanel";
+import EditorPanel from "./EditorPanel";
 
 // Inject the working inline editor
 function injectComprehensiveEditor(iframe) {
@@ -1855,47 +1856,7 @@ function DesktopDashboard({ bootstrap }) {
             </div>
             <div className="editor-content">
               {activeTab === 'text' && (
-                <div className="editor-commands">
-                  <div className="command-group">
-                    <button className="editor-cmd-btn" title="Bold" onClick={() => {
-                      const iframe = document.querySelector('.preview-iframe');
-                      if (iframe && iframe.contentWindow) {
-                        iframe.contentWindow.postMessage({type: 'execCommand', command: 'bold'}, '*');
-                      }
-                    }}>𝐁</button>
-                    <button className="editor-cmd-btn" title="Italic" onClick={() => {
-                      const iframe = document.querySelector('.preview-iframe');
-                      if (iframe && iframe.contentWindow) {
-                        iframe.contentWindow.postMessage({type: 'execCommand', command: 'italic'}, '*');
-                      }
-                    }}>𝑰</button>
-                    <button className="editor-cmd-btn" title="Underline" onClick={() => {
-                      const iframe = document.querySelector('.preview-iframe');
-                      if (iframe && iframe.contentWindow) {
-                        iframe.contentWindow.postMessage({type: 'execCommand', command: 'underline'}, '*');
-                      }
-                    }}>𝑼</button>
-                    <button className="editor-cmd-btn" title="List" onClick={() => {
-                      const iframe = document.querySelector('.preview-iframe');
-                      if (iframe && iframe.contentWindow) {
-                        iframe.contentWindow.postMessage({type: 'execCommand', command: 'insertUnorderedList'}, '*');
-                      }
-                    }}>List</button>
-                    <button className="editor-cmd-btn" title="Font Size" onClick={() => {
-                      // Send font size command to iframe
-                      const iframe = document.querySelector('.preview-iframe');
-                      if (iframe && iframe.contentWindow) {
-                        iframe.contentWindow.postMessage({type: 'showFontSizeDropdown'}, '*');
-                      }
-                    }}>Font Size</button>
-                    <button className="editor-cmd-btn" title="Text Color">A🖌️</button>
-                    <button className="editor-cmd-btn" title="Highlight">🖍️</button>
-                    <button className="editor-cmd-btn" title="Heading">H₁</button>
-                    <button className="editor-cmd-btn" title="Paragraph">¶</button>
-                    <button className="editor-cmd-btn" title="Paste Plain">📋</button>
-                    <button className="editor-cmd-btn" title="Code View">{'</>'}</button>
-                  </div>
-                </div>
+                <EditorPanel />
               )}
               {activeTab === 'media' && (
                 <div className="editor-commands">
