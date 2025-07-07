@@ -22,6 +22,13 @@ const WorkingInlineEditor = ({ previewId }) => {
     const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
     if (!iframeDoc) return;
 
+    // CRITICAL: Prevent double initialization with global guard
+    if (iframe.contentWindow.__EZ_EDITOR_BRIDGE_LOADED__) {
+      console.log('⚠️ Editor bridge already loaded, skipping duplicate initialization');
+      return;
+    }
+    iframe.contentWindow.__EZ_EDITOR_BRIDGE_LOADED__ = true;
+
     // Save initial state
     saveHistoryState(iframeDoc, 'Initial state');
     
@@ -95,6 +102,12 @@ const WorkingInlineEditor = ({ previewId }) => {
         // Skip if already has delete button (prevent duplicates from other editors)
         if (element.querySelector('.delete-btn') || element.querySelector('.editor-delete-btn')) {
           console.log(`⚠️ Skipping ${element.tagName} - already has delete button from another editor`);
+          return;
+        }
+        
+        // Skip navigation menu LI elements to prevent double delete buttons
+        if (element.closest('nav') && element.tagName === 'LI') {
+          console.log(`⚠️ Skipping nav LI element to prevent double delete buttons`);
           return;
         }
         
