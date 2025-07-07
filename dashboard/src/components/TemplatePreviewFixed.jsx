@@ -12,6 +12,9 @@ const TemplatePreviewFixed = ({ previewId, onReady }) => {
         const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
         if (!frameDoc) return;
 
+        console.log('⚠️ TemplatePreviewFixed editor DISABLED to prevent duplicate × buttons');
+        return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
+
         // Wait for React content to load
         setTimeout(() => {
           // Create comprehensive inline editor script
