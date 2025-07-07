@@ -116,10 +116,6 @@ const WorkingInlineEditor = () => {
         
         element.appendChild(deleteBtn);
         console.log(`✅ Added delete button to ${element.tagName}${element.className ? '.' + element.className : ''}`);
-      });
-    });
-    
-    console.log(`✅ WorkingInlineEditor: Processed ${editableCount} elements with delete buttons`);
         
         // Click handler
         element.addEventListener('click', (e) => {
@@ -129,6 +125,8 @@ const WorkingInlineEditor = () => {
         });
       });
     });
+    
+    console.log(`✅ WorkingInlineEditor: Processed ${editableCount} elements with delete buttons`);
 
     // Click outside to hide toolbar
     iframeDoc.addEventListener('click', (e) => {
