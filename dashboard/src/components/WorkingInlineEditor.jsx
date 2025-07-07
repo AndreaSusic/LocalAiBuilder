@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const WorkingInlineEditor = () => {
+const WorkingInlineEditor = ({ previewId }) => {
+  console.log('🚀 WorkingInlineEditor STARTING - Only editor system active with previewId:', previewId);
+  
   const [activeElement, setActiveElement] = useState(null);
   const [toolbarPosition, setToolbarPosition] = useState({ x: 0, y: 0 });
   const [showToolbar, setShowToolbar] = useState(false);
