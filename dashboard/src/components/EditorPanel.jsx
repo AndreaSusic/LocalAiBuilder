@@ -1,176 +1,83 @@
 import React, { useState } from 'react';
 
 const EditorPanel = () => {
-  const [activeElement, setActiveElement] = useState(null);
-
-  // Execute formatting command on iframe content
-  const executeCommand = (command, value = null) => {
-    const iframe = document.querySelector('.preview-iframe');
-    if (!iframe || !iframe.contentWindow) return;
-
-    // Send command to iframe via postMessage
-    iframe.contentWindow.postMessage({
-      type: 'execCommand',
-      command: command,
-      value: value
-    }, '*');
-  };
-
-  const fontSizes = [10, 12, 14, 16, 18, 20, 24, 28, 32];
-  const headings = ['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+  const [active, setActive] = useState('text');
 
   return (
-    <div className="editor-panel-container">
-      <h3 style={{ marginBottom: '20px', fontSize: '16px', fontWeight: '600' }}>Text Editor</h3>
-      
-      {/* Formatting Buttons */}
-      <div style={{ marginBottom: '20px' }}>
-        <h4 style={{ fontSize: '14px', marginBottom: '10px', color: '#666' }}>Formatting</h4>
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+    <div className="panel-root">
+      <p className="intro">
+        Click on icons to edit content or type a command.
+      </p>
+
+      <div className="tabs">
+        {['text','media','components'].map(tab => (
           <button
-            onClick={() => executeCommand('bold')}
-            className="format-btn"
-            title="Bold"
+            key={tab}
+            className={active===tab?'active':''}
+            data-toolbar={tab}
+            onClick={()=>setActive(tab)}
           >
-            <strong>B</strong>
+            {tab.charAt(0).toUpperCase()+tab.slice(1)}
           </button>
-          <button
-            onClick={() => executeCommand('italic')}
-            className="format-btn"
-            title="Italic"
-          >
-            <em>I</em>
-          </button>
-          <button
-            onClick={() => executeCommand('underline')}
-            className="format-btn"
-            title="Underline"
-          >
-            <u>U</u>
-          </button>
-          <button
-            onClick={() => executeCommand('insertUnorderedList')}
-            className="format-btn"
-            title="Bullet List"
-          >
-            ≡
-          </button>
-        </div>
+        ))}
       </div>
 
-      {/* Font Size */}
-      <div style={{ marginBottom: '20px' }}>
-        <h4 style={{ fontSize: '14px', marginBottom: '10px', color: '#666' }}>Font Size</h4>
-        <select 
-          className="font-size-select"
-          onChange={(e) => executeCommand('fontSize', e.target.value)}
-          defaultValue=""
-        >
-          <option value="">Choose size</option>
-          {fontSizes.map(size => (
-            <option key={size} value={size}>{size}px</option>
-          ))}
+      {/* Toolbars */}
+      <div className={`toolbar ${active==='text'?'active':''}`} data-toolbar="text">
+        <button>𝐁</button><button>𝑰</button><button>𝑼</button>
+        <select>
+          <option>List</option>
+          <option>• Unordered</option>
+          <option>1. Ordered</option>
         </select>
+        <select><option>8px</option><option>12px</option><option>14px</option><option>16px</option></select>
+        <button>A🖌️</button><button>🖍️</button>
+      </div>
+      <div className={`toolbar ${active==='media'?'active':''}`} data-toolbar="media">
+        <button>🖼️</button><button>🎥</button><button>↔️↕️</button><button>📐</button>
+      </div>
+      <div className={`toolbar ${active==='components'?'active':''}`} data-toolbar="components">
+        <button>H₁</button><button>¶</button><button>🔲</button>
+        <button>📋</button><button>🔗</button>
       </div>
 
-      {/* Headings */}
-      <div style={{ marginBottom: '20px' }}>
-        <h4 style={{ fontSize: '14px', marginBottom: '10px', color: '#666' }}>Heading Level</h4>
-        <select 
-          className="font-size-select"
-          onChange={(e) => executeCommand('formatBlock', e.target.value)}
-          defaultValue=""
-        >
-          <option value="">Choose heading</option>
-          {headings.map(heading => (
-            <option key={heading} value={heading.toLowerCase()}>{heading}</option>
-          ))}
-        </select>
+      {/* Chat Messages - Hidden initially */}
+      <div style={{ 
+        marginTop: '15px', 
+        maxHeight: '200px', 
+        overflowY: 'auto',
+        display: 'none' 
+      }}>
+        {/* Chat history would go here */}
       </div>
 
-      {/* Text Colors */}
-      <div style={{ marginBottom: '20px' }}>
-        <h4 style={{ fontSize: '14px', marginBottom: '10px', color: '#666' }}>Text Color</h4>
-        <div className="color-swatches">
-          <div 
-            className="color-swatch" 
-            style={{background: '#000000'}}
-            onClick={() => executeCommand('foreColor', '#000000')}
-            title="Black"
-          ></div>
-          <div 
-            className="color-swatch" 
-            style={{background: '#ffc000'}}
-            onClick={() => executeCommand('foreColor', '#ffc000')}
-            title="Yellow"
-          ></div>
-          <div 
-            className="color-swatch" 
-            style={{background: '#ff4444'}}
-            onClick={() => executeCommand('foreColor', '#ff4444')}
-            title="Red"
-          ></div>
-          <div 
-            className="color-swatch" 
-            style={{background: '#0066cc'}}
-            onClick={() => executeCommand('foreColor', '#0066cc')}
-            title="Blue"
-          ></div>
-          <div 
-            className="color-swatch" 
-            style={{background: '#22c55e'}}
-            onClick={() => executeCommand('foreColor', '#22c55e')}
-            title="Green"
-          ></div>
-          <div 
-            className="color-swatch" 
-            style={{background: '#8b5cf6'}}
-            onClick={() => executeCommand('foreColor', '#8b5cf6')}
-            title="Purple"
-          ></div>
-        </div>
-      </div>
-
-      {/* Alignment */}
-      <div style={{ marginBottom: '20px' }}>
-        <h4 style={{ fontSize: '14px', marginBottom: '10px', color: '#666' }}>Text Alignment</h4>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button
-            onClick={() => executeCommand('justifyLeft')}
-            className="format-btn"
-            title="Align Left"
-          >
-            ⬅
-          </button>
-          <button
-            onClick={() => executeCommand('justifyCenter')}
-            className="format-btn"
-            title="Align Center"
-          >
-            ↔
-          </button>
-          <button
-            onClick={() => executeCommand('justifyRight')}
-            className="format-btn"
-            title="Align Right"
-          >
-            ➡
-          </button>
-        </div>
-      </div>
-
-      {/* Links */}
-      <div style={{ marginBottom: '20px' }}>
-        <h4 style={{ fontSize: '14px', marginBottom: '10px', color: '#666' }}>Links</h4>
-        <button
-          onClick={() => {
-            const url = prompt('Enter URL:');
-            if (url) executeCommand('createLink', url);
+      {/* Chat Input */}
+      <div style={{ 
+        marginTop: '10px',
+        display: 'flex',
+        gap: '8px' 
+      }}>
+        <input 
+          type="text" 
+          placeholder="Type command or question..."
+          style={{
+            flex: 1,
+            padding: '8px 12px',
+            border: '1px solid #ddd',
+            borderRadius: '20px',
+            fontSize: '14px'
           }}
-          className="format-btn"
-          style={{ width: '100%' }}
-        >
-          🔗 Add Link
+        />
+        <button style={{
+          background: '#ffc000',
+          color: 'white',
+          border: 'none',
+          borderRadius: '20px',
+          padding: '8px 16px',
+          cursor: 'pointer',
+          fontSize: '14px'
+        }}>
+          Send
         </button>
       </div>
     </div>

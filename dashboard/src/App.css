@@ -305,6 +305,85 @@ body{font-family:sans-serif;color:#2a2a2a;background:#f5f5f5;display:flex;flex-d
   background: #f5f5f5;
   border-color: #ffc000;
 }
+
+/* Panel Root Styles */
+.panel-root {
+  padding: 15px;
+  font-family: sans-serif;
+}
+
+.intro {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 15px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  border-bottom: 2px solid transparent;
+}
+
+.tabs button.active {
+  color: #2a2a2a;
+  border-bottom-color: #ffc000;
+}
+
+.tabs button:hover {
+  color: #2a2a2a;
+}
+
+.toolbar {
+  display: none;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.toolbar.active {
+  display: flex;
+}
+
+.toolbar button {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 36px;
+}
+
+.toolbar button:hover {
+  background: #ffc000;
+  color: white;
+  border-color: #ffc000;
+}
+
+.toolbar select {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+}
+
+.toolbar select:focus {
+  outline: none;
+  border-color: #ffc000;
+}
   overflow: hidden;
 }
 
