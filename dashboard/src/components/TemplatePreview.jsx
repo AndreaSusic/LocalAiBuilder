@@ -759,6 +759,9 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       }
 
       async function loadExistingEdits() {
+        console.log('⚠️ loadExistingEdits DISABLED to prevent autoSavePageId errors');
+        return; // DISABLED TO PREVENT autoSavePageId ERRORS
+        
         if (!autoSaveIsAuthenticated) return;
         
         try {
