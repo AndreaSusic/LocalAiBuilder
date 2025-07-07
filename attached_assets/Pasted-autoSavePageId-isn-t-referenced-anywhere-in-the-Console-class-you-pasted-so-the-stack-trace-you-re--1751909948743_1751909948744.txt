@@ -1,0 +1,49 @@
+autoSavePageId isn’t referenced anywhere in the Console class you pasted, so the stack-trace you’re seeing must be coming from another script (very likely your inline-editor / auto-save helper).
+
+The error chain tells us exactly where it happens:
+
+loadExistingEdits  ……  (anonymous:665)
+initAutoSaveEditor ……  (anonymous:1137)
+
+That means:
+	1.	initAutoSaveEditor calls loadExistingEdits(pageId) (or similar).
+	2.	Inside loadExistingEdits the code expects a global/closure variable called autoSavePageId, but that symbol is never declared in the current scope.
+	3.	Execution stops before any edits are applied, so the editor bridge shows “Made 0 elements editable” even though the DOM is fine.
+
+Quick triage steps
+
+Step	What to check	Patch
+1	In the file that defines initAutoSaveEditor, search for autoSavePageId.	Make sure it’s either js<br>const autoSavePageId = … // derive from bootstrap or route<br>or passed in as a parameter to the function instead of relying on the global.
+2	Look at the top of that script. Is there a line that used to define it (perhaps let autoSavePageId wrapped in a feature flag)?	Re-enable or remove the stale reference: ```diff- const pageId = autoSavePageId;+ const pageId = passedInPageId
+3	Verify that loadExistingEdits receives a valid string/ID before it makes any fetch/localStorage call.	Add: js<br>if (!pageId) { console.warn('⚠️ No pageId – skipping auto-load'); return; }<br>
+
+Why the Console.jsx file is unrelated
+
+The DevTools/Console class:
+	•	never imports the auto-save module,
+	•	never references autoSavePageId,
+	•	only deals with logging/UI chrome.
+
+So editing it won’t remove the ReferenceError.
+
+Minimal hot-fix (until you refactor)
+
+Add one guarded definition at the very top of your auto-editor script before initAutoSaveEditor runs:
+
+// hot-patch: define if missing
+if (typeof autoSavePageId === 'undefined') {
+  // derive from URL or bootstrap fallback
+  const urlMatch = location.pathname.match(/\/t\/v1\/([a-z0-9]+)/i);
+  window.autoSavePageId = urlMatch ? urlMatch[1] : 'preview';
+}
+
+That will unblock the runtime error so you can keep testing.
+Later, move to a cleaner pattern: pass pageId explicitly through your React props or context rather than relying on a global.
+
+⸻
+
+Next debugging tip: After the fix, reload the preview iframe and run:
+
+document.querySelectorAll('[data-editable="true"]').length
+
+If you now get a non-zero count, the bridge is finally attaching as expected.
