@@ -80,6 +80,10 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
   useEffect(() => {
     if (!templateData || loading) return;
     
+    console.log('⚠️ ALL TemplatePreview editor systems COMPLETELY DISABLED to prevent duplicate × buttons');
+    console.log('✅ Only WorkingInlineEditor.jsx should be active now');
+    return; // COMPLETELY DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
+    
     console.log('🔧 Injecting auto-save inline editor...');
     
     // Remove any existing editor scripts
