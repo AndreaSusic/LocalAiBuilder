@@ -55,32 +55,97 @@ function DesktopDashboard({ bootstrap }) {
           script.textContent = `
             console.log('Editor bridge loaded');
             
-            // Add editing styles
+            // Add universal editing styles with delete buttons
             const style = document.createElement('style');
             style.textContent = \`
               .edit-hover:hover {
                 outline: 2px dashed #ff4444 !important;
                 outline-offset: 2px !important;
+                position: relative !important;
               }
               .edit-active {
                 outline: 2px solid #ffc000 !important;
                 outline-offset: 2px !important;
+                position: relative !important;
+              }
+              .delete-btn {
+                position: absolute !important;
+                top: -8px !important;
+                right: -8px !important;
+                width: 20px !important;
+                height: 20px !important;
+                background: #ff4444 !important;
+                color: white !important;
+                border: none !important;
+                border-radius: 50% !important;
+                cursor: pointer !important;
+                font-size: 12px !important;
+                line-height: 1 !important;
+                z-index: 9999 !important;
+                display: none !important;
+              }
+              .edit-hover:hover .delete-btn,
+              .edit-active .delete-btn {
+                display: block !important;
+              }
+              .delete-btn:hover {
+                background: #cc0000 !important;
               }
             \`;
             document.head.appendChild(style);
             
-            // Make elements editable (no undo/redo buttons)
-            document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, li').forEach(el => {
-              if (el.textContent.trim() && !el.querySelector('img')) {
+            // Make ALL elements editable and deletable (including menus, buttons, images)
+            document.querySelectorAll('*').forEach(el => {
+              // Skip script, style, html, head, body tags
+              if (['SCRIPT', 'STYLE', 'HTML', 'HEAD', 'BODY'].includes(el.tagName)) return;
+              
+              // Add hover class and delete button to ALL visible elements
+              if (el.offsetWidth > 0 && el.offsetHeight > 0) {
                 el.classList.add('edit-hover');
+                
+                // Create delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerHTML = '×';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.onclick = (e) => {
+                  e.stopPropagation();
+                  if (confirm('Delete this element?')) {
+                    el.remove();
+                    // Send delete command to parent dashboard
+                    parent.postMessage({
+                      type: 'elementDeleted',
+                      element: el.tagName,
+                      content: el.textContent?.substring(0, 50) || 'element'
+                    }, '*');
+                  }
+                };
+                el.appendChild(deleteBtn);
+                
+                // Add click to edit functionality
                 el.addEventListener('click', (e) => {
                   e.stopPropagation();
+                  
+                  // Remove active from all elements
                   document.querySelectorAll('.edit-active').forEach(active => {
                     active.classList.remove('edit-active');
+                    active.contentEditable = false;
                   });
+                  
+                  // Activate this element
                   el.classList.add('edit-active');
-                  el.contentEditable = true;
-                  el.focus();
+                  
+                  // Make editable if it's a text element
+                  if (['H1','H2','H3','H4','H5','H6','P','SPAN','DIV','A','LI','BUTTON'].includes(el.tagName)) {
+                    el.contentEditable = true;
+                    el.focus();
+                    
+                    // Send message to parent for editor panel connection
+                    parent.postMessage({
+                      type: 'elementSelected',
+                      tagName: el.tagName,
+                      content: el.textContent
+                    }, '*');
+                  }
                 });
               }
             });
@@ -92,6 +157,16 @@ function DesktopDashboard({ bootstrap }) {
                   active.classList.remove('edit-active');
                   active.contentEditable = false;
                 });
+              }
+            });
+            
+            // Listen for formatting commands from parent dashboard
+            window.addEventListener('message', (event) => {
+              if (event.data.type === 'execCommand') {
+                const activeEl = document.querySelector('.edit-active');
+                if (activeEl) {
+                  document.execCommand(event.data.command, false, event.data.value);
+                }
               }
             });
           `;
@@ -315,7 +390,7 @@ function DesktopDashboard({ bootstrap }) {
         {/* Right Side: Editor Panel */}
         <div className="right-panel-wireframe">
           {/* Tab Navigation */}
-          <div className="tab-nav">
+          <div className="editor-tab-navigation">
             <button 
               className={`tab-btn ${activeTab === 'text' ? 'active' : ''}`} 
               onClick={() => setActiveTab('text')}
