@@ -99,6 +99,14 @@ const WorkingInlineEditor = ({ previewId }) => {
         // Skip toolbar elements and their children
         if (element.closest('.toolbar') || element.closest('.editor-toolbar')) return;
         
+        // CRITICAL: Skip navigation elements completely (prevent nav menu delete buttons)
+        if (element.closest('nav') || element.closest('.nav-links') || 
+            element.closest('.navigation') || element.closest('.header-nav') ||
+            (element.tagName === 'LI' && element.closest('ul'))) {
+          console.log(`🧭 Skipping navigation element ${element.tagName} - navigation should not be editable`);
+          return;
+        }
+        
         // CRITICAL: Skip if this element is inside another editable - we only want the outer-most one
         if (element.closest('[data-editable="true"]') !== element) {
           console.log(`⚠️ Skipping nested editable ${element.tagName} - only outer-most elements get delete buttons`);
