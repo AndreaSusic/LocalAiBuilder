@@ -122,7 +122,8 @@ function injectSimpleEditor(iframe) {
         }, 2000); // Wait 2 seconds for everything to load
       `;
       
-      frameDoc.head.appendChild(script);
+      // DISABLED: frameDoc.head.appendChild(script); // Preventing duplicate editor systems
+      console.log('🔧 MobileDashboard editor injection DISABLED to prevent double delete buttons');
       console.log('✅ Simple editor script injected');
       
     }, 1000); // Wait 1 second for iframe to load

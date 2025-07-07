@@ -1,0 +1,58 @@
+
+
+🔧  **Debug task – duplicate delete buttons**
+
+Context  
+• Our preview iframe shows two delete “×” icons on every editable nav item.  
+• DOM snippet:  
+  <li class="edit-hoverable" data-editable="true">
+    …<button class="delete-btn">×</button>…
+    <button class="delete-btn">×</button>
+  </li>  
+• Browser console proves that **both** `editorBridge.js` and `autoSaveEditor.js` are being injected.
+
+Goal  
+1. Find where the dashboard injects **each** of those two scripts.  
+2. Make sure that **only one** (keep *editorBridge.js*, disable *autoSaveEditor.js* for now) is ever added to the iframe.  
+3. Add a defensive guard so future hot-reloads don’t accidentally inject a second editor.
+
+Steps to execute (React code base):
+
+1. Open `dashboard/src/components/DesktopDashboard.jsx` (or whichever file does the `<iframe src={…}>` and script injection).  
+2. Search for any code that calls `injectScript`, `appendChild(script)`, or `<script src="/editorBridge.js">` and `<script src="/autoSaveEditor.js">`.
+3. Wrap the *autoSaveEditor* injection in a feature flag:
+
+```jsx
+// DesktopDashboard.jsx
+if (!window.__singleEditorLoaded__) {
+  injectScript(iframe, '/editorBridge.js');
+  window.__singleEditorLoaded__ = true;
+}
+
+// 🔥 TEMPORARY DISABLE legacy auto-save editor
+// injectScript(iframe, '/autoSaveEditor.js');
+
+	4.	Add a console log before each injection so we can confirm at runtime:
+
+console.log('🔧 Injecting editorBridge.js');
+// …
+console.log('🔧 Injecting autoSaveEditor.js – SHOULD NOW BE DISABLED');
+
+	5.	Hot-reload, open the preview iframe, and verify in DevTools:
+• Only one “🔧 Injecting …” message appears.
+• Each editable element now has one <button class="delete-btn">×</button>.
+	6.	Commit as “fix: prevent double editor injection; guard with singleEditorLoaded”.
+
+If DesktopDashboard.jsx does not inject autoSaveEditor, keep searching (use global search):
+
+autoSaveEditor.js
+injectScript(
+appendChild(script
+
+and apply the same flag there.
+
+Stop when:
+• No console error “autoSavePageId is not defined” appears.
+• Only a single delete button is present per editable node.
+
+Return the diff of the file(s) you changed and a short note that double-injection is resolved.

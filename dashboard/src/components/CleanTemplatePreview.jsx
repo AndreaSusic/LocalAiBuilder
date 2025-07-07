@@ -444,7 +444,8 @@ const CleanTemplatePreview = ({ previewId, onReady }) => {
             })();
           `;
           
-          frameDoc.head.appendChild(script);
+          // DISABLED: frameDoc.head.appendChild(script); // Preventing duplicate editor systems
+          console.log('🔧 CleanTemplatePreview editor injection DISABLED to prevent double delete buttons');
           console.log('✅ Clean editor injected');
           
           if (onReady) onReady();
