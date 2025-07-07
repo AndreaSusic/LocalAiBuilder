@@ -113,6 +113,31 @@ app.use(session(sessionConfig));
 
 app.use(cookieParser());
 
+// Add CORS support for dashboard
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:5174', 
+    'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev'
+  ];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin) || origin?.includes('.replit.dev')) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cookie');
+  
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+    return;
+  }
+  
+  next();
+});
+
 // Initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
