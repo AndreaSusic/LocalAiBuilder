@@ -307,7 +307,7 @@ function DesktopDashboard({ bootstrap }) {
               />
             )}
           </div>
-          <button className="view-site-btn" onClick={() => showTemplatePreview()}>
+          <button className="view-site-btn" onClick={() => window.open(previewContent, '_blank')}>
             View Site
           </button>
         </div>
@@ -344,45 +344,7 @@ function DesktopDashboard({ bootstrap }) {
           
           <div className="tab-content">
             {activeTab === 'text' && (
-              <div className="panel-section">
-                <h4>Text Formatting</h4>
-                <div className="format-buttons">
-                  <button className="format-btn" onClick={() => console.log('Bold')}>
-                    <strong>B</strong>
-                  </button>
-                  <button className="format-btn" onClick={() => console.log('Italic')}>
-                    <em>I</em>
-                  </button>
-                  <button className="format-btn" onClick={() => console.log('Underline')}>
-                    <u>U</u>
-                  </button>
-                  <button className="format-btn" onClick={() => console.log('List')}>
-                    ≡
-                  </button>
-                </div>
-                
-                <div className="font-controls">
-                  <label>Font Size:</label>
-                  <select className="font-size-select">
-                    <option value="12">12px</option>
-                    <option value="14">14px</option>
-                    <option value="16" selected>16px</option>
-                    <option value="18">18px</option>
-                    <option value="20">20px</option>
-                    <option value="24">24px</option>
-                  </select>
-                </div>
-
-                <div className="color-controls">
-                  <label>Text Color:</label>
-                  <div className="color-swatches">
-                    <div className="color-swatch" style={{background: '#000000'}}></div>
-                    <div className="color-swatch" style={{background: '#ffc000'}}></div>
-                    <div className="color-swatch" style={{background: '#ff4444'}}></div>
-                    <div className="color-swatch" style={{background: '#0066cc'}}></div>
-                  </div>
-                </div>
-              </div>
+              <EditorPanel />
             )}
             {activeTab === 'media' && (
               <div className="panel-section">
