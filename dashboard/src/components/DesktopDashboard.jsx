@@ -390,33 +390,7 @@ function DesktopDashboard({ bootstrap }) {
 
         {/* Right Side: Editor Panel */}
         <div className="right-panel-wireframe">
-          {/* Tab Navigation */}
-          <div className="editor-navigation-removed">
-            <button 
-              className={`tab-btn ${activeTab === 'text' ? 'active' : ''}`} 
-              onClick={() => setActiveTab('text')}
-            >
-              Text
-            </button>
-            <button 
-              className={`tab-btn ${activeTab === 'media' ? 'active' : ''}`} 
-              onClick={() => setActiveTab('media')}
-            >
-              Media
-            </button>
-            <button 
-              className={`tab-btn ${activeTab === 'components' ? 'active' : ''}`} 
-              onClick={() => setActiveTab('components')}
-            >
-              Components
-            </button>
-            <button 
-              className={`tab-btn ${activeTab === 'ai' ? 'active' : ''}`} 
-              onClick={() => setActiveTab('ai')}
-            >
-              AI
-            </button>
-          </div>
+          {/* Tab Navigation - completely removed as requested */}
           
           <div className="tab-content">
             {activeTab === 'text' && (
