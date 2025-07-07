@@ -1,3 +1,10 @@
+/* CRITICAL FIX: Hide duplicate delete buttons on navigation menu items */
+/* This targets the outer li element's delete button while keeping the inner a element's button */
+li.edit-hoverable > .delete-btn,
+li[data-editable="true"] > .delete-btn {
+  display: none !important;
+}
+
 /* RESET / BASE */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body,#root{height:100%}
