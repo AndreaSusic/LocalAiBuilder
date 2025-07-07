@@ -1237,16 +1237,17 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
           markEditableElements();
         }, 1000);
         
-        await loadExistingEdits();
+        // DISABLED: await loadExistingEdits(); // Prevents autoSavePageId errors
         setupEventListeners();
         createAutoSaveToolbar();
         console.log('✅ Auto-save editor fully initialized');
       }
 
-      // Start the editor with longer delay to ensure React is fully rendered
-      setTimeout(() => {
-        initAutoSaveEditor();
-      }, 1500);
+      // DISABLED: Start the editor with longer delay to ensure React is fully rendered
+      // setTimeout(() => {
+      //   initAutoSaveEditor();
+      // }, 1500);
+      console.log('⚠️ initAutoSaveEditor COMPLETELY DISABLED to prevent autoSavePageId errors');
     `;
     
     console.log('⚠️ TemplatePreview auto-save editor DISABLED to prevent duplicate × buttons');
