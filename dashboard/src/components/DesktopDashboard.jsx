@@ -69,7 +69,7 @@ function DesktopDashboard({ bootstrap }) {
             \`;
             document.head.appendChild(style);
             
-            // Make elements editable
+            // Make elements editable (no undo/redo buttons)
             document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, li').forEach(el => {
               if (el.textContent.trim() && !el.querySelector('img')) {
                 el.classList.add('edit-hover');
