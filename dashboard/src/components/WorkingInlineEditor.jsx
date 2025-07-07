@@ -72,8 +72,12 @@ const WorkingInlineEditor = () => {
     `;
     iframeDoc.head.appendChild(style);
 
+    console.log('🚀 WorkingInlineEditor: Starting element processing...');
+    
     // Make elements editable
     const editableSelectors = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'div', 'img', 'button', 'a'];
+    let editableCount = 0;
+    
     editableSelectors.forEach(selector => {
       const elements = iframeDoc.querySelectorAll(selector);
       elements.forEach(element => {
@@ -82,9 +86,11 @@ const WorkingInlineEditor = () => {
         
         // Skip if already has delete button (prevent duplicates from other editors)
         if (element.querySelector('.delete-btn') || element.querySelector('.editor-delete-btn')) {
-          console.log('⚠️ Skipping element - already has delete button from another editor');
+          console.log(`⚠️ Skipping ${element.tagName} - already has delete button from another editor`);
           return;
         }
+        
+        editableCount++;
         
         element.classList.add('editor-element');
         element.setAttribute('contenteditable', element.tagName === 'IMG' ? 'false' : 'true');
@@ -105,9 +111,15 @@ const WorkingInlineEditor = () => {
         // Ensure delete button works for all elements including images
         if (element.tagName === 'IMG') {
           element.style.position = 'relative'; // Ensure relative positioning for image containers
+          console.log('🖼️ Added delete button to image:', element.src?.slice(0, 50) + '...');
         }
         
         element.appendChild(deleteBtn);
+        console.log(`✅ Added delete button to ${element.tagName}${element.className ? '.' + element.className : ''}`);
+      });
+    });
+    
+    console.log(`✅ WorkingInlineEditor: Processed ${editableCount} elements with delete buttons`);
         
         // Click handler
         element.addEventListener('click', (e) => {
