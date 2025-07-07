@@ -596,6 +596,8 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
         setTimeout(initEditor, 1000);
         
       })();
+
+      async function checkAuthStatus() {
         try {
           // First try to get auth status from parent dashboard
           if (window.parent !== window) {
