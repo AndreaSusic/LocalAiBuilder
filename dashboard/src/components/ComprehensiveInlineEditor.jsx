@@ -299,7 +299,8 @@ const ComprehensiveInlineEditor = ({ previewId }) => {
             });
           });
           
-          console.log(\`📍 Made \${editableCount} elements editable including menu items\`);
+          console.log('⚠️ ComprehensiveInlineEditor DISABLED to prevent duplicate × buttons');
+          return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
         }
         
         function setupEventListeners() {

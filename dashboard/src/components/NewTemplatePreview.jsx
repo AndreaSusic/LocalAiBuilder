@@ -274,7 +274,8 @@ const NewTemplatePreview = ({ previewId, onReady }) => {
                 });
               });
               
-              console.log(\`📍 Made \${editableCount} elements editable including menu items\`);
+              console.log('⚠️ NewTemplatePreview editor DISABLED to prevent duplicate × buttons');
+              return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
             }
             
             function setupEventListeners() {

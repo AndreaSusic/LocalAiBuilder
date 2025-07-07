@@ -251,7 +251,8 @@ const TemplatePreviewFixed = ({ previewId, onReady }) => {
                   });
                 });
                 
-                console.log(\`📍 Made \${count} elements editable including menu\`);
+                console.log('⚠️ TemplatePreviewFixed editor DISABLED to prevent duplicate × buttons');
+                return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
               }
               
               // Create editing panel with font size icons
