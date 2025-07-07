@@ -147,24 +147,7 @@ export default function UnifiedCommandChatPanel() {
         ))}
       </div>
 
-      {/* Unified Input + Autocomplete */}
-      <div className="chat-input-container">
-        <div className="chat-input">
-          <input
-            value={input}
-            onChange={e=>setInput(e.target.value)}
-            placeholder="Ask or type a command…"
-          />
-          <button onClick={send}>Send ➤</button>
-          {suggestions.length>0 && (
-            <ul className="suggestions" ref={dropdownRef}>
-              {suggestions.map((c,i)=>
-                <li key={i} onClick={()=>setInput(c)}>{c}</li>
-              )}
-            </ul>
-          )}
-        </div>
-      </div>
+      {/* Note: Input field moved to sticky bottom position in parent component */}
     </div>
   );
 }

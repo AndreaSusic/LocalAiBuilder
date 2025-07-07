@@ -168,29 +168,7 @@ const CompleteInlineEditor = ({ previewId }) => {
               border-color: #333 !important;
             }
             
-            /* 3. UNDO/REDO BUTTONS */
-            .history-btn {
-              width: 40px !important;
-              height: 36px !important;
-              border: 1px solid #ddd !important;
-              background: #f8f9fa !important;
-              border-radius: 6px !important;
-              cursor: pointer !important;
-              font-size: 16px !important;
-              display: flex !important;
-              align-items: center !important;
-              justify-content: center !important;
-            }
-            
-            .history-btn:disabled {
-              opacity: 0.5 !important;
-              cursor: not-allowed !important;
-            }
-            
-            .history-btn:not(:disabled):hover {
-              background: #e9ecef !important;
-              border-color: #007bff !important;
-            }
+            /* 3. UNDO/REDO BUTTONS - REMOVED */
             
             /* Toolbar labels */
             .toolbar-label {
@@ -407,9 +385,7 @@ const CompleteInlineEditor = ({ previewId }) => {
               <button class="color-btn" style="background: #0000ff" onclick="changeColor('#0000ff')" title="Blue"></button>
               <button class="color-btn" style="background: #ffc000" onclick="changeColor('#ffc000')" title="Yellow"></button>
               
-              <span class="toolbar-label">History:</span>
-              <button class="history-btn" onclick="undo()" title="Undo">↶</button>
-              <button class="history-btn" onclick="redo()" title="Redo">↷</button>
+
               
               <button class="toolbar-btn" onclick="deleteCurrentElement()" title="Delete" style="background: #ff4444; color: white;">×</button>
             </div>
@@ -542,27 +518,7 @@ const CompleteInlineEditor = ({ previewId }) => {
           console.log(\`💾 Saved to history, index: \${historyIndex}\`);
         }
         
-        window.undo = function() {
-          if (historyIndex > 0) {
-            historyIndex--;
-            document.body.innerHTML = editHistory[historyIndex];
-            makeAllElementsEditable(); // Re-initialize after DOM change
-            activeElement = null;
-            hideFloatingToolbar();
-            console.log(\`↶ Undo applied, index: \${historyIndex}\`);
-          }
-        };
-        
-        window.redo = function() {
-          if (historyIndex < editHistory.length - 1) {
-            historyIndex++;
-            document.body.innerHTML = editHistory[historyIndex];
-            makeAllElementsEditable(); // Re-initialize after DOM change
-            activeElement = null;
-            hideFloatingToolbar();
-            console.log(\`↷ Redo applied, index: \${historyIndex}\`);
-          }
-        };
+        // Undo/Redo functions removed
         
         // Auto-save functionality
         function scheduleAutoSave(element) {
