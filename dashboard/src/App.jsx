@@ -51,8 +51,20 @@ export default function App({ bootstrap }) {
           if (userDataResponse.ok) {
             const userDataResult = await userDataResponse.json();
             if (userDataResult.ok && userDataResult.bootstrap) {
-              setUserData(userDataResult.bootstrap);
-              console.log('📊 Loaded authentic user data:', userDataResult.bootstrap.company_name || 'Unknown Company');
+              // Fix services data format for React components
+              const processedData = {
+                ...userDataResult.bootstrap,
+                services: Array.isArray(userDataResult.bootstrap.services) 
+                  ? userDataResult.bootstrap.services 
+                  : (userDataResult.bootstrap.services 
+                      ? (typeof userDataResult.bootstrap.services === 'string' 
+                          ? userDataResult.bootstrap.services.split(',').map(s => s.trim())
+                          : [userDataResult.bootstrap.services])
+                      : [])
+              };
+              setUserData(processedData);
+              console.log('📊 Loaded authentic user data:', processedData.company_name || 'Unknown Company');
+              console.log('📊 Processed services data:', processedData.services);
             } else {
               console.log('⚠️ No user website data found, using fallback bootstrap');
               setUserData(bootstrap);

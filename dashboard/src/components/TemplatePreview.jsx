@@ -186,7 +186,11 @@ export default function TemplatePreview({ templateData, error, loading, previewI
     company_name: fallbackBootstrap.company_name,
     services: Array.isArray(fallbackBootstrap.services)
               ? fallbackBootstrap.services
-              : (fallbackBootstrap.services ? [fallbackBootstrap.services] : []),
+              : (fallbackBootstrap.services ? 
+                  (typeof fallbackBootstrap.services === 'string' ? 
+                    fallbackBootstrap.services.split(',').map(s => s.trim()) : 
+                    [fallbackBootstrap.services]) : 
+                  []),
     colours: fallbackBootstrap.colours || ['#ffc000', '#000000'],
     images: fallbackBootstrap.images || [],
     industry: fallbackBootstrap.industry,
@@ -200,6 +204,8 @@ export default function TemplatePreview({ templateData, error, loading, previewI
 
   console.log('📋 TemplatePreview about to render HomepageV1 with bootstrap:', !!templateData);
   console.log('🔍 Bootstrap data preview:', (templateData || fallbackBootstrapData)?.company_name || 'No company name');
+  console.log('🔍 Bootstrap services debug:', (templateData || fallbackBootstrapData)?.services);
+  console.log('🔍 Bootstrap full data keys:', Object.keys(templateData || fallbackBootstrapData || {}));
 
   try {
     return (
