@@ -1,0 +1,72 @@
+What the console still tells us
+
+⚠️ TemplatePreview useEffect: ALL EDITOR INJECTION DISABLED
+✅ Only WorkingInlineEditor.jsx component should handle editing
+
+That exact message is printed from compiled code that is still included in the bundle, so we know:
+	1.	The TemplatePreview that the browser receives still contains the old “kill-switch” useEffect.
+	2.	The new useEffect that should import('../components/WorkingInlineEditor') never executes.
+	3.	Therefore no delete buttons or editable zones appear.
+
+⸻
+
+Prompt for Replit to wipe the kill-switch everywhere and mount the editor
+
+NOTE: the project seems to contain multiple copies or historical versions of TemplatePreview. We have to update every file that prints the kill-switch message, otherwise the wrong copy keeps being compiled.
+
+🔧 **TASK: completely remove the "ALL EDITOR INJECTION DISABLED" kill-switch
+and mount WorkingInlineEditor**
+
+1️⃣  **Search the whole repo** for the string  
+    `ALL EDITOR INJECTION DISABLED`  
+    (examples: `grep -R "ALL EDITOR INJECTION DISABLED" dashboard/src`).
+
+2️⃣  For **every** file that contains that text
+    (likely TemplatePreview.jsx, TemplatePreview.tsx or similar):
+    • Delete the entire `useEffect` (or any early-return) that prints the message.  
+    • Make sure there is **no `return null` or `return` before the component’s JSX**.
+
+3️⃣  At the end of the same component (just before `export default`),
+    add **one** clean `useEffect` that mounts the editor **once**:
+
+```jsx
+import { useEffect } from 'react';
+
+useEffect(() => {
+  if (window.__editorMounted) return;      // guard
+  window.__editorMounted = true;
+
+  import('../components/WorkingInlineEditor').then(({ default: mount }) => {
+    // When this TemplatePreview is rendered inside the iframe, `document`
+    // refers to the iframe document, which is what we want.
+    mount(document);
+    console.log('🟢 WorkingInlineEditor mounted');
+  });
+}, []);
+
+4️⃣  Confirm that WorkingInlineEditor.jsx (or .ts) exports a default function
+like export default function mount(doc) { … }.
+It must:
+- add .delete-btn-outer to <li> elements;
+- add .delete-btn-inner to elements inside an <li>;
+- append CSS that hides .delete-btn-inner.
+
+5️⃣  Remove any other legacy editor injections
+(e.g. ComprehensiveInlineEditor, autoSaveEditor, etc.).
+They should not run at all.
+
+6️⃣  Re-run / rebuild the dashboard.
+✅ In DevTools inside the iframe you should now see:
+• 🟢 WorkingInlineEditor mounted
+• log lines such as 🎯 Adding OUTER delete button to LI
+• No more ALL EDITOR INJECTION DISABLED message.
+
+7️⃣  Verify visually:
+• Each menu <li> now shows one red “×” when hovered.
+• Inner anchor <a> no longer shows its own “×”.
+• Other content blocks still have one delete button and remain editable.
+
+If any copy of the kill-switch message still appears, repeat step 1 – there is still another old TemplatePreview file being compiled.
+
+Run the prompt above in Replit chat; after the rebuild, reload `/preview` with a hard refresh (⇧ + ⌘/Ctrl + R).  
+Let me know **which** of the expected console lines is missing if the buttons are still not back.
