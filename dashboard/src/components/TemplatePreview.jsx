@@ -4,16 +4,8 @@ import HomepageV1 from '../templates/HomePageV1.jsx';
 export default function TemplatePreview({ templateData, error, loading, previewId }) {
   console.log('🔍 TemplatePreview rendering with templateData:', !!templateData);
 
-  // Mount WorkingInlineEditor once the template is rendered  
-  useEffect(() => {
-    if (window.__ezEditorMounted) return;
-    window.__ezEditorMounted = true;
-
-    import('../components/WorkingInlineEditor').then(({ default: mount }) => {
-      mount(document);                         // <- passes iframe doc
-      console.log('🟢 EZ editor mounted');
-    });
-  }, []);
+  // The WorkingInlineEditor React component handles its own mounting
+  // No additional mounting logic needed here
 
   if (loading) {
     return (

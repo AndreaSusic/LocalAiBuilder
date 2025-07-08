@@ -1,0 +1,35 @@
+/* Editor CSS - Hide inner delete buttons on LI elements */
+li .delete-btn-inner {
+  display: none !important;
+}
+
+/* Additional editor styles for consistency */
+.delete-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 12px;
+  cursor: pointer;
+  display: none;
+  z-index: 9999;
+  line-height: 1;
+  font-family: Arial, sans-serif;
+}
+
+.editor-element:hover .delete-btn {
+  display: block;
+}
+
+.delete-btn-outer {
+  /* Outer delete buttons for menu items */
+}
+
+.delete-btn-inner {
+  /* Inner delete buttons for non-menu elements */
+}

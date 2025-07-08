@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+function isMenuItem(el) {
+  return el.tagName === 'LI' || el.closest('nav ul');
+}
+
 const WorkingInlineEditor = ({ previewId }) => {
   console.log('🚀 WorkingInlineEditor STARTING - Only editor system active with previewId:', previewId);
   
@@ -87,7 +91,7 @@ const WorkingInlineEditor = ({ previewId }) => {
       }
       
       /* CSS fix for duplicate delete buttons - hide inner ones */
-      .delete-btn-inner { 
+      li .delete-btn-inner { 
         display: none !important; 
       }
 
@@ -158,9 +162,14 @@ const WorkingInlineEditor = ({ previewId }) => {
         // Guard: never create a second button for the same element
         if (element.querySelector('.delete-btn')) return;
 
-        // Add delete button (including for images)
+        // Add delete button (including for images) with proper classification
         const deleteBtn = iframeDoc.createElement('div');
-        deleteBtn.className = 'delete-btn';
+        // Use new classification system
+        if (isMenuItem(element)) {
+          deleteBtn.className = 'delete-btn delete-btn-outer';
+        } else {
+          deleteBtn.className = 'delete-btn delete-btn-inner';
+        }
         deleteBtn.innerHTML = '×';
         console.log('🎯', deleteBtn.className, 'added for', element.tagName);
         deleteBtn.onclick = (e) => {
