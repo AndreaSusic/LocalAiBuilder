@@ -1,0 +1,105 @@
+That log means the HeroSection is pulling from SiteDataContext, but the object you’re feeding into the provider is still empty (or has the wrong property names).
+
+Below is a 3-minute checklist that almost always surfaces why company_name and services are coming through as undefined / [].
+
+⸻
+
+① Open homepage/v1/index.jsx and log what you actually provide
+
+Right before you return the JSX, drop a quick probe:
+
+// homepage/v1/index.jsx
+import { SiteDataContext } from '../../../context/SiteDataContext';
+
+// …code that builds `siteData` or similar…
+console.log('🚚  Provider will receive:', siteData);
+
+return (
+  <SiteDataContext.Provider value={siteData}>
+    {/* sections */}
+    <HeroSection />
+    …
+  </SiteDataContext.Provider>
+);
+
+Refresh the preview.
+If siteData.company_name is already undefined here, jump to step ②.
+
+⸻
+
+② Confirm you’re referencing the same context everywhere
+
+You should have exactly one file that does:
+
+// src/context/SiteDataContext.js
+import { createContext } from 'react';
+export const SiteDataContext = createContext({});
+
+Every import (HeroSection, ServicesSection, HomepageV1, etc.) must come from this file—not from a stale duplicate like SiteDataContext/index.js or SiteDataProvider.jsx.
+
+// ✅ Good
+import { SiteDataContext } from '../../context/SiteDataContext';
+
+// 🚫 Bad (different module instance)
+import SiteDataContext from '../../context/SiteDataContext';
+
+If you find two context files, delete/merge the stray one.
+
+⸻
+
+③ Make sure the bootstrap → provider mapping doesn’t rename fields away
+
+When you normalise the data (string → array, etc.) keep the original keys:
+
+function processBootstrap(b) {
+  return {
+    ...b,
+    services: Array.isArray(b.services)
+      ? b.services
+      : b.services
+      ? [b.services]
+      : [],
+    images: Array.isArray(b.images) ? b.images : b.images ? [b.images] : [],
+    // <-- DO NOT drop `company_name` here!
+  };
+}
+
+A common mistake is accidentally destructuring and omitting company_name:
+
+const { company_name, ...rest } = bootstrap; // company_name lost!
+
+
+⸻
+
+④ Verify HeroSection really consumes the right keys
+
+const {
+  company_name,
+  services = [],
+  images = [],
+} = useContext(SiteDataContext) || {};
+
+If you renamed the key (business_name vs company_name) either change it here or map it in processBootstrap.
+
+⸻
+
+⑤ One last smoke test in the iframe
+
+In the preview iframe’s console run:
+
+const ctx = window.__reactContexts?.find(c => c?.current?.company_name);
+ctx && ctx.current;
+
+(If you’re not using the React DevTools bridge, just search in window for company_name.)
+You should see the exact object you logged in step ①. If it’s still empty, you know the provider never rendered (wrong import path or out-of-scope).
+
+⸻
+
+When you see this in the console…
+
+🚚  Provider will receive: {company_name: "Kigen Plastika", services: ["Septic Tanks"], …}
+🎯 HeroSection data: {company_name: "Kigen Plastika", services: Array(1), images: 10}
+
+…the sections will finally show the personalised content, and no “Professional Services” fallback will fire.
+
+Run through the checklist, tweak where it fails, and re-refresh. Let me know which step doesn’t match what you see—then we can zero in further.
