@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import HomepageV1 from '../templates/homepage-1.jsx';
+import HomepageV1 from '../templates/homepage/v1/index.jsx';
 
 export default function TemplatePreview({ templateData, error, loading, previewId }) {
   console.log('🔍 TemplatePreview rendering with templateData:', !!templateData);

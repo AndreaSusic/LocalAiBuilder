@@ -1,0 +1,145 @@
+injectlaunchmonitors.js:131 Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://860229ef-4c89-42ba-8392-8e4b4347f7b7/". Either the 'unsafe-inline' keyword, a hash ('sha256-+osnfquB23g9K0xV1ls9W1PGJx2yRDNBiM+W8Bj/zdc='), or a nonce ('nonce-...') is required to enable inline execution.
+
+(anonymous) @ injectlaunchmonitors.js:131
+extension.js:553 Returning a Promise is the preferred way to send a reply from an onMessage/onMessageExternal listener, as the sendResponse will be removed from the specs (See https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) Error
+    at o (chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378065)
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:362:300985
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378108
+o @ browser-polyfill.js:1075
+(anonymous) @ extension.js:553
+(anonymous) @ browser-polyfill.js:1086
+SiteDataContext.js:3 🕵️‍♂️ SiteDataContext loaded
+index.jsx:4 🕵️‍♀️ HomepageV1 module evaluated
+extension_content.js:1 recalculate_head_data
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+ BOOTSTRAP >> {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+main.jsx:155 Current path: /preview/
+main.jsx:156 Root element exists: true
+main.jsx:170 React app rendered successfully
+App.jsx:21 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:22 Window width: 1403
+App.jsx:23 isMobile: false
+DesktopDashboard.jsx:177 ✅ Dashboard user auto-authenticated for editing
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(1)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+extension_content.js:1 recalculate_head_data
+content.js:48 request OK
+extension_content.js:1 
+            
+            
+           GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/robots.txt 404 (Not Found)
+(anonymous) @ extension_content.js:1
+get_robots_ajax_reponse @ extension_content.js:1
+get_methods.forEach.e.<computed> @ extension_content.js:1
+init @ extension_content.js:1
+await in init
+get_methods.forEach.e.<computed> @ extension_content.js:1
+(anonymous) @ extension_content.js:1
+(anonymous) @ extension_content.js:1
+DesktopDashboard.jsx:76 Created short URL for preview: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcuc90u8y081qp14o9
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:176 ✅ React DOM ready event dispatched
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🕵️‍♂️ SiteDataContext loaded
+Console.js:61 🕵️‍♀️ HomepageV1 module evaluated
+ 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+ BOOTSTRAP >> {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+ Current path: /t/v1/mcuc90u8y081qp14o9
+ Root element exists: true
+ React app rendered successfully
+Console.js:61 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+Console.js:61 Window width: 1007
+Console.js:61 isMobile: false
+Console.js:61 🔍 TemplatePreview rendering with templateData: false
+Console.js:61 🔍 TemplatePreview previewId: mcuc90u8y081qp14o9
+Console.js:61 🔍 TemplatePreview fallbackBootstrap: true
+Console.js:61 📡 Fetching preview data for ID: mcuc90u8y081qp14o9
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(1)}
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:47 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcuc90u8y081qp14o9
+DesktopDashboard.jsx:50 ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
+ 📋 Successfully loaded preview data: Kigen Plastika
+ 🔍 TemplatePreview rendering with templateData: false
+ 🔍 TemplatePreview previewId: mcuc90u8y081qp14o9
+ 🔍 TemplatePreview fallbackBootstrap: true
+ 📋 TemplatePreview about to render HomepageV1 with bootstrap: true
+ 🔍 Bootstrap data preview: Kigen Plastika
+ 🔍 HomepageV1 component check: 
+ 🎯 HeroSection is rendering!
+ 🎯 HeroSection data: {company_name: undefined, services: Array(0), images: 0}
+ Editable rendering: h1 with path="heroTitle"
+ Editable rendering: p with path="heroSubtitle"
+ Editable rendering: button with path="ctaText"
+ AboutSection DEBUG - Team data: [] Length: 0
+ Editable rendering: h2 with path="aboutTitle"
+ Editable rendering: p with path="aboutParagraph1"
+ Editable rendering: p with path="aboutParagraph2"
+ Editable rendering: p with path="aboutParagraph3"
+ Editable rendering: h3 with path="feature1Title"
+ Editable rendering: p with path="feature1Description"
+ Editable rendering: h3 with path="feature2Title"
+ Editable rendering: p with path="feature2Description"
+ Editable rendering: h3 with path="feature3Title"
+ Editable rendering: p with path="feature3Description"
+ ServicesSection DEBUG - Services data: [] object
+ ServicesSection DEBUG - GBP products: undefined
+ 🏅 APPLYING SERVICE PRIORITY HIERARCHY
+ 🏅 PRIORITY 4: Using AI-generated services as fallback
+ 🖼️ APPLYING IMAGE PRIORITY HIERARCHY
+ ServicesSection DEBUG - ServicesList: (3) ['Professional Services', 'Expert Solutions', 'Quality Support'] Type: object
+ ServicesSection DEBUG - GBP Products: 0 Available: []
+ ServicesSection DEBUG - Processing service: Professional Services Type: string Index: 0
+ ServicesSection DEBUG - Processing service: Expert Solutions Type: string Index: 1
+ ServicesSection DEBUG - Processing service: Quality Support Type: string Index: 2
+ ServicesSection DEBUG - ServicesToShow: (3) [{…}, {…}, {…}]
+ Editable rendering: h2 with path="servicesTitle"
+ Editable rendering: h4 with path="serviceTitle0"
+ Editable rendering: p with path="serviceDescription0"
+ Editable rendering: h4 with path="serviceTitle1"
+ Editable rendering: p with path="serviceDescription1"
+ Editable rendering: h4 with path="serviceTitle2"
+ Editable rendering: p with path="serviceDescription2"
+ 🔍 ReviewsSection - Full siteData keys: []
+ 🔍 ReviewsSection - google_profile: {}
+ 🔍 ReviewsSection - google_profile.reviews: undefined
+ 🔍 ReviewsSection - reviews prop: []
+ 🔍 ReviewsSection - team data: []
+ 🔍 ReviewsSection - Has reviews in google_profile? false
+Console.js:61 🔍 ReviewsSection - Has reviews in main? false
+Console.js:61 🔍 ReviewsSection - GBP reviews found: 0 reviews
+Console.js:61 🔍 ReviewsSection - First review sample: undefined
+Console.js:61 Editable rendering: h2 with path="reviewsTitle"
+Console.js:61 Editable rendering: p with path="testimonialText0"
+Console.js:61 Editable rendering: p with path="testimonialAuthor0"
+Console.js:61 Editable rendering: p with path="testimonialText1"
+Console.js:61 Editable rendering: p with path="testimonialAuthor1"
+Console.js:61 Editable rendering: p with path="testimonialText2"
+Console.js:61 Editable rendering: p with path="testimonialAuthor2"
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 ✅ React DOM ready event dispatched
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+web-client-content-script.js:2 Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.
+    at HTMLIFrameElement.<anonymous> (web-client-content-script.js:2:402720)
+(anonymous) @ web-client-content-script.js:2
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
