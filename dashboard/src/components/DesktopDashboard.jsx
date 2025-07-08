@@ -47,7 +47,7 @@ function DesktopDashboard({ bootstrap }) {
     console.log('iframe loaded:', iframe.src);
     
     // DISABLED: Preventing duplicate editor systems - Using WorkingInlineEditor.jsx from TemplatePreview instead
-    console.log('⚠️ DesktopDashboard editor disabled to prevent double × delete buttons');
+    console.log('✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons');
   };
 
 
