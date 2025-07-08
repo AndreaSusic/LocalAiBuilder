@@ -20,10 +20,6 @@ args = "LocalAI Builder Website"
 task = "workflow.run"
 args = "React Dashboard"
 
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Staging Server"
-
 [[workflows.workflow]]
 name = "LocalAI Builder Website"
 author = "agent"
@@ -41,15 +37,6 @@ author = "agent"
 task = "shell.exec"
 args = "cd dashboard && npm run dev"
 waitForPort = 5173
-
-[[workflows.workflow]]
-name = "Staging Server"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd dashboard && node staging-server-http.js"
-waitForPort = 5174
 
 [deployment]
 run = ["sh", "-c", "python -m http.server 5000"]
