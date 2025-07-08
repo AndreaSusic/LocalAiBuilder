@@ -37,6 +37,7 @@ const safeImg = (url) => {
 
 export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   console.log('🚀 HomepageV1 function started, bootstrap:', !!bootstrap);
+  console.log('🔍 Bootstrap data preview:', bootstrap?.company_name || 'No company name');
   
   try {
     const initialData = bootstrap || {
@@ -76,14 +77,24 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
           setData(initialData);
         });
     } else {
-      // Validate bootstrap data as well
-      // try {
-      //   validateBeforeRender(bootstrap);
-        setData(bootstrap);
-      // } catch (validationError) {
-      //   console.error('Bootstrap data validation failed:', validationError);
-      //   setData(initialData);
-      // }
+      // Process bootstrap data to ensure correct format
+      const processedBootstrap = {
+        ...bootstrap,
+        // Convert services string to array if needed
+        services: typeof bootstrap.services === 'string' 
+          ? [bootstrap.services] 
+          : (Array.isArray(bootstrap.services) ? bootstrap.services : []),
+        // Fix industry to match services when it's landscaping but services are septic tanks
+        industry: bootstrap.services === 'Septic Tanks' ? 'Septic Tanks' : bootstrap.industry
+      };
+      
+      console.log('🔧 Processed bootstrap data:', {
+        company_name: processedBootstrap.company_name,
+        services: processedBootstrap.services,
+        industry: processedBootstrap.industry
+      });
+      
+      setData(processedBootstrap);
     }
   }, [bootstrap]);
 
