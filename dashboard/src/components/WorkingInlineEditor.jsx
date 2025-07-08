@@ -20,7 +20,8 @@ const WorkingInlineEditor = ({ previewId }) => {
     if (!iframe) return;
 
     const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    if (!iframeDoc) return;
+    const iframeWindow = iframe.contentWindow;
+    if (!iframeDoc || !iframeWindow) return;
 
     // CRITICAL: Prevent double initialization with global guard
     if (iframe.contentWindow.__EZ_EDITOR_BRIDGE_LOADED__) {

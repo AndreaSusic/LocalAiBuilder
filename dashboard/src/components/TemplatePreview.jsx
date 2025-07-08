@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Component } from 'react';
 import SiteDataProvider from '../context/SiteDataProvider.jsx';
 import HomepageV1 from '../templates/homepage/v1/index.jsx';
-import WorkingInlineEditor from './WorkingInlineEditor.jsx';
+import SimpleInlineEditor from './SimpleInlineEditor.jsx';
 
 console.log('🔍 HomepageV1 import:', HomepageV1);
 console.log('🔍 HomepageV1 is function:', typeof HomepageV1 === 'function');
@@ -76,19 +76,14 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
     fetchPreviewData();
   }, [previewId, fallbackBootstrap]);
 
-  // Inject auto-save editor after template renders
+  // COMPLETELY DISABLED - OLD AUTO-SAVE EDITOR INJECTION 
   useEffect(() => {
     if (!templateData || loading) return;
     
-    // Define autoSavePageId global to prevent runtime errors
-    const pageId = previewId || templateData?.page_id || 'preview';
-    window.autoSavePageId = pageId;
-    console.log('🆔 autoSavePageId set to', pageId);
-    console.log('✅ autoSavePageId global initialised');
-    
-    console.log('⚠️ ALL TemplatePreview editor systems COMPLETELY DISABLED to prevent duplicate × buttons');
-    console.log('✅ Only WorkingInlineEditor.jsx should be active now');
-    return; // COMPLETELY DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
+    console.log('⚠️ TemplatePreview useEffect: ALL EDITOR INJECTION DISABLED');
+    console.log('✅ Only WorkingInlineEditor.jsx component should handle editing');
+    // NO SCRIPT INJECTION - WorkingInlineEditor React component handles everything
+    return;
     
     console.log('🔧 Injecting auto-save inline editor...');
     
@@ -1339,7 +1334,7 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       <SiteDataProvider bootstrap={templateData}>
         <TemplateErrorBoundary>
           <HomepageV1 bootstrap={templateData} />
-          <WorkingInlineEditor previewId={previewId} />
+          {/* <SimpleInlineEditor previewId={previewId} /> */}
         </TemplateErrorBoundary>
       </SiteDataProvider>
     );

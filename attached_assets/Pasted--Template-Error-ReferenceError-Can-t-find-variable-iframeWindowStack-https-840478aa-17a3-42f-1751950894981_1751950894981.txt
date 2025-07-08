@@ -1,0 +1,25 @@
+💥 Template Error:ReferenceError: Can't find variable: iframeWindowStack: @https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/src/components/WorkingInlineEditor.jsx:195:17
+react-stack-bottom-frame@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:17478:26
+runWithFiberInDEV@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:1487:23
+commitHookEffectListMount@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:8460:139
+commitHookPassiveMountEffects@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:8518:85
+commitPassiveMountOnFiber@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9887:58
+recursivelyTraversePassiveMountEffects@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9868:38
+commitPassiveMountOnFiber@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9890:51
+recursivelyTraversePassiveMountEffects@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9868:38
+commitPassiveMountOnFiber@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9984:51
+recursivelyTraversePassiveMountEffects@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9868:38
+commitPassiveMountOnFiber@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9881:51
+recursivelyTraversePassiveMountEffects@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9868:38
+commitPassiveMountOnFiber@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9881:51
+recursivelyTraversePassiveMountEffects@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9868:38
+commitPassiveMountOnFiber@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9881:51
+recursivelyTraversePassiveMountEffects@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9868:38
+commitPassiveMountOnFiber@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9984:51
+recursivelyTraversePassiveMountEffects@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9868:38
+commitPassiveMountOnFiber@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9881:51
+recursivelyTraversePassiveMountEffects@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9868:38
+commitPassiveMountOnFiber@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:9899:51
+flushPassiveEffects@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:11302:36
+@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:11060:32
+performWorkUntilDeadline@https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js:36:58
