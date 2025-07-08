@@ -1,129 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import HomepageV1 from '../templates/homepage-1.jsx';
+import HomepageV1 from '../templates/HomePageV1.jsx';
 
 export default function TemplatePreview({ templateData, error, loading, previewId }) {
   console.log('🔍 TemplatePreview rendering with templateData:', !!templateData);
 
-  // Delete button injection system
+  // Mount InlineEditorInjector once the template is rendered
   useEffect(() => {
     if (!templateData || loading) return;
 
-    console.log('🚀 TemplatePreview: Injecting simple delete buttons directly');
-
     const timer = setTimeout(() => {
-      const iframe = document.querySelector('iframe#preview-iframe');
-      if (!iframe) {
-        console.log('❌ No iframe found for delete button injection');
+      // guard – never inject twice
+      if (window.__editorInjected) {
+        console.log('⚠️ Editor already injected, skipping');
         return;
       }
+      window.__editorInjected = true;
 
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-      const iframeWindow = iframe.contentWindow;
-
-      if (!iframeDoc || !iframeWindow) {
-        console.log('❌ Cannot access iframe content');
-        return;
-      }
-
-      // Prevent double initialization 
-      if (iframeWindow.__DELETE_BUTTONS_LOADED__) {
-        console.log('⚠️ Delete buttons already loaded, skipping');
-        return;
-      }
-      iframeWindow.__DELETE_BUTTONS_LOADED__ = true;
-      
-      console.log('✅ Injecting delete buttons...');
-
-      // Add styles
-      if (!iframeDoc.getElementById('delete-button-styles')) {
-        const style = iframeDoc.createElement('style');
-        style.id = 'delete-button-styles';
-        style.textContent = `
-          .editor-element {
-            position: relative !important;
-            outline: 2px dotted transparent !important;
-            transition: outline 0.2s ease !important;
-          }
-          .editor-element:hover {
-            outline: 2px dotted red !important;
-          }
-          .editor-element.active {
-            outline: 2px solid #ffc000 !important;
-          }
-          .delete-btn {
-            position: absolute !important;
-            top: -8px !important;
-            right: -8px !important;
-            width: 20px !important;
-            height: 20px !important;
-            background: red !important;
-            color: white !important;
-            border: none !important;
-            border-radius: 50% !important;
-            font-size: 12px !important;
-            cursor: pointer !important;
-            display: none !important;
-            z-index: 9999 !important;
-            line-height: 1 !important;
-          }
-          .editor-element:hover .delete-btn {
-            display: block !important;
-          }
-        `;
-        iframeDoc.head.appendChild(style);
-        console.log('💄 Added delete button styles');
-      }
-
-      // Find all editable elements and add delete buttons
-      const editableElements = iframeDoc.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, button, span');
-      let deleteButtonCount = 0;
-
-      editableElements.forEach((element) => {
-        // Skip if element already has a delete button
-        if (element.querySelector('.delete-btn')) {
-          return;
-        }
-
-        // Add editor class and make editable
-        element.classList.add('editor-element');
-        if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span'].includes(element.tagName.toLowerCase())) {
-          element.setAttribute('contenteditable', 'true');
-        }
-
-        // Ensure parent has relative positioning
-        const computedStyle = iframeWindow.getComputedStyle(element);
-        if (computedStyle.position === 'static') {
-          element.style.position = 'relative';
-        }
-
-        // Create delete button
-        const deleteBtn = iframeDoc.createElement('button');
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.textContent = '×';
-        
-        deleteBtn.onclick = (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (confirm('Delete this element?')) {
-            element.remove();
-            console.log('🗑️ Element deleted:', element.tagName);
-          }
-        };
-
-        element.appendChild(deleteBtn);
-        deleteButtonCount++;
-        
-        console.log(`🎯 Delete button added for ${element.tagName} (${element.className || 'no class'})`);
+      import('../components/InlineEditorInjector').then(({ default: inject }) => {
+        inject(document);  // pass current document
+        console.log('🟢 InlineEditorInjector injected successfully');
+      }).catch(error => {
+        console.error('❌ Failed to load InlineEditorInjector:', error);
       });
 
-      console.log(`✅ Added ${deleteButtonCount} delete buttons successfully`);
+      // Set autoSavePageId to prevent runtime errors
+      window.autoSavePageId = previewId || 'preview';
+      console.log('🆔 Set autoSavePageId:', window.autoSavePageId);
 
-      // Set global variables to prevent errors
-      iframeWindow.autoSavePageId = previewId || 'preview';
-      console.log('🆔 Set autoSavePageId in iframe:', iframeWindow.autoSavePageId);
+    }, 1000); // Wait 1 second for template to render
 
-    }, 3000); // Wait 3 seconds for iframe to fully load
-    
     return () => clearTimeout(timer);
   }, [templateData, loading, previewId]);
 
