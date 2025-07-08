@@ -148,16 +148,23 @@ const WorkingInlineEditor = ({ previewId }) => {
         // TEMP diagnostic - will be removed later
         console.log('🐞 running addDeleteButton from WorkingInlineEditor.jsx');
 
-        // Do NOT add a second button inside anchors inside <li>
-        if (element.closest('li') && element.tagName !== 'LI') {
-          console.log(`🎯 EARLY RETURN: Skipping ${element.tagName} inside LI - preventing inner button`);
-          return;
-        }
+        // Guard: never create a second button for the same element
+        if (element.querySelector('.delete-btn-outer')) return;
 
         // Add delete button (including for images)
         const deleteBtn = iframeDoc.createElement('div');
-        deleteBtn.className = 'delete-btn';
+        
+        // Decide which flavour of delete button we are adding
+        if (element.tagName === 'LI') {
+          deleteBtn.className = 'delete-btn delete-btn-outer';
+        } else if (element.closest('li')) {
+          deleteBtn.className = 'delete-btn delete-btn-inner';
+        } else {
+          deleteBtn.className = 'delete-btn';
+        }
+        
         deleteBtn.innerHTML = '×';
+        console.log('🎯', deleteBtn.className, 'added for', element.tagName);
         deleteBtn.onclick = (e) => {
           e.stopPropagation();
           e.preventDefault();
@@ -190,6 +197,15 @@ const WorkingInlineEditor = ({ previewId }) => {
     });
     
     console.log(`✅ WorkingInlineEditor: Processed ${editableCount} elements with delete buttons`);
+    
+    // Inject one-time style block to hide inner delete buttons
+    if (!iframeDoc.getElementById('editor-delete-style')) {
+      const style = iframeDoc.createElement('style');
+      style.id = 'editor-delete-style';
+      style.textContent = '.delete-btn-inner { display: none !important; }';
+      iframeDoc.head.appendChild(style);
+      console.log('💉 Injected delete button style block');
+    }
 
     // Click outside to hide toolbar
     iframeDoc.addEventListener('click', (e) => {
