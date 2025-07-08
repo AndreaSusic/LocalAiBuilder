@@ -181,26 +181,18 @@ export default function TemplatePreview({ templateData, error, loading, previewI
     );
   }
 
-  // Create properly formatted fallback bootstrap data
-  const fallbackBootstrapData = fallbackBootstrap ? {
-    company_name: fallbackBootstrap.company_name,
-    services: Array.isArray(fallbackBootstrap.services)
-              ? fallbackBootstrap.services
-              : (fallbackBootstrap.services ? 
-                  (typeof fallbackBootstrap.services === 'string' ? 
-                    fallbackBootstrap.services.split(',').map(s => s.trim()) : 
-                    [fallbackBootstrap.services]) : 
-                  []),
-    colours: fallbackBootstrap.colours || ['#ffc000', '#000000'],
-    images: fallbackBootstrap.images || [],
-    industry: fallbackBootstrap.industry,
-    city: fallbackBootstrap.city || [],
-    google_profile: fallbackBootstrap.google_profile || {},
-    contact: fallbackBootstrap.contact || {},
-    reviews: fallbackBootstrap.reviews || [],
-    rating: fallbackBootstrap.rating,
-    ai_customization: fallbackBootstrap.ai_customization || {}
-  } : null;
+  function processBootstrap(b) {
+    if (!b) return {};
+    return {
+      ...b,
+      // guarantee array shape
+      services: Array.isArray(b.services)
+                  ? b.services
+                  : (b.services ? [b.services] : []),
+    };
+  }
+
+  const fallbackBootstrapData = processBootstrap(fallbackBootstrap);
 
   console.log('📋 TemplatePreview about to render HomepageV1 with bootstrap:', !!templateData);
   console.log('🔍 Bootstrap data preview:', (templateData || fallbackBootstrapData)?.company_name || 'No company name');
