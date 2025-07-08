@@ -185,10 +185,10 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
         element.appendChild(deleteBtn);
         deleteButtonCount++;
         
-        console.log(\`🎯 Delete button added for \${element.tagName} (\${element.className || 'no class'})\`);
+        console.log(`🎯 Delete button added for ${element.tagName} (${element.className || 'no class'})`);
       });
 
-      console.log(\`✅ Added \${deleteButtonCount} delete buttons successfully\`);
+      console.log(`✅ Added ${deleteButtonCount} delete buttons successfully`);
 
       // Set global variables to prevent errors
       iframeWindow.autoSavePageId = '${previewId}' || 'preview';
@@ -1365,9 +1365,7 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       console.log('⚠️ initAutoSaveEditor COMPLETELY DISABLED to prevent autoSavePageId errors');
     `;
     
-    console.log('⚠️ TemplatePreview auto-save editor DISABLED to prevent duplicate × buttons');
-    return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
-    
+    // OLD CODE COMPLETELY REMOVED - No longer blocking editor injection
     // DISABLED: document.head.appendChild(script);
     console.log('⚠️ Auto-save editor script injection COMPLETELY DISABLED');
   }, [templateData, loading, previewId]);
