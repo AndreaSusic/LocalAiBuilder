@@ -10,7 +10,7 @@ import GallerySection from '../../../sections/GallerySection.jsx';
 import ReviewsSection from '../../../sections/ReviewsSection.jsx';
 import ContactSection from '../../../sections/ContactSection.jsx';
 import ColorContrastAnalyzer from '../../../components/ColorContrastAnalyzer.jsx';
-import { SiteDataContext } from '../../../context/SiteDataContext.js';
+import SiteDataContext from '../../../context/SiteDataContext.js';
 import '../../../styles/template.css';
 
 // Helper function to handle placeholder images
@@ -109,6 +109,9 @@ export default function HomepageV1({ tokens = {}, bootstrap = null }) {
   console.log('HomepageV1 using data:', data);
 
     console.log('🏠 HomepageV1 rendering with data:', Object.keys(data));
+    
+    // Step ① from checklist: Log what we actually provide to the context
+    console.log('🚚 Provider will receive:', data);
     
     return (
       <SiteDataContext.Provider value={{...data, safeImg}}>
