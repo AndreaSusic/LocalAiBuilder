@@ -85,10 +85,7 @@ const WorkingInlineEditor = ({ previewId }) => {
         transform: scale(1.1);
       }
       
-      /* Hide duplicate delete buttons in navigation items */
-      li .delete-btn:not(:first-child) { 
-        display: none !important; 
-      }
+
     `;
     iframeDoc.head.appendChild(style);
 
@@ -148,6 +145,15 @@ const WorkingInlineEditor = ({ previewId }) => {
         element.classList.add('editor-element');
         element.setAttribute('contenteditable', element.tagName === 'IMG' ? 'false' : 'true');
         
+        // TEMP diagnostic - will be removed later
+        console.log('🐞 running addDeleteButton from WorkingInlineEditor.jsx');
+
+        // Do NOT add a second button inside anchors inside <li>
+        if (element.closest('li') && element.tagName !== 'LI') {
+          console.log(`🎯 EARLY RETURN: Skipping ${element.tagName} inside LI - preventing inner button`);
+          return;
+        }
+
         // Add delete button (including for images)
         const deleteBtn = iframeDoc.createElement('div');
         deleteBtn.className = 'delete-btn';
@@ -211,6 +217,9 @@ const WorkingInlineEditor = ({ previewId }) => {
       }
     });
 
+    // At the very end of the editor script
+    iframeWindow.__editorLoaded = true;
+    console.log('🔒 WorkingInlineEditor: Marked as loaded to prevent duplicate initialization');
   }, []);
 
   const handleElementClick = (element, iframeDoc) => {
