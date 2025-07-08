@@ -11,7 +11,7 @@ const NewTemplatePreview = ({ previewId, onReady }) => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
         
-        // COMPLETELY DISABLED - Using WorkingInlineEditor.js instead
+        console.log('⚠️ NewTemplatePreview editor DISABLED to prevent duplicate × buttons');
         return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
         
         // Inject comprehensive inline editor
