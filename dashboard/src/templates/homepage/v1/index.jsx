@@ -121,4 +121,3 @@ export default function HomepageV1({ bootstrap = {} }) {
     </SiteDataContext.Provider>
   );
 }
-}
