@@ -70,34 +70,61 @@ const SimpleInlineEditor = ({ previewId }) => {
     }
 
     // Find all editable elements and add delete buttons
-    const editableElements = iframeDoc.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, button, span');
+    const editableElements = iframeDoc.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, button, span, div[class*="section"], section');
     let deleteButtonCount = 0;
 
     editableElements.forEach((element) => {
-      // Skip if element already has a delete button
-      if (element.querySelector('.delete-btn-outer')) {
+      // Skip if element already has a delete button or is too small
+      if (element.querySelector('.delete-btn') || element.offsetWidth < 20 || element.offsetHeight < 20) {
         return;
       }
 
-      // Add editor class
+      // Add editor class and make editable
       element.classList.add('editor-element');
-      element.setAttribute('contenteditable', 'true');
+      if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span'].includes(element.tagName.toLowerCase())) {
+        element.setAttribute('contenteditable', 'true');
+      }
 
       // Create delete button
       const deleteBtn = iframeDoc.createElement('button');
-      deleteBtn.className = element.tagName.toLowerCase() === 'li' ? 'delete-btn delete-btn-outer' : 'delete-btn delete-btn-inner';
+      deleteBtn.className = 'delete-btn';
       deleteBtn.textContent = '×';
-      deleteBtn.onclick = () => {
+      deleteBtn.style.cssText = `
+        position: absolute !important;
+        top: -8px !important;
+        right: -8px !important;
+        width: 20px !important;
+        height: 20px !important;
+        background: red !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 50% !important;
+        font-size: 12px !important;
+        cursor: pointer !important;
+        display: none !important;
+        z-index: 9999 !important;
+        line-height: 1 !important;
+      `;
+      
+      deleteBtn.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         if (confirm('Delete this element?')) {
           element.remove();
-          console.log('🗑️ Element deleted');
+          console.log('🗑️ Element deleted:', element.tagName);
         }
       };
+
+      // Ensure parent has relative positioning
+      const computedStyle = iframeWindow.getComputedStyle(element);
+      if (computedStyle.position === 'static') {
+        element.style.position = 'relative';
+      }
 
       element.appendChild(deleteBtn);
       deleteButtonCount++;
       
-      console.log(`🎯 ${deleteBtn.className} added for ${element.tagName}`);
+      console.log(`🎯 Delete button added for ${element.tagName} (${element.className || 'no class'})`);
     });
 
     console.log(`✅ SimpleInlineEditor: Added ${deleteButtonCount} delete buttons`);

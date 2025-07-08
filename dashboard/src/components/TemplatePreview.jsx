@@ -1334,7 +1334,7 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
       <SiteDataProvider bootstrap={templateData}>
         <TemplateErrorBoundary>
           <HomepageV1 bootstrap={templateData} />
-          {/* <SimpleInlineEditor previewId={previewId} /> */}
+          <SimpleInlineEditor previewId={previewId} />
         </TemplateErrorBoundary>
       </SiteDataProvider>
     );
