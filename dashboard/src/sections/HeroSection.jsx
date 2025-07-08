@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import SiteDataContext from '../context/SiteDataContext';
+import { SiteDataContext } from '../context/SiteDataContext';
 import Editable from '../components/Editable.jsx';
 // import { getStockImages } from '../../../stock.js'; // Removed to fix import in browser
 

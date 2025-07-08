@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 // import { validateBeforeRender } from '../../../utils/dataValidation.js';
 
 console.log('🕵️‍♀️ HomepageV1 module evaluated');
@@ -10,7 +10,7 @@ import GallerySection from '../../../sections/GallerySection.jsx';
 import ReviewsSection from '../../../sections/ReviewsSection.jsx';
 import ContactSection from '../../../sections/ContactSection.jsx';
 import ColorContrastAnalyzer from '../../../components/ColorContrastAnalyzer.jsx';
-import SiteDataContext from '../../../context/SiteDataContext.js';
+import { SiteDataContext } from '../../../context/SiteDataContext.js';
 import '../../../styles/template.css';
 
 // Helper function to handle placeholder images
@@ -33,104 +33,34 @@ const safeImg = (url) => {
   return url;
 };
 
-export default function HomepageV1({ tokens = {}, bootstrap = null }) {
-  console.log('🚀 HomepageV1 function started, bootstrap:', !!bootstrap);
-  console.log('🔍 Bootstrap data preview:', bootstrap?.company_name || 'No company name');
-  
-  try {
-    const initialData = bootstrap || {
-    company_name: tokens.businessName || 'Your Business Name',
-    city: tokens.location ? [tokens.location] : ['Your City'],
-    services: tokens.services || 'Your Services',
-    colours: tokens.primaryColor ? [tokens.primaryColor, tokens.secondaryColor || '#000000'] : ['#5DD39E', '#000000'],
-    industry: tokens.industry || 'Your Industry',
-    images: tokens.images || [],
-    google_profile: tokens.google || {}
-  };
-  
-  const [data, setData] = useState(initialData);
+export default function HomepageV1({ bootstrap = {} }) {
   const [showContrastAnalyzer, setShowContrastAnalyzer] = useState(false);
-
-  // Load demo data if no bootstrap provided
-  useEffect(() => {
-    if (!bootstrap || Object.keys(bootstrap).length === 0) {
-      fetch('/api/user-data', { credentials: 'include' })
-        .then(response => response.json())
-        .then(apiResponse => {
-          console.log('Template loaded demo data:', apiResponse);
-          const userData = apiResponse.bootstrap || apiResponse;
-          
-          // Run data validation before setting data
-          // try {
-          //   validateBeforeRender(userData);
-            setData(userData);
-          // } catch (validationError) {
-          //   console.error('Data validation failed:', validationError);
-          //   // Use only safe fallback data if validation fails
-          //   setData(initialData);
-          // }
-        })
-        .catch(error => {
-          console.log('Template using fallback data:', error);
-          setData(initialData);
-        });
-    } else {
-      // Process bootstrap data to ensure correct format
-      const processedBootstrap = {
-        ...bootstrap,
-        // Convert services string to array if needed
-        services: typeof bootstrap.services === 'string' 
-          ? [bootstrap.services] 
-          : (Array.isArray(bootstrap.services) ? bootstrap.services : []),
-        // Fix industry to match services when it's landscaping but services are septic tanks
-        industry: bootstrap.services === 'Septic Tanks' ? 'Septic Tanks' : bootstrap.industry
-      };
-      
-      console.log('🔧 Processed bootstrap data:', {
-        company_name: processedBootstrap.company_name,
-        services: processedBootstrap.services,
-        industry: processedBootstrap.industry
-      });
-      
-      setData(processedBootstrap);
-    }
-  }, [bootstrap]);
-
-  // Initialize editor bridge after React components have rendered
-  useEffect(() => {
-    // Signal that React DOM is ready for editor bridge
-    const reactReadyEvent = new CustomEvent('react-dom-ready', {
-      detail: { timestamp: Date.now() }
-    });
-    window.dispatchEvent(reactReadyEvent);
-    console.log('✅ React DOM ready event dispatched');
-  }, [data]); // Re-run when data changes
   
-  console.log('HomepageV1 using data:', data);
+  const processed = {
+    ...bootstrap,
+    services: Array.isArray(bootstrap.services)
+      ? bootstrap.services
+      : bootstrap.services ? [bootstrap.services] : [],
+  };
 
-    console.log('🏠 HomepageV1 rendering with data:', Object.keys(data));
-    
-    // Step ① from checklist: Log what we actually provide to the context
-    console.log('🚚 Provider will receive:', data);
-    
-    return (
-      <SiteDataContext.Provider value={{...data, safeImg}}>
+  console.log('🏗️  HomepageV1 provider data:', processed);
+
+  return (
+    <SiteDataContext.Provider value={processed}>
         <div>
           <style>{`
             :root {
-              --primary: ${data.colours?.[0] || '#5DD39E'};
-              --secondary: ${data.colours?.[1] || '#EFD5BD'};
+              --primary: ${processed.colours?.[0] || '#5DD39E'};
+              --secondary: ${processed.colours?.[1] || '#EFD5BD'};
             }
           `}</style>
-          <NavigationSection bootstrap={bootstrap} />
-          {console.log('🔥 About to render HeroSection')}
-          <HeroSection bootstrap={bootstrap} />
-          {console.log('🔥 HeroSection rendered, moving to ServicesSection')}
-          <ServicesSection bootstrap={bootstrap} />
-          <AboutSection bootstrap={bootstrap} />
-          <GallerySection bootstrap={bootstrap} />
-          <ReviewsSection bootstrap={bootstrap} />
-          <ContactSection bootstrap={bootstrap} />
+          <NavigationSection />
+          <HeroSection />
+          <ServicesSection />
+          <AboutSection />
+          <GallerySection />
+          <ReviewsSection />
+          <ContactSection />
           
           {/* Floating Color Contrast Analyzer Button */}
           <button
