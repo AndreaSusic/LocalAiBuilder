@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import HomepageV1 from '../templates/homepage/v1/index.jsx';
 
-export default function TemplatePreview({ templateData, error, loading, previewId }) {
+export default function TemplatePreview({ templateData, error, loading, previewId, fallbackBootstrap }) {
   console.log('🔍 TemplatePreview rendering with templateData:', !!templateData);
+  console.log('🔍 TemplatePreview previewId:', previewId);
 
   // Delete button injection system
   useEffect(() => {
@@ -180,13 +181,30 @@ export default function TemplatePreview({ templateData, error, loading, previewI
     );
   }
 
+  // Create properly formatted fallback bootstrap data
+  const fallbackBootstrapData = fallbackBootstrap ? {
+    company_name: fallbackBootstrap.company_name,
+    services: Array.isArray(fallbackBootstrap.services)
+              ? fallbackBootstrap.services
+              : (fallbackBootstrap.services ? [fallbackBootstrap.services] : []),
+    colours: fallbackBootstrap.colours || ['#ffc000', '#000000'],
+    images: fallbackBootstrap.images || [],
+    industry: fallbackBootstrap.industry,
+    city: fallbackBootstrap.city || [],
+    google_profile: fallbackBootstrap.google_profile || {},
+    contact: fallbackBootstrap.contact || {},
+    reviews: fallbackBootstrap.reviews || [],
+    rating: fallbackBootstrap.rating,
+    ai_customization: fallbackBootstrap.ai_customization || {}
+  } : null;
+
   console.log('📋 TemplatePreview about to render HomepageV1 with bootstrap:', !!templateData);
-  console.log('🔍 HomepageV1 component check:', HomepageV1);
+  console.log('🔍 Bootstrap data preview:', (templateData || fallbackBootstrapData)?.company_name || 'No company name');
 
   try {
     return (
       <div style={{ width: '100%', height: '100%' }}>
-        <HomepageV1 bootstrap={templateData} />
+        <HomepageV1 bootstrap={templateData || fallbackBootstrapData} />
       </div>
     );
   } catch (renderError) {
