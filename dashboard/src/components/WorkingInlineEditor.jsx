@@ -85,6 +85,10 @@ const WorkingInlineEditor = ({ previewId }) => {
         transform: scale(1.1);
       }
       
+      /* CSS fix for duplicate delete buttons - hide inner ones */
+      .delete-btn-inner { 
+        display: none !important; 
+      }
 
     `;
     iframeDoc.head.appendChild(style);
@@ -233,6 +237,10 @@ const WorkingInlineEditor = ({ previewId }) => {
       }
     });
 
+    // Set autoSavePageId in iframe to prevent runtime errors
+    iframeWindow.autoSavePageId = 'preview';
+    console.log('🆔 Set autoSavePageId in iframe to prevent runtime errors');
+    
     // At the very end of the editor script
     iframeWindow.__editorLoaded = true;
     console.log('🔒 WorkingInlineEditor: Marked as loaded to prevent duplicate initialization');
