@@ -131,17 +131,19 @@ const WorkingInlineEditor = ({ previewId }) => {
           return;
         }
         
-        // CRITICAL: Only outermost editable element in nav item gets delete button
-        const li = element.closest('li[data-editable]');
-        if (li && li.querySelector(':scope > .delete-btn')) {
-          console.log(`🧭 Skipping ${element.tagName} - ancestor LI already has delete button`);
-          return;
-        }
-        
-        // CRITICAL: Skip nested editable anchors inside LI elements
-        if (element.tagName === 'A' && element.closest('li[data-editable]')) {
-          console.log(`🧭 Skipping anchor ${element.tagName} - nested inside editable LI`);
-          return;
+        // CRITICAL: For navigation items, only the LI should get a delete button
+        const parentLI = element.closest('li[data-editable]');
+        if (parentLI) {
+          if (element.tagName === 'A') {
+            // Skip anchors inside LI elements - only LI gets button
+            console.log(`🧭 Skipping anchor ${element.tagName} - nested inside editable LI`);
+            return;
+          }
+          if (element !== parentLI) {
+            // Skip any other element that's not the LI itself
+            console.log(`🧭 Skipping ${element.tagName} - not the main LI element`);
+            return;
+          }
         }
         
         editableCount++;
@@ -153,20 +155,11 @@ const WorkingInlineEditor = ({ previewId }) => {
         console.log('🐞 running addDeleteButton from WorkingInlineEditor.jsx');
 
         // Guard: never create a second button for the same element
-        if (element.querySelector('.delete-btn-outer')) return;
+        if (element.querySelector('.delete-btn')) return;
 
         // Add delete button (including for images)
         const deleteBtn = iframeDoc.createElement('div');
-        
-        // Decide which flavour of delete button we are adding
-        if (element.tagName === 'LI') {
-          deleteBtn.className = 'delete-btn delete-btn-outer';
-        } else if (element.closest('li')) {
-          deleteBtn.className = 'delete-btn delete-btn-inner';
-        } else {
-          deleteBtn.className = 'delete-btn';
-        }
-        
+        deleteBtn.className = 'delete-btn';
         deleteBtn.innerHTML = '×';
         console.log('🎯', deleteBtn.className, 'added for', element.tagName);
         deleteBtn.onclick = (e) => {
