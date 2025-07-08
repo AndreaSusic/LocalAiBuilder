@@ -1,0 +1,127 @@
+ Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://860229ef-4c89-42ba-8392-8e4b4347f7b7/". Either the 'unsafe-inline' keyword, a hash ('sha256-+osnfquB23g9K0xV1ls9W1PGJx2yRDNBiM+W8Bj/zdc='), or a nonce ('nonce-...') is required to enable inline execution.
+
+(anonymous) @ injectlaunchmonitors.js:131
+ Returning a Promise is the preferred way to send a reply from an onMessage/onMessageExternal listener, as the sendResponse will be removed from the specs (See https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) Error
+    at o (chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378065)
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:362:300985
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378108
+o @ content.js:3
+ 🕵️‍♂️ SiteDataContext loaded
+ 🕵️‍♀️ HomepageV1 module evaluated
+ 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+ BOOTSTRAP >> Object
+ Current path: /preview/
+ Root element exists: true
+ React app rendered successfully
+ App rendering with bootstrap: Object
+ Window width: 1403
+ isMobile: false
+ ✅ Dashboard user auto-authenticated for editing
+ 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+ 📊 VALIDATION RESULTS: Object
+ ✅ DATA VALIDATION PASSED - Safe to render template
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ request OK
+ recalculate_head_data
+ Created short URL for preview: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcuf6icdqavuyq8ndy
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+robots.txt:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ recalculate_head_data
+ ✅ React DOM ready event dispatched
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ 🕵️‍♂️ SiteDataContext loaded
+ 🕵️‍♀️ HomepageV1 module evaluated
+ 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+ BOOTSTRAP >> Object
+ Current path: /t/v1/mcuf6icdqavuyq8ndy
+ Root element exists: true
+ React app rendered successfully
+ App rendering with bootstrap: Object
+ Window width: 1007
+ isMobile: false
+ 🔍 TemplatePreview rendering with templateData: false
+ 🔍 TemplatePreview previewId: mcuf6icdqavuyq8ndy
+ 🔍 TemplatePreview fallbackBootstrap: true
+ 📡 Fetching preview data for ID: mcuf6icdqavuyq8ndy
+ 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+ 📊 VALIDATION RESULTS: Object
+ ✅ DATA VALIDATION PASSED - Safe to render template
+ iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcuf6icdqavuyq8ndy
+ ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ 📋 Successfully loaded preview data: Kigen Plastika
+ 🔍 TemplatePreview rendering with templateData: false
+ 🔍 TemplatePreview previewId: mcuf6icdqavuyq8ndy
+ 🔍 TemplatePreview fallbackBootstrap: true
+ 📋 TemplatePreview about to render HomepageV1 with bootstrap: true
+ 🔍 Bootstrap data preview: Kigen Plastika
+ 🔍 HomepageV1 component check: 
+ 🎯 HeroSection is rendering!
+ 🎯 HeroSection data: Object
+ Editable rendering: h1 with path="heroTitle"
+ Editable rendering: p with path="heroSubtitle"
+ Editable rendering: button with path="ctaText"
+ AboutSection DEBUG - Team data: Array(0) Length: 0
+ Editable rendering: h2 with path="aboutTitle"
+ Editable rendering: p with path="aboutParagraph1"
+ Editable rendering: p with path="aboutParagraph2"
+ Editable rendering: p with path="aboutParagraph3"
+ Editable rendering: h3 with path="feature1Title"
+ Editable rendering: p with path="feature1Description"
+ Editable rendering: h3 with path="feature2Title"
+ Editable rendering: p with path="feature2Description"
+ Editable rendering: h3 with path="feature3Title"
+ Editable rendering: p with path="feature3Description"
+ ServicesSection DEBUG - Services data: Array(0) object
+ ServicesSection DEBUG - GBP products: undefined
+ 🏅 APPLYING SERVICE PRIORITY HIERARCHY
+ 🏅 PRIORITY 4: Using AI-generated services as fallback
+ 🖼️ APPLYING IMAGE PRIORITY HIERARCHY
+ ServicesSection DEBUG - ServicesList: Array(3) Type: object
+ ServicesSection DEBUG - GBP Products: 0 Available: Array(0)
+ ServicesSection DEBUG - Processing service: Professional Services Type: string Index: 0
+ ServicesSection DEBUG - Processing service: Expert Solutions Type: string Index: 1
+ ServicesSection DEBUG - Processing service: Quality Support Type: string Index: 2
+ ServicesSection DEBUG - ServicesToShow: Array(3)
+ Editable rendering: h2 with path="servicesTitle"
+ Editable rendering: h4 with path="serviceTitle0"
+ Editable rendering: p with path="serviceDescription0"
+ Editable rendering: h4 with path="serviceTitle1"
+ Editable rendering: p with path="serviceDescription1"
+ Editable rendering: h4 with path="serviceTitle2"
+ Editable rendering: p with path="serviceDescription2"
+ 🔍 ReviewsSection - Full siteData keys: Array(0)
+ 🔍 ReviewsSection - google_profile: Object
+ 🔍 ReviewsSection - google_profile.reviews: undefined
+ 🔍 ReviewsSection - reviews prop: Array(0)
+ 🔍 ReviewsSection - team data: Array(0)
+ 🔍 ReviewsSection - Has reviews in google_profile? false
+ 🔍 ReviewsSection - Has reviews in main? false
+ 🔍 ReviewsSection - GBP reviews found: 0 reviews
+ 🔍 ReviewsSection - First review sample: undefined
+ Editable rendering: h2 with path="reviewsTitle"
+ Editable rendering: p with path="testimonialText0"
+ Editable rendering: p with path="testimonialAuthor0"
+ Editable rendering: p with path="testimonialText1"
+ Editable rendering: p with path="testimonialAuthor1"
+ Editable rendering: p with path="testimonialText2"
+ Editable rendering: p with path="testimonialAuthor2"
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+Console.js:61 ✅ React DOM ready event dispatched
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+web-client-content-script.js:2 Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.
+    at HTMLIFrameElement.<anonymous> (web-client-content-script.js:2:402720)
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+App.jsx:29 Resize detected - Window width: 1403 isMobile: false
+Console.js:61 Resize detected - Window width: 1007 isMobile: false
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete

@@ -150,7 +150,24 @@ async function loadBootstrap(){
   return JSON.parse(sessionStorage.getItem('bootstrap')||'{}');
 }
 
-loadBootstrap().then(bootstrap=>{
+// Process bootstrap data to ensure correct format for React components
+function processBootstrapData(bootstrap) {
+  if (!bootstrap || typeof bootstrap !== 'object') return bootstrap;
+  
+  return {
+    ...bootstrap,
+    services: Array.isArray(bootstrap.services) 
+      ? bootstrap.services 
+      : (bootstrap.services 
+          ? (typeof bootstrap.services === 'string' 
+              ? bootstrap.services.split(',').map(s => s.trim())
+              : [bootstrap.services])
+          : [])
+  };
+}
+
+loadBootstrap().then(rawBootstrap=>{
+  const bootstrap = processBootstrapData(rawBootstrap);
   console.log('BOOTSTRAP >>', bootstrap);
   console.log('Current path:', window.location.pathname);
   console.log('Root element exists:', !!document.getElementById('root'));
