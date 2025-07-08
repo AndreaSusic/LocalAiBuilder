@@ -4,33 +4,16 @@ import HomepageV1 from '../templates/HomePageV1.jsx';
 export default function TemplatePreview({ templateData, error, loading, previewId }) {
   console.log('🔍 TemplatePreview rendering with templateData:', !!templateData);
 
-  // Mount InlineEditorInjector once the template is rendered
+  // Mount WorkingInlineEditor once the template is rendered  
   useEffect(() => {
-    if (!templateData || loading) return;
+    if (window.__ezEditorMounted) return;
+    window.__ezEditorMounted = true;
 
-    const timer = setTimeout(() => {
-      // guard – never inject twice
-      if (window.__editorInjected) {
-        console.log('⚠️ Editor already injected, skipping');
-        return;
-      }
-      window.__editorInjected = true;
-
-      import('../components/InlineEditorInjector').then(({ default: inject }) => {
-        inject(document);  // pass current document
-        console.log('🟢 InlineEditorInjector injected successfully');
-      }).catch(error => {
-        console.error('❌ Failed to load InlineEditorInjector:', error);
-      });
-
-      // Set autoSavePageId to prevent runtime errors
-      window.autoSavePageId = previewId || 'preview';
-      console.log('🆔 Set autoSavePageId:', window.autoSavePageId);
-
-    }, 1000); // Wait 1 second for template to render
-
-    return () => clearTimeout(timer);
-  }, [templateData, loading, previewId]);
+    import('../components/WorkingInlineEditor').then(({ default: mount }) => {
+      mount(document);                         // <- passes iframe doc
+      console.log('🟢 EZ editor mounted');
+    });
+  }, []);
 
   if (loading) {
     return (
