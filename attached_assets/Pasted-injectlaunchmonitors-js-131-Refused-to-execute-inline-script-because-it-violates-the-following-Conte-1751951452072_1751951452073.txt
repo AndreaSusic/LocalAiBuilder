@@ -1,0 +1,150 @@
+injectlaunchmonitors.js:131 Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://860229ef-4c89-42ba-8392-8e4b4347f7b7/". Either the 'unsafe-inline' keyword, a hash ('sha256-+osnfquB23g9K0xV1ls9W1PGJx2yRDNBiM+W8Bj/zdc='), or a nonce ('nonce-...') is required to enable inline execution.
+
+(anonymous) @ injectlaunchmonitors.js:131
+extension.js:553 Returning a Promise is the preferred way to send a reply from an onMessage/onMessageExternal listener, as the sendResponse will be removed from the specs (See https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) Error
+    at o (chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378065)
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:362:300985
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378108
+o @ browser-polyfill.js:1075
+(anonymous) @ extension.js:553
+(anonymous) @ browser-polyfill.js:1086
+SiteDataContext.js:3 🕵️‍♂️ SiteDataContext loaded
+index.jsx:4 🕵️‍♀️ HomepageV1 module evaluated
+TemplatePreview.jsx:6 🔍 HomepageV1 import: ƒ al({tokens:i={},bootstrap:u=null}){var o,c;console.log("🚀 HomepageV1 function started, bootstrap:",!!u);try{const f=u||{company_name:i.businessName||"Your Business Name",city:i.location?[i.location]…
+TemplatePreview.jsx:7 🔍 HomepageV1 is function: true
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+main.jsx:154 BOOTSTRAP >> {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+main.jsx:155 Current path: /preview/
+main.jsx:156 Root element exists: true
+main.jsx:170 React app rendered successfully
+App.jsx:21 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:22 Window width: 1403
+App.jsx:23 isMobile: false
+DesktopDashboard.jsx:177 ✅ Dashboard user auto-authenticated for editing
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(1)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+content.js:48 request OK
+extension_content.js:1 recalculate_head_data
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:76 Created short URL for preview: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcu2naq80jjjwwjxa83j
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+extension_content.js:1 recalculate_head_data
+main.jsx:176 ✅ React DOM ready event dispatched
+extension_content.js:1 
+            
+            
+           GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/robots.txt 404 (Not Found)
+(anonymous) @ extension_content.js:1
+get_robots_ajax_reponse @ extension_content.js:1
+get_methods.forEach.e.<computed> @ extension_content.js:1
+init @ extension_content.js:1
+await in init
+get_methods.forEach.e.<computed> @ extension_content.js:1
+(anonymous) @ extension_content.js:1
+(anonymous) @ extension_content.js:1
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🕵️‍♂️ SiteDataContext loaded
+Console.js:61 🕵️‍♀️ HomepageV1 module evaluated
+Console.js:61 🔍 HomepageV1 import: ƒ al({tokens:i={},bootstrap:u=null}){var o,c;console.log("🚀 HomepageV1 function started, bootstrap:",!!u);try{const f=u||{company_name:i.businessName||"Your Business Name",city:i.location?[i.location]…
+Console.js:61 🔍 HomepageV1 is function: true
+Console.js:61 🔄 Loaded bootstrap data from short URL: Kigen Plastika
+Console.js:61 BOOTSTRAP >> {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+Console.js:61 Current path: /t/v1/mcu2naq80jjjwwjxa83j
+Console.js:61 Root element exists: true
+Console.js:61 React app rendered successfully
+Console.js:61 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+Console.js:61 Window width: 1007
+Console.js:61 isMobile: false
+Console.js:61 🔍 Fetching preview data for ID: mcu2naq80jjjwwjxa83j
+Console.js:61 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+Console.js:61 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(1)}
+Console.js:61 ✅ DATA VALIDATION PASSED - Safe to render template
+DesktopDashboard.jsx:47 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcu2naq80jjjwwjxa83j
+DesktopDashboard.jsx:50 ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ ✅ Loaded cached preview data for: Kigen Plastika
+ 📊 Data includes reviews: true
+ 📊 Data includes photos: true
+ 🎨 Rendering template with data for: Kigen Plastika
+ 📋 TemplatePreview about to render HomepageV1 with bootstrap: true
+ 🔍 HomepageV1 component check: 
+ 📦 SiteDataProvider wrapper mounted
+ 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+ 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(1)}
+ ✅ DATA VALIDATION PASSED - Safe to render template
+ 🚀 HomepageV1 function started, bootstrap: true
+ HomepageV1 using data: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+Console.js:61 🏠 HomepageV1 rendering with data: (16) ['city', 'images', 'social', 'colours', 'industry', 'language', 'services', 'hero_video', 'company_name', 'conversation', 'payment_plans', 'google_profile', 'team', 'products', 'contact', 'reviews']
+Console.js:61 🔥 About to render HeroSection
+Console.js:61 🔥 HeroSection rendered, moving to ServicesSection
+Console.js:61 🎯 HeroSection is rendering!
+Console.js:61 🎯 HeroSection data: {company_name: 'Kigen Plastika', services: 'Septic Tanks', images: 10}
+Console.js:61 Editable rendering: h1 with path="heroTitle"
+Console.js:61 Editable rendering: p with path="heroSubtitle"
+Console.js:61 Editable rendering: button with path="ctaText"
+Console.js:61 ServicesSection DEBUG - Services data: Septic Tanks string
+Console.js:61 ServicesSection DEBUG - GBP products: undefined
+Console.js:61 🏅 APPLYING SERVICE PRIORITY HIERARCHY
+Console.js:61 🥇 PRIORITY 1: Using user input services text from chat: Septic Tanks
+Console.js:61 🖼️ APPLYING IMAGE PRIORITY HIERARCHY
+Console.js:61 🥇 PRIORITY 1: Using user uploaded images: 10
+Console.js:61 ServicesSection DEBUG - ServicesList: ['Septic Tanks'] Type: object
+Console.js:61 ServicesSection DEBUG - GBP Products: 0 Available: []
+Console.js:61 ServicesSection DEBUG - Processing service: Septic Tanks Type: string Index: 0
+Console.js:61 ServicesSection DEBUG - ServicesToShow: [{…}]
+Console.js:61 Editable rendering: h2 with path="servicesTitle"
+Console.js:61 Editable rendering: h4 with path="serviceTitle0"
+Console.js:61 Editable rendering: p with path="serviceDescription0"
+Console.js:61 AboutSection DEBUG - Team data: [] Length: 0
+Console.js:61 Editable rendering: h2 with path="aboutTitle"
+Console.js:61 Editable rendering: p with path="aboutParagraph1"
+Console.js:61 Editable rendering: p with path="aboutParagraph2"
+Console.js:61 Editable rendering: p with path="aboutParagraph3"
+Console.js:61 Editable rendering: h3 with path="feature1Title"
+Console.js:61 Editable rendering: p with path="feature1Description"
+Console.js:61 Editable rendering: h3 with path="feature2Title"
+Console.js:61 Editable rendering: p with path="feature2Description"
+Console.js:61 Editable rendering: h3 with path="feature3Title"
+Console.js:61 Editable rendering: p with path="feature3Description"
+Console.js:61 🔍 ReviewsSection - Full siteData keys: (16) ['city', 'images', 'social', 'colours', 'industry', 'language', 'services', 'hero_video', 'company_name', 'conversation', 'payment_plans', 'google_profile', 'team', 'products', 'contact', 'reviews']
+Console.js:61 🔍 ReviewsSection - google_profile: https://maps.google.com/maps?place_id=ChIJvW8VATCFWUcRDDXH5bhDN4k
+Console.js:61 🔍 ReviewsSection - google_profile.reviews: undefined
+Console.js:61 🔍 ReviewsSection - reviews prop: (5) [{…}, {…}, {…}, {…}, {…}]
+Console.js:61 🔍 ReviewsSection - team data: []
+Console.js:61 🔍 ReviewsSection - Has reviews in google_profile? false
+Console.js:61 🔍 ReviewsSection - Has reviews in main? true
+Console.js:61 🔍 ReviewsSection - GBP reviews found: 5 reviews
+Console.js:61 🔍 ReviewsSection - First review sample: {author_name: 'Aleksandar Popovic', author_url: 'https://www.google.com/maps/contrib/103861905436016429808/reviews', language: 'en-US', original_language: 'bs', profile_photo_url: 'https://lh3.googleusercontent.com/a-/ALV-UjWIKZyJE…yYcLWKFdCzsxA4NJP1j32_w=s128-c0x00000000-cc-rp-mo', …}
+Console.js:61 Editable rendering: h2 with path="reviewsTitle"
+Console.js:61 Editable rendering: p with path="testimonialText0"
+Console.js:61 Editable rendering: p with path="testimonialAuthor0"
+Console.js:61 Editable rendering: p with path="testimonialText1"
+Console.js:61 Editable rendering: p with path="testimonialAuthor1"
+Console.js:61 Editable rendering: p with path="testimonialText2"
+Console.js:61 Editable rendering: p with path="testimonialAuthor2"
+Console.js:61 ✅ React DOM ready event dispatched
+Console.js:61 ⚠️ TemplatePreview useEffect: ALL EDITOR INJECTION DISABLED
+Console.js:61 ✅ Only WorkingInlineEditor.jsx component should handle editing
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 🔧 Color Guard: Fixed contrast for element, bg: #ffffff, new color: #000000
+Console.js:61 ✅ Color Guard: Color enforcement complete
+Console.js:61 ✅ React DOM ready event dispatched
+Console.js:61 🎨 Color Guard: Starting color enforcement...
+Console.js:61 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
