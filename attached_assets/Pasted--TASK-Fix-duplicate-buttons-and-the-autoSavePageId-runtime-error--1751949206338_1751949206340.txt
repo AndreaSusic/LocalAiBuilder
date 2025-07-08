@@ -1,0 +1,66 @@
+**TASK: Fix duplicate “×” buttons and the autoSavePageId runtime error**
+
+────────────────────────────────────────
+1.  WorkingInlineEditor.jsx  – duplicate buttons
+────────────────────────────────────────
+  • Open dashboard/src/components/WorkingInlineEditor.jsx  
+  • Inside `addDeleteButton(element)` add a *guard* so we never
+    create a second button for the same element:
+
+      if (element.querySelector('.delete-btn-outer')) return;
+
+  • Decide which flavour of delete button we are adding:
+
+      if (element.tagName === 'LI') {
+          deleteBtn.className = 'delete-btn delete-btn-outer';
+      } else if (element.closest('li')) {
+          deleteBtn.className = 'delete-btn delete-btn-inner';
+      } else {
+          deleteBtn.className = 'delete-btn';
+      }
+
+  • Directly after that function runs for the first time,
+    inject a one-time `<style>` block (id="editor-delete-style")
+    into `document.head`:
+
+        .delete-btn-inner { display:none !important; }
+
+────────────────────────────────────────
+2.  TemplatePreview.jsx  – undefined autoSavePageId
+────────────────────────────────────────
+  • Open dashboard/src/components/TemplatePreview.jsx  
+  • Just **before** you call/inject `autoSaveEditor.js`
+    define a global the editor expects:
+
+      const pageId = params.id || bootstrap?.page_id || 'preview';
+      window.autoSavePageId = pageId;    // <- NEW
+      console.log('🆔 autoSavePageId set to', pageId);
+
+  • Pass `pageId` to whatever init/loader the auto-save editor uses
+    (if it already accepts an argument, wire it up).
+
+────────────────────────────────────────
+3.  Sanity logs
+────────────────────────────────────────
+Add these one-liners so we can confirm the patch:
+
+  – In WorkingInlineEditor.jsx, after the className logic:
+        console.log('🎯', deleteBtn.className, 'added for', element.tagName);
+
+  – In TemplatePreview.jsx, right after setting the global:
+        console.log('✅ autoSavePageId global initialised');
+
+────────────────────────────────────────
+4.  Done criteria
+────────────────────────────────────────
+• Refreshing /preview now shows **only one** “×” icon per nav item  
+  (DOM should read:  <li><a>…<button class="delete-btn-inner">×</button></a></li>  
+  AND <li …><button class="delete-btn-outer">×</button></li>)
+
+• Console no longer throws “autoSavePageId is not defined”
+
+• You see the two new logs:
+      🎯 delete-btn-outer added for LI
+      ✅ autoSavePageId global initialised
+
+Push the changes and restart the dashboard.

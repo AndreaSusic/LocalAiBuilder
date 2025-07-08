@@ -80,6 +80,12 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
   useEffect(() => {
     if (!templateData || loading) return;
     
+    // Define autoSavePageId global to prevent runtime errors
+    const pageId = previewId || templateData?.page_id || 'preview';
+    window.autoSavePageId = pageId;
+    console.log('🆔 autoSavePageId set to', pageId);
+    console.log('✅ autoSavePageId global initialised');
+    
     console.log('⚠️ ALL TemplatePreview editor systems COMPLETELY DISABLED to prevent duplicate × buttons');
     console.log('✅ Only WorkingInlineEditor.jsx should be active now');
     return; // COMPLETELY DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
