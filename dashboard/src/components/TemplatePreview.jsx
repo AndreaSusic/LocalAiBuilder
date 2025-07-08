@@ -80,9 +80,8 @@ export default function TemplatePreview({ previewId, fallbackBootstrap }) {
   useEffect(() => {
     if (!templateData || loading) return;
     
-    console.log('⚠️ TemplatePreview useEffect: ALL EDITOR INJECTION DISABLED');
-    console.log('✅ Only WorkingInlineEditor.jsx component should handle editing');
-    // NO SCRIPT INJECTION - WorkingInlineEditor React component handles everything
+    console.log('✅ TemplatePreview useEffect: Allowing SimpleInlineEditor to run');
+    // SimpleInlineEditor React component handles everything
     return;
     
     console.log('🔧 Injecting auto-save inline editor...');

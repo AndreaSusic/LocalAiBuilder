@@ -4,19 +4,21 @@ const SimpleInlineEditor = ({ previewId }) => {
   console.log('🚀 SimpleInlineEditor STARTING - Clean simple version with previewId:', previewId);
 
   useEffect(() => {
-    const iframe = document.querySelector('iframe');
-    if (!iframe) {
-      console.log('❌ No iframe found');
-      return;
-    }
+    // Wait for iframe to be fully loaded
+    const timer = setTimeout(() => {
+      const iframe = document.querySelector('iframe');
+      if (!iframe) {
+        console.log('❌ SimpleInlineEditor: No iframe found');
+        return;
+      }
 
-    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-    const iframeWindow = iframe.contentWindow;
-    
-    if (!iframeDoc || !iframeWindow) {
-      console.log('❌ Cannot access iframe document or window');
-      return;
-    }
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+      const iframeWindow = iframe.contentWindow;
+      
+      if (!iframeDoc || !iframeWindow) {
+        console.log('❌ SimpleInlineEditor: Cannot access iframe document or window');
+        return;
+      }
 
     // Prevent double initialization 
     if (iframeWindow.__SIMPLE_EDITOR_LOADED__) {
@@ -129,10 +131,13 @@ const SimpleInlineEditor = ({ previewId }) => {
 
     console.log(`✅ SimpleInlineEditor: Added ${deleteButtonCount} delete buttons`);
 
-    // Set global variables to prevent errors
-    iframeWindow.autoSavePageId = previewId || 'preview';
-    console.log('🆔 Set autoSavePageId in iframe:', iframeWindow.autoSavePageId);
+      // Set global variables to prevent errors
+      iframeWindow.autoSavePageId = previewId || 'preview';
+      console.log('🆔 Set autoSavePageId in iframe:', iframeWindow.autoSavePageId);
 
+    }, 2000); // Wait 2 seconds for iframe to fully load
+    
+    return () => clearTimeout(timer);
   }, [previewId]);
 
   // This component doesn't render anything - it just injects functionality
