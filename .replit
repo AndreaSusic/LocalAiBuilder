@@ -48,7 +48,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd dashboard && npx serve -l 5174 -s dist"
+args = "cd dashboard && node staging-server-http.js"
 waitForPort = 5174
 
 [deployment]

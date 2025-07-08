@@ -29,6 +29,7 @@
     "express-session": "^1.18.1",
     "face-api.js": "^0.22.2",
     "googleapis": "^150.0.1",
+    "http-proxy-middleware": "^3.0.5",
     "madge": "^8.0.0",
     "memoizee": "^0.4.17",
     "mongodb": "^6.17.0",
