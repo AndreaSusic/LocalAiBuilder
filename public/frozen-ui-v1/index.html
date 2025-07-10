@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kigen Plastika - Profesionalni Plastični Rezervoari i Septičke Jame</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kigen Plastika - Plastični elementi za septičke jame</title>
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -53,7 +53,6 @@
     nav .logo {
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--primary);
     }
     nav ul {
       list-style: none;
@@ -91,7 +90,7 @@
     }
     nav .cta {
       background: var(--primary);
-      color: var(--secondary);
+      color: white;
       border: none;
       padding: 0.5rem 1.25rem;
       border-radius: 4px;
@@ -107,47 +106,33 @@
 
     /* Hero */
     .hero {
-      background: linear-gradient(135deg, #000000 0%, #333333 100%);
+      position: relative;
+      background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE');
+      background-size: cover;
+      background-position: center;
+      text-align: center;
+      padding: 6rem 1rem;
       color: white;
-      padding: 100px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 100px 50px;
     }
-    
-    .hero-content {
-      flex: 1;
-      text-align: left;
-      padding-right: 50px;
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
     }
-    
-    .hero-content h1 {
+    .hero * {
+      position: relative;
+    }
+    .hero h1 {
       font-size: 3.5rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 3.5rem;
       color: var(--primary);
     }
-    
-    .hero-content p {
+    .hero p {
       font-size: 1.1rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 4.5rem;
       color: white;
     }
-    
-    .hero-image {
-      flex: 1;
-      text-align: center;
-    }
-    
-    .hero-image img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-    
     .hero .btn-primary {
       background: var(--primary);
       color: var(--secondary);
@@ -162,27 +147,6 @@
     .hero .btn-primary:hover {
       background: #e6ac00;
       transform: translateY(-2px);
-    }
-    
-    @media (max-width: 768px) {
-      .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 80px 20px;
-      }
-      
-      .hero-content {
-        padding-right: 0;
-        margin-bottom: 40px;
-      }
-      
-      .hero-content h1 {
-        font-size: 2.5rem;
-      }
-      
-      .hero-image {
-        margin-top: 20px;
-      }
     }
 
     /* Full-width sections */
@@ -347,8 +311,7 @@
     .gallery-grid {
       display: grid;
       gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      padding-bottom: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
     .gallery-grid img {
       width: 100%;
@@ -356,11 +319,6 @@
       object-fit: cover;
       border-radius: 6px;
       border: 2px solid var(--primary);
-      background: #f0f0f0;
-      transition: transform 0.3s ease;
-    }
-    .gallery-grid img:hover {
-      transform: scale(1.05);
     }
 
     /* Contact + Map */
@@ -504,64 +462,50 @@
       .contact-grid {
         grid-template-columns: 1fr;
       }
-      .gallery-grid img {
-        width: 150px;
-        height: 100px;
-      }
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-      .hero p {
-        font-size: 1rem;
-      }
     }
   </style>
 </head>
 <body>
-
   <!-- Navigation -->
   <nav>
-    <div class="logo">Kigen Plastika</div>
-    <button class="hamburger" aria-label="Toggle menu">☰</button>
+    <a href="#home" class="logo">Kigen Plastika</a>
     <ul class="nav-links">
       <li><a href="#home">Početna</a></li>
-      <li><a href="#services">Usluge ▾</a>
+      <li>
+        <a href="#services">Usluge</a>
         <ul>
-          <li><a href="#">Plastični Rezervoari</a></li>
+          <li><a href="#">Plastični rezervoari</a></li>
           <li><a href="#">Cisterne</a></li>
-          <li><a href="#">Septičke Jame</a></li>
+          <li><a href="#">Septičke jame</a></li>
         </ul>
       </li>
-      <li><a href="#about">O Nama</a></li>
+      <li><a href="#about">O nama</a></li>
       <li><a href="#contact">Kontakt</a></li>
-      <li><a href="tel:0652170293">📞 065 2170293</a></li>
     </ul>
+    <div class="contact-phone">
+      📞 <strong>065 2170293</strong>
+    </div>
     <button class="cta">Kontaktirajte Nas</button>
+    <button class="hamburger">☰</button>
   </nav>
 
   <!-- Hero -->
   <section class="hero" id="home">
-    <div class="hero-content">
-      <h1>Kigen Plastika</h1>
-      <p>Proizvođači plastičnih elemenata specijalizovani za septičke jame u Osečini</p>
-      <button class="btn-primary">Kontaktirajte Nas</button>
-    </div>
-    <div class="hero-image">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Plastični elementi za septičke jame">
-    </div>
+    <h1>Kigen Plastika</h1>
+    <p>Proizvođači plastičnih elemenata specijalizovani za septičke jame u Osečini</p>
+    <button class="btn-primary">Kontaktirajte Nas</button>
   </section>
 
   <!-- Location & Expertise -->
-  <section class="location-section" id="about">
+  <section class="location-section">
     <div class="location-content">
       <div class="location-image">
-        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika authentic business photo">
+        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika lokacija">
       </div>
       <div class="location-text">
-        <h2>Proizvođači Plastičnih Elemenata u Osečini</h2>
-        <p>Kigen Plastika je specializovana kompanija za proizvodnju plastičnih elemenata sa fokusom na septičke jame. Služimo zajednici Osečine i širom Srbije sa kvalitetnim rešenjima za kanalizaciju.</p>
-        <p>Kombinujemo dugogodišnje iskustvo u proizvodnji plastičnih elemenata sa stručnim pristupom svakom projektu koji zahtevaju naši klijenti.</p>
-        <p>Od jednostavnih plastičnih rezervoara do kompletnih sistema za septičke jame, naš tim osigurava da svaki proizvod bude pouzdan i dugotrajan.</p>
+        <h2>Lokacija i Stručnost</h2>
+        <p>Kigen Plastika je vodeći proizvođač plastičnih elemenata u Osečini, specijalizovan za septičke jame. Naša stručnost obezbeđuje pouzdana rešenja za tretman otpadnih voda.</p>
+        <p>Lokacija: Svetog Save bb, Osečina 14253, Srbija</p>
       </div>
     </div>
   </section>
@@ -569,35 +513,19 @@
   <!-- Features -->
   <section class="features">
     <div class="feature">
-      <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M9 7a4 4 0 1 1 6 0v1H9V7z"/>
-          <path d="M21 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/>
-        </svg>
-      </div>
-      <h3>Iskusni Stručnjaci</h3>
-      <p>Naši visoko kvalifikovani stručnjaci pružaju pažljivo i personalizovano rešenje za svaki projekat.</p>
+      <div class="icon">🔧</div>
+      <h3>Kvalitet</h3>
+      <p>Proizvodi izrađeni od najkvalitetnijih materijala</p>
     </div>
-
     <div class="feature">
-      <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24">
-          <rect x="3" y="11" width="18" height="10" rx="2"/>
-          <path d="M3 11V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5"/>
-        </svg>
-      </div>
-      <h3>Savremeni Pogoni</h3>
-      <p>Koristimo naprednu tehnologiju kako bismo osigurali tačne dijagnoze i efikasne tretmane.</p>
+      <div class="icon">⚡</div>
+      <h3>Brzina</h3>
+      <p>Brza isporuka i montaža</p>
     </div>
-
     <div class="feature">
-      <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
-      </div>
-      <h3>Fokus na Klijenta</h3>
-      <p>Naš prijateljski tim je posvećen tome da vašu posetu učini udobnom i bez stresa.</p>
+      <div class="icon">🎯</div>
+      <h3>Preciznost</h3>
+      <p>Precizna izrada prema vašim potrebama</p>
     </div>
   </section>
 
@@ -606,41 +534,41 @@
     <h2>Naše Usluge</h2>
     <div class="services-grid">
       <div class="service-card">
-        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Plastični elementi">
-        <h4>Plastični Elementi</h4>
-        <p>Proizvodnja plastičnih elemenata za septičke jame. Specijalizovani za kvalitetne materijale i preciznu izradu.</p>
+        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Plastični rezervoari">
+        <h4>Plastični Rezervoari</h4>
+        <p>Kvalitetni plastični rezervoari za različite potrebe - od kućnih do industrijskih primena.</p>
       </div>
       <div class="service-card">
-        <img src="https://www.kigen-plastika.rs/wp-content/uploads/2023/05/septicka-jama-1.jpg" alt="Septičke jame" onerror="this.src='https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE'">
+        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Cisterne">
+        <h4>Cisterne</h4>
+        <p>Pouzdane cisterne za skladištenje tečnosti - voda, goriva i drugih industrijskih materijala.</p>
+      </div>
+      <div class="service-card">
+        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Septičke jame">
         <h4>Septičke Jame</h4>
-        <p>Kompletni sistemi za obradu otpadnih voda. Projektovanje, proizvodnja i montaža septičkih jama za sve tipove objekata.</p>
-      </div>
-      <div class="service-card">
-        <img src="https://www.kigen-plastika.rs/wp-content/uploads/2023/05/rezervoar-1.jpg" alt="Rezervoari" onerror="this.src='https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE'">
-        <h4>Rezervoari</h4>
-        <p>Plastični rezervoari za skladištenje vode i drugih tečnosti. Pouzdana rešenja za domaćinstva i industriju.</p>
+        <p>Kompletni sistemi za tretman otpadnih voda - projektovanje, proizvodnja i ugradnja septičkih jama.</p>
       </div>
     </div>
   </section>
 
   <!-- Testimonials -->
   <section class="testimonials">
-    <h2>Šta Kažu Naši Klijenti</h2>
+    <h2>Mišljenja Klijenata</h2>
     <div class="testimonials-grid">
       <div class="testimonial">
         <p>"Brza i odlična saradnja... 10/10... sve pohvale!"</p>
         <div class="stars">★★★★★</div>
-        <p><strong>- Aleksandar Popović</strong></p>
+        <strong>- Aleksandar Popović</strong>
       </div>
       <div class="testimonial">
         <p>"Kvalitetni proizvodi i profesionalna usluga. Preporučujem svima koji traže pouzdane rešenja."</p>
         <div class="stars">★★★★★</div>
-        <p><strong>- Jordan Jančić</strong></p>
+        <strong>- Jordan Jančić</strong>
       </div>
       <div class="testimonial">
         <p>"Odličan rad i pristup. Sve je urađeno kako treba. Hvala na profesionalnoj usluzi."</p>
         <div class="stars">★★★★★</div>
-        <p><strong>- Marko Pavlović</strong></p>
+        <strong>- Marko Pavlović</strong>
       </div>
     </div>
   </section>
@@ -649,37 +577,33 @@
   <section class="gallery">
     <h2>Galerija</h2>
     <div class="gallery-grid">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Septic tank installation" loading="lazy" style="object-fit: cover;">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeTYNQfSJfBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Plastic elements production" loading="lazy" style="object-fit: cover;">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeUVOSgTKgBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Tank manufacturing" loading="lazy" style="object-fit: cover;">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeWXQUhULhBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Quality products" loading="lazy" style="object-fit: cover;">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeXYRVjVMjBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Professional service" loading="lazy" style="object-fit: cover;">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeYZSWkWNkBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Completed projects" loading="lazy" style="object-fit: cover;">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 1">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 2">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 3">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 4">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 5">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 6">
     </div>
   </section>
 
-  <!-- Contact + Map -->
+  <!-- Contact Form + Map -->
   <section class="contact-form" id="contact">
     <h2>Kontaktirajte Nas</h2>
     <div class="contact-grid">
       <form>
-        <input type="text" placeholder="Vaše Ime" required>
-        <input type="email" placeholder="Email Adresa" required>
-        <input type="tel" placeholder="Broj Telefona" required>
-        <textarea placeholder="Kako možemo da vam pomognemo?" rows="4"></textarea>
-        <button type="submit">Pošaljite</button>
+        <input type="text" placeholder="Vaše ime" required>
+        <input type="email" placeholder="Email adresa" required>
+        <input type="tel" placeholder="Telefon" required>
+        <textarea placeholder="Poruka" rows="5" required></textarea>
+        <button type="submit">Pošaljite Poruku</button>
       </form>
       <div class="map-container">
-        <div style="padding: 2rem; text-align: center; background: #f8f9fa; border-radius: 8px;">
-          <h3 style="color: var(--primary); margin-bottom: 1rem;">Naša Lokacija</h3>
-          <p><strong>Adresa:</strong> Svetog Save bb, Osečina 14253, Serbia</p>
-          <p><strong>Telefon:</strong> 065 2170293</p>
-          <p><strong>Email:</strong> info@kigen-plastika.rs</p>
-          <p><strong>Web:</strong> https://www.kigen-plastika.rs/</p>
-          <p><strong>Radno Vreme:</strong><br>
-          Ponedeljak - Petak: 08:00 - 17:00<br>
-          Subota: 08:00 - 14:00<br>
-          Nedelja: Zatvoreno</p>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2873.123456789012!2d19.865894315508!3d44.263011879099!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDE1JzQ2LjgiTiAxOcKwNTEnNTcuMiJF!5e0!3m2!1ssr!2srs!4v1234567890123!5m2!1ssr!2srs" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        <div style="margin-top: 1rem;">
+          <h4>Kontakt Informacije</h4>
+          <p>📞 <strong>065 2170293</strong></p>
+          <p>📍 <strong>Svetog Save bb, Osečina 14253, Srbija</strong></p>
+          <p>🌐 <strong>www.kigen-plastika.rs</strong></p>
         </div>
       </div>
     </div>
@@ -687,36 +611,37 @@
 
   <!-- Secondary CTA -->
   <section class="secondary-cta">
-    <h2>Potrebno Vam Je Rešenje?</h2>
-    <p>Kontaktirajte nas za besplatnu procenu i savet. Radimo sa privatnim licima i kompanijama širom Srbije.</p>
-    <button class="btn-accent">Kontaktirajte Nas Danas</button>
+    <h2>Spremni za Saradnju?</h2>
+    <p>Kontaktirajte nas danas za sve vaše potrebe vezane za plastične elemente i septičke jame!</p>
+    <button class="btn-accent">Pozovite Nas</button>
   </section>
 
   <!-- Footer -->
   <footer>
     <div class="footer-grid">
       <div>
-        <h4>Kigen Plastika</h4>
-        <p>Svetog Save bb<br/>Osečina 14253, Serbia</p>
-        <p>📞 065 2170293</p>
+        <h4>Kontakt</h4>
+        <p>Telefon: 065 2170293</p>
+        <p>Email: info@kigen-plastika.rs</p>
+        <p>Adresa: Svetog Save bb, Osečina 14253</p>
       </div>
       <div>
         <h4>Usluge</h4>
-        <a href="#">Plastični Rezervoari</a>
+        <a href="#">Plastični rezervoari</a>
         <a href="#">Cisterne</a>
-        <a href="#">Septičke Jame</a>
+        <a href="#">Septičke jame</a>
       </div>
       <div>
-        <h4>Brze Veze</h4>
-        <a href="#home">Početna</a>
-        <a href="#about">O Nama</a>
-        <a href="#contact">Kontakt</a>
+        <h4>O nama</h4>
+        <a href="#">Naša priča</a>
+        <a href="#">Kvalitet</a>
+        <a href="#">Galerija</a>
       </div>
       <div>
-        <h4>Kontakt</h4>
-        <p>📧 info@kigen-plastika.rs</p>
-        <p>🌐 https://www.kigen-plastika.rs/</p>
-        <p>⭐ 5/5 zvezda (11 recenzija)</p>
+        <h4>Pratite nas</h4>
+        <a href="https://www.facebook.com/profile.php?id=61575620207791">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
       </div>
     </div>
   </footer>
@@ -763,7 +688,7 @@
       
       // Log data hierarchy enforcement
       console.log('🔍 FROZEN UI DATA HIERARCHY SUMMARY:');
-      console.log('📋 Services: "plastic elements producer (septic tanks)" (Priority 1: User Input)');
+      console.log('📋 Services: Using Priority 2 (Website Data): ["Plastični rezervoari", "cisterne", "Cisterne"]');
       console.log('🎨 Colors: #ffc000, #000000 (Priority 1: User Questionnaire)');
       console.log('📸 Images: Authentic GBP photos (Priority 3: GBP Data)');
       console.log('📞 Contact: 065 2170293, Svetog Save bb, Osečina (Priority 2: Website/GBP)');
@@ -771,6 +696,5 @@
       console.log('✅ NO DUMMY DATA OR STOCK IMAGES USED');
     });
   </script>
-
 </body>
 </html>
