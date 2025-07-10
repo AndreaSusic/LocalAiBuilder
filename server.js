@@ -231,11 +231,13 @@ passport.deserializeUser(function(user, done) {
 // API endpoint to check authentication status
 app.get('/api/me', (req, res) => {
   if (req.user) {
+    console.log('User object in /api/me:', req.user);
     res.json({ 
-      name: req.user.displayName, 
+      name: req.user.displayName || req.user.display_name || req.user.name || 'User',
       email: req.user.emails && req.user.emails[0] ? req.user.emails[0].value : req.user.email 
     });
   } else {
+    console.log('No user in session for /api/me');
     res.status(401).json({}); 
   }
 });
@@ -411,12 +413,8 @@ app.get('/t/v1/:id', async (req, res) => {
     return res.status(404).send('Preview expired or not found');
   }
   
-  // Check if dist exists dynamically
-  if (!require('fs').existsSync(dist)) {
-    return res.redirect(`http://localhost:5173/t/v1/${id}`);
-  }
-  
-  // Serve the dashboard HTML - React will fetch data via API
+  console.log('📂 Serving template preview from production build for ID:', id);
+  // Always serve the dashboard HTML - React will fetch data via API
   res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
@@ -1863,17 +1861,7 @@ app.post('/api/build-site', ensureLoggedIn(), async (req, res) => {
   }
 });
 
-// Current user info endpoint  
-app.get('/api/me', (req, res) => {
-  if (req.user) {
-    res.json({ 
-      name: req.user.displayName || req.user.name?.givenName || req.user.email?.split('@')[0] || 'User',
-      email: req.user.emails?.[0]?.value || req.user.email
-    });
-  } else {
-    res.status(401).json({ error: 'Not authenticated' });
-  }
-});
+// Duplicate endpoint removed - handled above
 
 // Get user's last draft (no auth required)
 app.get('/api/last-draft', async (req, res) => {
