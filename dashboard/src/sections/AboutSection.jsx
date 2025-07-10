@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import SiteDataContext from '../context/SiteDataContext.js';
+import { SiteDataContext } from '../context/SiteDataContext.js';
 import Editable from '../components/Editable.jsx';
 
 export default function AboutSection() {

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import SiteDataContext from '../context/SiteDataContext';
+import { SiteDataContext } from '../context/SiteDataContext';
 
 export default function ProductsSection() {
   const data = useContext(SiteDataContext);

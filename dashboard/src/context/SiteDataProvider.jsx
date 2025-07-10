@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import SiteDataContext from './SiteDataContext';
+import { SiteDataContext } from './SiteDataContext';
 import { validateBeforeRender } from '../utils/dataValidation';
 
 export default function SiteDataProvider({ bootstrap, children }) {
