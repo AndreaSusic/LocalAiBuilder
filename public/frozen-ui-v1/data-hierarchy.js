@@ -153,9 +153,16 @@ function validateDataHierarchy(data) {
     }
   }
   
-  // Check if services follow user input priority
-  if (data.services && data.services !== userInputData.services) {
+  // Check if services follow proper priority hierarchy
+  // Priority 1: User input (only if it's an array of specific services, not general description)
+  // Priority 2: Website data (specific services from kigen-plastika.rs)
+  // Priority 3: GBP data (authentic services from Google Business Profile)
+  const hasSpecificUserServices = userInputData.services && Array.isArray(userInputData.services) && userInputData.services.length > 0;
+  
+  if (hasSpecificUserServices && data.services !== userInputData.services) {
     violations.push('VIOLATION: Services not following user input priority');
+  } else if (!hasSpecificUserServices && websiteData.services && websiteData.services.length > 0 && data.services !== websiteData.services) {
+    violations.push('VIOLATION: Services not following website data priority');
   }
   
   // Check if colors follow user specification
