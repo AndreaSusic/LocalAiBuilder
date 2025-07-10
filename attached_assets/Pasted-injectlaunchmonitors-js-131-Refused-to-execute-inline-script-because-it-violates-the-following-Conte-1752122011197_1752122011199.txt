@@ -1,0 +1,67 @@
+injectlaunchmonitors.js:131 Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://860229ef-4c89-42ba-8392-8e4b4347f7b7/". Either the 'unsafe-inline' keyword, a hash ('sha256-+osnfquB23g9K0xV1ls9W1PGJx2yRDNBiM+W8Bj/zdc='), or a nonce ('nonce-...') is required to enable inline execution.
+
+(anonymous) @ injectlaunchmonitors.js:131
+extension.js:553 Returning a Promise is the preferred way to send a reply from an onMessage/onMessageExternal listener, as the sendResponse will be removed from the specs (See https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) Error
+    at o (chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378065)
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:362:300985
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378108
+o @ browser-polyfill.js:1075
+(anonymous) @ extension.js:553
+(anonymous) @ browser-polyfill.js:1086
+SiteDataContext.js:3 🕵️‍♂️ SiteDataContext loaded
+TemplatePreview.jsx:10 ######## I AM TP at https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/preview/assets/index-HF0O2K-h.js
+extension_content.js:1 recalculate_head_data
+content.js:48 request OK
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+main.jsx:171 BOOTSTRAP >> Object
+main.jsx:172 Current path: /preview/
+main.jsx:173 Root element exists: true
+main.jsx:187 React app rendered successfully
+App.jsx:24 App rendering with bootstrap: Object
+App.jsx:25 Window width: 1403
+App.jsx:26 isMobile: false
+extension_content.js:1 recalculate_head_data
+robots.txt:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+api/me:1 
+            
+            
+           Failed to load resource: the server responded with a status of 401 (Unauthorized)
+App.jsx:77 🔓 User not authenticated, using static bootstrap data
+App.jsx:24 App rendering with bootstrap: Object
+App.jsx:25 Window width: 1403
+App.jsx:26 isMobile: false
+DesktopDashboard.jsx:177 ✅ Dashboard user auto-authenticated for editing
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: Object
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:76 Created short URL for preview: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcww1ydf2wb1ndpkax3
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:193 ✅ React DOM ready event dispatched
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:47 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcww1ydf2wb1ndpkax3
+DesktopDashboard.jsx:50 ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+App.jsx:95 Resize detected - Window width: 1403 isMobile: false
+App.jsx:95 Resize detected - Window width: 1403 isMobile: false
