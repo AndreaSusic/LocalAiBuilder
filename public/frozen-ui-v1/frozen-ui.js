@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Log data hierarchy enforcement
   console.log('🔍 FROZEN UI DATA HIERARCHY SUMMARY:');
-  console.log('📋 Services: Using Priority 2 (Website Data): ["Plastični rezervoari", "cisterne", "Cisterne"]');
+  console.log('📋 Services: Checking data hierarchy for authentic services...');
   console.log('🎨 Colors: #ffc000, #000000 (Priority 1: User Questionnaire)');
   console.log('📸 Images: Authentic GBP photos (Priority 3: GBP Data)');
   console.log('📞 Contact: 065 2170293, Svetog Save bb, Osečina (Priority 2: Website/GBP)');
