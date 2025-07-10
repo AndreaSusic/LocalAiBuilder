@@ -192,9 +192,9 @@
 
     /* Features */
     .features {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       background: white;
       padding: 3rem 1rem;
       text-align: center;
@@ -202,22 +202,30 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .feature {
-      flex: 1;
-      padding: 1rem;
+      background: var(--bg-light);
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      transition: transform 0.3s ease;
+    }
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     }
     .feature .icon {
-      font-size: 2.5rem;
-      margin-bottom: 0.75rem;
+      font-size: 3rem;
+      margin-bottom: 1rem;
       color: var(--primary);
     }
     .feature h3 {
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
       color: var(--secondary);
     }
     .feature p {
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: #555;
+      line-height: 1.6;
     }
 
     /* Services */
@@ -453,8 +461,7 @@
         text-align: center;
       }
       .features {
-        flex-direction: column;
-        align-items: stretch;
+        grid-template-columns: 1fr;
         max-width: 900px;
         margin: 0 auto;
         box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -514,18 +521,18 @@
   <section class="features">
     <div class="feature">
       <div class="icon">🔧</div>
-      <h3>Kvalitet</h3>
-      <p>Proizvodi izrađeni od najkvalitetnijih materijala</p>
+      <h3>Vrhunski Kvalitet</h3>
+      <p>Naši plastični rezervoari i cisterne su izrađeni od najkvalitetnijih materijala koji pružaju dugotrajnu otpornost i pouzdanost. Svaki proizvod prolazi kroz rigorozne testove kvaliteta pre isporuke.</p>
     </div>
     <div class="feature">
       <div class="icon">⚡</div>
-      <h3>Brzina</h3>
-      <p>Brza isporuka i montaža</p>
+      <h3>Brza Isporuka</h3>
+      <p>Zahvaljujući optimizovanom procesu proizvodnje i stalnom raspoloženju materijala, možemo da obezbedimo brzu isporuku i profesionalnu montažu septičkih jama na vašoj lokaciji.</p>
     </div>
     <div class="feature">
       <div class="icon">🎯</div>
-      <h3>Preciznost</h3>
-      <p>Precizna izrada prema vašim potrebama</p>
+      <h3>Prilagođena Rešenja</h3>
+      <p>Svaki projekat je jedinstven. Naš tim stručnjaka pravi precizne kalkulacije i prilagođava dimenzije rezervoara prema specifičnim potrebama vašeg objekta i lokalnim propisima.</p>
     </div>
   </section>
 
@@ -577,12 +584,12 @@
   <section class="gallery">
     <h2>Galerija</h2>
     <div class="gallery-grid">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 1">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 2">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 3">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 4">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 5">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika projekat 6">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Septička jama projekat 1">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeTYNQfSJfBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Plastični rezervoari projekat 2">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeUVOSgTKgBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Cisterne projekat 3">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeWXQUhULhBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Kvalitetni proizvodi projekat 4">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeXYRVjVMjBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Profesionalna usluga projekat 5">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeYZSWkWNkBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Završeni projekti 6">
     </div>
   </section>
 
@@ -647,54 +654,6 @@
   </footer>
 
   <script src="data-hierarchy.js"></script>
-  <script nonce="frozen-ui-script">
-    // Hamburger menu functionality
-    const ham = document.querySelector('.hamburger');
-    const menu = document.querySelector('.nav-links');
-    
-    if (ham && menu) {
-      ham.addEventListener('click', () => {
-        menu.classList.toggle('open');
-      });
-    }
-    
-    // Simple inline editor for elements
-    document.addEventListener('DOMContentLoaded', function() {
-      const elements = document.querySelectorAll('h1, h2, h3, h4, p');
-      
-      elements.forEach(el => {
-        el.addEventListener('mouseenter', function() {
-          this.style.outline = '2px dotted #ff0000';
-          this.style.cursor = 'pointer';
-        });
-        
-        el.addEventListener('mouseleave', function() {
-          if (!this.hasAttribute('contenteditable')) {
-            this.style.outline = 'none';
-          }
-        });
-        
-        el.addEventListener('click', function() {
-          this.contentEditable = true;
-          this.style.outline = '2px solid #ffc000';
-          this.focus();
-        });
-        
-        el.addEventListener('blur', function() {
-          this.contentEditable = false;
-          this.style.outline = 'none';
-        });
-      });
-      
-      // Log data hierarchy enforcement
-      console.log('🔍 FROZEN UI DATA HIERARCHY SUMMARY:');
-      console.log('📋 Services: Using Priority 2 (Website Data): ["Plastični rezervoari", "cisterne", "Cisterne"]');
-      console.log('🎨 Colors: #ffc000, #000000 (Priority 1: User Questionnaire)');
-      console.log('📸 Images: Authentic GBP photos (Priority 3: GBP Data)');
-      console.log('📞 Contact: 065 2170293, Svetog Save bb, Osečina (Priority 2: Website/GBP)');
-      console.log('⭐ Reviews: Aleksandar Popović, Jordan Jančić, Marko Pavlović (Priority 3: GBP)');
-      console.log('✅ NO DUMMY DATA OR STOCK IMAGES USED');
-    });
-  </script>
+  <script src="frozen-ui.js"></script>
 </body>
 </html>

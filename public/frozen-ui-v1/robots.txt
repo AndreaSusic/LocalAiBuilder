@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Frozen UI for Kigen Plastika
+Allow: /frozen-ui-v1/
+Allow: /app/
+
+# Disallow admin paths
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api
