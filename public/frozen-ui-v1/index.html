@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kigen Plastika - Profesionalni Plastični Rezervoari i Septičke Jame</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: #000000;
+            color: #ffffff;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffc000;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffc000;
+        }
+        
+        .cta-btn {
+            background: #ffc000;
+            color: #000000;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .cta-btn:hover {
+            background: #e6ac00;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            color: #ffffff;
+            padding: 8rem 0 4rem;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KPGcgZmlsbD0iI2ZmYzAwMCIgZmlsbC1vcGFjaXR5PSIwLjEiPgo8Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSI0Ii8+CjwvZz4KPC9nPgo8L3N2Zz4=') repeat;
+            opacity: 0.1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #ffc000;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-btn {
+            background: #ffc000;
+            color: #000000;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(255, 192, 0, 0.3);
+        }
+        
+        .hero-btn:hover {
+            background: #e6ac00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 192, 0, 0.4);
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 4rem 0;
+            background: #f8f9fa;
+        }
+        
+        .services h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #000000;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #ffc000;
+            transition: transform 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-card h3 {
+            color: #000000;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .service-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: #ffc000;
+            color: #000000;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        
+        .cta-section p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-section .cta-btn {
+            background: #000000;
+            color: #ffc000;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .cta-section .cta-btn:hover {
+            background: #333333;
+            transform: translateY(-2px);
+        }
+        
+        /* Location Section */
+        .location-section {
+            padding: 4rem 0;
+            background: #ffffff;
+        }
+        
+        .location-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #000000;
+        }
+        
+        .location-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .location-info h3 {
+            color: #000000;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .location-info p {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .location-info strong {
+            color: #ffc000;
+        }
+        
+        .location-map {
+            background: #f8f9fa;
+            height: 300px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffc000;
+        }
+        
+        .location-map p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        /* Gallery Section */
+        .gallery {
+            padding: 4rem 0;
+            background: #f8f9fa;
+        }
+        
+        .gallery h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #000000;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .gallery-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        /* Reviews Section */
+        .reviews {
+            padding: 4rem 0;
+            background: #ffffff;
+        }
+        
+        .reviews h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #000000;
+        }
+        
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .review-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #ffc000;
+        }
+        
+        .review-stars {
+            color: #ffc000;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .review-text {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        
+        .review-author {
+            font-weight: 600;
+            color: #000000;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #000000;
+            color: #ffffff;
+            padding: 3rem 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            color: #ffc000;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #333333;
+            color: #999;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .location-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+            
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">Kigen Plastika</div>
+            <ul class="nav-links">
+                <li><a href="#home">Početna</a></li>
+                <li><a href="#services">Usluge</a></li>
+                <li><a href="#gallery">Galerija</a></li>
+                <li><a href="#reviews">Recenzije</a></li>
+                <li><a href="#location">Lokacija</a></li>
+                <li><a href="#contact">Kontakt</a></li>
+            </ul>
+            <a href="#contact" class="cta-btn">Kontaktirajte Nas</a>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Kigen Plastika</h1>
+                <p>Profesionalni plastični rezervoari, cisterne i septičke jame u Osečini</p>
+                <a href="#contact" class="hero-btn">Kontaktirajte Nas</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2>Naše Usluge</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Plastični Rezervoari</h3>
+                    <p>Visokokvalitetni plastični rezervoari za vodu i otpadne vode. Različite veličine i kapaciteti prilagođeni vašim potrebama.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Cisterne</h3>
+                    <p>Profesionalne cisterne za skladištenje tečnosti. Sigurne i pouzdane za industriju i domaćinstvo.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Septičke Jame</h3>
+                    <p>Kompletno rešenje za kanalizaciju - projektovanje, ugradnja i održavanje septičkih jama za sve tipove objekata.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta-section" id="cta">
+        <div class="container">
+            <h2>Potrebno Vam Je Rešenje?</h2>
+            <p>Kontaktirajte nas za besplatnu procenu i savet. Radimo sa privatnim licima i kompanijama širom Srbije.</p>
+            <a href="#contact" class="cta-btn">Kontaktirajte Nas</a>
+        </div>
+    </section>
+    
+    <!-- Location Section -->
+    <section class="location-section" id="location">
+        <div class="container">
+            <h2>Gde Se Nalazimo</h2>
+            <div class="location-content">
+                <div class="location-info">
+                    <h3>Kigen Plastika</h3>
+                    <p><strong>Adresa:</strong> Svetog Save bb, Osečina 14253, Serbia</p>
+                    <p><strong>Telefon:</strong> 065 2170293</p>
+                    <p><strong>Email:</strong> info@kigen-plastika.rs</p>
+                    <p><strong>Web:</strong> https://www.kigen-plastika.rs/</p>
+                    <p><strong>Radno Vreme:</strong><br>
+                    Ponedeljak - Petak: 08:00 - 17:00<br>
+                    Subota: 08:00 - 14:00<br>
+                    Nedelja: Zatvoreno</p>
+                </div>
+                <div class="location-map">
+                    <p>📍 Interaktivna mapa lokacije<br>Osečina, Serbia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <h2>Naši Radovi</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300x200/ffc000/000000?text=Plastični+Rezervoari" alt="Plastični rezervoari">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300x200/000000/ffc000?text=Cisterne" alt="Cisterne">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300x200/ffc000/000000?text=Septičke+Jame" alt="Septičke jame">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300x200/000000/ffc000?text=Ugradnja" alt="Ugradnja">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300x200/ffc000/000000?text=Održavanje" alt="Održavanje">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300x200/000000/ffc000?text=Projekti" alt="Projekti">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Reviews Section -->
+    <section class="reviews" id="reviews">
+        <div class="container">
+            <h2>Šta Kažu Naši Klijenti</h2>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">Brza i odlična saradnja... 10/10... sve pohvale!</p>
+                    <p class="review-author">- Aleksandar Popović</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">Kvalitetni proizvodi i profesionalna usluga. Preporučujem svima!</p>
+                    <p class="review-author">- Jordan Jančić</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">Odličan rad i pristup. Sve je urađeno kako treba.</p>
+                    <p class="review-author">- Marko Pavlović</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Kigen Plastika</h4>
+                    <p>Profesionalni plastični rezervoari, cisterne i septičke jame za sve vaše potrebe.</p>
+                    <p>Radimo sa privatnim licima i kompanijama širom Srbije.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Kontakt Informacije</h4>
+                    <p>📞 Telefon: 065 2170293</p>
+                    <p>📍 Adresa: Svetog Save bb, Osečina 14253, Serbia</p>
+                    <p>📧 Email: info@kigen-plastika.rs</p>
+                    <p>🌐 Web: https://www.kigen-plastika.rs/</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Naše Usluge</h4>
+                    <p>Plastični Rezervoari</p>
+                    <p>Cisterne</p>
+                    <p>Septičke Jame</p>
+                    <p>Ugradnja i Održavanje</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kigen Plastika. Sva prava zadržana.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Simple smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Simple inline editor for elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('h1, h2, h3, p');
+            
+            elements.forEach(el => {
+                el.addEventListener('mouseenter', function() {
+                    this.style.outline = '2px dotted #ff0000';
+                    this.style.cursor = 'pointer';
+                });
+                
+                el.addEventListener('mouseleave', function() {
+                    if (!this.hasAttribute('contenteditable')) {
+                        this.style.outline = 'none';
+                    }
+                });
+                
+                el.addEventListener('click', function() {
+                    this.contentEditable = true;
+                    this.style.outline = '2px solid #ffc000';
+                    this.focus();
+                });
+                
+                el.addEventListener('blur', function() {
+                    this.contentEditable = false;
+                    this.style.outline = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
