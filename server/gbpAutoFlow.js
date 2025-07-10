@@ -201,10 +201,15 @@ async function processAuthenticPhotos(photos, apiKey) {
     return [];
   }
   
-  const photoUrls = photos.map(photo => {
+  const photoUrls = photos.map((photo, index) => {
+    if (!photo.photo_reference) {
+      console.log(`⚠️ Photo ${index + 1} has no photo_reference, skipping`);
+      return null;
+    }
+    
     const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=${photo.photo_reference}&key=${apiKey}`;
     return photoUrl;
-  });
+  }).filter(url => url !== null);
   
   console.log('📸 Processed', photoUrls.length, 'authentic GBP photos');
   return photoUrls;
