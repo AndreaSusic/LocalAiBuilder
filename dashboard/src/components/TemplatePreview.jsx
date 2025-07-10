@@ -1,245 +1,104 @@
-import React, { useEffect, useState } from 'react';
-import HomepageV1 from '../templates/homepage/v1/index.jsx';
+/*  src/components/TemplatePreview.jsx
+    -----------------------------------------------------------
+    Shows the live website preview inside the dashboard.
+    It pulls the logged-in account’s data from /api/user-data
+    and feeds it to the template (HomepageV1).
+----------------------------------------------------------- */
+import React, { useEffect, useState } from "react";
+import HomepageV1 from "../templates/homepage/v1/index.jsx";
 
-export default function TemplatePreview({ templateData, error, loading, previewId, fallbackBootstrap }) {
-  console.log('🔍 TemplatePreview rendering with templateData:', !!templateData);
-  console.log('🔍 TemplatePreview previewId:', previewId);
+console.log("######## I AM TP at", import.meta.url);
 
-  // Delete button injection system
+/* -----------------------------------------------------------
+ * 1. Fetch the bootstrap JSON once.
+ * 2. While loading, show a spinner message.
+ * 3. If there’s an error, show a friendly retry box.
+ * 4. When ready, pass the data to <HomepageV1>.
+ * --------------------------------------------------------- */
+export default function TemplatePreview() {
+  /* -------- state buckets -------- */
+  const [bootstrap, setBootstrap] = useState(null); // real data
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  /* -------- one-time fetch -------- */
   useEffect(() => {
-    if (!templateData || loading) return;
+    (async () => {
+      try {
+        console.log("📡  GET /api/user-data …");
+        const res = await fetch("/api/user-data");
+        if (!res.ok) throw new Error(`API returned ${res.status}`);
+        const json = await res.json();
 
-    console.log('🚀 TemplatePreview: Injecting simple delete buttons directly');
-
-    const timer = setTimeout(() => {
-      const iframe = document.querySelector('iframe#preview-iframe');
-      if (!iframe) {
-        console.log('❌ No iframe found for delete button injection');
-        return;
-      }
-
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-      const iframeWindow = iframe.contentWindow;
-
-      if (!iframeDoc || !iframeWindow) {
-        console.log('❌ Cannot access iframe content');
-        return;
-      }
-
-      // Prevent double initialization 
-      if (iframeWindow.__DELETE_BUTTONS_LOADED__) {
-        console.log('⚠️ Delete buttons already loaded, skipping');
-        return;
-      }
-      iframeWindow.__DELETE_BUTTONS_LOADED__ = true;
-      
-      console.log('✅ Injecting delete buttons...');
-
-      // Add styles
-      if (!iframeDoc.getElementById('delete-button-styles')) {
-        const style = iframeDoc.createElement('style');
-        style.id = 'delete-button-styles';
-        style.textContent = `
-          .editor-element {
-            position: relative !important;
-            outline: 2px dotted transparent !important;
-            transition: outline 0.2s ease !important;
-          }
-          .editor-element:hover {
-            outline: 2px dotted red !important;
-          }
-          .editor-element.active {
-            outline: 2px solid #ffc000 !important;
-          }
-          .delete-btn {
-            position: absolute !important;
-            top: -8px !important;
-            right: -8px !important;
-            width: 20px !important;
-            height: 20px !important;
-            background: red !important;
-            color: white !important;
-            border: none !important;
-            border-radius: 50% !important;
-            font-size: 12px !important;
-            cursor: pointer !important;
-            display: none !important;
-            z-index: 9999 !important;
-            line-height: 1 !important;
-          }
-          .editor-element:hover .delete-btn {
-            display: block !important;
-          }
-        `;
-        iframeDoc.head.appendChild(style);
-        console.log('💄 Added delete button styles');
-      }
-
-      // Find all editable elements and add delete buttons
-      const editableElements = iframeDoc.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, button, span');
-      let deleteButtonCount = 0;
-
-      editableElements.forEach((element) => {
-        // Skip if element already has a delete button
-        if (element.querySelector('.delete-btn')) {
-          return;
-        }
-
-        // Add editor class and make editable
-        element.classList.add('editor-element');
-        if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span'].includes(element.tagName.toLowerCase())) {
-          element.setAttribute('contenteditable', 'true');
-        }
-
-        // Ensure parent has relative positioning
-        const computedStyle = iframeWindow.getComputedStyle(element);
-        if (computedStyle.position === 'static') {
-          element.style.position = 'relative';
-        }
-
-        // Create delete button
-        const deleteBtn = iframeDoc.createElement('button');
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.textContent = '×';
-        
-        deleteBtn.onclick = (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (confirm('Delete this element?')) {
-            element.remove();
-            console.log('🗑️ Element deleted:', element.tagName);
-          }
+        // Normalise shape: make sure services is always an ARRAY
+        const processed = {
+          ...json.bootstrap,
+          services: Array.isArray(json.bootstrap.services)
+            ? json.bootstrap.services
+            : json.bootstrap.services
+              ? [json.bootstrap.services]
+              : [],
         };
 
-        element.appendChild(deleteBtn);
-        deleteButtonCount++;
-        
-        console.log(`🎯 Delete button added for ${element.tagName} (${element.className || 'no class'})`);
-      });
+        console.log("✅  Loaded bootstrap:", processed);
+        setBootstrap(processed);
+      } catch (err) {
+        console.error("❌  /api/user-data failed:", err);
+        setError(err.message || "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
-      console.log(`✅ Added ${deleteButtonCount} delete buttons successfully`);
-
-      // Set global variables to prevent errors
-      iframeWindow.autoSavePageId = previewId || 'preview';
-      console.log('🆔 Set autoSavePageId in iframe:', iframeWindow.autoSavePageId);
-
-    }, 3000); // Wait 3 seconds for iframe to fully load
-    
-    return () => clearTimeout(timer);
-  }, [templateData, loading, previewId]);
-
+  /* -------- loading state -------- */
   if (loading) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        fontFamily: 'Arial, sans-serif',
-        fontSize: '18px',
-        color: '#666'
-      }}>
-        Loading template preview...
-      </div>
-    );
+    return <div style={styles.centerBox}>Loading preview…</div>;
   }
 
-  if (error && !templateData) {
+  /* -------- error state -------- */
+  if (error || !bootstrap) {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        fontFamily: 'Arial, sans-serif',
-        textAlign: 'center',
-        color: '#333',
-        padding: '20px'
-      }}>
-        <h2 style={{ color: '#ff4444', marginBottom: '16px' }}>
-          Template Loading Error
-        </h2>
-        <p style={{ marginBottom: '16px', color: '#666' }}>
-          {error || 'Failed to load template data'}
+      <div style={styles.centerBox}>
+        <h2 style={{ color: "#ff4444", marginBottom: 16 }}>Data Error</h2>
+        <p style={{ marginBottom: 16, color: "#666" }}>
+          {error || "No data returned from /api/user-data"}
         </p>
-        <button 
-          onClick={() => window.location.reload()} 
-          style={{
-            padding: '12px 24px',
-            background: '#ffc000',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
-        >
-          Retry Loading
+        <button onClick={() => window.location.reload()} style={styles.btn}>
+          Retry
         </button>
       </div>
     );
   }
 
-  function processBootstrap(b) {
-    if (!b) return {};
-    return {
-      ...b,
-      // guarantee array shape
-      services: Array.isArray(b.services)
-                  ? b.services
-                  : (b.services ? [b.services] : []),
-    };
-  }
-
-  const fallbackBootstrapData = processBootstrap(fallbackBootstrap);
-
-  console.log('📋 TemplatePreview about to render HomepageV1 with bootstrap:', !!templateData);
-  console.log('🔍 Bootstrap data preview:', (templateData || fallbackBootstrapData)?.company_name || 'No company name');
-  console.log('🔍 Bootstrap services debug:', (templateData || fallbackBootstrapData)?.services);
-  console.log('🔍 Bootstrap full data keys:', Object.keys(templateData || fallbackBootstrapData || {}));
-
-  try {
-    return (
-      <div style={{ width: '100%', height: '100%' }}>
-        <HomepageV1 bootstrap={templateData || fallbackBootstrapData} />
-      </div>
-    );
-  } catch (renderError) {
-    console.error('❌ HomepageV1 render error:', renderError);
-    return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        fontFamily: 'Arial, sans-serif',
-        textAlign: 'center',
-        color: '#333',
-        padding: '20px'
-      }}>
-        <h2 style={{ color: '#ff4444', marginBottom: '16px' }}>
-          Template Render Error
-        </h2>
-        <p style={{ marginBottom: '16px', color: '#666' }}>
-          {renderError.message || 'Failed to render template'}
-        </p>
-        <button 
-          onClick={() => window.location.reload()} 
-          style={{
-            padding: '12px 24px',
-            background: '#ffc000',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
-        >
-          Reload Dashboard
-        </button>
-      </div>
-    );
-  }
+  /* -------- ready! -------- */
+  return (
+    <div style={{ width: "100%", height: "100%" }}>
+      <HomepageV1 bootstrap={bootstrap} />
+    </div>
+  );
 }
+
+/* -----------------------------------------------------------
+ * Inline helper styles
+ * --------------------------------------------------------- */
+const styles = {
+  centerBox: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+    fontFamily: "Arial, sans-serif",
+    textAlign: "center",
+  },
+  btn: {
+    padding: "12px 24px",
+    background: "#ffc000",
+    color: "#fff",
+    border: "none",
+    borderRadius: 4,
+    fontSize: 16,
+    cursor: "pointer",
+  },
+};

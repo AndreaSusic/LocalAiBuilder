@@ -1,0 +1,44 @@
+You’re looking at a Vite + React + Express project.
+
+Problem
+-------
+• The navbar’s “Login” control used to start the `/auth/google` Passport flow
+  (or a similar Express route) and is now inert: clicking it triggers *no*
+  network request in DevTools → Network.
+• The element is currently rendered as:
+    <button id="loginBtn" class="btn-secondary" data-lang="navLogin">Login</button>
+  It has no href and no onClick handler.
+
+Known working state
+-------------------
+• Earlier revisions had functional login; the dev server proxied `/auth/*` (and
+  maybe `/login/*`) from Vite to the backend on :5000.
+• `vite.config.js` originally contained:
+    proxy: {
+      '/auth':  { target: 'http://localhost:5000', changeOrigin: true, secure: false },
+      '/login': { target: 'http://localhost:5000', changeOrigin: true, secure: false },
+    }
+
+What to restore / implement
+---------------------------
+1. Re-attach the click behaviour **OR** convert the button back into a link:
+      <a href="/auth/google" className="btn-secondary">Login</a>
+   (If the project uses another route, e.g. `/login/google`, adjust accordingly.)
+2. Make sure the same path is still present in `vite.config.js → server.proxy`.
+3. Confirm that `SiteDataContext` and the navbar component import path are NOT
+   breaking the build (they currently compile).
+4. Reload the dev server (`npm run dev`) and verify:
+     • Clicking “Login” performs a GET `/auth/google` (302 → Google consent)
+     • The request is visible in Network tab and **not** intercepted by Vite.
+
+Tasks for you (Replit AI):
+--------------------------
+✅ Search the repo for `loginBtn`, `navLogin`, or `auth/google` to locate the
+   original implementation.
+✅ If a commit with working login exists, revert or cherry-pick the relevant
+   component / proxy changes.
+✅ Otherwise, patch the current navbar component to use the link or onClick
+   redirect as described above, commit, and restart the dev server.
+
+Return **only** the diff or files you change plus a short test-plan so I can
+verify that “Login” works again.

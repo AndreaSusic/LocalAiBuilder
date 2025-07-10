@@ -237,9 +237,15 @@ function DesktopDashboard({ bootstrap }) {
             <option value="Mobile">Mobile</option>
           </select>
 
-          <button className="btn-wireframe" onClick={handleLogout}>
-            Logout
-          </button>
+          {user && user.isDashboardUser ? (
+            <button className="btn-wireframe" onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
+            <a href="/auth/google" className="btn-wireframe">
+              Login
+            </a>
+          )}
         </div>
       </div>
 

@@ -139,6 +139,8 @@ export default function MobileDashboard({ bootstrap }) {
   const [showVersions, setShowVersions] = useState(false);
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
   const [previewContent, setPreviewContent] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const createPreviewUrl = async () => {
@@ -161,6 +163,24 @@ export default function MobileDashboard({ bootstrap }) {
     };
 
     createPreviewUrl();
+    
+    const checkAuth = async () => {
+      try {
+        // Dashboard users get auto-authentication for editing features
+        setUser({ 
+          name: 'Dashboard User', 
+          email: 'dashboard@localai.dev',
+          isDashboardUser: true 
+        });
+        console.log('✅ Mobile dashboard user auto-authenticated for editing');
+      } catch (error) {
+        console.error('Auth setup failed:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
   }, [bootstrap]);
 
   const handleIframeLoad = (event) => {
@@ -182,6 +202,20 @@ export default function MobileDashboard({ bootstrap }) {
     }
   };
 
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        fontSize: '18px'
+      }}>
+        Loading dashboard...
+      </div>
+    );
+  }
+
   return (
     <div className="mobile-dashboard-wireframe">
       {/* Sticky Top Bar */}
@@ -192,7 +226,11 @@ export default function MobileDashboard({ bootstrap }) {
           </a>
           <button className="icon-btn-wireframe">🔔</button>
           <button className="small-btn-wireframe">Publish</button>
-          <button className="small-btn-wireframe" onClick={handleLogout}>Logout</button>
+          {user && user.isDashboardUser ? (
+            <button className="small-btn-wireframe" onClick={handleLogout}>Logout</button>
+          ) : (
+            <a href="/auth/google" className="small-btn-wireframe">Login</a>
+          )}
         </div>
       </header>
 

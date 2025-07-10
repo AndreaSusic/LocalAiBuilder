@@ -1,4 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
+
+console.log("######## I AM TP at", import.meta.url);
 
 const TemplatePreviewFixed = ({ previewId, onReady }) => {
   const iframeRef = useRef(null);
@@ -9,16 +11,19 @@ const TemplatePreviewFixed = ({ previewId, onReady }) => {
 
     const handleLoad = () => {
       try {
-        const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
+        const frameDoc =
+          iframe.contentDocument || iframe.contentWindow.document;
         if (!frameDoc) return;
 
-        console.log('⚠️ TemplatePreviewFixed editor DISABLED to prevent duplicate × buttons');
+        console.log(
+          "⚠️ TemplatePreviewFixed editor DISABLED to prevent duplicate × buttons",
+        );
         return; // DISABLED TO PREVENT DUPLICATE DELETE BUTTONS
 
         // Wait for React content to load
         setTimeout(() => {
           // Create comprehensive inline editor script
-          const script = frameDoc.createElement('script');
+          const script = frameDoc.createElement("script");
           script.innerHTML = `
             (function() {
               console.log('🚀 Starting comprehensive inline editor...');
@@ -528,21 +533,22 @@ const TemplatePreviewFixed = ({ previewId, onReady }) => {
               setTimeout(init, 1000);
             })();
           `;
-          
+
           // DISABLED: frameDoc.head.appendChild(script); // Preventing duplicate editor systems
-          console.log('🔧 TemplatePreviewFixed editor injection DISABLED to prevent double delete buttons');
-          console.log('✅ Comprehensive editor injected');
-          
+          console.log(
+            "🔧 TemplatePreviewFixed editor injection DISABLED to prevent double delete buttons",
+          );
+          console.log("✅ Comprehensive editor injected");
+
           if (onReady) onReady();
         }, 1000);
-        
       } catch (error) {
-        console.error('❌ Error injecting editor:', error);
+        console.error("❌ Error injecting editor:", error);
       }
     };
 
-    iframe.addEventListener('load', handleLoad);
-    return () => iframe.removeEventListener('load', handleLoad);
+    iframe.addEventListener("load", handleLoad);
+    return () => iframe.removeEventListener("load", handleLoad);
   }, [previewId, onReady]);
 
   return (
@@ -550,10 +556,10 @@ const TemplatePreviewFixed = ({ previewId, onReady }) => {
       ref={iframeRef}
       src={`/t/v1/${previewId}`}
       style={{
-        width: '100%',
-        height: '100%',
-        border: 'none',
-        borderRadius: '8px'
+        width: "100%",
+        height: "100%",
+        border: "none",
+        borderRadius: "8px",
       }}
       title="Template Preview"
     />
