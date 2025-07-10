@@ -107,33 +107,47 @@
 
     /* Hero */
     .hero {
-      position: relative;
-      background-image: url('https://plus.unsplash.com/premium_photo-1681966962522-546f370bc98e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-      background-size: cover;
-      background-position: center;
-      text-align: center;
-      padding: 6rem 1rem;
+      background: linear-gradient(135deg, #000000 0%, #333333 100%);
       color: white;
+      padding: 100px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 50px;
     }
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.4);
+    
+    .hero-content {
+      flex: 1;
+      text-align: left;
+      padding-right: 50px;
     }
-    .hero * {
-      position: relative;
-    }
-    .hero h1 {
+    
+    .hero-content h1 {
       font-size: 3.5rem;
-      margin-bottom: 3.5rem;
+      margin-bottom: 1.5rem;
       color: var(--primary);
     }
-    .hero p {
+    
+    .hero-content p {
       font-size: 1.1rem;
-      margin-bottom: 4.5rem;
+      margin-bottom: 2.5rem;
       color: white;
     }
+    
+    .hero-image {
+      flex: 1;
+      text-align: center;
+    }
+    
+    .hero-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
     .hero .btn-primary {
       background: var(--primary);
       color: var(--secondary);
@@ -148,6 +162,27 @@
     .hero .btn-primary:hover {
       background: #e6ac00;
       transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 80px 20px;
+      }
+      
+      .hero-content {
+        padding-right: 0;
+        margin-bottom: 40px;
+      }
+      
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero-image {
+        margin-top: 20px;
+      }
     }
 
     /* Full-width sections */
@@ -310,18 +345,22 @@
       color: var(--secondary);
     }
     .gallery-grid {
-      display: flex;
-      gap: 0.5rem;
-      overflow-x: auto;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       padding-bottom: 1rem;
     }
     .gallery-grid img {
-      flex: 0 0 auto;
-      width: 200px;
-      height: 150px;
+      width: 100%;
+      height: 200px;
       object-fit: cover;
       border-radius: 6px;
       border: 2px solid var(--primary);
+      background: #f0f0f0;
+      transition: transform 0.3s ease;
+    }
+    .gallery-grid img:hover {
+      transform: scale(1.05);
     }
 
     /* Contact + Map */
@@ -502,9 +541,14 @@
 
   <!-- Hero -->
   <section class="hero" id="home">
-    <h1>Kigen Plastika</h1>
-    <p>Proizvođači plastičnih elemenata specijalizovani za septičke jame u Osečini</p>
-    <button class="btn-primary">Kontaktirajte Nas</button>
+    <div class="hero-content">
+      <h1>Kigen Plastika</h1>
+      <p>Proizvođači plastičnih elemenata specijalizovani za septičke jame u Osečini</p>
+      <button class="btn-primary">Kontaktirajte Nas</button>
+    </div>
+    <div class="hero-image">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Plastični elementi za septičke jame">
+    </div>
   </section>
 
   <!-- Location & Expertise -->
@@ -562,19 +606,19 @@
     <h2>Naše Usluge</h2>
     <div class="services-grid">
       <div class="service-card">
-        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Plastični Elementi">
-        <h4>Plastični Elementi Proizvodnja</h4>
-        <p>Kao proizvođači plastičnih elemenata, specijalizovani smo za septičke jame koje služe domaćinstvima i preduzećima u Osečini.</p>
+        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Plastični elementi">
+        <h4>Plastični Elementi</h4>
+        <p>Proizvodnja plastičnih elemenata za septičke jame. Specijalizovani za kvalitetne materijale i preciznu izradu.</p>
       </div>
       <div class="service-card">
-        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpejHFy8KDWEQZg-a_YEqE9nqFfVYnUOlRPXlB-vIvXW5LLLiEQKKWNUQlVqJLGJDfpjqnvdBNNpnEUCZJlV4FfF7qLgjRLLKOIjxHT6hLNFx3pUbWfPU3qPL0oZmFvyXqDTXVOhVQjX6fYEHtbdNGhVIYzLgJEOLNXLCaJRnF8YrJlzWQy0IWNfPxRvJJtZBLNFOI3pPUHtVfVOhVQjX6fYEHtbdNGhVIYzLgJEOLNXLCaJRnF8YrJlzWQy0IWNfPxRvJJtZBLN&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Septičke Jame">
+        <img src="https://www.kigen-plastika.rs/wp-content/uploads/2023/05/septicka-jama-1.jpg" alt="Septičke jame" onerror="this.src='https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE'">
         <h4>Septičke Jame</h4>
-        <p>Kompletno rešenje za kanalizaciju - projektovanje, ugradnja i održavanje septičkih jama za sve tipove objekata.</p>
+        <p>Kompletni sistemi za obradu otpadnih voda. Projektovanje, proizvodnja i montaža septičkih jama za sve tipove objekata.</p>
       </div>
       <div class="service-card">
-        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeKo6KiF-IUZLh6PL1HzJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Rezervoari">
+        <img src="https://www.kigen-plastika.rs/wp-content/uploads/2023/05/rezervoar-1.jpg" alt="Rezervoari" onerror="this.src='https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE'">
         <h4>Rezervoari</h4>
-        <p>Različiti tipovi rezervoara za industrijsku i domaću upotrebu. Sigurni i pouzdani za skladištenje tečnosti.</p>
+        <p>Plastični rezervoari za skladištenje vode i drugih tečnosti. Pouzdana rešenja za domaćinstva i industriju.</p>
       </div>
     </div>
   </section>
@@ -603,14 +647,14 @@
 
   <!-- Gallery -->
   <section class="gallery">
-    <h2>Naši Radovi</h2>
+    <h2>Galerija</h2>
     <div class="gallery-grid">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika authentic photo 1">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeqRWMO2kEhEQKKWNUQlVqJLGJDfpjqnvdBNNpnEUCZJlV4FfF7qLgjRLLKOIjxHT6hLNFx3pUbWfPU3qPL0oZmFvyXqDTXVOhVQjX6fYEHtbdNGhVIYzLgJEOLNXLCaJRnF8YrJlzWQy0IWNfPxRvJJtZBLNFOI3pPUHtVfVOhVQjX6fYEHtbdNGhVIYzLgJEOLNXLCaJRnF8YrJlzWQy0IWNfPxRvJJtZBLN&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika authentic photo 2">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeHxLd1n5ZdmF0hOEJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika authentic photo 3">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeYIh5LSLQhfGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika authentic photo 4">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeXFBNJgf7XlOhVQjX6fYEHtbdNGhVIYzLgJEOLNXLCaJRnF8YrJlzWQy0IWNfPxRvJJtZBLNFOI3pPUHtVfVOhVQjX6fYEHtbdNGhVIYzLgJEOLNXLCaJRnF8YrJlzWQy0IWNfPxRvJJtZBLN&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika authentic photo 5">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpeU2hNSj3qPL0oZmFvyXqDTXVOhVQjX6fYEHtbdNGhVIYzLgJEOLNXLCaJRnF8YrJlzWQy0IWNfPxRvJJtZBLNFOI3pPUHtVfVOhVQjX6fYEHtbdNGhVIYzLgJEOLNXLCaJRnF8YrJlzWQy0IWNfPxRvJJtZBLN&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika authentic photo 6">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeG8xKKBXP93GgdsIElH7nP2oNSr3tCOui5XzONn9EkzlR8_nj0J7fZ8PICIIp9owE0wHu5PNlkuQyBxajjh8524PP2D0KfgPUnWnJPBL7KJzlC0CXfjE29QJxp5DepSVfkmkWxSPhFRS72Ou318JhhtT9T6HlFWbF6DR-YglbOX9IKL91r8vPXtUccugLaFEXHkoJ7aNNdZ0XyLNcbZBRdfn94aM1rfNM9PRBcezRWQBMNDqFpk-glG32Ji7IrEjkD3osXU4PjFbCZ5vTWTIXGAfUI3hig6ph044tn4M7kzg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Septic tank installation" loading="lazy" style="object-fit: cover;">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeTYNQfSJfBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Plastic elements production" loading="lazy" style="object-fit: cover;">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeUVOSgTKgBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Tank manufacturing" loading="lazy" style="object-fit: cover;">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeWXQUhULhBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Quality products" loading="lazy" style="object-fit: cover;">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeXYRVjVMjBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Professional service" loading="lazy" style="object-fit: cover;">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeYZSWkWNkBq8HILRyQGhjI3LGP5J7AULEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQJEQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Completed projects" loading="lazy" style="object-fit: cover;">
     </div>
   </section>
 
@@ -678,7 +722,7 @@
   </footer>
 
   <script src="data-hierarchy.js"></script>
-  <script>
+  <script nonce="frozen-ui-script">
     // Hamburger menu functionality
     const ham = document.querySelector('.hamburger');
     const menu = document.querySelector('.nav-links');
