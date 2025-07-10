@@ -1,0 +1,123 @@
+injectlaunchmonitors.js:131 Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://860229ef-4c89-42ba-8392-8e4b4347f7b7/". Either the 'unsafe-inline' keyword, a hash ('sha256-+osnfquB23g9K0xV1ls9W1PGJx2yRDNBiM+W8Bj/zdc='), or a nonce ('nonce-...') is required to enable inline execution.
+
+(anonymous) @ injectlaunchmonitors.js:131
+extension.js:553 Returning a Promise is the preferred way to send a reply from an onMessage/onMessageExternal listener, as the sendResponse will be removed from the specs (See https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) Error
+    at o (chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378065)
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:362:300985
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378108
+o @ browser-polyfill.js:1075
+(anonymous) @ extension.js:553
+(anonymous) @ browser-polyfill.js:1086
+SiteDataContext.js:3 🕵️‍♂️ SiteDataContext loaded
+TemplatePreview.jsx:10 ######## I AM TP at https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/preview/assets/index-HF0O2K-h.js
+content.js:48 request OK
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+main.jsx:171 BOOTSTRAP >> {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+main.jsx:172 Current path: /preview/
+main.jsx:173 Root element exists: true
+main.jsx:187 React app rendered successfully
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 1403
+App.jsx:26 isMobile: false
+extension_content.js:1 recalculate_head_data
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+App.jsx:35 
+            
+            
+           GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/api/me 401 (Unauthorized)
+N @ App.jsx:35
+(anonymous) @ App.jsx:88
+vl @ react-dom-client.production.js:8292
+Xf @ react-dom-client.production.js:9771
+Bt @ react-dom-client.production.js:9746
+Xf @ react-dom-client.production.js:9878
+Bt @ react-dom-client.production.js:9746
+Xf @ react-dom-client.production.js:9765
+Bt @ react-dom-client.production.js:9746
+Xf @ react-dom-client.production.js:9782
+cd @ react-dom-client.production.js:11313
+(anonymous) @ react-dom-client.production.js:11048
+ue @ scheduler.production.js:151
+App.jsx:77 🔓 User not authenticated, using static bootstrap data
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 1403
+App.jsx:26 isMobile: false
+DesktopDashboard.jsx:177 ✅ Dashboard user auto-authenticated for editing
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(1)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+extension_content.js:1 
+            
+            
+           GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/robots.txt 404 (Not Found)
+(anonymous) @ extension_content.js:1
+get_robots_ajax_reponse @ extension_content.js:1
+get_methods.forEach.e.<computed> @ extension_content.js:1
+init @ extension_content.js:1
+await in init
+get_methods.forEach.e.<computed> @ extension_content.js:1
+(anonymous) @ extension_content.js:1
+(anonymous) @ extension_content.js:1
+extension_content.js:1 recalculate_head_data
+main.jsx:193 ✅ React DOM ready event dispatched
+DesktopDashboard.jsx:76 Created short URL for preview: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcwyifbgvucatmyd3wc
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:47 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcwyifbgvucatmyd3wc
+DesktopDashboard.jsx:50 ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+App.jsx:95 Resize detected - Window width: 4 isMobile: true
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 4
+App.jsx:26 isMobile: true
+MobileDashboard.jsx:175 ✅ Mobile dashboard user auto-authenticated for editing
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 4
+App.jsx:26 isMobile: true
+App.jsx:95 Resize detected - Window width: 423 isMobile: true
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+MobileDashboard.jsx:158 Created short URL for mobile preview: /t/v1/hegv1q0e7
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+MobileDashboard.jsx:17 🔧 Injecting ultra-simple inline editor...
+MobileDashboard.jsx:126 🔧 MobileDashboard editor injection DISABLED to prevent double delete buttons
+MobileDashboard.jsx:127 ✅ Simple editor script injected
+App.jsx:95 Resize detected - Window width: 300 isMobile: true
+App.jsx:95 Resize detected - Window width: 1403 isMobile: false
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 1403
+App.jsx:26 isMobile: false
+DesktopDashboard.jsx:177 ✅ Dashboard user auto-authenticated for editing
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 1403
+App.jsx:26 isMobile: false
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:76 Created short URL for preview: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcwykl63cvr2fiptkvv
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:47 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcwykl63cvr2fiptkvv
+DesktopDashboard.jsx:50 ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
