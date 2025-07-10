@@ -1,0 +1,69 @@
+ Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://860229ef-4c89-42ba-8392-8e4b4347f7b7/". Either the 'unsafe-inline' keyword, a hash ('sha256-+osnfquB23g9K0xV1ls9W1PGJx2yRDNBiM+W8Bj/zdc='), or a nonce ('nonce-...') is required to enable inline execution.
+
+(anonymous) @ injectlaunchmonitors.js:131
+ Returning a Promise is the preferred way to send a reply from an onMessage/onMessageExternal listener, as the sendResponse will be removed from the specs (See https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) Error
+    at o (chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378065)
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:362:300985
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378108
+o @ content.js:3
+ 🕵️‍♂️ SiteDataContext loaded
+ ######## I AM TP at https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/preview/assets/index-HF0O2K-h.js
+ recalculate_head_data
+ request OK
+robots.txt:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ recalculate_head_data
+ 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+ BOOTSTRAP >> Object
+ Current path: /preview/
+ Root element exists: true
+ React app rendered successfully
+ App rendering with bootstrap: Object
+ Window width: 1403
+ isMobile: false
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+api/me:1  Failed to load resource: the server responded with a status of 401 (Unauthorized)
+ 🔓 User not authenticated, using static bootstrap data
+ App rendering with bootstrap: Object
+ Window width: 1403
+ isMobile: false
+ ✅ Dashboard user auto-authenticated for editing
+ 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+ 📊 VALIDATION RESULTS: Object
+ ✅ DATA VALIDATION PASSED - Safe to render template
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ Created short URL for preview: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcwvets8ez8kdse3s67
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ ✅ React DOM ready event dispatched
+mcwvets8ez8kdse3s67:1 Refused to apply style from 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/assets/index-BUPMvmwQ.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+index-HF0O2K-h.js:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+mcwvets8ez8kdse3s67:1 Refused to apply style from 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/assets/index-BUPMvmwQ.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.
+vite.svg:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+DesktopDashboard.jsx:47 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/mcwvets8ez8kdse3s67
+DesktopDashboard.jsx:50 ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
+App.jsx:95 Resize detected - Window width: 1403 isMobile: false
+mcwvets8ez8kdse3s67:1 Refused to apply style from 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/t/v1/assets/index-BUPMvmwQ.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
