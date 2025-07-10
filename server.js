@@ -282,15 +282,21 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve main static files first (homepage, etc.)
-app.use(express.static('.'));
-
-// Serve dashboard assets for preview routes
+// Serve dashboard assets BEFORE general static files to prevent conflicts
 app.use('/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'assets')));
 app.use('/dashboard/assets', express.static(path.join(__dirname, 'dashboard', 'dist', 'assets')));
 
 // Serve dashboard static files (vite.svg, etc.)
 app.use('/vite.svg', express.static(path.join(__dirname, 'dashboard', 'dist', 'vite.svg')));
+
+// Serve main static files (homepage, etc.) but exclude dashboard folder
+app.use((req, res, next) => {
+  // Don't serve dashboard files through general static middleware
+  if (req.path.startsWith('/dashboard/')) {
+    return next();
+  }
+  express.static('.')(req, res, next);
+});
 
 // Serve SPA for dashboard routes only
 const dist = path.join(__dirname, 'dashboard', 'dist');
@@ -2195,7 +2201,7 @@ app.get('/', (req, res) => {
 
 // Serve React app from production build for dashboard routes
 app.use('/preview', express.static(path.join(__dirname, 'dashboard', 'dist')));
-app.use('/dashboard', express.static(path.join(__dirname, 'dashboard', 'dist')));
+// Dashboard static files handled by route handler below to prevent index.html conflicts
 
 // React app routing for specific paths
 app.get('/preview', (req, res) => {
@@ -2203,9 +2209,15 @@ app.get('/preview', (req, res) => {
   res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
+// Dashboard static files for non-HTML assets
+app.use('/dashboard', express.static(path.join(__dirname, 'dashboard', 'dist'), {
+  index: false, // Don't serve index.html automatically
+  dotfiles: 'ignore'
+}));
+
 app.get('/dashboard', (req, res) => {
-  console.log('🔄 Redirecting to Vite dev server');
-  return res.redirect('http://localhost:5173/dashboard');
+  console.log('📂 Serving dashboard SPA from production build');
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 });
 
 app.get('/test-editor', (req, res) => {

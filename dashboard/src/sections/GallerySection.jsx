@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import SiteDataContext from '../context/SiteDataContext.js';
+import { SiteDataContext } from '../context/SiteDataContext.js';
 
 export default function GallerySection() {
   const { images = [], google_profile = {}, safeImg, company_name = 'Our Business' } = useContext(SiteDataContext) || {};

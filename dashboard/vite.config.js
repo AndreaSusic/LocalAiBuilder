@@ -16,6 +16,8 @@ export default defineConfig({
 
   appType: "spa",
 
+  base: "./",
+
   build: {
     outDir: "dist",
     emptyOutDir: true,
