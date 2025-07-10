@@ -78,6 +78,14 @@ console.log("OPENAI_API_KEY length:",
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Serve frozen UI at /app endpoint
+app.use(
+  "/app",
+  express.static(path.join(__dirname, "public/frozen-ui-v1"), {
+    maxAge: "365d",
+  })
+);
+
 // In-memory user store
 const users = []; // { id, email, passwordHash, displayName, provider }
 
