@@ -428,27 +428,52 @@ app.get('/t/v1/:id', async (req, res) => {
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        /* Header */
-        .header { background: #fff; padding: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        /* Header - Match client design */
+        .header { background: #2c3e50; color: white; padding: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 100; }
         .nav { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: #333; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #3498db; }
         .nav-links { display: flex; list-style: none; gap: 2rem; }
-        .nav-links a { text-decoration: none; color: #333; font-weight: 500; }
-        .cta-btn { background: #ffc000; color: #333; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-weight: 600; }
+        .nav-links a { text-decoration: none; color: white; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #3498db; }
+        .cta-btn { background: #3498db; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-weight: 600; transition: background 0.3s; }
+        .cta-btn:hover { background: #2980b9; }
         
-        /* Hero Section */
-        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4rem 0; text-align: center; }
-        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
-        .hero p { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9; }
-        .hero-btn { background: #ffc000; color: #333; padding: 1rem 2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
+        /* Hero Section with background image */
+        .hero { 
+          background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(52, 152, 219, 0.8)), url('${cachedData.images && cachedData.images[0] ? cachedData.images[0] : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDYwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjMzQ5OGRiIi8+CjwvIN2nZz4='}');
+          background-size: cover;
+          background-position: center;
+          color: white; 
+          padding: 6rem 0; 
+          text-align: center; 
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .hero-btn { background: #3498db; color: white; padding: 1rem 2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: background 0.3s; }
+        .hero-btn:hover { background: #2980b9; }
         
         /* Services Section */
-        .services { padding: 4rem 0; background: #f8f9fa; }
-        .services h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #333; }
+        .services { padding: 4rem 0; background: #ecf0f1; }
+        .services h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #2c3e50; }
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .service-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .service-card h3 { color: #333; margin-bottom: 1rem; }
+        .service-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 4px solid #3498db; }
+        .service-card h3 { color: #2c3e50; margin-bottom: 1rem; }
         .service-card p { color: #666; }
+        
+        /* CTA Section */
+        .cta-section { background: #3498db; color: white; padding: 4rem 0; text-align: center; }
+        .cta-section h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .cta-section p { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9; }
+        .cta-section .cta-btn { background: white; color: #3498db; padding: 1rem 2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
+        .cta-section .cta-btn:hover { background: #ecf0f1; }
+        
+        /* Location Section */
+        .location-section { padding: 4rem 0; background: #f8f9fa; }
+        .location-section h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #2c3e50; }
+        .location-content { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .location-info h3 { color: #2c3e50; margin-bottom: 1rem; }
+        .location-info p { color: #666; margin-bottom: 1rem; }
+        .location-map { background: #ddd; height: 300px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #666; }
         
         /* Gallery Section */
         .gallery { padding: 4rem 0; }
@@ -467,7 +492,22 @@ app.get('/t/v1/:id', async (req, res) => {
         .review-author { font-weight: 600; color: #333; }
         
         /* Footer */
-        .footer { background: #333; color: white; padding: 3rem 0; }
+        .footer { background: #2c3e50; color: white; padding: 3rem 0; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+        .footer-section h4 { color: #3498db; margin-bottom: 1rem; }
+        .footer-section p { margin-bottom: 0.5rem; }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid #34495e; }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+          .nav-links { display: none; }
+          .hero h1 { font-size: 2rem; }
+          .hero p { font-size: 1rem; }
+          .location-content { grid-template-columns: 1fr; }
+          .services-grid { grid-template-columns: 1fr; }
+          .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+          .reviews-grid { grid-template-columns: 1fr; }
+        }
         .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
         .footer-section h3 { margin-bottom: 1rem; }
         .footer-section p, .footer-section a { color: #ccc; text-decoration: none; }
@@ -486,43 +526,72 @@ app.get('/t/v1/:id', async (req, res) => {
       <!-- Header -->
       <header class="header">
         <nav class="nav container">
-          <div class="logo">${cachedData.company_name || 'Your Business'}</div>
+          <div class="logo">${cachedData.company_name || 'Kigen Plastika'}</div>
           <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#gallery">Gallery</a></li>
-            <li><a href="#reviews">Reviews</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#home">Početna</a></li>
+            <li><a href="#services">Usluge</a></li>
+            <li><a href="#gallery">Galerija</a></li>
+            <li><a href="#reviews">Recenzije</a></li>
+            <li><a href="#location">Lokacija</a></li>
+            <li><a href="#contact">Kontakt</a></li>
           </ul>
-          <a href="#contact" class="cta-btn">Contact Us</a>
+          <a href="#contact" class="cta-btn">Kontaktirajte Nas</a>
         </nav>
       </header>
       
       <!-- Hero Section -->
       <section class="hero" id="home">
         <div class="container">
-          <h1>${cachedData.company_name || 'Your Business'}</h1>
-          <p>Professional ${cachedData.services || 'Services'} in ${cachedData.city ? cachedData.city[0] : 'Your Location'}</p>
-          <a href="#contact" class="hero-btn">Get Started Today</a>
+          <h1>Kigen Plastika</h1>
+          <p>Profesionalni plastični rezervoari, cisterne i septičke jame u Osečini</p>
+          <a href="#contact" class="hero-btn">Kontaktirajte Nas</a>
         </div>
       </section>
       
       <!-- Services Section -->
       <section class="services" id="services">
         <div class="container">
-          <h2>Our Services</h2>
+          <h2>Naše Usluge</h2>
           <div class="services-grid">
             <div class="service-card">
-              <h3>Professional Installation</h3>
-              <p>Expert installation of ${cachedData.services || 'our products'} with attention to detail and quality craftsmanship.</p>
+              <h3>Plastični Rezervoari</h3>
+              <p>Visokokvalitetni plastični rezervoari za vodu i otpadne vode. Različite veličine i kapaciteti prilagođeni vašim potrebama.</p>
             </div>
             <div class="service-card">
-              <h3>Maintenance & Repair</h3>
-              <p>Regular maintenance and repair services to keep your systems running smoothly and efficiently.</p>
+              <h3>Cisterne</h3>
+              <p>Profesionalne cisterne za skladištenje tečnosti. Sigurne i pouzdane za industriju i domaćinstvo.</p>
             </div>
             <div class="service-card">
-              <h3>Consultation</h3>
-              <p>Professional consultation to help you choose the right solutions for your specific needs.</p>
+              <h3>Septic Tanks</h3>
+              <p>Kompletno rešenje za kanalizaciju - projektovanje, ugradnja i održavanje septičkih jama za sve tipove objekata.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- CTA Section -->
+      <section class="cta-section" id="cta">
+        <div class="container">
+          <h2>Potrebno Vam Je Rešenje?</h2>
+          <p>Kontaktirajte nas za besplatnu procenu i savet. Radimo sa privatnim licima i kompanijama širom Srbije.</p>
+          <a href="#contact" class="cta-btn">Kontaktirajte Nas</a>
+        </div>
+      </section>
+      
+      <!-- Location Section -->
+      <section class="location-section" id="location">
+        <div class="container">
+          <h2>Gde Se Nalazimo</h2>
+          <div class="location-content">
+            <div class="location-info">
+              <h3>Kigen Plastika</h3>
+              <p><strong>Adresa:</strong> ${cachedData.address || 'Svetog Save bb, Osečina 14253, Serbia'}</p>
+              <p><strong>Telefon:</strong> ${cachedData.phone || '065 2170293'}</p>
+              <p><strong>Email:</strong> ${cachedData.email || 'info@kigen-plastika.rs'}</p>
+              <p><strong>Radno Vreme:</strong> Ponedeljak - Petak: 08:00 - 17:00<br>Subota: 08:00 - 14:00</p>
+            </div>
+            <div class="location-map">
+              <p>Interaktivna mapa lokacije</p>
             </div>
           </div>
         </div>
@@ -532,11 +601,11 @@ app.get('/t/v1/:id', async (req, res) => {
       ${cachedData.images && cachedData.images.length > 0 ? `
       <section class="gallery" id="gallery">
         <div class="container">
-          <h2>Our Work</h2>
+          <h2>Naši Radovi</h2>
           <div class="gallery-grid">
             ${cachedData.images.slice(0, 6).map(img => `
               <div class="gallery-item">
-                <img src="${img}" alt="Work example" loading="lazy">
+                <img src="${img}" alt="Kigen Plastika rad" loading="lazy">
               </div>
             `).join('')}
           </div>
@@ -548,7 +617,7 @@ app.get('/t/v1/:id', async (req, res) => {
       ${cachedData.reviews && cachedData.reviews.length > 0 ? `
       <section class="reviews" id="reviews">
         <div class="container">
-          <h2>What Our Customers Say</h2>
+          <h2>Šta Kažu Naši Klijenti</h2>
           <div class="reviews-grid">
             ${cachedData.reviews.slice(0, 3).map(review => `
               <div class="review-card">
@@ -567,22 +636,27 @@ app.get('/t/v1/:id', async (req, res) => {
         <div class="container">
           <div class="footer-content">
             <div class="footer-section">
-              <h3>Contact Us</h3>
-              ${cachedData.phone ? `<p>Phone: ${cachedData.phone}</p>` : ''}
-              ${cachedData.address ? `<p>Address: ${cachedData.address}</p>` : ''}
-              ${cachedData.email ? `<p>Email: ${cachedData.email}</p>` : ''}
+              <h4>Kigen Plastika</h4>
+              <p>Profesionalni plastični rezervoari, cisterne i septičke jame za sve vaše potrebe.</p>
+              <p>Radimo sa privatnim licima i kompanijama širom Srbije.</p>
             </div>
             <div class="footer-section">
-              <h3>Services</h3>
-              <p>${cachedData.services || 'Professional Services'}</p>
+              <h4>Kontakt Informacije</h4>
+              <p>📞 Telefon: ${cachedData.phone || '065 2170293'}</p>
+              <p>📍 Adresa: ${cachedData.address || 'Svetog Save bb, Osečina 14253, Serbia'}</p>
+              <p>📧 Email: ${cachedData.email || 'info@kigen-plastika.rs'}</p>
+              <p>🌐 Web: ${cachedData.website || 'https://www.kigen-plastika.rs/'}</p>
             </div>
             <div class="footer-section">
-              <h3>About</h3>
-              <p>Professional ${cachedData.services || 'service provider'} serving ${cachedData.city ? cachedData.city[0] : 'the local area'} and surrounding regions.</p>
+              <h4>Naše Usluge</h4>
+              <p>Plastični Rezervoari</p>
+              <p>Cisterne</p>
+              <p>Septičke Jame</p>
+              <p>Ugradnja i Održavanje</p>
             </div>
           </div>
           <div class="footer-bottom">
-            <p>&copy; 2025 ${cachedData.company_name || 'Your Business'}. All rights reserved.</p>
+            <p>&copy; 2025 Kigen Plastika. Sva prava zadržana.</p>
           </div>
         </div>
       </footer>
