@@ -413,9 +413,215 @@ app.get('/t/v1/:id', async (req, res) => {
     return res.status(404).send('Preview expired or not found');
   }
   
-  console.log('📂 Serving template preview from production build for ID:', id);
-  // Always serve the dashboard HTML - React will fetch data via API
-  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+  console.log('📂 Serving template preview with authentic data for ID:', id);
+  
+  // Generate clean HTML template with authentic Kigen Plastika data
+  const templateHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${cachedData.company_name || 'Website Preview'}</title>
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        .header { background: #fff; padding: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #333; }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; }
+        .cta-btn { background: #ffc000; color: #333; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-weight: 600; }
+        
+        /* Hero Section */
+        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4rem 0; text-align: center; }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9; }
+        .hero-btn { background: #ffc000; color: #333; padding: 1rem 2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
+        
+        /* Services Section */
+        .services { padding: 4rem 0; background: #f8f9fa; }
+        .services h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #333; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .service-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .service-card h3 { color: #333; margin-bottom: 1rem; }
+        .service-card p { color: #666; }
+        
+        /* Gallery Section */
+        .gallery { padding: 4rem 0; }
+        .gallery h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #333; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .gallery-item { border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .gallery-item img { width: 100%; height: 200px; object-fit: cover; }
+        
+        /* Reviews Section */
+        .reviews { padding: 4rem 0; background: #f8f9fa; }
+        .reviews h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #333; }
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .review-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .review-stars { color: #ffc000; margin-bottom: 1rem; }
+        .review-text { color: #666; margin-bottom: 1rem; }
+        .review-author { font-weight: 600; color: #333; }
+        
+        /* Footer */
+        .footer { background: #333; color: white; padding: 3rem 0; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .footer-section h3 { margin-bottom: 1rem; }
+        .footer-section p, .footer-section a { color: #ccc; text-decoration: none; }
+        .footer-bottom { text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #555; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+          .hero h1 { font-size: 2rem; }
+          .hero p { font-size: 1rem; }
+          .services-grid { grid-template-columns: 1fr; }
+          .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        }
+      </style>
+    </head>
+    <body>
+      <!-- Header -->
+      <header class="header">
+        <nav class="nav container">
+          <div class="logo">${cachedData.company_name || 'Your Business'}</div>
+          <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          <a href="#contact" class="cta-btn">Contact Us</a>
+        </nav>
+      </header>
+      
+      <!-- Hero Section -->
+      <section class="hero" id="home">
+        <div class="container">
+          <h1>${cachedData.company_name || 'Your Business'}</h1>
+          <p>Professional ${cachedData.services || 'Services'} in ${cachedData.city ? cachedData.city[0] : 'Your Location'}</p>
+          <a href="#contact" class="hero-btn">Get Started Today</a>
+        </div>
+      </section>
+      
+      <!-- Services Section -->
+      <section class="services" id="services">
+        <div class="container">
+          <h2>Our Services</h2>
+          <div class="services-grid">
+            <div class="service-card">
+              <h3>Professional Installation</h3>
+              <p>Expert installation of ${cachedData.services || 'our products'} with attention to detail and quality craftsmanship.</p>
+            </div>
+            <div class="service-card">
+              <h3>Maintenance & Repair</h3>
+              <p>Regular maintenance and repair services to keep your systems running smoothly and efficiently.</p>
+            </div>
+            <div class="service-card">
+              <h3>Consultation</h3>
+              <p>Professional consultation to help you choose the right solutions for your specific needs.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Gallery Section -->
+      ${cachedData.images && cachedData.images.length > 0 ? `
+      <section class="gallery" id="gallery">
+        <div class="container">
+          <h2>Our Work</h2>
+          <div class="gallery-grid">
+            ${cachedData.images.slice(0, 6).map(img => `
+              <div class="gallery-item">
+                <img src="${img}" alt="Work example" loading="lazy">
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
+      ` : ''}
+      
+      <!-- Reviews Section -->
+      ${cachedData.reviews && cachedData.reviews.length > 0 ? `
+      <section class="reviews" id="reviews">
+        <div class="container">
+          <h2>What Our Customers Say</h2>
+          <div class="reviews-grid">
+            ${cachedData.reviews.slice(0, 3).map(review => `
+              <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">${review.text}</p>
+                <p class="review-author">- ${review.author_name}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
+      ` : ''}
+      
+      <!-- Footer -->
+      <footer class="footer" id="contact">
+        <div class="container">
+          <div class="footer-content">
+            <div class="footer-section">
+              <h3>Contact Us</h3>
+              ${cachedData.phone ? `<p>Phone: ${cachedData.phone}</p>` : ''}
+              ${cachedData.address ? `<p>Address: ${cachedData.address}</p>` : ''}
+              ${cachedData.email ? `<p>Email: ${cachedData.email}</p>` : ''}
+            </div>
+            <div class="footer-section">
+              <h3>Services</h3>
+              <p>${cachedData.services || 'Professional Services'}</p>
+            </div>
+            <div class="footer-section">
+              <h3>About</h3>
+              <p>Professional ${cachedData.services || 'service provider'} serving ${cachedData.city ? cachedData.city[0] : 'the local area'} and surrounding regions.</p>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p>&copy; 2025 ${cachedData.company_name || 'Your Business'}. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+      
+      <script>
+        // Simple inline editor for template preview
+        document.addEventListener('DOMContentLoaded', function() {
+          const elements = document.querySelectorAll('h1, h2, h3, p');
+          
+          elements.forEach(el => {
+            el.addEventListener('mouseenter', function() {
+              this.style.outline = '2px dotted #ff0000';
+              this.style.cursor = 'pointer';
+            });
+            
+            el.addEventListener('mouseleave', function() {
+              if (!this.hasAttribute('contenteditable')) {
+                this.style.outline = 'none';
+              }
+            });
+            
+            el.addEventListener('click', function() {
+              this.contentEditable = true;
+              this.style.outline = '2px solid #ffc000';
+              this.focus();
+            });
+            
+            el.addEventListener('blur', function() {
+              this.contentEditable = false;
+              this.style.outline = 'none';
+            });
+          });
+        });
+      </script>
+    </body>
+    </html>
+  `;
+  
+  res.send(templateHtml);
 });
 
 // API endpoint for React to fetch preview data
