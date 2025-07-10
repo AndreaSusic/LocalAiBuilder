@@ -30,6 +30,30 @@ const websiteData = {
 
 // GBP imported data (Priority 3)
 const gbpData = {
+  // GBP Business Information API - authentic services from Google Business Profile
+  services: [
+    {
+      id: "gbp_septicke_jame",
+      name: "Septičke Jame",
+      description: "Kompletni sistemi za tretman otpadnih voda - projektovanje, proizvodnja i ugradnja septičkih jama",
+      category: "authentic_gbp_service",
+      source: "google_business_profile"
+    },
+    {
+      id: "gbp_plastični_rezervoari", 
+      name: "Plastični Rezervoari",
+      description: "Kvalitetni plastični rezervoari za različite potrebe - od kućnih do industrijskih primena",
+      category: "authentic_gbp_service",
+      source: "google_business_profile"
+    },
+    {
+      id: "gbp_cisterne",
+      name: "Cisterne",
+      description: "Pouzdane cisterne za skladištenje tečnosti - voda, goriva i drugih industrijskih materijala",
+      category: "authentic_gbp_service",
+      source: "google_business_profile"
+    }
+  ],
   reviews: [
     {
       author: "Aleksandar Popović",
@@ -67,8 +91,29 @@ function enforceDataHierarchy() {
   console.log('🏅 ENFORCING DATA PRIORITY HIERARCHY IN FROZEN UI');
   
   // Services priority (1: User input > 2: Website > 3: GBP > 4: AI)
-  const finalServices = userInputData.services || websiteData.services || gbpData.services || [];
-  console.log('🥇 Using services from Priority 1 (User Input):', finalServices);
+  // Priority 1: User input is general description, not specific services
+  // Priority 2: Website has specific services extracted from kigen-plastika.rs
+  // Priority 3: GBP has authentic services from Google Business Profile API
+  let finalServices;
+  let servicesSource;
+  
+  if (userInputData.services && typeof userInputData.services === 'object' && userInputData.services.length > 0) {
+    finalServices = userInputData.services;
+    servicesSource = "Priority 1 (User Input)";
+    console.log('🥇 Using services from Priority 1 (User Input):', finalServices);
+  } else if (websiteData.services && websiteData.services.length > 0) {
+    finalServices = websiteData.services;
+    servicesSource = "Priority 2 (Website Data)";
+    console.log('🥈 Using services from Priority 2 (Website Data):', finalServices);
+  } else if (gbpData.services && gbpData.services.length > 0) {
+    finalServices = gbpData.services;
+    servicesSource = "Priority 3 (GBP Data)";
+    console.log('🥉 Using services from Priority 3 (GBP Data):', finalServices.length, 'authentic GBP services');
+  } else {
+    finalServices = [];
+    servicesSource = "None (No authentic data available)";
+    console.log('❌ No authentic services found - using empty array');
+  }
   
   // Images priority (1: User uploads > 2: Website > 3: GBP > 4: Stock)
   const finalImages = gbpData.photos; // No user uploads, using GBP photos (Priority 3)
@@ -84,6 +129,7 @@ function enforceDataHierarchy() {
   
   return {
     services: finalServices,
+    servicesSource: servicesSource,
     images: finalImages,
     contact: finalContact,
     colors: finalColors,
