@@ -1,0 +1,35 @@
+ Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://0d854e81-8f93-4d3e-9786-ffa63fd33762/". Either the 'unsafe-inline' keyword, a hash ('sha256-+osnfquB23g9K0xV1ls9W1PGJx2yRDNBiM+W8Bj/zdc='), or a nonce ('nonce-...') is required to enable inline execution.
+
+(anonymous) @ injectlaunchmonitors.js:131
+ Returning a Promise is the preferred way to send a reply from an onMessage/onMessageExternal listener, as the sendResponse will be removed from the specs (See https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) Error
+    at o (chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378065)
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:362:300985
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378108
+o @ content.js:3
+ 🚀 Service Image Matcher initialized
+ 🏅 ENFORCING DATA PRIORITY HIERARCHY IN FROZEN UI
+ 🥈 Using services from Priority 2 (Website Data): Array(3)
+ 🥉 Using images from Priority 3 (GBP Photos): 1 authentic photos
+ 🥈 Using contact from Priority 2 (Website/GBP): Object
+ 🥇 Using colors from Priority 1 (User Questionnaire): Array(2)
+ ✅ DATA HIERARCHY ENFORCED SUCCESSFULLY
+ 🔍 FROZEN UI DATA HIERARCHY SUMMARY:
+ 📋 Services: Checking data hierarchy for authentic services...
+ 🎨 Colors: #ffc000, #000000 (Priority 1: User Questionnaire)
+ 📸 Images: Authentic GBP photos (Priority 3: GBP Data)
+ 📞 Contact: 065 2170293, Svetog Save bb, Osečina (Priority 2: Website/GBP)
+ ⭐ Reviews: Aleksandar Popović, Jordan Jančić, Marko Pavlović (Priority 3: GBP)
+frozen-ui.js?v=1752209700:51 ✅ NO DUMMY DATA OR STOCK IMAGES USED
+extension_content.js:1 recalculate_head_data
+content.js:48 request OK
+robots.txt:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+extension_content.js:1 recalculate_head_data
+service-image-matcher.js?v=1752209700:70 🔍 Starting service photo analysis
+service-image-matcher.js?v=1752209700:80 📸 Found 6 photos to analyze
+service-image-matcher.js?v=1752209700:81 🏷️ Matching against 3 services
+service-image-matcher.js?v=1752209700:102 ✅ AI analysis complete
+service-image-matcher.js?v=1752209700:103 🎯 Service matches: Object
+service-image-matcher.js?v=1752209700:52 🔄 Updating service images with AI matches
+service-image-matcher.js?v=1752209700:59 📸 Updating Plastični rezervoari image
+service-image-matcher.js?v=1752209700:59 📸 Updating Cisterne image
+service-image-matcher.js?v=1752209700:59 📸 Updating Septičke jame image
