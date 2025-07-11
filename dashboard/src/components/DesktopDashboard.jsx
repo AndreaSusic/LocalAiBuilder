@@ -164,7 +164,9 @@ function DesktopDashboard({ bootstrap }) {
   };
 
   useEffect(() => {
-    showTemplatePreview();
+    // Load Kigen Plastika page instead of template
+    setPreviewContent('/frozen-ui-v1/');
+    console.log('✅ Desktop dashboard loading Kigen Plastika page');
     
     const checkAuth = async () => {
       try {
