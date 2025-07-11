@@ -1,0 +1,27 @@
+injectlaunchmonitors.js:131 Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://0d854e81-8f93-4d3e-9786-ffa63fd33762/". Either the 'unsafe-inline' keyword, a hash ('sha256-+osnfquB23g9K0xV1ls9W1PGJx2yRDNBiM+W8Bj/zdc='), or a nonce ('nonce-...') is required to enable inline execution.
+
+(anonymous) @ injectlaunchmonitors.js:131
+data-hierarchy.js:86 🏅 ENFORCING DATA PRIORITY HIERARCHY IN FROZEN UI
+data-hierarchy.js:102 🥈 Using services from Priority 2 (Website Data): Array(3)
+data-hierarchy.js:115 🥉 Using images from Priority 3 (GBP Photos): 1 authentic photos
+data-hierarchy.js:119 🥈 Using contact from Priority 2 (Website/GBP): Object
+data-hierarchy.js:123 🥇 Using colors from Priority 1 (User Questionnaire): Array(2)
+data-hierarchy.js:183 ✅ DATA HIERARCHY ENFORCED SUCCESSFULLY
+frozen-ui.js:45 🔍 FROZEN UI DATA HIERARCHY SUMMARY:
+frozen-ui.js:46 📋 Services: Checking data hierarchy for authentic services...
+frozen-ui.js:47 🎨 Colors: #ffc000, #000000 (Priority 1: User Questionnaire)
+frozen-ui.js:48 📸 Images: Authentic GBP photos (Priority 3: GBP Data)
+frozen-ui.js:49 📞 Contact: 065 2170293, Svetog Save bb, Osečina (Priority 2: Website/GBP)
+frozen-ui.js:50 ⭐ Reviews: Aleksandar Popović, Jordan Jančić, Marko Pavlović (Priority 3: GBP)
+frozen-ui.js:51 ✅ NO DUMMY DATA OR STOCK IMAGES USED
+content.js:48 request OK
+extension_content.js:1 recalculate_head_data
+browser-polyfill.js:1075 Returning a Promise is the preferred way to send a reply from an onMessage/onMessageExternal listener, as the sendResponse will be removed from the specs (See https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) Error
+    at o (chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378065)
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:362:300985
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378108
+o @ browser-polyfill.js:1075
+robots.txt:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+web-client-content-script.js:2 Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.
+    at HTMLIFrameElement.<anonymous> (web-client-content-script.js:2:402720)
+extension_content.js:1 recalculate_head_data
