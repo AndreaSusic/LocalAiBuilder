@@ -2175,6 +2175,39 @@ app.get('/api/last-draft', async (req, res) => {
   }
 });
 
+// Image recognition endpoint for matching service photos
+app.post('/api/analyze-service-photos', async (req, res) => {
+  try {
+    const { photos, services } = req.body;
+    
+    if (!photos || !Array.isArray(photos) || photos.length === 0) {
+      return res.status(400).json({ error: 'Photos array is required' });
+    }
+    
+    if (!services || !Array.isArray(services) || services.length === 0) {
+      return res.status(400).json({ error: 'Services array is required' });
+    }
+    
+    console.log('🔍 ANALYZING SERVICE PHOTOS');
+    console.log('📸 Photos to analyze:', photos.length);
+    console.log('🏷️ Services to match:', services);
+    
+    // Dynamic import for image recognition
+    const { analyzePhotosForServices } = await import('./server/imageRecognition.js');
+    const serviceMatches = await analyzePhotosForServices(photos, services);
+    
+    res.json({
+      success: true,
+      serviceMatches,
+      message: `Matched ${Object.keys(serviceMatches).length} services with appropriate photos`
+    });
+    
+  } catch (error) {
+    console.error('❌ Image analysis error:', error);
+    res.status(500).json({ error: 'Failed to analyze service photos' });
+  }
+});
+
 // Additional services/products AI decision endpoint
 app.post('/api/ai-additional-decision', async (req, res) => {
   try {
