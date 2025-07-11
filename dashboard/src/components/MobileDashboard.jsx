@@ -143,26 +143,9 @@ export default function MobileDashboard({ bootstrap }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const createPreviewUrl = async () => {
-      try {
-        // Generate a unique ID for the preview
-        const id = Math.random().toString(36).substr(2, 9);
-        const response = await fetch('/api/cache-preview', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, data: bootstrap || {} })
-        });
-        const result = await response.json();
-        const shortUrl = `/t/v1/${id}`;
-        setPreviewContent(shortUrl);
-        console.log('Created short URL for mobile preview:', shortUrl);
-      } catch (error) {
-        console.error('Failed to create preview URL:', error);
-        setPreviewContent('/t/v1');
-      }
-    };
-
-    createPreviewUrl();
+    // Load Kigen Plastika page instead of template
+    setPreviewContent('/frozen-ui-v1/');
+    console.log('✅ Mobile dashboard loading Kigen Plastika page');
     
     const checkAuth = async () => {
       try {
