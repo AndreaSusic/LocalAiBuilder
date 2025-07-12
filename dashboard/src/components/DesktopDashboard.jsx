@@ -61,28 +61,9 @@ function DesktopDashboard({ bootstrap }) {
   };
 
   const showTemplatePreview = async (templateUrl) => {
-    if (bootstrap && Object.keys(bootstrap).length > 0) {
-      try {
-        const shortId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-        
-        const response = await fetch('/api/cache-preview', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: shortId, data: bootstrap })
-        });
-        
-        if (response.ok) {
-          const shortUrl = `/t/v1/${shortId}`;
-          console.log('Created short URL for preview:', window.location.origin + shortUrl);
-          setPreviewContent(window.location.origin + shortUrl);
-          return;
-        }
-      } catch (error) {
-        console.error('Error creating short URL:', error);
-      }
-    }
-    
-    setPreviewContent('/t/v1/demo');
+    // Always show /app content in the iframe
+    console.log('Setting preview content to /app');
+    setPreviewContent('/app');
   };
 
   const handleSendMessage = async () => {
