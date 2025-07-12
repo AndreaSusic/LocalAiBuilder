@@ -1,0 +1,52 @@
+◾ TASK:      Finish the inline-editor system so that (a) Bold / Italic / Underline
+             work inside the Preview iframe, (b) each editable block shows an ✕
+             delete button on hover, and (c) the nav bar, phone number, CTA
+             “Pozovite nas”, and footer are editable just like the other text.
+
+◾ CONTEXT
+   • Dashboard component ➜ dashboard/src/components/DesktopDashboard.jsx  
+       – renders <iframe class="preview-iframe" src="/app" …>  
+       – Editor buttons live in <EditorPanel />  
+   • /app serves a frozen static build at public/frozen-ui-v1/*.js  
+       – frozen-ui.js now draws red hover & yellow edit outlines  
+       – but execCommand & delete buttons are missing  
+       – nav / phone / CTA / footer aren’t in the querySelector list, so
+         they never get contenteditable or outlines.
+   • We want to keep all existing color-guard, data-hierarchy, micro-animations.
+
+◾ EDIT SCOPE
+   • dashboard/src/components/EditorPanel.jsx          (send commands)
+   • dashboard/src/components/DesktopDashboard.jsx     (iframe ref + bridge)
+   • public/frozen-ui-v1/frozen-ui.js                  (receive & delete)
+   • create public/frozen-ui-v1/iframeEditorBridge.js  (helper)
+   • DO NOT TOUCH anything under /server or /generated
+
+◾ RULES
+  • Bridge:
+      DesktopDashboard holds a ref to the iframe, exposes sendCmd(cmd).
+      EditorPanel calls sendCmd('bold'|'italic'|'underline').
+      sendCmd posts {type:'editor-cmd', cmd} to iframe.contentWindow.
+  • Iframe side:
+      Add window.addEventListener('message', …) in iframeEditorBridge.js.
+      On 'editor-cmd' run document.execCommand(cmd).
+  • Delete button:
+      When an editable element gets yellow outline add
+      <button class="delete-btn">✕</button> (position: absolute; top:-8px; right:-8px;
+      16px square; bg #e53935; border-radius:50%; color:#fff; font-size:12px;
+      opacity:.6; opacity:.9 on hover).
+      Click removes the entire element.
+  • Extend the editable selector list so the following ALSO get contenteditable,
+    outlines, and delete buttons:
+      nav, header .phone, a.cta-btn (text “Pozovite nas”), footer
+  • No new npm packages—vanilla JS + existing React.
+  • ESLint: `npm run lint` must report 0 warnings.
+  • Vite dev server must hot-reload without full refresh.
+
+◾ DONE WHEN
+  ✓ Bold / Italic / Underline buttons update the selected text in the iframe.  
+  ✓ Hovering any editable block (including nav, phone, CTA, footer) shows red
+    dotted outline + ✕; click makes it yellow and editable.  
+  ✓ Clicking ✕ removes the block and reflows layout.  
+  ✓ Nav bar, phone number, CTA “Pozovite nas”, and footer can be bolded,
+    italicised, or deleted like other text.  
+  ✓ No console errors in dashboard or iframe; ESLint clean; `npm test` (if any) passes.

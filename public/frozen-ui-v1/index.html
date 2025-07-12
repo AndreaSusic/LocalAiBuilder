@@ -439,6 +439,30 @@
       margin-bottom: 0.5rem;
     }
 
+    /* Delete button styles */
+    .delete-btn {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 16px;
+      height: 16px;
+      background: #e53935;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 12px;
+      border: none;
+      cursor: pointer;
+      opacity: 0.6;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+    .delete-btn:hover {
+      opacity: 0.9;
+    }
+
     /* Responsive Design */
     @media (max-width: 800px) {
       .location-content {
@@ -657,6 +681,7 @@
   </footer>
 
   <script src="data-hierarchy.js?v=1752209700"></script>
+  <script src="iframeEditorBridge.js?v=1752209700"></script>
   <script src="frozen-ui.js?v=1752209700"></script>
   <script src="micro-animations.js?v=1752209700"></script>
   <script src="service-image-matcher.js?v=1752209700"></script>

@@ -10,8 +10,8 @@ const EditorPanel = () => {
     if (!iframe || !iframe.contentWindow) return;
 
     iframe.contentWindow.postMessage({
-      type: 'execCommand',
-      command: command,
+      type: 'editor-cmd',
+      cmd: command,
       value: value
     }, '*');
   };
