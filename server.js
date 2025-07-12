@@ -2794,6 +2794,14 @@ app.get("/preview", (req, res) => {
   res.sendFile(path.join(__dirname, "dashboard", "dist", "index.html"));
 });
 
+// Serve the frozen UI content for iframe
+app.get("/app", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "frozen-ui-v1", "index.html"));
+});
+
+// Serve static files for the frozen UI
+app.use("/app", express.static(path.join(__dirname, "public", "frozen-ui-v1")));
+
 // Dashboard static files for non-HTML assets
 app.use(
   "/dashboard",
