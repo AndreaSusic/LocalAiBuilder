@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import './UnifiedCommandChatPanel.css';
+import { useRichText } from '../hooks/useRichText';
 
 const COMMANDS = [
   'Rephrase intro',
@@ -14,6 +15,7 @@ export default function UnifiedCommandChatPanel() {
   const [input, setInput] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const dropdownRef = useRef();
+  const richText = useRichText();
 
   useEffect(() => {
     if (!input) return setSuggestions([]);
@@ -120,14 +122,35 @@ export default function UnifiedCommandChatPanel() {
 
       {/* Toolbars */}
       <div className={`toolbar ${active==='text'?'active':''}`} data-toolbar="text">
-        <button>𝐁</button><button>𝑰</button><button>𝑼</button>
-        <select>
+        <button onClick={richText.bold} title="Bold (Ctrl+B)">𝐁</button>
+        <button onClick={richText.italic} title="Italic (Ctrl+I)">𝑰</button>
+        <button onClick={richText.underline} title="Underline (Ctrl+U)">𝑼</button>
+        <select onChange={(e) => {
+          const value = e.target.value;
+          if (value === 'unordered') richText.insertUnorderedList();
+          else if (value === 'ordered') richText.insertOrderedList();
+          e.target.value = 'List';
+        }}>
           <option>List</option>
-          <option>• Unordered</option>
-          <option>1. Ordered</option>
+          <option value="unordered">• Unordered</option>
+          <option value="ordered">1. Ordered</option>
         </select>
-        <select><option>8px</option><option>12px</option><option>14px</option><option>16px</option></select>
-        <button>A🖌️</button><button>🖍️</button>
+        <select onChange={(e) => {
+          if (e.target.value !== 'Font Size') {
+            richText.fontSize(e.target.value);
+          }
+        }}>
+          <option>Font Size</option>
+          <option value="1">8px</option>
+          <option value="2">12px</option>
+          <option value="3">14px</option>
+          <option value="4">16px</option>
+          <option value="5">18px</option>
+          <option value="6">24px</option>
+          <option value="7">32px</option>
+        </select>
+        <button onClick={() => richText.foreColor('#000000')} title="Text Color">A🖌️</button>
+        <button onClick={() => richText.backColor('#ffff00')} title="Background Color">🖍️</button>
       </div>
       <div className={`toolbar ${active==='media'?'active':''}`} data-toolbar="media">
         <button>🖼️</button><button>🎥</button><button>↔️↕️</button><button>📐</button>
