@@ -1,0 +1,89 @@
+injectlaunchmonitors.js:131 Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://7c96cba4-edb8-4496-8578-b070cff68d9d/". Either the 'unsafe-inline' keyword, a hash ('sha256-+osnfquB23g9K0xV1ls9W1PGJx2yRDNBiM+W8Bj/zdc='), or a nonce ('nonce-...') is required to enable inline execution.
+
+(anonymous) @ injectlaunchmonitors.js:131
+extension.js:553 Returning a Promise is the preferred way to send a reply from an onMessage/onMessageExternal listener, as the sendResponse will be removed from the specs (See https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) Error
+    at o (chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378065)
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:362:300985
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378108
+o @ browser-polyfill.js:1075
+(anonymous) @ extension.js:553
+(anonymous) @ browser-polyfill.js:1086
+SiteDataContext.js:3 🕵️‍♂️ SiteDataContext loaded
+TemplatePreview.jsx:10 ######## I AM TP at https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/preview/assets/index-sC8iQxMp.js
+extension_content.js:1 recalculate_head_data
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+main.jsx:171 BOOTSTRAP >> {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+main.jsx:172 Current path: /preview/
+main.jsx:173 Root element exists: true
+main.jsx:187 React app rendered successfully
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 1435
+App.jsx:26 isMobile: false
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+content.js:48 request OK
+extension_content.js:1  GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/robots.txt 404 (Not Found)
+(anonymous) @ extension_content.js:1
+get_robots_ajax_reponse @ extension_content.js:1
+get_methods.forEach.e.<computed> @ extension_content.js:1
+init @ extension_content.js:1
+await in init
+get_methods.forEach.e.<computed> @ extension_content.js:1
+(anonymous) @ extension_content.js:1
+(anonymous) @ extension_content.js:1
+App.jsx:35  GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/api/me 401 (Unauthorized)
+D @ App.jsx:35
+(anonymous) @ App.jsx:88
+vl @ react-dom-client.production.js:8292
+Xf @ react-dom-client.production.js:9771
+Bt @ react-dom-client.production.js:9746
+Xf @ react-dom-client.production.js:9878
+Bt @ react-dom-client.production.js:9746
+Xf @ react-dom-client.production.js:9765
+Bt @ react-dom-client.production.js:9746
+Xf @ react-dom-client.production.js:9782
+cd @ react-dom-client.production.js:11313
+(anonymous) @ react-dom-client.production.js:11048
+fe @ scheduler.production.js:151
+App.jsx:77 🔓 User not authenticated, using static bootstrap data
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 1435
+App.jsx:26 isMobile: false
+DesktopDashboard.jsx:65 Setting preview content to /app
+DesktopDashboard.jsx:158 ✅ Dashboard user auto-authenticated for editing
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(1)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:193 ✅ React DOM ready event dispatched
+extension_content.js:1 recalculate_head_data
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 🔍 DATA HIERARCHY ENFORCEMENT ACTIVE
+Console.js:61 📊 Priority Order: 1) User Input 2) Website Data 3) GBP Data 4) Stock Images
+Console.js:61 🏢 Business: Kigen Plastika - Authentic septic tank company
+Console.js:61 📍 Location: Osečina, Serbia
+Console.js:61 📞 Contact: 065 2170293
+Console.js:61 🌐 Website: https://www.kigen-plastika.rs/
+Console.js:61 ✅ NO PLACEHOLDER DATA USED
+Console.js:61 🖼️ Service Image Matcher: Loaded
+Console.js:61 📸 Using authentic GBP photos for Kigen Plastika services
+Console.js:61 🔍 FROZEN UI DATA HIERARCHY SUMMARY:
+Console.js:61 📋 Services: Plastični rezervoari, Cisterne, Septičke jame
+Console.js:61 🎨 Colors: #ffc000, #2c3e50 (Priority 1: User/Business Colors)
+Console.js:61 📸 Images: Authentic business photos from GBP
+Console.js:61 📞 Contact: 065 2170293, Svetog Save bb, Osečina
+Console.js:61 ⭐ Reviews: Marija Nikolic, Aleksandar Popović, Jordan Jančić
+Console.js:61 ✅ AUTHENTIC KIGEN PLASTIKA DATA ONLY
+Console.js:61 🔧 Inline Editor: Made 48 elements editable
+Console.js:61 🔧 Inline Editor: Initialized in iframe
+web-client-content-script.js:2 Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.
+    at HTMLIFrameElement.<anonymous> (web-client-content-script.js:2:402720)
+(anonymous) @ web-client-content-script.js:2
+DesktopDashboard.jsx:47 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/app?v=1752326649494
+DesktopDashboard.jsx:50 ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons

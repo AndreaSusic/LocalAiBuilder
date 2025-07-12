@@ -2796,6 +2796,7 @@ app.get("/preview", (req, res) => {
 
 // Serve static files for the frozen UI first
 app.use("/app", express.static(path.join(__dirname, "public", "frozen-ui-v1")));
+app.use("/fresh-app", express.static(path.join(__dirname, "public", "frozen-ui-v1")));
 
 // Serve the frozen UI content for iframe (handles /app and /app/)
 app.get(["/app", "/app/"], (req, res) => {
@@ -2805,6 +2806,18 @@ app.get(["/app", "/app/"], (req, res) => {
   res.set('Expires', '0');
   res.set('Last-Modified', new Date().toUTCString());
   res.set('ETag', Date.now().toString());
+  res.sendFile(path.join(__dirname, "public", "frozen-ui-v1", "index.html"));
+});
+
+// Create a separate route for fresh content (bypassing cache)
+app.get(["/fresh-app", "/fresh-app/"], (req, res) => {
+  // Aggressive cache prevention
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate, private, max-age=0');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  res.set('Last-Modified', new Date().toUTCString());
+  res.set('ETag', Date.now().toString());
+  console.log('🚀 Serving fresh content from /fresh-app');
   res.sendFile(path.join(__dirname, "public", "frozen-ui-v1", "index.html"));
 });
 

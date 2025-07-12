@@ -61,9 +61,9 @@ function DesktopDashboard({ bootstrap }) {
   };
 
   const showTemplatePreview = async (templateUrl) => {
-    // Always show /app content in the iframe
-    console.log('Setting preview content to /app');
-    setPreviewContent('/app');
+    // Use fresh-app route to bypass cache
+    console.log('Setting preview content to /fresh-app');
+    setPreviewContent('/fresh-app');
   };
 
   const handleSendMessage = async () => {
