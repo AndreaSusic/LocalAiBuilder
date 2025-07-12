@@ -33,6 +33,10 @@ function DesktopDashboard({ bootstrap }) {
           isAuthenticated: !!user
         }, '*');
         console.log('Auth status sent to iframe:', !!user);
+      } else if (event.data.type === 'elementSelected') {
+        console.log('Element selected in iframe:', event.data);
+      } else if (event.data.type === 'elementDeleted') {
+        console.log('Element deleted in iframe:', event.data);
       }
     };
 
@@ -41,6 +45,18 @@ function DesktopDashboard({ bootstrap }) {
       window.removeEventListener('message', handleMessage);
     };
   }, [user]);
+
+  // Function to send commands to iframe
+  const sendCmd = (cmd, value = null) => {
+    const iframe = document.querySelector('.preview-iframe');
+    if (!iframe || !iframe.contentWindow) return;
+
+    iframe.contentWindow.postMessage({
+      type: 'editor-cmd',
+      cmd: cmd,
+      value: value
+    }, '*');
+  };
 
   const handleIframeLoad = (event) => {
     const iframe = event.target;
@@ -65,6 +81,13 @@ function DesktopDashboard({ bootstrap }) {
     console.log('Setting preview content to /app');
     setPreviewContent('/app');
   };
+
+  // Initialize preview content on mount
+  useEffect(() => {
+    if (!previewContent) {
+      showTemplatePreview('/app');
+    }
+  }, []);
 
   const handleSendMessage = async () => {
     if (!chatMessage.trim() || isProcessing) return;
