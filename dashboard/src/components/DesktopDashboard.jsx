@@ -61,9 +61,9 @@ function DesktopDashboard({ bootstrap }) {
   };
 
   const showTemplatePreview = async (templateUrl) => {
-    // Use fresh-app route to bypass cache
-    console.log('Setting preview content to /fresh-app');
-    setPreviewContent('/fresh-app');
+    // Always show /app content in the iframe
+    console.log('Setting preview content to /app');
+    setPreviewContent('/app');
   };
 
   const handleSendMessage = async () => {
@@ -238,7 +238,7 @@ function DesktopDashboard({ bootstrap }) {
             {previewContent && (
               <iframe
                 className="preview-iframe"
-                src={`${previewContent}?v=${Date.now()}`}
+                src={previewContent}
                 onLoad={handleIframeLoad}
               />
             )}

@@ -145,7 +145,7 @@ export default function MobileDashboard({ bootstrap }) {
   useEffect(() => {
     // Always show /app content in the iframe
     console.log('Setting mobile preview content to /app');
-    setPreviewContent('/fresh-app');
+    setPreviewContent('/app');
     
     const checkAuth = async () => {
       try {
@@ -226,7 +226,7 @@ export default function MobileDashboard({ bootstrap }) {
             {previewContent && (
               <iframe 
                 title="preview" 
-                src={`${previewContent}?v=${Date.now()}`}
+                src={previewContent}
                 onLoad={handleIframeLoad}
                 style={{
                   width: "100%",
