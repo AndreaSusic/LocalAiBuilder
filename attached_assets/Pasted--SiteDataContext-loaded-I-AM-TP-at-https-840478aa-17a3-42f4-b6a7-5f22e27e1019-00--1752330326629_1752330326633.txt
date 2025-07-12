@@ -1,0 +1,84 @@
+ 🕵️‍♂️ SiteDataContext loaded
+ ######## I AM TP at https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/preview/assets/index-E7HJ3YrY.js
+ 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+ BOOTSTRAP >> {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+ Current path: /preview/
+main.jsx:173 Root element exists: true
+main.jsx:187 React app rendered successfully
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 1435
+App.jsx:26 isMobile: false
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+App.jsx:35  GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/api/me 401 (Unauthorized)
+D @ App.jsx:35
+(anonymous) @ App.jsx:88
+vl @ react-dom-client.production.js:8292
+Xf @ react-dom-client.production.js:9771
+Bt @ react-dom-client.production.js:9746
+Xf @ react-dom-client.production.js:9878
+Bt @ react-dom-client.production.js:9746
+Xf @ react-dom-client.production.js:9765
+Bt @ react-dom-client.production.js:9746
+Xf @ react-dom-client.production.js:9782
+cd @ react-dom-client.production.js:11313
+(anonymous) @ react-dom-client.production.js:11048
+fe @ scheduler.production.js:151
+App.jsx:77 🔓 User not authenticated, using static bootstrap data
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 1435
+App.jsx:26 isMobile: false
+DesktopDashboard.jsx:65 Setting preview content to /fresh-app
+DesktopDashboard.jsx:158 ✅ Dashboard user auto-authenticated for editing
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(1)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+react-dom-client.production.js:8515  GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/fresh-app?v=1752330202762 404 (Not Found)
+Bi @ react-dom-client.production.js:8515
+dt @ react-dom-client.production.js:9525
+Yf @ react-dom-client.production.js:9306
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9305
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9111
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9494
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9111
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9111
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9494
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9494
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9111
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9111
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9111
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9494
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9111
+ft @ react-dom-client.production.js:9099
+Yf @ react-dom-client.production.js:9348
+rd @ react-dom-client.production.js:11088
+id @ react-dom-client.production.js:11069
+If @ react-dom-client.production.js:10490
+Ff @ react-dom-client.production.js:10419
+pd @ react-dom-client.production.js:11626
+fe @ scheduler.production.js:151
+fresh-app:1 Refused to load the script 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js' because it violates the following Content Security Policy directive: "default-src 'none'". Note that 'script-src-elem' was not explicitly set, so 'default-src' is used as a fallback.
+
+fresh-app:1 Refused to load the script 'https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/__replco/static/devtools/injected.js' because it violates the following Content Security Policy directive: "default-src 'none'". Note that 'script-src-elem' was not explicitly set, so 'default-src' is used as a fallback.
+
+fresh-app:1 Refused to execute inline event handler because it violates the following Content Security Policy directive: "default-src 'none'". Either the 'unsafe-inline' keyword, a hash ('sha256-...'), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless the 'unsafe-hashes' keyword is present. Note also that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.
+
+DesktopDashboard.jsx:47 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/fresh-app?v=1752330202762
+DesktopDashboard.jsx:50 ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
+main.jsx:193 ✅ React DOM ready event dispatched
