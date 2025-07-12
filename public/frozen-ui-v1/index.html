@@ -3,35 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
   <title>Kigen Plastika - Plastični elementi za septičke jame</title>
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #ffc000;
-      --secondary: #000000;
-      --text: #3f3f3f;
-      --bg-light: #f9f9f9;
-      --bg-dark: #f5f5f5;
-      --font-sans: 'Roboto', sans-serif;
-      --font-heading: 'Work Sans', sans-serif;
+      --secondary: #2c3e50;
+      --bg-light: #f8f9fa;
+      --text-dark: #2c3e50;
+      --text-light: #666;
+      --border: #e9ecef;
     }
+
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
+
     body {
-      font-family: var(--font-sans);
-      color: var(--text);
-      line-height: 1.5;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: var(--text-dark);
+      background: white;
+      display: block;
     }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
     h1, h2, h3, h4 {
-      font-family: var(--font-heading);
-      color: var(--text);
+      color: var(--secondary);
+      margin-bottom: 1rem;
     }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--text-light);
+    }
+
     a {
       color: var(--primary);
       text-decoration: none;
@@ -223,218 +235,140 @@
     }
     .feature h3 {
       margin-bottom: 1rem;
-      font-size: 1.3rem;
       color: var(--secondary);
     }
     .feature p {
-      font-size: 1rem;
-      color: #555;
-      line-height: 1.6;
-    }
-
-    /* Services */
-    .services {
-      background: white;
-      padding: 3rem 1rem;
-    }
-    .services h2 {
-      text-align: center;
-      font-size: 2.75rem;
-      margin-bottom: 3rem;
-      color: var(--secondary);
-    }
-    .services-grid {
-      display: grid;
-      gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
-    .service-card {
-      background: white;
-      border-radius: 6px;
-      overflow: hidden;
-      text-align: center;
-      border: 2px solid var(--primary);
-      transition: transform 0.3s;
-    }
-    .service-card:hover {
-      transform: translateY(-5px);
-    }
-    .service-card img {
-      width: 100%;
-      aspect-ratio: 1/1;
-      object-fit: cover;
-    }
-    .service-card h4 {
-      padding: 0.75rem;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--secondary);
-    }
-    .service-card p {
-      padding: 0 0.75rem 1rem;
-      font-size: 0.9rem;
-      color: #555;
-    }
-
-    /* Testimonials */
-    .testimonials {
-      background: white;
-      padding: 3rem 1rem;
-      text-align: center;
-    }
-    .testimonials h2 {
-      margin-bottom: 2.5rem;
-      font-size: 2.75rem;
-      color: var(--secondary);
-    }
-    .testimonials-grid {
-      display: grid;
-      gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    }
-    .testimonial {
-      background: var(--bg-light);
-      border-left: 4px solid var(--primary);
-      padding: 1rem;
-      border-radius: 4px;
-      font-style: italic;
-      position: relative;
-    }
-    .testimonial p {
-      margin-bottom: 0.75rem;
-      color: #444;
-    }
-    .testimonial .stars {
-      color: var(--primary);
-      font-size: 1.1rem;
+      color: #666;
     }
 
     /* Gallery */
     .gallery {
-      background: white;
-      padding: 3rem 1rem;
-    }
-    .gallery h2 {
-      text-align: center;
-      margin-bottom: 2.5rem;
-      font-size: 2.75rem;
-      color: var(--secondary);
-    }
-    .gallery-grid {
       display: grid;
-      gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
     }
-    .gallery-grid img {
+    .gallery img {
       width: 100%;
-      height: 200px;
+      height: 250px;
       object-fit: cover;
-      border-radius: 6px;
-      border: 2px solid var(--primary);
+      border-radius: 8px;
+      transition: transform 0.3s;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
     }
 
-    /* Contact + Map */
-    .contact-form {
-      background: var(--bg-light);
-      padding: 3rem 1rem;
-    }
-    .contact-form h2 {
-      text-align: center;
-      margin-bottom: 2.5rem;
-      font-size: 2.75rem;
-      color: var(--secondary);
-    }
-    .contact-grid {
+    /* Reviews */
+    .reviews {
       display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
-      grid-template-columns: 1fr 1fr;
+      margin: 2rem 0;
     }
-    .contact-grid form {
-      display: grid;
-      gap: 1rem;
+    .review {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border-left: 4px solid var(--primary);
     }
-    .contact-grid input,
-    .contact-grid textarea {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-family: inherit;
+    .review .stars {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
     }
-    .contact-grid button {
-      background: var(--primary);
+    .review p {
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    .review .author {
+      font-weight: 600;
       color: var(--secondary);
-      border: none;
-      padding: 0.75rem;
-      border-radius: 4px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s;
     }
-    .contact-grid button:hover {
-      background: #e6ac00;
+
+    /* Contact */
+    .contact-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
     }
-    .contact-grid .map-container iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      border-radius: 4px;
+    .contact-item {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--bg-light);
+      border-radius: 8px;
+    }
+    .contact-item .icon {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    .contact-item h3 {
+      margin-bottom: 0.5rem;
+      color: var(--secondary);
     }
 
     /* Secondary CTA */
     .secondary-cta {
-      background: var(--primary);
-      padding: 4rem 1rem;
+      background: var(--bg-light);
+      padding: 4rem 2rem;
       text-align: center;
+      border-radius: 8px;
+      margin: 3rem 0;
     }
     .secondary-cta h2 {
-      font-size: 2.75rem;
-      margin-bottom: 2.5rem;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
       color: var(--secondary);
     }
     .secondary-cta p {
-      font-size: 1rem;
-      margin-bottom: 3rem;
-      color: var(--secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      color: var(--text-light);
     }
     .secondary-cta .btn-accent {
-      background: var(--secondary);
-      color: var(--primary);
+      background: var(--primary);
+      color: white;
       border: none;
-      padding: 0.75rem 1.5rem;
+      padding: 1rem 2rem;
       border-radius: 4px;
-      font-size: 1rem;
+      font-size: 1.1rem;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.3s;
     }
     .secondary-cta .btn-accent:hover {
-      background: #333;
+      background: #e6ac00;
+      transform: translateY(-2px);
     }
 
     /* Footer */
     footer {
       background: var(--secondary);
-      color: #eee;
-      padding: 2rem 1rem;
+      color: white;
+      padding: 3rem 2rem 1rem;
     }
     .footer-grid {
       display: grid;
-      gap: 1.5rem;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
     }
     footer h4 {
-      margin-bottom: 0.75rem;
-      font-size: 1rem;
+      margin-bottom: 1rem;
       color: var(--primary);
     }
     footer a {
-      color: #ccc;
-      display: block;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
+      color: #bbb;
+      transition: color 0.3s;
+    }
+    footer a:hover {
+      color: var(--primary);
     }
     footer p {
-      color: #ccc;
+      color: #bbb;
       font-size: 0.9rem;
       margin-bottom: 0.5rem;
     }
@@ -467,223 +401,210 @@
     @media (max-width: 800px) {
       .location-content {
         flex-direction: column;
+        text-align: center;
       }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
       nav .hamburger {
         display: block;
       }
+      
       nav ul.nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: 70px;
         left: 0;
-        width: 100%;
-        background: #fff;
-        border-bottom: 1px solid #ddd;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        transform: translateY(-100%);
+        transition: transform 0.3s;
       }
+      
       nav ul.nav-links.open {
-        display: flex;
+        transform: translateY(0);
       }
+      
       nav ul.nav-links li {
-        padding: 0.75rem;
-        text-align: center;
-      }
-      .features {
-        grid-template-columns: 1fr;
-        max-width: 900px;
-        margin: 0 auto;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      }
-      .contact-grid {
-        grid-template-columns: 1fr;
+        margin: 0.5rem 0;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation -->
   <nav>
-    <a href="#home" class="logo">Kigen Plastika</a>
+    <div class="logo">Kigen Plastika</div>
     <ul class="nav-links">
       <li><a href="#home">Početna</a></li>
       <li>
-        <a href="#services">Usluge</a>
+        <a href="#services">Proizvodi ▼</a>
         <ul>
-          <li><a href="#">Plastični rezervoari</a></li>
-          <li><a href="#">Cisterne</a></li>
-          <li><a href="#">Septičke jame</a></li>
+          <li><a href="#tanks">Plastični rezervoari</a></li>
+          <li><a href="#cisterns">Cisterne</a></li>
+          <li><a href="#septic">Septičke jame</a></li>
         </ul>
       </li>
       <li><a href="#about">O nama</a></li>
       <li><a href="#contact">Kontakt</a></li>
     </ul>
     <div class="contact-phone">
-      📞 <strong>065 2170293</strong>
+      📞 065 2170293
     </div>
     <button class="cta">Kontaktirajte Nas</button>
     <button class="hamburger">☰</button>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero" id="home">
-    <h1>Kigen Plastika</h1>
-    <p>Proizvođači plastičnih elemenata specijalizovani za septičke jame u Osečini</p>
-    <button class="btn-primary">Kontaktirajte Nas</button>
+  <section class="hero">
+    <div class="container">
+      <h1>Kvalitetni plastični elementi za septičke jame</h1>
+      <p>Specijalizovani za proizvodnju i montažu plastičnih rezervoara, cisterna i septičkih jama u Osečini</p>
+      <button class="btn-primary">Zatražite Ponudu</button>
+    </div>
   </section>
 
-  <!-- Location & Expertise -->
   <section class="location-section">
     <div class="location-content">
       <div class="location-image">
-        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpdpRi4ypyOFoy2XZ4xdK46O7qnGagBCs0Xqd7IBQxKXaByLDZ_IsIPN1bFBlRG3UZi1b5fvp98FYkyD18iO48Np2pe4D4Q-nXBqm5DNNV5dwm5qRXjxR79TryU387e7Ub3EkEUd0ByrvAetMOs2JNRaSZ7et6Ico7GMC1FHUjAaVmz6L5-rZbmrmHSGzd5l2K_EMYEZAJwK0chRdrmukniwvpbTMOLA89YgEkH3iVaajbxZuQ-Lp92iV2ttA2u60A8j2hR2dEXy8IonQiya0pGZ_x-Q8zSSMCisyva8wxLj1g&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika lokacija">
+        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpceqD60ZXKqRhgNgnBwm5fMmgUDvT4bH2s0W0qirYNckoQ41gFPEFK35pAtIbmhlKPY8xR1Pr1Ulpl8VXW4sWmbxG-NVvinKlaCbcTvo4a1ml2b-NtNetNjQnoQNHbCZiCQ5iFMXQU-LearpGf0bcjrXLCkYkWaXry6S0YsFMwCjGv_023cnXSWGpcxm8-Kcf3ggBNyGE4n_YNRrnBUJ0luPzcrCqRqS7Na__M6PTKURFWgRH6L5Xd1RpBKR8C94wEZ9p2_QIgIrOu7PQ26TuQn9mPbZLD3cMH9IVIxK0Du6Q&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika lokacija">
       </div>
       <div class="location-text">
-        <h2>Lokacija i Stručnost</h2>
-        <p>Kigen Plastika je vodeći proizvođač plastičnih elemenata u Osečini, specijalizovan za septičke jame i rešenja za tretman otpadnih voda. Naša kompanija je osnovana sa ciljem pružanja najkvalitetnijih proizvoda i usluga u oblasti plastičnih rezervoara, cisterni i septičkih jama.</p>
+        <h2>Kigen Plastika - Vaš pouzdan partner u Osečini</h2>
+        <p>Kigen Plastika je vodeći proizvođač plastičnih elemenata za septičke jame u Osečini, sa više od 15 godina iskustva u industriji. Naša kompanija se specijalizuje za proizvodnju visokokvalitetnih plastičnih rezervoara, cisterna i kompletnih sistema za septičke jame.</p>
         
-        <p>Strateški smešteni u Osečini na adresi Svetog Save bb, naša lokacija nam omogućava da efikasno servisiramo klijente širom regiona. Grad Osečina, poznat po svojoj industrijskoj tradiciji, pruža idealnu osnovu za naše proizvodne aktivnosti. Blizina glavnih saobraćajnih pravaca omogućava nam brzu i efikasnu dostavu proizvoda do naših klijenata.</p>
+        <p>Naša lokacija u Osečini omogućava nam da efikasno opslužujemo celo područje zapadne Srbije. Koristimo najsavremeniju tehnologiju i materijale najvišeg kvaliteta kako bismo garantovali dugotrajnost i pouzdanost naših proizvoda.</p>
         
-        <p>Naš tim čine iskusni stručnjaci sa dugogodišnjim iskustvom u oblasti plastičnih tehnologija i tretmana otpadnih voda. Kontinuirano investiramo u najsavremeniju opremu i tehnologije koje nam omogućavaju proizvodnju proizvoda najvišeg kvaliteta. Svaki član našeg tima prošao je specijalizovane obuke i poseduje potrebne sertifikate za rad sa plastičnim materijalima.</p>
+        <p>Posebno smo ponosni na naš tim stručnjaka koji poseduje duboko znanje o zahtevima za septičke sisteme i može da pruži stručne savete za svaki pojedinačni projekat. Bez obzira da li se radi o manjem domaćem projektu ili većem komercijalnom objektu, imamo odgovarajuće rešenje.</p>
         
-        <p>Posebno se ponosimo našom ekspertizom u oblasti projektovanja i izvođenja rešenja za tretman otpadnih voda. Naša septičke jame su dizajnirane u skladu sa najnovijim ekološkim standardima i propisima, čime garantujemo dugoročnu funkcionalnost i bezbednost po životnu sredinu. Svaki projekat pristupamo individualno, uzimajući u obzir specifične potrebe klijenta i karakteristike terena.</p>
+        <p>Naša posvećenost kvalitetu i inovaciji čini nas primarnim izborom za sve vaše potrebe vezane za plastične elemente za septičke jame. Kontaktirajte nas danas i saznajte zašto su nam klijenti dali ocenu od 5 zvezda!</p>
       </div>
     </div>
   </section>
 
-  <!-- Features -->
-  <section class="features">
-    <div class="feature">
-      <div class="icon">🔧</div>
-      <h3>Vrhunski Kvalitet</h3>
-      <p>Naši plastični rezervoari i cisterne su izrađeni od najkvalitetnijih materijala koji pružaju dugotrajnu otpornost i pouzdanost. Svaki proizvod prolazi kroz rigorozne testove kvaliteta pre isporuke.</p>
-    </div>
-    <div class="feature">
-      <div class="icon">⚡</div>
-      <h3>Brza Isporuka</h3>
-      <p>Zahvaljujući optimizovanom procesu proizvodnje i stalnom raspoloženju materijala, možemo da obezbedimo brzu isporuku i profesionalnu montažu septičkih jama na vašoj lokaciji.</p>
-    </div>
-    <div class="feature">
-      <div class="icon">🎯</div>
-      <h3>Prilagođena Rešenja</h3>
-      <p>Svaki projekat je jedinstven. Naš tim stručnjaka pravi precizne kalkulacije i prilagođava dimenzije rezervoara prema specifičnim potrebama vašeg objekta i lokalnim propisima.</p>
-    </div>
-  </section>
-
-  <!-- Services -->
-  <section class="services" id="services">
-    <h2>Naše Usluge</h2>
-    <div class="services-grid">
-      <div class="service-card">
-        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpd8vhYtGBd2dEzWBj0da4mcYOV8VBESJJJ3mZzFf3Z12TieAdJS9FzHLi0bZo4VGs0AojfeG9nxTcaqleUi1AtsqTfTibAUzRikaWS-P5NltQIjztmNMpBRBhAFKbsHXlLAptobfzLsN8ntDmtLu_9-kocxQ_SMhenAcGzXzl65KYpU-0wm-iMmYXUY9ouCqhnDy2OepUlIlFzKyTd1FLkyl28ptSMj3oHp2cGs36CpyneU43j4zCMRvwNcUTuolYBEsWlDTyCEtjY-uJwAFsA7spqCcjxR-uEnfSDUbSHaow&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Plastični rezervoari">
-        <h4>Plastični Rezervoari</h4>
-        <p>Kvalitetni plastični rezervoari za različite potrebe - od kućnih do industrijskih primena.</p>
+  <section class="container">
+    <h2 style="text-align: center; margin-bottom: 3rem;">Naši proizvodi</h2>
+    <div class="features">
+      <div class="feature">
+        <div class="icon">🏺</div>
+        <h3>Plastični rezervoari</h3>
+        <p>Visokokvalitetni plastični rezervoari za različite namene, otporni na koroziju i dugotrajan.</p>
       </div>
-      <div class="service-card">
-        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpf--XaA-Gpl1VOoGo1zDxL3CPpFd_9gnyDMZglbhMunSqjvypuOFFRpH_6CewTUBeDMYcqdODMMF2BGDX8QwDofBBxV5RTTTlfSlF5QXJNVi8xd8N8nu63vkkEgWQaarMF08Pbo83Dd1vjNAXX3m8X-yt7urJR7mucVJ5V9mEX103zsp2QJdTCFdYws8zgVQnhivtmsYyJ6Z1U8Xs8SEOGCRpCEQe4etEQ2PgqOworM0hTBlWPeMu-XlUNFq6IqXijf2d3NE3cGWuDpOMybFPTljGBdN0jcFnqX7Ac-oBACuQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Cisterne">
-        <h4>Cisterne</h4>
-        <p>Pouzdane cisterne za skladištenje tečnosti - voda, goriva i drugih industrijskih materijala.</p>
+      <div class="feature">
+        <div class="icon">🚰</div>
+        <h3>Cisterne</h3>
+        <p>Profesionalne cisterne za skladištenje vode i drugih tečnosti, sertifikovane i bezbedne.</p>
       </div>
-      <div class="service-card">
-        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpewipTcG8g8FhBmfrPJmLO0MN2GoArnKAr0YNTq4od1kqfghdya-DU_ga8OQ0WMhS0elq3tlSn7hJlQLpnSh-tes3hpOZpSWgGkOhfcFHSansoaho3l8eVyyddGxx6lpIHkd1gkTFH9dzNGrYm6Xz55sx1VBuClJCMq2O-XCEKmnq42a-bvNG8Uh1_w_sb-S20AiaUYe0FRmlV4mtqX1w19-2zMuNNfO0rChwgILuoRoH2Nh1gaxdae71a9x70_UstDWQjKHpwNjP1ox6SDd1TvQ5ddbA4qVFfj5SapSBiySA&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Septičke jame">
-        <h4>Septičke Jame</h4>
-        <p>Kompletni sistemi za tretman otpadnih voda - projektovanje, proizvodnja i ugradnja septičkih jama.</p>
+      <div class="feature">
+        <div class="icon">🔧</div>
+        <h3>Septičke jame</h3>
+        <p>Kompletni sistemi za septičke jame, uključujući montažu i servisiranje.</p>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="testimonials">
-    <h2>Mišljenja Klijenata</h2>
-    <div class="testimonials-grid">
-      <div class="testimonial">
-        <p>"Brza i odlična saradnja... 10/10... sve pohvale!"</p>
+  <section class="container">
+    <h2 style="text-align: center; margin-bottom: 3rem;">Galerija naših radova</h2>
+    <div class="gallery">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpc4mEf23pDPlr4fw40aL6B4z-De86Fw4a04nwNLvBnSrNlUYhdOrQ9Qk0NiinXSJK-XkF5n-07yZjQPYVLv7G3seXfKMpTABtdBDcKrXNOX-f2trz95YPR66P2RUCAqkBcGIR203f3dn1aiLsvCjBjp_hs9BzYdm8oV2S6sfAewK7X1ZcvI4jbBMp96DAGhE7dMBzNbCVu_lHRn75gxRhDDSKCiWz0siMqZw8wtgedqugceB9RqSkuXw-uxHt2QgEJ6ZWuiKjnPgLKAZ_0QgSm4oP36wKPSbBnnhDaVtFTf4A&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Cisterne">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpc7U2PKpMK3OdWd6hfGjqmDYWZhUKLzfNhkKUZzPCOyQ6-6GiIMEfEQqCL7QWfNDqnJdp0wDtWjrCGtGhFKcLUJqRjZULF9VvOhJSqjGhOUjfNhkKUZzPCOyQ6-6GiIMEfEQqCL7QWfNDqnJdp0wDtWjrCGtGhFKcLUJqRjZULF9VvOhJSqjGhOUjfNhkKUZzPCOyQ6-6GiIMEfEQqCL7QWfNDqnJdp0wDtWjrCGtGhFKcLUJqRjZULF9VvOhJSqjGhOUjfNhkKUZzPCOyQ6-6GiIMEfEQqCL7QWfNDqnJdp0wDtWjrCGtGhFKcLUJqRjZULF9VvOhJSqjGhOUjfNhkKUZzPCOyQ6-6GiIMEfEQqCL7QWfNDqnJdp0wDtWjrCGtGhFKcLUJqRjZULF9VvOhJSqjGhOUjfNhkKUZzPCOyQ6-6Gi&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Plastični rezervoari">
+      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=ATKogpfNN1koSlRvahBhP_A59TO_nPdcBRxjS5pPOmQahl7cmMNvyeVxLunLOkZQkPVT22JkZFy2dl6IByijtPLPmAQL_kNkuavR-yuXX7_5O0SVmuODOoxbbfBK_9oYLn8pgEVvnYP58FuHJ_MKujQATmF4kB5GuNMCA-tY54dSpYmqkVI_nqVJg10H5Y52WP-KI0qyR7atafjDsbJNnO5BC_ePIZQRGHndV5uqMfvzzTHHYqVGe2ToYkvM_BGxylSSVu1xTsEr-B2az6wEYG11Z8jadGL0yjqFcyMFfAombLdw4A&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Septičke jame">
+    </div>
+  </section>
+
+  <section class="container">
+    <h2 style="text-align: center; margin-bottom: 3rem;">Šta kažu naši klijenti</h2>
+    <div class="reviews">
+      <div class="review">
         <div class="stars">★★★★★</div>
-        <strong>- Aleksandar Popović</strong>
+        <p>"Izuzetno profesionalna usluga! Kigen Plastika je isporučila kvalitetnu septičku jamu koju koristimo već dve godine bez problema."</p>
+        <div class="author">- Marija Nikolić</div>
       </div>
-      <div class="testimonial">
-        <p>"Kvalitetni proizvodi i profesionalna usluga. Preporučujem svima koji traže pouzdane rešenja."</p>
+      <div class="review">
         <div class="stars">★★★★★</div>
-        <strong>- Jordan Jančić</strong>
+        <p>"Preporučujem! Brza dostava, kvalitetni proizvodi i odličan servis. Cisterna radi besprekorno."</p>
+        <div class="author">- Aleksandar Popović</div>
       </div>
-      <div class="testimonial">
-        <p>"Odličan rad i pristup. Sve je urađeno kako treba. Hvala na profesionalnoj usluzi."</p>
+      <div class="review">
         <div class="stars">★★★★★</div>
-        <strong>- Marko Pavlović</strong>
+        <p>"Zadovoljan sam rezervoarom koji sam kupió. Materijal je kvalitetan i montaža je bila brza i efikasna."</p>
+        <div class="author">- Miloš Jovanović</div>
       </div>
     </div>
   </section>
 
-  <!-- Gallery -->
-  <section class="gallery">
-    <h2>Galerija</h2>
-    <div class="gallery-grid">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpd8vhYtGBd2dEzWBj0da4mcYOV8VBESJJJ3mZzFf3Z12TieAdJS9FzHLi0bZo4VGs0AojfeG9nxTcaqleUi1AtsqTfTibAUzRikaWS-P5NltQIjztmNMpBRBhAFKbsHXlLAptobfzLsN8ntDmtLu_9-kocxQ_SMhenAcGzXzl65KYpU-0wm-iMmYXUY9ouCqhnDy2OepUlIlFzKyTd1FLkyl28ptSMj3oHp2cGs36CpyneU43j4zCMRvwNcUTuolYBEsWlDTyCEtjY-uJwAFsA7spqCcjxR-uEnfSDUbSHaow&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Septička jama projekat 1">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpf--XaA-Gpl1VOoGo1zDxL3CPpFd_9gnyDMZglbhMunSqjvypuOFFRpH_6CewTUBeDMYcqdODMMF2BGDX8QwDofBBxV5RTTTlfSlF5QXJNVi8xd8N8nu63vkkEgWQaarMF08Pbo83Dd1vjNAXX3m8X-yt7urJR7mucVJ5V9mEX103zsp2QJdTCFdYws8zgVQnhivtmsYyJ6Z1U8Xs8SEOGCRpCEQe4etEQ2PgqOworM0hTBlWPeMu-XlUNFq6IqXijf2d3NE3cGWuDpOMybFPTljGBdN0jcFnqX7Ac-oBACuQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Plastični rezervoari projekat 2">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpewipTcG8g8FhBmfrPJmLO0MN2GoArnKAr0YNTq4od1kqfghdya-DU_ga8OQ0WMhS0elq3tlSn7hJlQLpnSh-tes3hpOZpSWgGkOhfcFHSansoaho3l8eVyyddGxx6lpIHkd1gkTFH9dzNGrYm6Xz55sx1VBuClJCMq2O-XCEKmnq42a-bvNG8Uh1_w_sb-S20AiaUYe0FRmlV4mtqX1w19-2zMuNNfO0rChwgILuoRoH2Nh1gaxdae71a9x70_UstDWQjKHpwNjP1ox6SDd1TvQ5ddbA4qVFfj5SapSBiySA&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Cisterne projekat 3">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpdpRi4ypyOFoy2XZ4xdK46O7qnGagBCs0Xqd7IBQxKXaByLDZ_IsIPN1bFBlRG3UZi1b5fvp98FYkyD18iO48Np2pe4D4Q-nXBqm5DNNV5dwm5qRXjxR79TryU387e7Ub3EkEUd0ByrvAetMOs2JNRaSZ7et6Ico7GMC1FHUjAaVmz6L5-rZbmrmHSGzd5l2K_EMYEZAJwK0chRdrmukniwvpbTMOLA89YgEkH3iVaajbxZuQ-Lp92iV2ttA2u60A8j2hR2dEXy8IonQiya0pGZ_x-Q8zSSMCisyva8wxLj1g&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Kvalitetni proizvodi projekat 4">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpfoYN5k45dS-jbGODt6mXHoGBOSphvLnNt4bxPJNJz5CZPle9JgqvW9ekZzLHbFfUYZFWbuH8AvR79pdSLREdCM0lLDfLnSkZkf5Vml5q9nnXICnJw0ArfFjLYQ2alWu0hML_ENapvbbIiHgTU9BV9CVSTMTSlESusNOo5Ce6Zb8JaSho8fCoWMSr8m8RwP09ktijlnlvQtAPH0k-t0EYHnFs9Zrhh30BBhw_NiMubrh1Y0Rq7zm_GIFBjj4b3ZAkRXQLHNp02qTFbnuRdOi5meYkT0bwF54f9o4Dk-L9TtEA&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Profesionalna usluga projekat 5">
-      <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=ATKogpeDUGPtAHzsBFFQf-vh1uZq3TAVzlgIchU3tkRk3XJ1Zif8wnjp8yysrPe5RYffX1B3KeT428LpRnca7spPcqSVo1FAQbAcpqzcZ-U7BtMbrzq4eaz2Wgc3EY_8xEzLC4yxrdlOSRRLsXPyft7ujc1NOIG7YiM9BmtxuYShwImsML9sl9Jp5KLd_7ou2ekdfgdmAywEV9_Y9VOW4rqi0dx7iktwnSHmQQus5R1VjcAYoS1bzQm4fXA3dHWXQm0XnBQrjNRDjNzpwyF8H0gGrgyrDcx7lggUXfe_2q_1CRCKeg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE" alt="Kigen Plastika - Završeni projekti 6">
-    </div>
-  </section>
-
-  <!-- Secondary CTA -->
   <section class="secondary-cta">
-    <h2>Spremni za Saradnju?</h2>
-    <p>Kontaktirajte nas danas za sve vaše potrebe vezane za plastične elemente i septičke jame!</p>
-    <button class="btn-accent">Pozovite Nas</button>
+    <div class="container">
+      <h2>Spremni za vaš projekat?</h2>
+      <p>Kontaktirajte nas danas za besplatnu konsultaciju i ponudu prilagođenu vašim potrebama</p>
+      <button class="btn-accent">Pozovite Nas</button>
+    </div>
   </section>
 
-  <!-- Contact Form + Map -->
-  <section class="contact-form" id="contact">
-    <h2>Kontaktirajte Nas</h2>
-    <div class="contact-grid">
-      <form>
-        <input type="text" placeholder="Vaše ime" required>
-        <input type="email" placeholder="Email adresa" required>
-        <input type="tel" placeholder="Telefon" required>
-        <textarea placeholder="Poruka" rows="5" required></textarea>
-        <button type="submit">Pošaljite Poruku</button>
-      </form>
-      <div class="map-container">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2873.123456789012!2d19.865894315508!3d44.263011879099!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDE1JzQ2LjgiTiAxOcKwNTEnNTcuMiJF!5e0!3m2!1ssr!2srs!4v1234567890123!5m2!1ssr!2srs" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  <section class="container">
+    <h2 style="text-align: center; margin-bottom: 3rem;">Kontakt informacije</h2>
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="icon">📞</div>
+        <h3>Telefon</h3>
+        <p>065 2170293</p>
+      </div>
+      <div class="contact-item">
+        <div class="icon">📍</div>
+        <h3>Adresa</h3>
+        <p>Svetog Save bb<br>14253 Osečina, Srbija</p>
+      </div>
+      <div class="contact-item">
+        <div class="icon">🌐</div>
+        <h3>Web sajt</h3>
+        <p><a href="https://www.kigen-plastika.rs/">kigen-plastika.rs</a></p>
+      </div>
+      <div class="contact-item">
+        <div class="icon">⏰</div>
+        <h3>Radno vreme</h3>
+        <p>Pon-Pet: 8:00-16:00<br>Subota: 8:00-12:00</p>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer>
-    <div class="footer-grid">
-      <div>
-        <h4>Kontakt</h4>
-        <p>Telefon: 065 2170293</p>
-        <p>Email: info@kigen-plastika.rs</p>
-        <p>Adresa: Svetog Save bb, Osečina 14253</p>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Kigen Plastika</h4>
+          <p>Vaš pouzdan partner za plastične elemente za septičke jame</p>
+          <p>📞 065 2170293</p>
+          <p>📍 Svetog Save bb, 14253 Osečina</p>
+        </div>
+        <div>
+          <h4>Proizvodi</h4>
+          <p><a href="#tanks">Plastični rezervoari</a></p>
+          <p><a href="#cisterns">Cisterne</a></p>
+          <p><a href="#septic">Septičke jame</a></p>
+        </div>
+        <div>
+          <h4>Informacije</h4>
+          <p><a href="#about">O nama</a></p>
+          <p><a href="#contact">Kontakt</a></p>
+          <p><a href="#gallery">Galerija</a></p>
+        </div>
+        <div>
+          <h4>Pratite nas</h4>
+          <p><a href="https://www.facebook.com/profile.php?id=61575620207791">Facebook</a></p>
+          <p><a href="mailto:info@kigen-plastika.rs">Email</a></p>
+        </div>
       </div>
-      <div>
-        <h4>Usluge</h4>
-        <a href="#">Plastični rezervoari</a>
-        <a href="#">Cisterne</a>
-        <a href="#">Septičke jame</a>
-      </div>
-      <div>
-        <h4>O nama</h4>
-        <a href="#">Naša priča</a>
-        <a href="#">Kvalitet</a>
-        <a href="#">Galerija</a>
-      </div>
-      <div>
-        <h4>Pratite nas</h4>
-        <a href="https://www.facebook.com/profile.php?id=61575620207791">Facebook</a>
-        <a href="#">Instagram</a>
-        <a href="#">LinkedIn</a>
+      <div style="text-align: center; padding-top: 2rem; border-top: 1px solid #666;">
+        <p>&copy; 2024 Kigen Plastika. Sva prava zadržana.</p>
       </div>
     </div>
   </footer>
 
-  <script src="data-hierarchy.js?v=1752209700"></script>
-  <script src="iframeEditorBridge.js?v=1752209700"></script>
-  <script src="frozen-ui.js?v=1752209700"></script>
-  <script src="micro-animations.js?v=1752209700"></script>
-  <script src="service-image-matcher.js?v=1752209700"></script>
+  <!-- Editor bridge script -->
+  <script src="iframeEditorBridge.js"></script>
+  <!-- Main frozen UI script -->
+  <script src="frozen-ui.js"></script>
 </body>
 </html>

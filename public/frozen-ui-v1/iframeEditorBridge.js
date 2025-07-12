@@ -3,46 +3,43 @@
  * Handles communication between dashboard and iframe for editing commands
  */
 
-(function() {
-  'use strict';
+console.log('🔗 iframeEditorBridge.js loaded');
 
-  // Listen for messages from parent dashboard
-  window.addEventListener('message', function(event) {
-    if (event.data.type === 'editor-cmd') {
-      const { cmd, value } = event.data;
+// Listen for messages from parent dashboard
+window.addEventListener('message', (event) => {
+  // Only process messages from trusted sources
+  if (event.data.type === 'editor-cmd') {
+    const { cmd, value } = event.data;
+    console.log('📨 Received editor command:', cmd, value);
+    
+    try {
+      // Execute the formatting command
+      const success = document.execCommand(cmd, false, value);
+      console.log('✅ Command executed:', cmd, 'Success:', success);
       
-      // Execute the command on the selected/focused element
-      const selection = window.getSelection();
-      if (selection.rangeCount > 0) {
-        document.execCommand(cmd, false, value);
-      }
+      // Send confirmation back to dashboard
+      window.parent.postMessage({
+        type: 'command-executed',
+        cmd: cmd,
+        success: success
+      }, '*');
+      
+    } catch (error) {
+      console.error('❌ Command execution failed:', error);
+      
+      // Send error back to dashboard
+      window.parent.postMessage({
+        type: 'command-error',
+        cmd: cmd,
+        error: error.message
+      }, '*');
     }
-  });
-
-  // Send element selection info back to dashboard
-  function notifyElementSelection(element) {
-    window.parent.postMessage({
-      type: 'elementSelected',
-      tagName: element.tagName,
-      content: element.textContent || element.innerText,
-      className: element.className
-    }, '*');
   }
+});
 
-  // Send delete notification to dashboard
-  function notifyElementDeleted(element) {
-    window.parent.postMessage({
-      type: 'elementDeleted',
-      tagName: element.tagName,
-      content: element.textContent || element.innerText
-    }, '*');
-  }
+// Notify parent that bridge is ready
+window.parent.postMessage({
+  type: 'bridge-ready'
+}, '*');
 
-  // Export functions for use in frozen-ui.js
-  window.editorBridge = {
-    notifyElementSelection,
-    notifyElementDeleted
-  };
-
-  console.log('✅ Iframe Editor Bridge initialized');
-})();
+console.log('🎯 iframeEditorBridge ready for commands');
