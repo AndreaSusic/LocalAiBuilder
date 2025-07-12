@@ -2508,23 +2508,21 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Serve the updated Kigen Plastika homepage for preview
-app.get('/preview', (req, res) => {
-  console.log('📂 Serving Kigen Plastika homepage for preview');
-  res.sendFile(path.join(__dirname, 'public', 'frozen-ui-v1', 'index.html'));
-});
+// Serve React app from production build for dashboard routes
+app.use('/preview', express.static(path.join(__dirname, 'dashboard', 'dist')));
+// Dashboard static files handled by route handler below to prevent index.html conflicts
 
-// Serve static files for the frozen UI
-app.use('/preview', express.static(path.join(__dirname, 'public', 'frozen-ui-v1')));
+// React app routing for specific paths
+app.get('/preview', (req, res) => {
+  console.log('📂 Serving SPA from production build');
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
 
 // Dashboard static files for non-HTML assets
 app.use('/dashboard', express.static(path.join(__dirname, 'dashboard', 'dist'), {
   index: false, // Don't serve index.html automatically
   dotfiles: 'ignore'
 }));
-
-// Serve Kigen Plastika page for dashboard iframe
-app.use('/frozen-ui-v1', express.static(path.join(__dirname, 'public', 'frozen-ui-v1')));
 
 app.get('/dashboard', (req, res) => {
   console.log('📂 Serving dashboard SPA from production build');
