@@ -5,7 +5,7 @@ channel = "stable-24_05"
 packages = ["zip", "chromium"]
 
 [workflows]
-runButton = "Project"
+runButton = "React Dashboard"
 
 [[workflows.workflow]]
 name = "Project"

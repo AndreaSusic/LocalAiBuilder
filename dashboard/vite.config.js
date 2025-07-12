@@ -3,19 +3,18 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 /**
- * Vite configuration for the dashboard:
- *  • React plugin for JSX/TSX support
- *  • SPA build to /dist (for “npm run build”)
- *  • Dev-server on port 5173 with HMR over WSS
- *  • Proxy every /api/* call to the Express backend on :5000
- *  • `host: true` + `allowedHosts: true` so Replit’s long
- *    sub-domain can reach the dev-server without “Blocked request”.
+ * Replit exposes REPL_SLUG (40-char id) and runs containers in the
+ * “picard.replit.dev” cluster.  Using that we can compute the public host:
+ *   <REPL_SLUG>.picard.replit.dev
+ *
+ * Locally REPL_SLUG is undefined, so we fall back to localhost.
  */
+const replSlug = process.env.REPL_SLUG; // e.g. 840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv
+const publicHost = replSlug ? `${replSlug}.picard.replit.dev` : "localhost";
+
 export default defineConfig({
   plugins: [react()],
-
   appType: "spa",
-
   base: "./",
 
   build: {
@@ -25,15 +24,17 @@ export default defineConfig({
   },
 
   server: {
-    host: true, // bind on 0.0.0.0 and disable host-header check
-    port: 5173, // preferred dev port (falls back if taken)
-    strictPort: false, // auto-pick the next free port when 5173 is busy
-    allowedHosts: true, // ✅ permit any external host (Replit sub-domain)
+    host: true, // 0.0.0.0 so Replit proxy can reach it
+    port: 5173,
+    strictPort: false,
+    allowedHosts: true,
+
+    https: false, // plain HTTP inside container (TLS handled by proxy)
 
     hmr: {
-      protocol: "wss", // Replit serves over HTTPS → use secure websockets
-      clientPort: 443, // browser connects on 443 through the proxy
-      // host is omitted → Vite falls back to `window.location.host`
+      protocol: "wss", // secure WebSocket for browsers on HTTPS
+      host: publicHost, // 840478aa-…picard.replit.dev  OR localhost
+      clientPort: 443, // external TLS port
     },
 
     proxy: {
@@ -53,6 +54,5 @@ export default defineConfig({
         secure: false,
       },
     },
-    // add any other Express endpoints you call from the browser
   },
 });

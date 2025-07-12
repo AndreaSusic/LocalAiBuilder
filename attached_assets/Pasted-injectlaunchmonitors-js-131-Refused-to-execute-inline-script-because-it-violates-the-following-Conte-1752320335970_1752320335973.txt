@@ -1,0 +1,45 @@
+injectlaunchmonitors.js:131 Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://7c96cba4-edb8-4496-8578-b070cff68d9d/". Either the 'unsafe-inline' keyword, a hash ('sha256-+osnfquB23g9K0xV1ls9W1PGJx2yRDNBiM+W8Bj/zdc='), or a nonce ('nonce-...') is required to enable inline execution.
+
+(anonymous) @ injectlaunchmonitors.js:131
+extension.js:553 Returning a Promise is the preferred way to send a reply from an onMessage/onMessageExternal listener, as the sendResponse will be removed from the specs (See https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) Error
+    at o (chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378065)
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:362:300985
+    at chrome-extension://jmjbgcjbgmcfgbgikmbdioggjlhjegpp/insides/content/content.js:3:378108
+o @ browser-polyfill.js:1075
+(anonymous) @ extension.js:553
+(anonymous) @ browser-polyfill.js:1086
+client:802 WebSocket connection to 'wss://workspace.picard.replit.dev/?token=I__BzqTV9C3A' failed: 
+createConnection @ client:802
+connect @ client:437
+connect @ client:811
+connect @ client:290
+connect @ client:383
+(anonymous) @ client:908
+client:841 [vite] failed to connect to websocket (Error: WebSocket closed without opened.). 
+overrideMethod @ hook.js:608
+connect @ client:841
+await in connect
+connect @ client:290
+connect @ client:383
+(anonymous) @ client:908
+client:454 Uncaught (in promise) Error: WebSocket closed without opened.
+    at WebSocket.<anonymous> (client:454:22)
+(anonymous) @ client:454
+SiteDataContext.js:3 🕵️‍♂️ SiteDataContext loaded
+TemplatePreview.jsx:10 ######## I AM TP at https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/src/components/TemplatePreview.jsx
+main.jsx:88  GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/api/kigen-data 500 (Internal Server Error)
+loadBootstrap @ main.jsx:88
+(anonymous) @ main.jsx:169
+main.jsx:99  GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:5173/api/user-data 500 (Internal Server Error)
+loadBootstrap @ main.jsx:99
+await in loadBootstrap
+(anonymous) @ main.jsx:169
+main.jsx:206 Error loading bootstrap: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at loadBootstrap (main.jsx:101:30)
+overrideMethod @ hook.js:608
+(anonymous) @ main.jsx:206
+Promise.catch
+(anonymous) @ main.jsx:205
+extension_content.js:1 recalculate_head_data
+content.js:48 request OK
+extension_content.js:1 recalculate_head_data
