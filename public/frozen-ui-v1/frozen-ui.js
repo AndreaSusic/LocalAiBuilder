@@ -14,32 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Simple inline editor for elements
-  const elements = document.querySelectorAll('h1, h2, h3, h4, p');
-  
-  elements.forEach(el => {
-    el.addEventListener('mouseenter', function() {
-      this.style.outline = '2px dotted #ff0000';
-      this.style.cursor = 'pointer';
-    });
-    
-    el.addEventListener('mouseleave', function() {
-      if (!this.hasAttribute('contenteditable')) {
-        this.style.outline = 'none';
-      }
-    });
-    
-    el.addEventListener('click', function() {
-      this.contentEditable = true;
-      this.style.outline = '2px solid #ffc000';
-      this.focus();
-    });
-    
-    el.addEventListener('blur', function() {
-      this.contentEditable = false;
-      this.style.outline = 'none';
-    });
-  });
+  // Note: Advanced inline editor functionality moved to inline-editor.js
   
   // Log data hierarchy enforcement
   console.log('🔍 FROZEN UI DATA HIERARCHY SUMMARY:');
