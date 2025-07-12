@@ -2508,14 +2508,15 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Serve /app content for preview iframe
-app.get('/preview', (req, res) => {
-  console.log('📂 Serving /app content for preview iframe');
-  res.sendFile(path.join(__dirname, 'public', 'frozen-ui-v1', 'index.html'));
-});
+// Serve React app from production build for dashboard routes
+app.use('/preview', express.static(path.join(__dirname, 'dashboard', 'dist')));
+// Dashboard static files handled by route handler below to prevent index.html conflicts
 
-// Serve static files for the frozen UI (same as /app route)
-app.use('/preview', express.static(path.join(__dirname, 'public', 'frozen-ui-v1')));
+// React app routing for specific paths
+app.get('/preview', (req, res) => {
+  console.log('📂 Serving SPA from production build');
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
 
 // Dashboard static files for non-HTML assets
 app.use('/dashboard', express.static(path.join(__dirname, 'dashboard', 'dist'), {
