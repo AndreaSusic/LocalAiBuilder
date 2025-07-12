@@ -2794,13 +2794,17 @@ app.get("/preview", (req, res) => {
   res.sendFile(path.join(__dirname, "dashboard", "dist", "index.html"));
 });
 
-// Serve the frozen UI content for iframe
-app.get("/app", (req, res) => {
+// Serve static files for the frozen UI first
+app.use("/app", express.static(path.join(__dirname, "public", "frozen-ui-v1")));
+
+// Serve the frozen UI content for iframe (handles /app and /app/)
+app.get(["/app", "/app/"], (req, res) => {
+  // Disable caching for development
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
   res.sendFile(path.join(__dirname, "public", "frozen-ui-v1", "index.html"));
 });
-
-// Serve static files for the frozen UI
-app.use("/app", express.static(path.join(__dirname, "public", "frozen-ui-v1")));
 
 // Dashboard static files for non-HTML assets
 app.use(

@@ -238,7 +238,7 @@ function DesktopDashboard({ bootstrap }) {
             {previewContent && (
               <iframe
                 className="preview-iframe"
-                src={previewContent}
+                src={`${previewContent}?v=${Date.now()}`}
                 onLoad={handleIframeLoad}
               />
             )}
