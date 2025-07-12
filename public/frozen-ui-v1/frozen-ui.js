@@ -1,15 +1,18 @@
 /**
- * FROZEN UI INTERACTIVE FUNCTIONALITY
- * Hamburger menu and inline editing system
+ * FROZEN UI - INLINE EDITOR
+ * Enhanced inline editing system with delete buttons and formatting
  */
 
-// Hamburger menu functionality
-document.addEventListener('DOMContentLoaded', function() {
-  const ham = document.querySelector('.hamburger');
+console.log('🎨 frozen-ui.js loading...');
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('🚀 DOM loaded, initializing inline editor');
+
+  // Mobile menu toggle
+  const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('.nav-links');
-  
-  if (ham && menu) {
-    ham.addEventListener('click', () => {
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', () => {
       menu.classList.toggle('open');
     });
   }
@@ -19,102 +22,110 @@ document.addEventListener('DOMContentLoaded', function() {
   
   elements.forEach(el => {
     // Store reference to delete button
-    let deleteButton = null;
+    let deleteBtn = null;
     
-    el.addEventListener('mouseenter', function() {
-      this.style.outline = '2px dotted #ff0000';
-      this.style.cursor = 'pointer';
-      this.style.position = 'relative';
+    // Add hover styles
+    el.addEventListener('mouseenter', () => {
+      if (el.isContentEditable) return; // Skip if already editing
+      
+      // Add red dotted outline
+      el.style.outline = '2px dotted #e53935';
+      el.style.outlineOffset = '2px';
       
       // Create delete button if it doesn't exist
-      if (!deleteButton) {
-        deleteButton = document.createElement('button');
-        deleteButton.className = 'delete-btn';
-        deleteButton.innerHTML = '✕';
-        deleteButton.style.cssText = `
-          position: absolute;
-          top: -8px;
-          right: -8px;
-          width: 16px;
-          height: 16px;
-          background: #e53935;
-          border-radius: 50%;
-          color: #fff;
-          font-size: 12px;
-          border: none;
-          cursor: pointer;
-          opacity: 0.6;
-          z-index: 1000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: opacity 0.2s;
-        `;
+      if (!deleteBtn && !el.querySelector('.delete-btn')) {
+        deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.innerHTML = '✕';
+        deleteBtn.title = 'Delete element';
         
-        deleteButton.addEventListener('mouseenter', function() {
-          this.style.opacity = '0.9';
-        });
+        // Position relative to element
+        el.style.position = 'relative';
+        el.appendChild(deleteBtn);
         
-        deleteButton.addEventListener('mouseleave', function() {
-          this.style.opacity = '0.6';
-        });
-        
-        deleteButton.addEventListener('click', function(e) {
+        // Delete button click handler
+        deleteBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           e.preventDefault();
           
-          // Notify dashboard about deletion
-          if (window.editorBridge) {
-            window.editorBridge.notifyElementDeleted(el);
+          // Confirm deletion
+          if (confirm('Delete this element?')) {
+            // Notify parent dashboard
+            window.parent.postMessage({
+              type: 'elementDeleted',
+              element: el.tagName,
+              text: el.textContent?.substring(0, 50) + '...'
+            }, '*');
+            
+            // Remove the element
+            el.remove();
           }
-          
-          // Remove the element
-          el.remove();
         });
         
-        this.appendChild(deleteButton);
+        console.log('🗑️ Delete button added to', el.tagName);
       }
     });
     
-    el.addEventListener('mouseleave', function() {
-      if (!this.hasAttribute('contenteditable') || this.contentEditable === 'false') {
-        this.style.outline = 'none';
-        // Remove delete button
-        if (deleteButton) {
-          deleteButton.remove();
-          deleteButton = null;
-        }
-      }
-    });
-    
-    el.addEventListener('click', function() {
-      this.contentEditable = true;
-      this.style.outline = '2px solid #ffc000';
-      this.focus();
+    el.addEventListener('mouseleave', () => {
+      if (el.isContentEditable) return; // Skip if editing
       
-      // Notify dashboard about selection
-      if (window.editorBridge) {
-        window.editorBridge.notifyElementSelection(this);
+      // Remove red outline
+      el.style.outline = '';
+      el.style.outlineOffset = '';
+      
+      // Remove delete button
+      if (deleteBtn) {
+        deleteBtn.remove();
+        deleteBtn = null;
       }
     });
     
-    el.addEventListener('blur', function() {
-      this.contentEditable = false;
-      this.style.outline = 'none';
-      // Remove delete button on blur
-      if (deleteButton) {
-        deleteButton.remove();
-        deleteButton = null;
+    // Click to edit
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Make element editable
+      el.contentEditable = true;
+      el.focus();
+      
+      // Add yellow editing outline
+      el.style.outline = '2px solid #ffc000';
+      el.style.outlineOffset = '2px';
+      
+      // Remove red outline and delete button
+      if (deleteBtn) {
+        deleteBtn.remove();
+        deleteBtn = null;
+      }
+      
+      // Notify parent dashboard
+      window.parent.postMessage({
+        type: 'elementSelected',
+        element: el.tagName,
+        text: el.textContent
+      }, '*');
+      
+      console.log('📝 Element selected for editing:', el.tagName);
+    });
+    
+    // Blur to finish editing
+    el.addEventListener('blur', () => {
+      el.contentEditable = false;
+      el.style.outline = '';
+      el.style.outlineOffset = '';
+      
+      console.log('✅ Editing finished for:', el.tagName);
+    });
+    
+    // Handle Enter key
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        el.blur();
       }
     });
   });
   
-  // Log data hierarchy enforcement
-  console.log('🔍 FROZEN UI DATA HIERARCHY SUMMARY:');
-  console.log('📋 Services: Checking data hierarchy for authentic services...');
-  console.log('🎨 Colors: #ffc000, #000000 (Priority 1: User Questionnaire)');
-  console.log('📸 Images: Authentic GBP photos (Priority 3: GBP Data)');
-  console.log('📞 Contact: 065 2170293, Svetog Save bb, Osečina (Priority 2: Website/GBP)');
-  console.log('⭐ Reviews: Aleksandar Popović, Jordan Jančić, Marko Pavlović (Priority 3: GBP)');
-  console.log('✅ NO DUMMY DATA OR STOCK IMAGES USED');
+  console.log('✅ Inline editor initialized for', elements.length, 'elements');
 });
