@@ -226,7 +226,7 @@ export default function MobileDashboard({ bootstrap }) {
             {previewContent && (
               <iframe 
                 title="preview" 
-                src={previewContent}
+                src={`${previewContent}?v=${Date.now()}`}
                 onLoad={handleIframeLoad}
                 style={{
                   width: "100%",
