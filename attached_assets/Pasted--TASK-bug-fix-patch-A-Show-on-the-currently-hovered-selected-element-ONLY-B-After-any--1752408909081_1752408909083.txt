@@ -1,0 +1,60 @@
+◾ TASK (bug-fix patch)
+  A. Show ✕ on the *currently* hovered/selected element ONLY.
+  B. After any undo/redo, re-attach buttons to *all* editable nodes
+     so ✕ never disappears (text or image).
+  C. Prevent accidental removal of following sections on delete/undo.
+     Root cause: history snapshot uses element.innerHTML instead of
+     full section.outerHTML → neighbouring DOM is lost.
+  D. Guarantee nav overlay always on top, even in Safari/iOS
+     (z-index + pointer-events).
+
+◾ CONTEXT (current code)
+  • createImageOverlayButtons() builds ✕ + 🖼️ for images.
+  • For text we fabricate a .delete-btn inline.
+  • SaveToHistory() pushes document.body.innerHTML.
+  • wireInlineEditor(root) marks el.dataset.wired=1.
+
+◾ IMPLEMENT
+  1️⃣ **Single overlay layer**
+      • Add global let activeOverlayBtns = [];
+      • function clearOverlays()
+            activeOverlayBtns.forEach(btn=>btn.remove());
+            activeOverlayBtns = [];
+      • At the start of any mouseenter / click,
+        call clearOverlays() so stale ✕ vanishes.
+      • Whenever you create a new delete or replace btn,
+        push it into activeOverlayBtns.
+
+  2️⃣ **Robust re-wiring after undo/redo**
+      • At the very end of undo() / redo():
+            clearOverlays();
+            wireInlineEditor(document);   // re-attach listeners
+            activeOverlayBtns = [];        // reset registry
+      • Also call updateToolbarButtons() afterwards.
+
+  3️⃣ **Snapshot full <body> clone**
+      • In saveToHistory():
+            const snapshot = document.body.cloneNode(true).outerHTML;
+        (cloneNode deep=true preserves every section & listener attr)
+      • In undo/redo replace with
+            document.documentElement.innerHTML =
+              '<head>'+document.head.innerHTML+'</head><body>'+snapshot+'</body>';
+
+      • Immediately call wireInlineEditor(document);
+
+  4️⃣ **Nav overlay absolute winner**
+      • CSS (in frozen-ui.html style block or injected):
+            nav, nav * { pointer-events:auto; }
+            .delete-btn, .replace-btn { z-index:2147483640 !important; }
+
+  5️⃣ **MutationObserver tweak**
+      • Inside observer callback, after wireInlineEditor(node)
+        also clearOverlays();   // make sure no orphan ✕ remains.
+
+◾ DONE WHEN
+  ✓ Hover text → red outline + ✕  
+  ✓ Hover another → previous ✕ disappears instantly  
+  ✓ Delete ANY element → undo → all buttons/overlays still work  
+  ✓ Repeated delete/undo cycles do **NOT** delete lower sections  
+  ✓ Nav bar never hides overlay in any browser  
+  ✓ No console errors after running `undo()` / `redo()` 20 times
