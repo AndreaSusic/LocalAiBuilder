@@ -396,6 +396,9 @@ document.addEventListener("DOMContentLoaded", function () {
     "⭐ Reviews: Aleksandar Popović, Jordan Jančić, Marko Pavlović (Priority 3: GBP)",
   );
   console.log("✅ NO DUMMY DATA OR STOCK IMAGES USED");
+  
+  // Initialize inline editor on all elements immediately
+  reinitializeEditor();
 });
 
 
@@ -543,6 +546,9 @@ function reinitializeEditor() {
     const newEl = el.cloneNode(true);
     el.parentNode.replaceChild(newEl, el);
     
+    // Clear wired flag before re-setup
+    delete newEl.dataset.wired;
+    
     // Setup the editor functionality again
     setupElementEditor(newEl);
   });
@@ -552,6 +558,10 @@ function reinitializeEditor() {
 }
 
 function setupElementEditor(el) {
+  // Prevent duplicate listeners
+  if (el.dataset.wired) return;
+  el.dataset.wired = 'true';
+  
   // Store reference to delete button
   let deleteButton = null;
 
