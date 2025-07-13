@@ -8,6 +8,81 @@ let editHistory = [];
 let historyIndex = -1;
 const MAX_HISTORY = 50;
 
+// Function to create overlay buttons for images (module scope)
+function createImageOverlayButtons(imageElement) {
+  // Check if buttons already exist to avoid duplicates
+  const parent = imageElement.parentElement;
+  if (parent.querySelector('.delete-btn') || parent.querySelector('.replace-btn')) {
+    return; // Buttons already exist
+  }
+  
+  // Ensure parent has relative positioning
+  if (getComputedStyle(parent).position === 'static') {
+    parent.style.position = 'relative';
+  }
+
+  // Create delete button
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'delete-btn';
+  deleteBtn.textContent = '✕';
+  
+  deleteBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    // Save current state before deletion
+    saveToHistory();
+    
+    // Create placeholder
+    const placeholder = document.createElement('div');
+    placeholder.className = 'img-placeholder';
+    placeholder.dataset.width = imageElement.offsetWidth || 200;
+    placeholder.dataset.height = imageElement.offsetHeight || 150;
+    placeholder.innerHTML = '<span>Click to add image</span>';
+    placeholder.style.width = placeholder.dataset.width + 'px';
+    placeholder.style.height = placeholder.dataset.height + 'px';
+    
+    // Replace image with placeholder
+    imageElement.replaceWith(placeholder);
+    
+    // Make placeholder editable
+    makeElementEditable(placeholder);
+    
+    // Save state after change
+    saveToHistory();
+    
+    // Notify dashboard about deletion
+    if (window.editorBridge) {
+      window.editorBridge.notifyElementDeleted(imageElement);
+    }
+  });
+
+  // Create replace button
+  const replaceBtn = document.createElement('button');
+  replaceBtn.className = 'replace-btn';
+  replaceBtn.textContent = '🖼️';
+  
+  replaceBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    // Save current state before potential change
+    saveToHistory();
+    
+    // Prompt for new image URL
+    const newUrl = prompt('Enter new image URL:', imageElement.src);
+    if (newUrl && newUrl !== imageElement.src) {
+      imageElement.src = newUrl;
+      // Save state after change
+      saveToHistory();
+    }
+  });
+
+  // Append buttons to parent
+  parent.appendChild(deleteBtn);
+  parent.appendChild(replaceBtn);
+}
+
 // Hamburger menu functionality
 document.addEventListener("DOMContentLoaded", function () {
   const ham = document.querySelector(".hamburger");
@@ -192,80 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Function to create overlay buttons for images
-  function createImageOverlayButtons(imageElement) {
-    // Check if buttons already exist to avoid duplicates
-    const parent = imageElement.parentElement;
-    if (parent.querySelector('.delete-btn') || parent.querySelector('.replace-btn')) {
-      return; // Buttons already exist
-    }
-    
-    // Ensure parent has relative positioning
-    if (getComputedStyle(parent).position === 'static') {
-      parent.style.position = 'relative';
-    }
 
-    // Create delete button
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.textContent = '✕';
-    
-    deleteBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      
-      // Save current state before deletion
-      saveToHistory();
-      
-      // Create placeholder
-      const placeholder = document.createElement('div');
-      placeholder.className = 'img-placeholder';
-      placeholder.dataset.width = imageElement.offsetWidth || 200;
-      placeholder.dataset.height = imageElement.offsetHeight || 150;
-      placeholder.innerHTML = '<span>Click to add image</span>';
-      placeholder.style.width = placeholder.dataset.width + 'px';
-      placeholder.style.height = placeholder.dataset.height + 'px';
-      
-      // Replace image with placeholder
-      imageElement.replaceWith(placeholder);
-      
-      // Make placeholder editable
-      makeElementEditable(placeholder);
-      
-      // Save state after change
-      saveToHistory();
-      
-      // Notify dashboard about deletion
-      if (window.editorBridge) {
-        window.editorBridge.notifyElementDeleted(imageElement);
-      }
-    });
-
-    // Create replace button
-    const replaceBtn = document.createElement('button');
-    replaceBtn.className = 'replace-btn';
-    replaceBtn.textContent = '🖼️';
-    
-    replaceBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      
-      // Save current state before potential change
-      saveToHistory();
-      
-      // Prompt for new image URL
-      const newUrl = prompt('Enter new image URL:', imageElement.src);
-      if (newUrl && newUrl !== imageElement.src) {
-        imageElement.src = newUrl;
-        // Save state after change
-        saveToHistory();
-      }
-    });
-
-    // Append buttons to parent
-    parent.appendChild(deleteBtn);
-    parent.appendChild(replaceBtn);
-  }
 
   // Function to make element editable (for dynamic elements)
   function makeElementEditable(element) {
@@ -396,18 +398,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("✅ NO DUMMY DATA OR STOCK IMAGES USED");
 });
 
-// Event listener for history-refresh to re-attach buttons
-document.addEventListener('history-refresh', function() {
-  // Find any selected images and re-attach their overlay buttons
-  const selectedImages = document.querySelectorAll('img.image-selected');
-  selectedImages.forEach(img => {
-    if (img.classList.contains('image-selected')) {
-      createImageOverlayButtons(img);
-    }
-  });
-  
-  console.log('🔄 History refresh: Re-attached overlay buttons to selected images');
-});
+
 
 // Initialize undo/redo toolbar
 function initializeUndoRedoToolbar() {
@@ -499,8 +490,11 @@ function undo() {
     // Re-initialize editor functionality after DOM change
     reinitializeEditor();
     
-    // Fire history-refresh event to re-attach buttons
-    document.dispatchEvent(new CustomEvent('history-refresh'));
+    // Re-attach buttons to selected images
+    const selectedImg = document.querySelector('img.image-selected');
+    if (selectedImg) {
+      createImageOverlayButtons(selectedImg);
+    }
   } else {
     console.log('↶ Cannot undo - at beginning of history');
   }
@@ -528,8 +522,11 @@ function redo() {
     // Re-initialize editor functionality after DOM change
     reinitializeEditor();
     
-    // Fire history-refresh event to re-attach buttons
-    document.dispatchEvent(new CustomEvent('history-refresh'));
+    // Re-attach buttons to selected images
+    const selectedImg = document.querySelector('img.image-selected');
+    if (selectedImg) {
+      createImageOverlayButtons(selectedImg);
+    }
   } else {
     console.log('↷ Cannot redo - at end of history');
   }
