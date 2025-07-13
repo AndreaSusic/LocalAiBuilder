@@ -238,6 +238,8 @@ function DesktopDashboard({ bootstrap }) {
     );
   }
 
+  console.log('🔄 Rendering dashboard with canUndo:', canUndo, 'canRedo:', canRedo);
+  
   return (
     <div className="dashboard-wireframe">
       {/* Header */}
