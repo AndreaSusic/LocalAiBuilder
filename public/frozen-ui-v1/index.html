@@ -90,14 +90,19 @@
         right: -8px;
         background: #e53935;
         color: #fff;
-        z-index: 10000 !important;
+        z-index: 2147483640 !important;
       }
       
       .replace-btn {
         right: 12px;
         background: #4caf50;
         color: #fff;
-        z-index: 10000 !important;
+        z-index: 2147483640 !important;
+      }
+      
+      /* Navigation overlay protection */
+      nav, nav * {
+        pointer-events: auto;
       }
       
       .delete-btn:hover, .replace-btn:hover {

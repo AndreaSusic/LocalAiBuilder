@@ -8,8 +8,17 @@ let editHistory = [];
 let historyIndex = -1;
 const MAX_HISTORY = 50;
 
+// Global overlay button management
+let activeOverlayBtns = [];
+
 // Export createImageOverlayButtons globally
 window.createImageOverlayButtons = createImageOverlayButtons;
+
+// Clear all active overlay buttons
+function clearOverlays() {
+  activeOverlayBtns.forEach(btn => btn.remove());
+  activeOverlayBtns = [];
+}
 
 // Function to create overlay buttons for images (module scope)
 function createImageOverlayButtons(imageElement) {
@@ -28,7 +37,7 @@ function createImageOverlayButtons(imageElement) {
   const deleteBtn = document.createElement('button');
   deleteBtn.className = 'delete-btn';
   deleteBtn.textContent = '✕';
-  deleteBtn.style.zIndex = '10000';
+  deleteBtn.style.zIndex = '2147483640';
   
   deleteBtn.addEventListener('click', function(e) {
     e.stopPropagation();
@@ -65,7 +74,7 @@ function createImageOverlayButtons(imageElement) {
   const replaceBtn = document.createElement('button');
   replaceBtn.className = 'replace-btn';
   replaceBtn.textContent = '🖼️';
-  replaceBtn.style.zIndex = '10000';
+  replaceBtn.style.zIndex = '2147483640';
   
   replaceBtn.addEventListener('click', function(e) {
     e.stopPropagation();
@@ -86,6 +95,9 @@ function createImageOverlayButtons(imageElement) {
   // Append buttons to parent
   parent.appendChild(deleteBtn);
   parent.appendChild(replaceBtn);
+  
+  // Track active overlay buttons
+  activeOverlayBtns.push(deleteBtn, replaceBtn);
 }
 
 // Wire inline editor for all elements
@@ -103,6 +115,9 @@ function wireInlineEditor(root = document) {
     let deleteButton = null;
     
     el.addEventListener('mouseenter', function() {
+      // Clear any existing overlay buttons first
+      clearOverlays();
+      
       this.style.outline = '2px dotted #ff0000';
       this.style.cursor = 'pointer';
       this.style.position = 'relative';
@@ -130,7 +145,7 @@ function wireInlineEditor(root = document) {
             border: none;
             cursor: pointer;
             opacity: 0.6;
-            z-index: 10000;
+            z-index: 2147483640;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -165,6 +180,8 @@ function wireInlineEditor(root = document) {
           });
           
           this.appendChild(deleteButton);
+          // Track the text delete button
+          activeOverlayBtns.push(deleteButton);
         }
       }
     });
@@ -189,15 +206,15 @@ function wireInlineEditor(root = document) {
     });
     
     el.addEventListener('click', function() {
+      // Clear overlays before any selection
+      clearOverlays();
+      
       if (this.tagName.toLowerCase() === 'img') {
         // Clear other selected images
         document.querySelectorAll('img.image-selected, .img-placeholder.image-selected').forEach(img => {
           img.classList.remove('image-selected');
           img.style.outline = 'none';
           img.style.zIndex = '';
-          // Remove existing buttons
-          const existingButtons = img.parentElement.querySelectorAll('.delete-btn, .replace-btn');
-          existingButtons.forEach(btn => btn.remove());
         });
         
         this.style.outline = '2px solid #ffc000';
@@ -307,10 +324,9 @@ document.addEventListener("DOMContentLoaded", function () {
         el.classList.remove('image-selected');
         el.style.outline = "none";
         el.style.zIndex = "";
-        // Remove any existing overlay buttons
-        const existingButtons = el.parentElement.querySelectorAll('.delete-btn, .replace-btn');
-        existingButtons.forEach(btn => btn.remove());
       });
+      // Clear all overlay buttons
+      clearOverlays();
     }
   });
 
@@ -337,6 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mutation.addedNodes.forEach(function(node) {
           if (node.nodeType === 1) { // Element node
             wireInlineEditor(node);
+            clearOverlays(); // Clear orphan overlays
           }
         });
       }
@@ -387,7 +404,7 @@ function updateToolbarButtons() {
 // History management functions
 function saveToHistory() {
   try {
-    const snapshot = document.body.innerHTML;
+    const snapshot = document.body.cloneNode(true).outerHTML;
     // Remove snapshots after current index (when user was in middle of history)
     editHistory = editHistory.slice(0, historyIndex + 1);
     editHistory.push(snapshot);
@@ -420,8 +437,14 @@ function undo() {
   if (historyIndex > 0) {
     historyIndex--;
     const snapshot = editHistory[historyIndex];
-    document.body.innerHTML = snapshot;
+    document.documentElement.innerHTML = 
+      '<head>' + document.head.innerHTML + '</head>' + snapshot;
     console.log(`↶ Undo to index: ${historyIndex}`);
+    
+    // Clear overlays and re-wire all elements after DOM restoration
+    clearOverlays();
+    wireInlineEditor(document);
+    activeOverlayBtns = [];
     
     // Update toolbar buttons
     updateToolbarButtons();
@@ -434,9 +457,6 @@ function undo() {
         canRedo: historyIndex < editHistory.length - 1
       }, '*');
     }
-    
-    // Re-wire all elements after DOM restoration
-    wireInlineEditor(document);
   } else {
     console.log('↶ Cannot undo - at beginning of history');
   }
@@ -446,8 +466,14 @@ function redo() {
   if (historyIndex < editHistory.length - 1) {
     historyIndex++;
     const snapshot = editHistory[historyIndex];
-    document.body.innerHTML = snapshot;
+    document.documentElement.innerHTML = 
+      '<head>' + document.head.innerHTML + '</head>' + snapshot;
     console.log(`↷ Redo to index: ${historyIndex}`);
+    
+    // Clear overlays and re-wire all elements after DOM restoration
+    clearOverlays();
+    wireInlineEditor(document);
+    activeOverlayBtns = [];
     
     // Update toolbar buttons
     updateToolbarButtons();
@@ -460,9 +486,6 @@ function redo() {
         canRedo: historyIndex < editHistory.length - 1
       }, '*');
     }
-    
-    // Re-wire all elements after DOM restoration
-    wireInlineEditor(document);
   } else {
     console.log('↷ Cannot redo - at end of history');
   }
