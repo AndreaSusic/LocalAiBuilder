@@ -194,8 +194,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to create overlay buttons for images
   function createImageOverlayButtons(imageElement) {
-    // Ensure parent has relative positioning
+    // Check if buttons already exist to avoid duplicates
     const parent = imageElement.parentElement;
+    if (parent.querySelector('.delete-btn') || parent.querySelector('.replace-btn')) {
+      return; // Buttons already exist
+    }
+    
+    // Ensure parent has relative positioning
     if (getComputedStyle(parent).position === 'static') {
       parent.style.position = 'relative';
     }
@@ -391,6 +396,19 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("✅ NO DUMMY DATA OR STOCK IMAGES USED");
 });
 
+// Event listener for history-refresh to re-attach buttons
+document.addEventListener('history-refresh', function() {
+  // Find any selected images and re-attach their overlay buttons
+  const selectedImages = document.querySelectorAll('img.image-selected');
+  selectedImages.forEach(img => {
+    if (img.classList.contains('image-selected')) {
+      createImageOverlayButtons(img);
+    }
+  });
+  
+  console.log('🔄 History refresh: Re-attached overlay buttons to selected images');
+});
+
 // Initialize undo/redo toolbar
 function initializeUndoRedoToolbar() {
   const toolbar = document.getElementById('undoRedoToolbar');
@@ -480,6 +498,9 @@ function undo() {
     
     // Re-initialize editor functionality after DOM change
     reinitializeEditor();
+    
+    // Fire history-refresh event to re-attach buttons
+    document.dispatchEvent(new CustomEvent('history-refresh'));
   } else {
     console.log('↶ Cannot undo - at beginning of history');
   }
@@ -506,6 +527,9 @@ function redo() {
     
     // Re-initialize editor functionality after DOM change
     reinitializeEditor();
+    
+    // Fire history-refresh event to re-attach buttons
+    document.dispatchEvent(new CustomEvent('history-refresh'));
   } else {
     console.log('↷ Cannot redo - at end of history');
   }
