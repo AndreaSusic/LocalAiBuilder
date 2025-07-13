@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
       this.style.outline = "2px dotted #ff0000";
       this.style.cursor = "pointer";
       this.style.position = "relative";
+      this.style.zIndex = "9999";
 
       // Create delete button if it doesn't exist
       if (!deleteButton) {
@@ -79,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
           border: none;
           cursor: pointer;
           opacity: 0.6;
-          z-index: 1000;
+          z-index: 10000;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -120,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
         this.contentEditable === "false"
       ) {
         this.style.outline = "none";
+        this.style.zIndex = "";
         // Remove delete button
         if (deleteButton) {
           deleteButton.remove();
@@ -131,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
     el.addEventListener("click", function () {
       this.contentEditable = true;
       this.style.outline = "2px solid #ffc000";
+      this.style.zIndex = "9999";
       this.focus();
 
       el.setAttribute("contenteditable", "true"); // make it editable
@@ -145,6 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
     el.addEventListener("blur", function () {
       //    this.contentEditable = false;
       this.style.outline = "none";
+      this.style.zIndex = "";
       // Remove delete button on blur
       if (deleteButton) {
         deleteButton.remove();
