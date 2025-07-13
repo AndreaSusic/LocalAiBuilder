@@ -249,15 +249,15 @@ function DesktopDashboard({ bootstrap }) {
           <button className="btn-wireframe" onClick={() => console.log('Save clicked')}>
             Save
           </button>
+          <button className="btn-wireframe" onClick={handleUndo} disabled={!canUndo} data-tip="Undo">
+            ↶ Undo
+          </button>
+          <button className="btn-wireframe" onClick={handleRedo} disabled={!canRedo} data-tip="Redo">
+            ↷ Redo
+          </button>
         </div>
 
         <div className="header-center">
-          <button className="btn-wireframe" onClick={handleUndo} disabled={!canUndo}>
-            ↶ Undo
-          </button>
-          <button className="btn-wireframe" onClick={handleRedo} disabled={!canRedo}>
-            ↷ Redo
-          </button>
           <span>Credits: ∞</span>
           <button className="btn-outline">Pages ▼</button>
         </div>
