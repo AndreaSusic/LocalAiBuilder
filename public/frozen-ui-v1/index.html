@@ -475,6 +475,48 @@
         opacity: 0.9;
       }
 
+      /* Undo/Redo Toolbar */
+      .undo-redo-toolbar {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #ffc000;
+        border-radius: 8px;
+        padding: 8px;
+        z-index: 1001;
+        display: flex;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(5px);
+      }
+      
+      .undo-redo-btn {
+        width: 36px;
+        height: 36px;
+        border: 1px solid #ddd;
+        background: #f8f9fa;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+      
+      .undo-redo-btn:hover:not(:disabled) {
+        background: #ffc000;
+        color: white;
+        border-color: #ffc000;
+      }
+      
+      .undo-redo-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
       /* Responsive Design */
       @media (max-width: 800px) {
         .location-content {
@@ -788,6 +830,12 @@
         </div>
       </div>
     </footer>
+
+    <!-- Undo/Redo Toolbar -->
+    <div class="undo-redo-toolbar" id="undoRedoToolbar" style="display: none;">
+      <button class="undo-redo-btn" id="undoBtn" title="Undo (Ctrl+Z)">↶</button>
+      <button class="undo-redo-btn" id="redoBtn" title="Redo (Ctrl+Shift+Z)">↷</button>
+    </div>
 
     <script src="data-hierarchy.js?v=1752209700"></script>
     <script src="/app/iframeEditorBridge.js?v=8"></script>

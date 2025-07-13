@@ -14,6 +14,8 @@ function DesktopDashboard({ bootstrap }) {
   const [chatHistory, setChatHistory] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeTab, setActiveTab] = useState('text');
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
 
   useEffect(() => {
     // Listen for messages from preview iframe
@@ -37,14 +39,33 @@ function DesktopDashboard({ bootstrap }) {
         console.log('Element selected in iframe:', event.data);
       } else if (event.data.type === 'elementDeleted') {
         console.log('Element deleted in iframe:', event.data);
+      } else if (event.data.type === 'historyUpdate') {
+        setCanUndo(event.data.canUndo);
+        setCanRedo(event.data.canRedo);
+        console.log('History updated:', event.data);
+      }
+    };
+
+    // Keyboard shortcuts for undo/redo
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key === 'z' && !e.shiftKey) {
+          e.preventDefault();
+          handleUndo();
+        } else if ((e.key === 'z' && e.shiftKey) || e.key === 'y') {
+          e.preventDefault();
+          handleRedo();
+        }
       }
     };
 
     window.addEventListener('message', handleMessage);
+    window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('message', handleMessage);
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [user]);
+  }, [user, canUndo, canRedo]);
 
   // Function to send commands to iframe
   const sendCmd = (cmd, value = null) => {
@@ -73,6 +94,20 @@ function DesktopDashboard({ bootstrap }) {
     } catch (error) {
       console.error('Logout error:', error);
       window.location.href = '/auth/logout';
+    }
+  };
+
+  const handleUndo = () => {
+    const iframe = document.querySelector('.preview-iframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ type: 'undo' }, '*');
+    }
+  };
+
+  const handleRedo = () => {
+    const iframe = document.querySelector('.preview-iframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ type: 'redo' }, '*');
     }
   };
 
@@ -217,6 +252,12 @@ function DesktopDashboard({ bootstrap }) {
         </div>
 
         <div className="header-center">
+          <button className="btn-wireframe" onClick={handleUndo} disabled={!canUndo}>
+            ↶ Undo
+          </button>
+          <button className="btn-wireframe" onClick={handleRedo} disabled={!canRedo}>
+            ↷ Redo
+          </button>
           <span>Credits: ∞</span>
           <button className="btn-outline">Pages ▼</button>
         </div>
