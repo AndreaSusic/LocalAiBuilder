@@ -238,8 +238,6 @@ function DesktopDashboard({ bootstrap }) {
     );
   }
 
-  console.log('🔄 Rendering dashboard with canUndo:', canUndo, 'canRedo:', canRedo);
-  
   return (
     <div className="dashboard-wireframe">
       {/* Header */}
@@ -251,10 +249,22 @@ function DesktopDashboard({ bootstrap }) {
           <button className="btn-wireframe" onClick={() => console.log('Save clicked')}>
             Save
           </button>
-          <button className="btn-wireframe" onClick={handleUndo} disabled={!canUndo} data-tip="Undo">
+          <button 
+            className="btn-wireframe" 
+            onClick={handleUndo} 
+            disabled={!canUndo} 
+            data-tip="Undo"
+            style={{display: 'inline-block', visibility: 'visible'}}
+          >
             ↶ Undo
           </button>
-          <button className="btn-wireframe" onClick={handleRedo} disabled={!canRedo} data-tip="Redo">
+          <button 
+            className="btn-wireframe" 
+            onClick={handleRedo} 
+            disabled={!canRedo} 
+            data-tip="Redo"
+            style={{display: 'inline-block', visibility: 'visible'}}
+          >
             ↷ Redo
           </button>
         </div>
