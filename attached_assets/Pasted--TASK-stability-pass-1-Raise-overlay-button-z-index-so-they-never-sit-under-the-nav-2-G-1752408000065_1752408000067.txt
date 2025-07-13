@@ -1,0 +1,52 @@
+◾ TASK  (stability pass)
+  1. Raise overlay-button z-index so they never sit under the <nav>.
+  2. Guarantee delete / replace buttons are re-attached after ANY
+     undo / redo, for BOTH images and text elements.
+  3. Make the text-element ✕ always work, even after an image
+     delete-undo cycle.
+
+◾ ROOT CAUSES
+  • delete-btn / replace-btn currently have z-index 1 000; nav has z-index 1.
+    In some browsers nav still wins – set 10 000.
+  • Undo restores raw HTML, wiping JS listeners and buttons.
+    The fallback wiring runs only for the “selected” element,
+    so other nodes stay unwired.
+  • The click handler that builds ✕ is attached once; after we
+    remove and re-insert a node it disappears.
+
+◾ IMPLEMENT   (public/frozen-ui-v1/frozen-ui.js)
+  1️⃣  FUNCTION wireInlineEditor(root=document)
+      – already exists; ensure it:
+        a. iterates over ALL editable selectors
+           'h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,
+            footer,.nav-links li a,.logo,img,.img-placeholder'
+        b. if (el.dataset.wired) return; else el.dataset.wired = '1';
+        c. attaches mouseenter / mouseleave / click and,
+           for images / placeholders, calls createImageOverlayButtons(el).
+  2️⃣  call wireInlineEditor(document) in THREE places:
+        • DOMContentLoaded
+        • at the very end of undo()  (after innerHTML replacement)
+        • at the very end of redo()
+  3️⃣  undo()/redo()
+        – after restoring HTML, optionally re-select previous element
+          and add class 'selected' so overlay attaches.
+        – then wireInlineEditor(document);   // rewires everything
+  4️⃣  Export createImageOverlayButtons globally (e.g., attach to window)
+        so undo()/redo() can call it without “not defined” errors.
+  5️⃣  In delete-btn.onclick for TEXT nodes
+        – after el.remove()   pushState();
+          (this solves the “first action only” bug)
+  6️⃣  Global MutationObserver already exists → keep but change callback to
+        wireInlineEditor(mutation.addedNodes[i])  when nodeType === 1.
+
+◾ STYLE  (public/frozen-ui-v1/index.html  <style>)
+      .delete-btn, .replace-btn { z-index: 10000 !important; }
+
+◾ DONE WHEN
+  • Reload page → hover any text → red outline + ✕ visible.
+  • Hover nav, phone, hero buttons → ✕ never hides behind nav.
+  • Hover image → red outline + ✕ + 🖼️.
+  • Delete image → dashed placeholder.
+  • Undo ↶ → image returns **with working ✕ + 🖼️**.
+  • Delete text after image undo works every time.
+  • Repeat delete/undo/redo 10× with no console errors.
