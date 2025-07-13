@@ -49,11 +49,57 @@
         max-width: 100%;
         display: block;
       }
-      
+
       /* Image hover effects for inline editor */
       img:hover {
         position: relative;
         cursor: pointer;
+      }
+      
+      /* Image placeholder styling */
+      .img-placeholder {
+        border: 2px dashed #ccc;
+        background: #fafafa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #888;
+        cursor: pointer;
+        min-height: 100px;
+      }
+      
+      /* Overlay buttons for images */
+      .delete-btn, .replace-btn {
+        position: absolute;
+        top: -8px;
+        width: 16px;
+        height: 16px;
+        border: none;
+        border-radius: 50%;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+        z-index: 10000;
+      }
+      
+      .delete-btn {
+        right: -8px;
+        background: #e53935;
+        color: #fff;
+      }
+      
+      .replace-btn {
+        right: 12px;
+        background: #4caf50;
+        color: #fff;
+      }
+      
+      .delete-btn:hover, .replace-btn:hover {
+        opacity: 1;
       }
 
       /* Navigation */
@@ -498,7 +544,7 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         backdrop-filter: blur(5px);
       }
-      
+
       .undo-redo-btn {
         width: 36px;
         height: 36px;
@@ -513,13 +559,13 @@
         justify-content: center;
         transition: all 0.2s ease;
       }
-      
+
       .undo-redo-btn:hover:not(:disabled) {
         background: #ffc000;
         color: white;
         border-color: #ffc000;
       }
-      
+
       .undo-redo-btn:disabled {
         opacity: 0.5;
         cursor: not-allowed;
@@ -560,7 +606,6 @@
           grid-template-columns: 1fr;
         }
       }
-
     </style>
   </head>
   <body>
@@ -841,14 +886,22 @@
     </footer>
 
     <!-- Undo/Redo Toolbar - HIDDEN (buttons moved to dashboard header) -->
-    <div class="undo-redo-toolbar" id="undoRedoToolbar" style="display: none !important;">
-      <button class="undo-redo-btn" id="undoBtn" title="Undo (Ctrl+Z)">↶</button>
-      <button class="undo-redo-btn" id="redoBtn" title="Redo (Ctrl+Shift+Z)">↷</button>
+    <div
+      class="undo-redo-toolbar"
+      id="undoRedoToolbar"
+      style="display: none !important"
+    >
+      <button class="undo-redo-btn" id="undoBtn" title="Undo (Ctrl+Z)">
+        ↶
+      </button>
+      <button class="undo-redo-btn" id="redoBtn" title="Redo (Ctrl+Shift+Z)">
+        ↷
+      </button>
     </div>
 
     <script src="data-hierarchy.js?v=1752209700"></script>
     <script src="/app/iframeEditorBridge.js?v=8"></script>
-    <script src="frozen-ui.js?v=1752209700"></script>
+    <script src="/app/frozen-ui.js?v=1752341234"></script>
     <script src="micro-animations.js?v=1752209700"></script>
     <script src="service-image-matcher.js?v=1752209700"></script>
   </body>

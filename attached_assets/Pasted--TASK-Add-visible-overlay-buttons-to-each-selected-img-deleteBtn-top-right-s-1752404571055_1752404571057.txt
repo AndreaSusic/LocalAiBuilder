@@ -1,0 +1,63 @@
+◾ TASK
+    Add visible overlay buttons to each selected <img>:
+      • ✕ deleteBtn  (top-right)  → swaps image for dashed placeholder
+      • 🖼️ replaceBtn (next to ✕) → keeps current URL-prompt flow
+
+◾ CURRENT ISSUE
+    • No overlay buttons render; only the hand cursor shows.
+    • Clicking image immediately opens the replace-URL prompt.
+
+◾ REQUIRED FIX
+    1. public/frozen-ui-v1/frozen-ui.js
+       • In the image-click handler:
+            – If overlay buttons don’t exist, create:
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = '✕';
+                replaceBtn.className = 'replace-btn';
+                replaceBtn.textContent = '🖼️';
+              Append both to the image’s parent (position:relative) and
+              give both style.zIndex = 10000.
+            – deleteBtn.onclick:
+                a. pushState();  // save current img
+                b. const ph = document.createElement('div');
+                   ph.className = 'img-placeholder';
+                   ph.dataset.width  = el.width;
+                   ph.dataset.height = el.height;
+                   ph.innerHTML = '<span>Click to add image</span>';
+                   el.replaceWith(ph);
+                   pushState();  // save placeholder state
+            – replaceBtn.onclick: existing URL prompt logic (keep).
+       • Global click handler: remove any leftover overlay buttons when
+         clicking outside current image / placeholder.
+       • Placeholder.onclick: prompt for URL, swap back to <img>,
+         pushState().
+
+    2. public/frozen-ui-v1/index.html  (inside <style>)
+       .img-placeholder {
+          border:2px dashed #ccc; background:#fafafa;
+          display:flex; align-items:center; justify-content:center;
+          color:#888; cursor:pointer;
+       }
+       .delete-btn, .replace-btn {
+          position:absolute; top:-8px; width:16px; height:16px;
+          border:none; border-radius:50%; font-size:12px;
+          display:flex; align-items:center; justify-content:center;
+          cursor:pointer; opacity:0.7; transition:opacity .2s;
+       }
+       .delete-btn { right:-8px; background:#e53935; color:#fff; }
+       .replace-btn { right:12px; background:#4caf50; color:#fff; }
+
+    3. Undo/Redo
+       • pushState() after every delete-to-placeholder swap
+         and after every replace-URL action.
+
+◾ RULES
+    • No external libraries.
+    • Buttons visible only while image (or placeholder) has yellow outline.
+    • Placeholder gets same hover/outline behaviour as images.
+
+◾ DONE WHEN
+    • Hover image → red outline + ✕ + 🖼️ appear.
+    • Click ✕ → image replaced by dashed placeholder.
+    • Click placeholder → URL prompt → image returns.
+    • Undo ↶ / Redo ↷ toggles between states correctly.

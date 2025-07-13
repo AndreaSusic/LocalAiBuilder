@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Enhanced inline editor for all editable elements
   const elements = document.querySelectorAll(
-    "h1, h2, h3, h4, p, nav, .contact-phone, .cta, .btn-primary, .btn-accent, footer, .nav-links li a, .logo, img",
+    "h1, h2, h3, h4, p, nav, .contact-phone, .cta, .btn-primary, .btn-accent, footer, .nav-links li a, .logo, img, .img-placeholder",
   );
 
   elements.forEach((el) => {
@@ -61,123 +61,14 @@ document.addEventListener("DOMContentLoaded", function () {
       this.style.cursor = "pointer";
       this.style.position = "relative";
       this.style.zIndex = "9999";
-
-      // Create delete button if it doesn't exist
-      if (!deleteButton) {
-        deleteButton = document.createElement("button");
-        deleteButton.className = "delete-btn";
-        deleteButton.innerHTML = "✕";
-        deleteButton.style.cssText = `
-          position: absolute;
-          top: -8px;
-          right: -8px;
-          width: 16px;
-          height: 16px;
-          background: #e53935;
-          border-radius: 50%;
-          color: #fff;
-          font-size: 12px;
-          border: none;
-          cursor: pointer;
-          opacity: 0.6;
-          z-index: 10000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: opacity 0.2s;
-        `;
-
-        deleteButton.addEventListener("mouseenter", function () {
-          this.style.opacity = "0.9";
-        });
-
-        deleteButton.addEventListener("mouseleave", function () {
-          this.style.opacity = "0.6";
-        });
-
-        deleteButton.addEventListener("click", function (e) {
-          e.stopPropagation();
-          e.preventDefault();
-
-          // Save to history before deletion
-          saveToHistory();
-
-          // Notify dashboard about deletion
-          if (window.editorBridge) {
-            window.editorBridge.notifyElementDeleted(el);
-          }
-
-          // Remove the element
-          el.remove();
-        });
-
-        // For images, add a replace icon next to delete button
-        if (el.tagName.toLowerCase() === 'img') {
-          const replaceButton = document.createElement("button");
-          replaceButton.className = "replace-btn";
-          replaceButton.innerHTML = "🖼️";
-          replaceButton.style.cssText = `
-            position: absolute;
-            top: -8px;
-            right: 12px;
-            width: 16px;
-            height: 16px;
-            background: #4caf50;
-            border-radius: 50%;
-            color: #fff;
-            font-size: 10px;
-            border: none;
-            cursor: pointer;
-            opacity: 0.6;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.2s;
-          `;
-
-          replaceButton.addEventListener("mouseenter", function () {
-            this.style.opacity = "0.9";
-          });
-
-          replaceButton.addEventListener("mouseleave", function () {
-            this.style.opacity = "0.6";
-          });
-
-          replaceButton.addEventListener("click", function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            // Save current state before potential change
-            saveToHistory();
-            
-            // Prompt for new image URL
-            const newUrl = prompt('Enter new image URL:', el.src);
-            if (newUrl && newUrl !== el.src) {
-              el.src = newUrl;
-              // Save state after change
-              saveToHistory();
-            }
-          });
-
-          this.appendChild(replaceButton);
-        }
-
-        this.appendChild(deleteButton);
-      }
     });
 
     el.addEventListener("mouseleave", function () {
-      // For images, always clear outline on mouseleave unless actively selected
-      if (this.tagName.toLowerCase() === 'img') {
+      // For images and placeholders, always clear outline on mouseleave unless actively selected
+      if (this.tagName.toLowerCase() === 'img' || this.classList.contains('img-placeholder')) {
         if (!this.classList.contains('image-selected')) {
           this.style.outline = "none";
           this.style.zIndex = "";
-          // Remove delete button and replace button
-          if (deleteButton) {
-            deleteButton.remove();
-            deleteButton = null;
-          }
         }
       } else {
         // For non-image elements, use existing logic
@@ -187,21 +78,19 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
           this.style.outline = "none";
           this.style.zIndex = "";
-          // Remove delete button
-          if (deleteButton) {
-            deleteButton.remove();
-            deleteButton = null;
-          }
         }
       }
     });
 
     el.addEventListener("click", function () {
-      // Clear any previously selected images
-      document.querySelectorAll('img.image-selected').forEach(img => {
-        img.classList.remove('image-selected');
-        img.style.outline = "none";
-        img.style.zIndex = "";
+      // Clear any previously selected images and their buttons
+      document.querySelectorAll('img.image-selected, .img-placeholder.image-selected').forEach(el => {
+        el.classList.remove('image-selected');
+        el.style.outline = "none";
+        el.style.zIndex = "";
+        // Remove any existing overlay buttons
+        const existingButtons = el.parentElement.querySelectorAll('.delete-btn, .replace-btn');
+        existingButtons.forEach(btn => btn.remove());
       });
       
       // Special handling for images
@@ -210,15 +99,39 @@ document.addEventListener("DOMContentLoaded", function () {
         this.style.zIndex = "9999";
         this.classList.add('image-selected');
         
+        // Create overlay buttons
+        createImageOverlayButtons(this);
+        
+        // Notify dashboard about selection
+        if (window.editorBridge) {
+          window.editorBridge.notifyElementSelection(this);
+        }
+      } else if (this.classList.contains('img-placeholder')) {
+        // Handle placeholder click
+        this.style.outline = "2px solid #ffc000";
+        this.style.zIndex = "9999";
+        this.classList.add('image-selected');
+        
         // Save current state before potential change
         saveToHistory();
         
         // Prompt for new image URL
-        const newUrl = prompt('Enter new image URL:', this.src);
-        if (newUrl && newUrl !== this.src) {
-          this.src = newUrl;
+        const newUrl = prompt('Enter new image URL:', '');
+        if (newUrl) {
+          // Create new image element
+          const newImg = document.createElement('img');
+          newImg.src = newUrl;
+          newImg.style.width = this.dataset.width + 'px';
+          newImg.style.height = this.dataset.height + 'px';
+          
+          // Replace placeholder with image
+          this.replaceWith(newImg);
+          
           // Save state after change
           saveToHistory();
+          
+          // Make the new image editable
+          makeElementEditable(newImg);
         }
         
         // Notify dashboard about selection
@@ -262,18 +175,207 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Global click handler to clear image selections when clicking outside
   document.addEventListener('click', function(e) {
-    // Check if click is on an image or its buttons
+    // Check if click is on an image, placeholder, or its buttons
     if (e.target.tagName.toLowerCase() !== 'img' && 
+        !e.target.classList.contains('img-placeholder') &&
         !e.target.classList.contains('delete-btn') && 
         !e.target.classList.contains('replace-btn')) {
-      // Clear all selected images
-      document.querySelectorAll('img.image-selected').forEach(img => {
-        img.classList.remove('image-selected');
-        img.style.outline = "none";
-        img.style.zIndex = "";
+      // Clear all selected images and placeholders
+      document.querySelectorAll('img.image-selected, .img-placeholder.image-selected').forEach(el => {
+        el.classList.remove('image-selected');
+        el.style.outline = "none";
+        el.style.zIndex = "";
+        // Remove any existing overlay buttons
+        const existingButtons = el.parentElement.querySelectorAll('.delete-btn, .replace-btn');
+        existingButtons.forEach(btn => btn.remove());
       });
     }
   });
+
+  // Function to create overlay buttons for images
+  function createImageOverlayButtons(imageElement) {
+    // Ensure parent has relative positioning
+    const parent = imageElement.parentElement;
+    if (getComputedStyle(parent).position === 'static') {
+      parent.style.position = 'relative';
+    }
+
+    // Create delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.textContent = '✕';
+    
+    deleteBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      
+      // Save current state before deletion
+      saveToHistory();
+      
+      // Create placeholder
+      const placeholder = document.createElement('div');
+      placeholder.className = 'img-placeholder';
+      placeholder.dataset.width = imageElement.offsetWidth || 200;
+      placeholder.dataset.height = imageElement.offsetHeight || 150;
+      placeholder.innerHTML = '<span>Click to add image</span>';
+      placeholder.style.width = placeholder.dataset.width + 'px';
+      placeholder.style.height = placeholder.dataset.height + 'px';
+      
+      // Replace image with placeholder
+      imageElement.replaceWith(placeholder);
+      
+      // Make placeholder editable
+      makeElementEditable(placeholder);
+      
+      // Save state after change
+      saveToHistory();
+      
+      // Notify dashboard about deletion
+      if (window.editorBridge) {
+        window.editorBridge.notifyElementDeleted(imageElement);
+      }
+    });
+
+    // Create replace button
+    const replaceBtn = document.createElement('button');
+    replaceBtn.className = 'replace-btn';
+    replaceBtn.textContent = '🖼️';
+    
+    replaceBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      
+      // Save current state before potential change
+      saveToHistory();
+      
+      // Prompt for new image URL
+      const newUrl = prompt('Enter new image URL:', imageElement.src);
+      if (newUrl && newUrl !== imageElement.src) {
+        imageElement.src = newUrl;
+        // Save state after change
+        saveToHistory();
+      }
+    });
+
+    // Append buttons to parent
+    parent.appendChild(deleteBtn);
+    parent.appendChild(replaceBtn);
+  }
+
+  // Function to make element editable (for dynamic elements)
+  function makeElementEditable(element) {
+    let deleteButton = null;
+
+    element.addEventListener("mouseenter", function () {
+      this.style.outline = "2px dotted #ff0000";
+      this.style.cursor = "pointer";
+      this.style.position = "relative";
+      this.style.zIndex = "9999";
+    });
+
+    element.addEventListener("mouseleave", function () {
+      // For images and placeholders, always clear outline on mouseleave unless actively selected
+      if (this.tagName.toLowerCase() === 'img' || this.classList.contains('img-placeholder')) {
+        if (!this.classList.contains('image-selected')) {
+          this.style.outline = "none";
+          this.style.zIndex = "";
+        }
+      } else {
+        // For non-image elements, use existing logic
+        if (
+          !this.hasAttribute("contenteditable") ||
+          this.contentEditable === "false"
+        ) {
+          this.style.outline = "none";
+          this.style.zIndex = "";
+        }
+      }
+    });
+
+    element.addEventListener("click", function () {
+      // Clear any previously selected images and their buttons
+      document.querySelectorAll('img.image-selected, .img-placeholder.image-selected').forEach(el => {
+        el.classList.remove('image-selected');
+        el.style.outline = "none";
+        el.style.zIndex = "";
+        // Remove any existing overlay buttons
+        const existingButtons = el.parentElement.querySelectorAll('.delete-btn, .replace-btn');
+        existingButtons.forEach(btn => btn.remove());
+      });
+      
+      // Special handling for images
+      if (this.tagName.toLowerCase() === 'img') {
+        this.style.outline = "2px solid #ffc000";
+        this.style.zIndex = "9999";
+        this.classList.add('image-selected');
+        
+        // Create overlay buttons
+        createImageOverlayButtons(this);
+        
+        // Notify dashboard about selection
+        if (window.editorBridge) {
+          window.editorBridge.notifyElementSelection(this);
+        }
+      } else if (this.classList.contains('img-placeholder')) {
+        // Handle placeholder click
+        this.style.outline = "2px solid #ffc000";
+        this.style.zIndex = "9999";
+        this.classList.add('image-selected');
+        
+        // Save current state before potential change
+        saveToHistory();
+        
+        // Prompt for new image URL
+        const newUrl = prompt('Enter new image URL:', '');
+        if (newUrl) {
+          // Create new image element
+          const newImg = document.createElement('img');
+          newImg.src = newUrl;
+          newImg.style.width = this.dataset.width + 'px';
+          newImg.style.height = this.dataset.height + 'px';
+          
+          // Replace placeholder with image
+          this.replaceWith(newImg);
+          
+          // Save state after change
+          saveToHistory();
+          
+          // Make the new image editable
+          makeElementEditable(newImg);
+        }
+        
+        // Notify dashboard about selection
+        if (window.editorBridge) {
+          window.editorBridge.notifyElementSelection(this);
+        }
+      } else {
+        // Regular text editing for non-image elements
+        this.contentEditable = true;
+        this.style.outline = "2px solid #ffc000";
+        this.style.zIndex = "9999";
+        this.focus();
+
+        element.setAttribute("contenteditable", "true"); // make it editable
+        element.focus(); // keep caret inside iframe
+
+        // Notify dashboard about selection
+        if (window.editorBridge) {
+          window.editorBridge.notifyElementSelection(this);
+        }
+      }
+    });
+
+    element.addEventListener("blur", function () {
+      // Only handle blur for non-image elements (images don't get contentEditable)
+      if (this.tagName.toLowerCase() !== 'img' && !this.classList.contains('img-placeholder')) {
+        this.style.outline = "none";
+        this.style.zIndex = "";
+        
+        // Save to history after text edit
+        saveToHistory();
+      }
+    });
+  }
 
   // Log data hierarchy enforcement
   console.log("🔍 FROZEN UI DATA HIERARCHY SUMMARY:");
