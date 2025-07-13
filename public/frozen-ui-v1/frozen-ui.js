@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Enhanced inline editor for all editable elements
   const elements = document.querySelectorAll(
-    "h1, h2, h3, h4, p, nav, .contact-phone, .cta, .btn-primary, .btn-accent, footer, .nav-links li a, .logo",
+    "h1, h2, h3, h4, p, nav, .contact-phone, .cta, .btn-primary, .btn-accent, footer, .nav-links li a, .logo, img",
   );
 
   elements.forEach((el) => {
@@ -111,53 +111,168 @@ document.addEventListener("DOMContentLoaded", function () {
           el.remove();
         });
 
+        // For images, add a replace icon next to delete button
+        if (el.tagName.toLowerCase() === 'img') {
+          const replaceButton = document.createElement("button");
+          replaceButton.className = "replace-btn";
+          replaceButton.innerHTML = "🖼️";
+          replaceButton.style.cssText = `
+            position: absolute;
+            top: -8px;
+            right: 12px;
+            width: 16px;
+            height: 16px;
+            background: #4caf50;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 10px;
+            border: none;
+            cursor: pointer;
+            opacity: 0.6;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+          `;
+
+          replaceButton.addEventListener("mouseenter", function () {
+            this.style.opacity = "0.9";
+          });
+
+          replaceButton.addEventListener("mouseleave", function () {
+            this.style.opacity = "0.6";
+          });
+
+          replaceButton.addEventListener("click", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            // Save current state before potential change
+            saveToHistory();
+            
+            // Prompt for new image URL
+            const newUrl = prompt('Enter new image URL:', el.src);
+            if (newUrl && newUrl !== el.src) {
+              el.src = newUrl;
+              // Save state after change
+              saveToHistory();
+            }
+          });
+
+          this.appendChild(replaceButton);
+        }
+
         this.appendChild(deleteButton);
       }
     });
 
     el.addEventListener("mouseleave", function () {
-      if (
-        !this.hasAttribute("contenteditable") ||
-        this.contentEditable === "false"
-      ) {
-        this.style.outline = "none";
-        this.style.zIndex = "";
-        // Remove delete button
-        if (deleteButton) {
-          deleteButton.remove();
-          deleteButton = null;
+      // For images, always clear outline on mouseleave unless actively selected
+      if (this.tagName.toLowerCase() === 'img') {
+        if (!this.classList.contains('image-selected')) {
+          this.style.outline = "none";
+          this.style.zIndex = "";
+          // Remove delete button and replace button
+          if (deleteButton) {
+            deleteButton.remove();
+            deleteButton = null;
+          }
+        }
+      } else {
+        // For non-image elements, use existing logic
+        if (
+          !this.hasAttribute("contenteditable") ||
+          this.contentEditable === "false"
+        ) {
+          this.style.outline = "none";
+          this.style.zIndex = "";
+          // Remove delete button
+          if (deleteButton) {
+            deleteButton.remove();
+            deleteButton = null;
+          }
         }
       }
     });
 
     el.addEventListener("click", function () {
-      this.contentEditable = true;
-      this.style.outline = "2px solid #ffc000";
-      this.style.zIndex = "9999";
-      this.focus();
+      // Clear any previously selected images
+      document.querySelectorAll('img.image-selected').forEach(img => {
+        img.classList.remove('image-selected');
+        img.style.outline = "none";
+        img.style.zIndex = "";
+      });
+      
+      // Special handling for images
+      if (this.tagName.toLowerCase() === 'img') {
+        this.style.outline = "2px solid #ffc000";
+        this.style.zIndex = "9999";
+        this.classList.add('image-selected');
+        
+        // Save current state before potential change
+        saveToHistory();
+        
+        // Prompt for new image URL
+        const newUrl = prompt('Enter new image URL:', this.src);
+        if (newUrl && newUrl !== this.src) {
+          this.src = newUrl;
+          // Save state after change
+          saveToHistory();
+        }
+        
+        // Notify dashboard about selection
+        if (window.editorBridge) {
+          window.editorBridge.notifyElementSelection(this);
+        }
+      } else {
+        // Regular text editing for non-image elements
+        this.contentEditable = true;
+        this.style.outline = "2px solid #ffc000";
+        this.style.zIndex = "9999";
+        this.focus();
 
-      el.setAttribute("contenteditable", "true"); // make it editable
-      el.focus(); // keep caret inside iframe
+        el.setAttribute("contenteditable", "true"); // make it editable
+        el.focus(); // keep caret inside iframe
 
-      // Notify dashboard about selection
-      if (window.editorBridge) {
-        window.editorBridge.notifyElementSelection(this);
+        // Notify dashboard about selection
+        if (window.editorBridge) {
+          window.editorBridge.notifyElementSelection(this);
+        }
       }
     });
 
     el.addEventListener("blur", function () {
-      //    this.contentEditable = false;
-      this.style.outline = "none";
-      this.style.zIndex = "";
-      // Remove delete button on blur
-      if (deleteButton) {
-        deleteButton.remove();
-        deleteButton = null;
+      // Only handle blur for non-image elements (images don't get contentEditable)
+      if (this.tagName.toLowerCase() !== 'img') {
+        //    this.contentEditable = false;
+        this.style.outline = "none";
+        this.style.zIndex = "";
+        // Remove delete button on blur
+        if (deleteButton) {
+          deleteButton.remove();
+          deleteButton = null;
+        }
+        
+        // Save to history after text edit
+        saveToHistory();
       }
-      
-      // Save to history after text edit
-      saveToHistory();
     });
+  });
+
+  // Global click handler to clear image selections when clicking outside
+  document.addEventListener('click', function(e) {
+    // Check if click is on an image or its buttons
+    if (e.target.tagName.toLowerCase() !== 'img' && 
+        !e.target.classList.contains('delete-btn') && 
+        !e.target.classList.contains('replace-btn')) {
+      // Clear all selected images
+      document.querySelectorAll('img.image-selected').forEach(img => {
+        img.classList.remove('image-selected');
+        img.style.outline = "none";
+        img.style.zIndex = "";
+      });
+    }
   });
 
   // Log data hierarchy enforcement
