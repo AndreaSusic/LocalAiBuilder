@@ -181,19 +181,17 @@ function initializeUndoRedoToolbar() {
     return;
   }
   
-  // Show toolbar when we're in dashboard editing mode
-  if (window.parent && window.parent !== window) {
-    toolbar.style.display = 'flex';
-  }
+  // Keep toolbar hidden - buttons are now in dashboard header
+  toolbar.style.display = 'none';
   
-  // Add event listeners
+  // Add event listeners for iframe buttons (still functional but hidden)
   undoBtn.addEventListener('click', undo);
   redoBtn.addEventListener('click', redo);
   
   // Update button states
   updateToolbarButtons();
   
-  console.log('✅ Undo/Redo toolbar initialized');
+  console.log('✅ Undo/Redo toolbar initialized (hidden - buttons in dashboard header)');
 }
 
 // Update toolbar button states
