@@ -230,61 +230,60 @@ function wireInlineEditor(root = document) {
         createImageOverlayButtons(this);
       } else {
         // For text elements, create delete button
-        if (!deleteButton) {
-          deleteButton = document.createElement('button');
-          deleteButton.className = 'delete-btn';
-          deleteButton.innerHTML = '✕';
-          deleteButton.style.cssText = `
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 16px;
-            height: 16px;
-            background: #e53935;
-            border-radius: 50%;
-            color: #fff;
-            font-size: 12px;
-            border: none;
-            cursor: pointer;
-            opacity: 0.6;
-            z-index: 2147483640;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.2s;
-          `;
+        deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-btn';
+        deleteButton.innerHTML = '✕';
+        deleteButton.style.cssText = `
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          width: 16px;
+          height: 16px;
+          background: #e53935;
+          border-radius: 50%;
+          color: #fff;
+          font-size: 12px;
+          border: none;
+          cursor: pointer;
+          opacity: 0.6;
+          z-index: 2147483640;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: opacity 0.2s;
+        `;
+        
+        deleteButton.addEventListener('mouseenter', function() {
+          this.style.opacity = '0.9';
+        });
+        
+        deleteButton.addEventListener('mouseleave', function() {
+          this.style.opacity = '0.6';
+        });
+        
+        deleteButton.addEventListener('click', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
           
-          deleteButton.addEventListener('mouseenter', function() {
-            this.style.opacity = '0.9';
-          });
+          // Save to history before deletion
+          saveToHistory();
           
-          deleteButton.addEventListener('mouseleave', function() {
-            this.style.opacity = '0.6';
-          });
+          // Notify dashboard about deletion
+          if (window.editorBridge) {
+            window.editorBridge.notifyElementDeleted(el);
+          }
           
-          deleteButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            
-            // Save to history before deletion
-            saveToHistory();
-            
-            // Notify dashboard about deletion
-            if (window.editorBridge) {
-              window.editorBridge.notifyElementDeleted(el);
-            }
-            
-            // Remove the element
-            el.remove();
-            
-            // Save state after deletion
-            saveToHistory();
-          });
+          // Remove the element
+          el.remove();
           
-          this.appendChild(deleteButton);
-          // Track the text delete button
-          activeOverlayBtns.push(deleteButton);
-        }
+          // Save state after deletion
+          saveToHistory();
+        });
+        
+        this.appendChild(deleteButton);
+        // Track the text delete button
+        activeOverlayBtns.push(deleteButton);
+        console.log('🆕 delete-btn added to', this.tagName, this.textContent?.substring(0, 20) + '...');
       }
     });
     
