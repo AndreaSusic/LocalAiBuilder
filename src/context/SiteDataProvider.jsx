@@ -148,6 +148,75 @@ export const SiteDataProvider = ({ children, initialData = {} }) => {
     console.log(`🗑️ Deleted ${elementType} with ID:`, elementId);
   }, [updateSiteData]);
 
+  // Delete element by path (for unmapped elements)
+  const deleteElementByPath = useCallback((elementPath, originalElement = null) => {
+    updateSiteData(prevData => {
+      const newData = { ...prevData };
+      
+      if (elementPath.includes('.')) {
+        // Handle nested paths
+        const [parentField, childField] = elementPath.split('.');
+        
+        if (parentField === 'quickLinks') {
+          // Initialize quickLinks if it doesn't exist
+          if (!newData.quickLinks) {
+            newData.quickLinks = {};
+          }
+          
+          // Store original element for potential restoration
+          if (originalElement) {
+            if (!newData.quickLinks._deleted) {
+              newData.quickLinks._deleted = {};
+            }
+            newData.quickLinks._deleted[childField] = originalElement;
+          }
+          
+          // Mark as deleted/hidden
+          newData.quickLinks[childField] = '';
+          
+        } else if (parentField === 'dynamicElements') {
+          // Initialize dynamicElements if it doesn't exist
+          if (!newData.dynamicElements) {
+            newData.dynamicElements = {};
+          }
+          
+          // Store original element for potential restoration
+          if (originalElement) {
+            if (!newData.dynamicElements._deleted) {
+              newData.dynamicElements._deleted = {};
+            }
+            newData.dynamicElements._deleted[childField] = originalElement;
+          }
+          
+          // Mark as deleted/hidden
+          newData.dynamicElements[childField] = '';
+          
+        } else if (parentField === 'services' && !isNaN(childField)) {
+          // Handle service deletion by index
+          newData.services = newData.services?.filter((_, i) => i !== parseInt(childField)) || [];
+        } else {
+          // Handle other nested fields
+          if (!newData[parentField]) {
+            newData[parentField] = {};
+          }
+          newData[parentField][childField] = '';
+        }
+      } else {
+        // Handle direct field deletion
+        if (originalElement) {
+          if (!newData._deleted) {
+            newData._deleted = {};
+          }
+          newData._deleted[elementPath] = originalElement;
+        }
+        newData[elementPath] = '';
+      }
+      
+      return newData;
+    });
+    console.log(`🗑️ Deleted element at path: ${elementPath}`);
+  }, [updateSiteData]);
+
   // Listen for external data updates (from server or other sources)
   useEffect(() => {
     const handleDataUpdate = (event) => {
@@ -172,6 +241,7 @@ export const SiteDataProvider = ({ children, initialData = {} }) => {
     replaceImage,
     updateAllData,
     deleteElement,
+    deleteElementByPath,
     undo,
     redo,
     canUndo,
