@@ -1,0 +1,481 @@
+SiteDataContext.js:3 🕵️‍♂️ SiteDataContext loaded
+TemplatePreview.jsx:10 ######## I AM TP at https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/preview/assets/index-BzpavAus.js
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+main.jsx:171 BOOTSTRAP >> Object
+main.jsx:172 Current path: /preview/
+main.jsx:173 Root element exists: true
+main.jsx:187 React app rendered successfully
+App.jsx:24 App rendering with bootstrap: Object
+App.jsx:25 Window width: 1426
+App.jsx:26 isMobile: false
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+/api/me:1  Failed to load resource: the server responded with a status of 401 (Unauthorized)
+App.jsx:77 🔓 User not authenticated, using static bootstrap data
+App.jsx:24 App rendering with bootstrap: Object
+App.jsx:25 Window width: 1426
+App.jsx:26 isMobile: false
+DesktopDashboard.jsx:116 Setting preview content to /app
+DesktopDashboard.jsx:116 Setting preview content to /app
+DesktopDashboard.jsx:216 ✅ Dashboard user auto-authenticated for editing
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: Object
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:193 ✅ React DOM ready event dispatched
+Console.js:61 ✅ Iframe Editor Bridge initialized
+Console.js:61 🚀 Service Image Matcher initialized
+Console.js:61 🏅 ENFORCING DATA PRIORITY HIERARCHY IN FROZEN UI
+Console.js:61 🥈 Using services from Priority 2 (Website Data): Array(3)
+Console.js:61 🥉 Using images from Priority 3 (GBP Photos): 1 authentic photos
+Console.js:61 🥈 Using contact from Priority 2 (Website/GBP): Object
+Console.js:61 🥇 Using colors from Priority 1 (User Questionnaire): Array(2)
+Console.js:61 ✅ DATA HIERARCHY ENFORCED SUCCESSFULLY
+Console.js:61 💾 Saved to history: 0/0
+Console.js:61 ✅ Undo/Redo toolbar initialized (hidden - buttons in dashboard header)
+Console.js:61 ✅ Overlay styles CSS re-applied
+Console.js:61 🔍 FROZEN UI DATA HIERARCHY SUMMARY:
+Console.js:61 📋 Services: Checking data hierarchy for authentic services...
+Console.js:61 🎨 Colors: #ffc000, #000000 (Priority 1: User Questionnaire)
+Console.js:61 📸 Images: Authentic GBP photos (Priority 3: GBP Data)
+Console.js:61 📞 Contact: 065 2170293, Svetog Save bb, Osečina (Priority 2: Website/GBP)
+Console.js:61 ⭐ Reviews: Aleksandar Popović, Jordan Jančić, Marko Pavlović (Priority 3: GBP)
+Console.js:61 ✅ NO DUMMY DATA OR STOCK IMAGES USED
+Console.js:61 🎯 Overlay management system initialized with robust debugging
+Console.js:61 🔌 Wire inline editor called with 71 elements (forceRewire: false)
+Console.js:61 🔗 Wiring element: NAV (
+      Kigen Plastika
+      
+ ...)
+Console.js:61 🔗 Wiring element: A (Kigen Plastika...)
+Console.js:61 🔗 Wiring element: A (Početna...)
+Console.js:61 🔗 Wiring element: A (Usluge...)
+Console.js:61 🔗 Wiring element: A (Plastični rezervoari...)
+Console.js:61 🔗 Wiring element: A (Cisterne...)
+Console.js:61 🔗 Wiring element: A (Septičke jame...)
+Console.js:61 🔗 Wiring element: A (O nama...)
+Console.js:61 🔗 Wiring element: A (Kontakt...)
+Console.js:61 🔗 Wiring element: DIV (📞 065 2170293...)
+Console.js:61 🔗 Wiring element: BUTTON (Kontaktirajte Nas...)
+Console.js:61 🔗 Wiring element: H1 (Kigen Plastika...)
+Console.js:61 🔗 Wiring element: P (
+        Proizvođači plastični...)
+Console.js:61 🔗 Wiring element: BUTTON (Kontaktirajte Nas...)
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔗 Wiring element: H2 (Lokacija i Stručnost...)
+Console.js:61 🔗 Wiring element: P (
+            Kigen Plastika je...)
+Console.js:61 🔗 Wiring element: P (
+            Strateški smešten...)
+Console.js:61 🔗 Wiring element: P (
+            Naš tim čine isku...)
+Console.js:61 🔗 Wiring element: P (
+            Posebno se ponosi...)
+Console.js:61 🔗 Wiring element: DIV (🔧...)
+Console.js:61 🔗 Wiring element: H3 (Vrhunski Kvalitet...)
+Console.js:61 🔗 Wiring element: P (
+          Naši plastični reze...)
+Console.js:61 🔗 Wiring element: DIV (⚡...)
+Console.js:61 🔗 Wiring element: H3 (Brza Isporuka...)
+Console.js:61 🔗 Wiring element: P (
+          Zahvaljujući optimi...)
+Console.js:61 🔗 Wiring element: DIV (🎯...)
+Console.js:61 🔗 Wiring element: H3 (Prilagođena Rešenja...)
+Console.js:61 🔗 Wiring element: P (
+          Svaki projekat je j...)
+Console.js:61 🔗 Wiring element: H2 (Naše Usluge...)
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔗 Wiring element: H4 (Plastični Rezervoari...)
+Console.js:61 🔗 Wiring element: P (
+            Kvalitetni plasti...)
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔗 Wiring element: H4 (Cisterne...)
+Console.js:61 🔗 Wiring element: P (
+            Pouzdane cisterne...)
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔗 Wiring element: H4 (Septičke Jame...)
+Console.js:61 🔗 Wiring element: P (
+            Kompletni sistemi...)
+Console.js:61 🔗 Wiring element: H2 (Mišljenja Klijenata...)
+Console.js:61 🔗 Wiring element: P ("Brza i odlična saradnja... 10...)
+Console.js:61 🔗 Wiring element: P (
+            "Kvalitetni proiz...)
+Console.js:61 🔗 Wiring element: P (
+            "Odličan rad i pr...)
+Console.js:61 🔗 Wiring element: H2 (Galerija...)
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔗 Wiring element: H2 (Spremni za Saradnju?...)
+Console.js:61 🔗 Wiring element: P (
+        Kontaktirajte nas dan...)
+Console.js:61 🔗 Wiring element: BUTTON (Pozovite Nas...)
+Console.js:61 🔗 Wiring element: H2 (Kontaktirajte Nas...)
+Console.js:61 🔗 Wiring element: FOOTER (
+      
+        
+          Kon...)
+Console.js:61 🔗 Wiring element: H4 (Kontakt...)
+Console.js:61 🔗 Wiring element: P (Telefon: 065 2170293...)
+Console.js:61 🔗 Wiring element: P (Email: info@kigen-plastika.rs...)
+Console.js:61 🔗 Wiring element: P (Adresa: Svetog Save bb, Osečin...)
+Console.js:61 🔗 Wiring element: H4 (Usluge...)
+Console.js:61 🔗 Wiring element: A (Plastični rezervoari...)
+Console.js:61 🔗 Wiring element: A (Cisterne...)
+Console.js:61 🔗 Wiring element: A (Septičke jame...)
+Console.js:61 🔗 Wiring element: H4 (O nama...)
+Console.js:61 🔗 Wiring element: A (Naša priča...)
+Console.js:61 🔗 Wiring element: A (Kvalitet...)
+Console.js:61 🔗 Wiring element: A (Galerija...)
+Console.js:61 🔗 Wiring element: H4 (Pratite nas...)
+Console.js:61 🔗 Wiring element: A (Facebook...)
+Console.js:61 🔗 Wiring element: A (Instagram...)
+Console.js:61 🔗 Wiring element: A (LinkedIn...)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 71
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 71
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 🎨 Initializing micro-interaction animations...
+Console.js:61 ✅ Micro-animations initialized successfully
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 📝 Creating text delete button for BUTTON Kontaktirajte Nas...
+Console.js:61 ✨ Text delete button created and added to BUTTON
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+DesktopDashboard.jsx:45 History updated: Object
+DesktopDashboard.jsx:84 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/app
+DesktopDashboard.jsx:87 ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+Console.js:61 📝 Creating text delete button for P 
+            Posebno...
+Console.js:61 ✨ Text delete button created and added to P
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 🧹 Clearing 1 overlays - Reason: Switching to different element
+Console.js:61 📝 Creating text delete button for DIV ⚡...
+Console.js:61 ✨ Text delete button created and added to DIV
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+Console.js:61 🔍 Starting service photo analysis
+Console.js:61 📸 Found 6 photos to analyze
+Console.js:61 🏷️ Matching against 3 services
+Console.js:61 📝 Creating text delete button for P 
+          Svaki pro...
+Console.js:61 ✨ Text delete button created and added to P
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 🧹 Clearing 1 overlays - Reason: Switching to different element
+Console.js:61 📝 Creating text delete button for DIV 🎯...
+Console.js:61 ✨ Text delete button created and added to DIV
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+Console.js:61 📝 Creating text delete button for DIV 🎯...
+Console.js:61 ✨ Text delete button created and added to DIV
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 🎯 Mouse entered delete button
+Console.js:61 ✅ AI analysis complete
+Console.js:61 🎯 Service matches: Object
+Console.js:61 🔄 Updating service images with AI matches
+Console.js:61 📸 Updating Plastični rezervoari image
+Console.js:61 📸 Updating Cisterne image
+Console.js:61 📸 Updating Septičke jame image
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 🗑️ Delete button clicked for DIV
+Console.js:61 💾 Saved to history: 1/1
+Console.js:61 💾 Saved to history: 2/2
+Console.js:61 🧹 Clearing 1 overlays - Reason: Element deleted
+DesktopDashboard.jsx:45 History updated: Object
+EditorPanel.jsx:25 Element deleted: Object
+DesktopDashboard.jsx:41 Element deleted in iframe: Object
+DesktopDashboard.jsx:45 History updated: Object
+Console.js:61 📝 Creating text delete button for H3 Prilagođena Rešenja...
+Console.js:61 ✨ Text delete button created and added to H3
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+Console.js:61 ↶ Undo to index: 1
+Console.js:61 🧹 Removed 1 stale overlay buttons after undo
+Console.js:61 ✅ Overlay styles CSS re-applied
+Console.js:61 🔄 Re-wiring all elements after undo...
+Console.js:61 🔌 Wire inline editor called with 71 elements (forceRewire: true)
+Console.js:61 🔥 Force rewire: Clearing wired flag for NAV
+Console.js:61 🔗 Wiring element: NAV (
+      Kigen Plastika
+      
+ ...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Kigen Plastika...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Početna...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Usluge...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Plastični rezervoari...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Cisterne...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Septičke jame...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (O nama...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Kontakt...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for DIV
+Console.js:61 🔗 Wiring element: DIV (📞 065 2170293...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for BUTTON
+Console.js:61 🔗 Wiring element: BUTTON (Kontaktirajte Nas...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H1
+Console.js:61 🔗 Wiring element: H1 (Kigen Plastika...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+        Proizvođači plastični...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for BUTTON
+Console.js:61 🔗 Wiring element: BUTTON (Kontaktirajte Nas...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for IMG
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H2
+Console.js:61 🔗 Wiring element: H2 (Lokacija i Stručnost...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+            Kigen Plastika je...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+            Strateški smešten...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+            Naš tim čine isku...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+            Posebno se ponosi...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for DIV
+Console.js:61 🔗 Wiring element: DIV (🔧...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H3
+Console.js:61 🔗 Wiring element: H3 (Vrhunski Kvalitet...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+          Naši plastični reze...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for DIV
+Console.js:61 🔗 Wiring element: DIV (⚡...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H3
+Console.js:61 🔗 Wiring element: H3 (Brza Isporuka...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+          Zahvaljujući optimi...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for DIV
+Console.js:61 🔗 Wiring element: DIV (🎯...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H3
+Console.js:61 🔗 Wiring element: H3 (Prilagođena Rešenja...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+          Svaki projekat je j...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H2
+Console.js:61 🔗 Wiring element: H2 (Naše Usluge...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for IMG
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H4
+Console.js:61 🔗 Wiring element: H4 (Plastični Rezervoari...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+            Kvalitetni plasti...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for IMG
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H4
+Console.js:61 🔗 Wiring element: H4 (Cisterne...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+            Pouzdane cisterne...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for IMG
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H4
+Console.js:61 🔗 Wiring element: H4 (Septičke Jame...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+            Kompletni sistemi...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H2
+Console.js:61 🔗 Wiring element: H2 (Mišljenja Klijenata...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P ("Brza i odlična saradnja... 10...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+            "Kvalitetni proiz...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+            "Odličan rad i pr...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H2
+Console.js:61 🔗 Wiring element: H2 (Galerija...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for IMG
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for IMG
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for IMG
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for IMG
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for IMG
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for IMG
+Console.js:61 🔗 Wiring element: IMG (image...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H2
+Console.js:61 🔗 Wiring element: H2 (Spremni za Saradnju?...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (
+        Kontaktirajte nas dan...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for BUTTON
+Console.js:61 🔗 Wiring element: BUTTON (Pozovite Nas...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H2
+Console.js:61 🔗 Wiring element: H2 (Kontaktirajte Nas...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for FOOTER
+Console.js:61 🔗 Wiring element: FOOTER (
+      
+        
+          Kon...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H4
+Console.js:61 🔗 Wiring element: H4 (Kontakt...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (Telefon: 065 2170293...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (Email: info@kigen-plastika.rs...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for P
+Console.js:61 🔗 Wiring element: P (Adresa: Svetog Save bb, Osečin...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H4
+Console.js:61 🔗 Wiring element: H4 (Usluge...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Plastični rezervoari...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Cisterne...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Septičke jame...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H4
+Console.js:61 🔗 Wiring element: H4 (O nama...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Naša priča...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Kvalitet...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Galerija...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for H4
+Console.js:61 🔗 Wiring element: H4 (Pratite nas...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Facebook...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (Instagram...)
+Console.js:61 🔥 Force rewire: Clearing wired flag for A
+Console.js:61 🔗 Wiring element: A (LinkedIn...)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 71
+Console.js:61    🔗 Actually wired: 71
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: true
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon
+Console.js:61 ✅ All elements re-wired after undo
+DesktopDashboard.jsx:45 History updated: Object
+Console.js:61 🖼️ Creating image overlay buttons for IMG
+Console.js:61 [img overlay] attempt on photo?maxwidth=800&photoreference=ATKogpeDUGPtAHzsBFFQf-vh1uZq3TAVzlgIchU3tkRk3XJ1Zif8wnjp8yysrPe5RYffX1B3KeT428LpRnca7spPcqSVo1FAQbAcpqzcZ-U7BtMbrzq4eaz2Wgc3EY_8xEzLC4yxrdlOSRRLsXPyft7ujc1NOIG7YiM9BmtxuYShwImsML9sl9Jp5KLd_7ou2ekdfgdmAywEV9_Y9VOW4rqi0dx7iktwnSHmQQus5R1VjcAYoS1bzQm4fXA3dHWXQm0XnBQrjNRDjNzpwyF8H0gGrgyrDcx7lggUXfe_2q_1CRCKeg&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE
+Console.js:61 🧹 Clearing 2 overlays - Reason: Switching to different element
+Console.js:61 🖼️ Creating image overlay buttons for IMG
+Console.js:61 [img overlay] attempt on photo?maxwidth=800&photoreference=ATKogpf--XaA-Gpl1VOoGo1zDxL3CPpFd_9gnyDMZglbhMunSqjvypuOFFRpH_6CewTUBeDMYcqdODMMF2BGDX8QwDofBBxV5RTTTlfSlF5QXJNVi8xd8N8nu63vkkEgWQaarMF08Pbo83Dd1vjNAXX3m8X-yt7urJR7mucVJ5V9mEX103zsp2QJdTCFdYws8zgVQnhivtmsYyJ6Z1U8Xs8SEOGCRpCEQe4etEQ2PgqOworM0hTBlWPeMu-XlUNFq6IqXijf2d3NE3cGWuDpOMybFPTljGBdN0jcFnqX7Ac-oBACuQ&key=AIzaSyC2j2FOrdZt2JHta1UK1m9RoyBzDq5VusE
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 🧹 Clearing 2 overlays - Reason: Mouse left element and timeout expired
+Console.js:61 📝 Creating text delete button for FOOTER 
+      
+        
+   ...
+Console.js:61 ✨ Text delete button created and added to FOOTER
+Console.js:61 🧹 Clearing 1 overlays - Reason: Switching to different element
+Console.js:61 📝 Creating text delete button for A Naša priča...
+Console.js:61 ✨ Text delete button created and added to A
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+Console.js:61 📝 Creating text delete button for A Naša priča...
+Console.js:61 ✨ Text delete button created and added to A
+Console.js:61 🧹 Clearing 1 overlays - Reason: Unknown
+Console.js:61 💾 Saved to history: 2/2
+Console.js:61 🖱️ Clicked outside editable areas, clearing overlays
+DesktopDashboard.jsx:39 Element selected in iframe: Object
+DesktopDashboard.jsx:45 History updated: Object
+DesktopDashboard.jsx:39 Element selected in iframe: Object
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+Console.js:61 📝 Creating text delete button for H4 O nama...
+Console.js:61 ✨ Text delete button created and added to H4
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 💾 Saved to history: 3/3
+DesktopDashboard.jsx:45 History updated: Object
+Console.js:61 📝 Creating text delete button for FOOTER 
+      
+        
+   ...
+Console.js:61 ✨ Text delete button created and added to FOOTER
+App.jsx:95 Resize detected - Window width: 1426 isMobile: false
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired

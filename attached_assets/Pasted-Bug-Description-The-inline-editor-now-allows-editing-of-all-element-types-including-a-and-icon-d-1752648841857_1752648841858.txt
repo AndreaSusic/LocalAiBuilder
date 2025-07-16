@@ -1,0 +1,50 @@
+Bug Description
+
+The inline editor now allows editing of all element types, including <a> and icon divs.
+However, a major issue remains:
+	•	When I delete or edit an element (especially a link or icon) and then use Undo, elements that are below the one I changed will sometimes disappear from the page.
+	•	This is most visible with elements in the footer, but can happen anywhere in the layout.
+	•	The bug occurs whether I delete or just edit, and after one or multiple Undo actions.
+
+⸻
+
+Expected Behavior
+	•	When Undo is triggered, all previously visible elements (including those below the one changed) should return and render in their original order and structure.
+	•	The editor’s undo/redo stack should accurately restore the previous DOM or data state.
+
+⸻
+
+What Actually Happens
+	•	After editing or deleting an element and using Undo:
+	•	Some elements that were below the affected element simply disappear.
+	•	The footer typically remains, but some content sections between the edit and the footer vanish.
+	•	Only a page refresh restores everything.
+
+⸻
+
+Extra Details & Clues
+	•	I’m attaching the Chrome console output right after this happens.
+(You may also want to test with the selector:
+h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon )
+	•	The bug occurs after editing or deleting ANY element wired for inline editing, and then UNDOING.
+	•	I suspect a bug in how the undo/redo stack or DOM snapshot is created/restored:
+	•	Maybe it’s not capturing all child nodes, or a serialization issue with nested/complex elements?
+
+⸻
+
+How to Reproduce
+	1.	Edit or delete any link, icon, or standard text element in the page (preferably near the top or middle).
+	2.	Click Undo.
+	3.	Observe that elements further down the page (below the edited/deleted one) are now missing.
+	4.	Refresh the page: everything is back.
+
+⸻
+
+Request
+	•	Please check how Undo/Redo is restoring state.
+	•	Ensure that all elements—including those below any change—are restored to their exact previous state and order.
+	•	If you need a screen recording, let me know—I can provide one.
+
+⸻
+
+Thank you! Let me know if you need any more console logs or HTML.
