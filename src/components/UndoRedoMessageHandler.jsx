@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 import { useSiteDataActions } from '../context/SiteDataProvider';
 
 export const UndoRedoMessageHandler = () => {
-  const { undo, redo, canUndo, canRedo, historySize, currentIndex } = useSiteDataActions();
+  const { undo, redo, canUndo, canRedo, historySize, currentIndex, updateField, updateNestedField, removeService } = useSiteDataActions();
 
   useEffect(() => {
     const handleMessage = (event) => {
@@ -16,12 +16,35 @@ export const UndoRedoMessageHandler = () => {
 
       switch (event.data.type) {
         case 'undo':
+        case 'reactUndo':
           console.log('🔄 Undo request received from dashboard');
           undo();
           break;
         case 'redo':
+        case 'reactRedo':
           console.log('🔄 Redo request received from dashboard');
           redo();
+          break;
+        case 'deleteElement':
+          console.log('🗑️ Delete element request received:', event.data.elementPath);
+          // Handle element deletion through React state
+          const { elementPath, elementType } = event.data;
+          if (elementPath && elementPath.includes('.')) {
+            // For nested paths like "services.0" or "quickLinks.about"
+            const [parentField, childField] = elementPath.split('.');
+            if (parentField === 'services' && !isNaN(childField)) {
+              removeService(parseInt(childField));
+            } else if (parentField === 'quickLinks') {
+              updateNestedField(parentField, childField, '');
+            }
+          } else {
+            // For direct fields
+            updateField(elementPath, '');
+          }
+          break;
+        case 'saveReactState':
+          console.log('💾 Save React state request received');
+          // State is automatically saved when updateField/updateNestedField is called
           break;
         case 'getHistoryStatus':
           // Send current history status to dashboard
