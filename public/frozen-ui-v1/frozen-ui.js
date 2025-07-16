@@ -145,9 +145,9 @@ function undo() {
     // Re-add overlay styles CSS (gets lost during DOM restoration)
     addOverlayStyles();
     
-    // Re-wire all elements after DOM restoration
+    // Re-wire all elements after DOM restoration with force rewire
     console.log('🔄 Re-wiring all elements after undo...');
-    wireInlineEditor(document);
+    wireInlineEditor(document, true);
     console.log('✅ All elements re-wired after undo');
     
     // Update toolbar buttons
@@ -187,9 +187,9 @@ function redo() {
     // Re-add overlay styles CSS (gets lost during DOM restoration)
     addOverlayStyles();
     
-    // Re-wire all elements after DOM restoration
+    // Re-wire all elements after DOM restoration with force rewire
     console.log('🔄 Re-wiring all elements after redo...');
-    wireInlineEditor(document);
+    wireInlineEditor(document, true);
     console.log('✅ All elements re-wired after redo');
     
     // Update toolbar buttons
@@ -391,17 +391,35 @@ function createTextDeleteButton(element) {
 }
 
 // Wire inline editor for all elements with robust overlay management
-function wireInlineEditor(root = document) {
+function wireInlineEditor(root = document, forceRewire = false) {
   const selector = 'h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder';
   const elements = root.nodeType === 1 
     ? (root.matches && root.matches(selector) ? [root] : root.querySelectorAll(selector))
     : root.querySelectorAll(selector);
 
+  console.log(`🔌 Wire inline editor called with ${elements.length} elements (forceRewire: ${forceRewire})`);
+
   elements.forEach((el) => {
-    if (el.dataset.wired) return;
-    el.dataset.wired = '1';
+    // Skip if already wired, unless forcing rewire (after undo/redo)
+    if (el.dataset.wired && !forceRewire) {
+      console.log(`⏭️ Skipping already wired element: ${el.tagName}`);
+      return;
+    }
     
-    el.addEventListener('mouseenter', function(e) {
+    // Mark as wired
+    el.dataset.wired = '1';
+    console.log(`🔗 Wiring element: ${el.tagName} (${el.textContent?.substring(0, 30) || 'image'}...)`);
+    
+    // Remove existing event listeners to prevent duplicates
+    if (forceRewire) {
+      el.removeEventListener('mouseenter', el._mouseenterHandler);
+      el.removeEventListener('mouseleave', el._mouseleaveHandler);
+      el.removeEventListener('click', el._clickHandler);
+      el.removeEventListener('blur', el._blurHandler);
+    }
+    
+    // Store event handler references for potential removal
+    const mouseenterHandler = function(e) {
       // Clear any existing hover timeout
       if (hoverTimeout) {
         clearTimeout(hoverTimeout);
@@ -435,9 +453,12 @@ function wireInlineEditor(root = document) {
           createTextDeleteButton(this);
         }
       }
-    });
+    };
     
-    el.addEventListener('mouseleave', function(e) {
+    el._mouseenterHandler = mouseenterHandler;
+    el.addEventListener('mouseenter', mouseenterHandler);
+    
+    const mouseleaveHandler = function(e) {
       // Remove hover styles immediately
       this.style.outline = 'none';
       this.style.zIndex = '';
@@ -470,9 +491,12 @@ function wireInlineEditor(root = document) {
           }
         }
       }, 100);
-    });
+    };
     
-    el.addEventListener('click', function() {
+    el._mouseleaveHandler = mouseleaveHandler;
+    el.addEventListener('mouseleave', mouseleaveHandler);
+    
+    const clickHandler = function() {
       // Clear overlays before any selection
       clearOverlays();
       
@@ -525,17 +549,35 @@ function wireInlineEditor(root = document) {
           window.editorBridge.notifyElementSelection(this);
         }
       }
-    });
+    };
+    
+    el._clickHandler = clickHandler;
+    el.addEventListener('click', clickHandler);
     
     // Blur event for text elements
     if (el.tagName.toLowerCase() !== 'img' && !el.classList.contains('img-placeholder')) {
-      el.addEventListener('blur', function() {
+      const blurHandler = function() {
         this.style.outline = 'none';
         this.style.zIndex = '';
         saveToHistory();
-      });
+      };
+      
+      el._blurHandler = blurHandler;
+      el.addEventListener('blur', blurHandler);
     }
   });
+
+  // Log completion with detailed statistics
+  const wireCount = elements.length;
+  const skippedCount = elements.filter(el => el.dataset.wired && !forceRewire).length;
+  const actuallyWired = wireCount - skippedCount;
+  
+  console.log(`✅ wireInlineEditor completed:`);
+  console.log(`   📊 Total elements found: ${wireCount}`);
+  console.log(`   🔗 Actually wired: ${actuallyWired}`);
+  console.log(`   ⏭️ Skipped (already wired): ${skippedCount}`);
+  console.log(`   🔄 Force rewire mode: ${forceRewire}`);
+  console.log(`   🎯 Selector used: ${selector}`);
 }
 
 // Initialize undo/redo toolbar
