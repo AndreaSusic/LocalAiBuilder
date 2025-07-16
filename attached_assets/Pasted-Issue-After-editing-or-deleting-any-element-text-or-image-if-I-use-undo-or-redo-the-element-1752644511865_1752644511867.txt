@@ -1,0 +1,36 @@
+Issue
+	•	After editing or deleting any element (text or image), if I use undo (or redo), the elements on the page (e.g., h1, h2, p, nav, etc.):
+	•	Stop being interactive—you can’t click, edit, or get the ✕ delete button on hover,
+	•	Some lose the red border/can’t be selected/can’t be edited,
+	•	Basically, after any undo/redo, the whole inline editing system breaks for all or some elements.
+
+⸻
+
+What is likely happening
+	•	The undo/redo functions restore the DOM using document.documentElement.innerHTML = ..., or similar, wiping out all previous event listeners.
+	•	After restoring the HTML, my code calls wireInlineEditor(document) to re-wire elements, but this is not actually making the elements interactive again.
+	•	As a result, after undo/redo, the event listeners for editing/deleting/hover overlays are either missing or broken, and elements can’t be edited as before.
+
+⸻
+
+What I need fixed
+	1.	After any undo or redo, EVERY editable element must have ALL its event listeners and editing functions fully restored—just like on initial page load.
+	2.	All eligible elements (as defined in the wireInlineEditor selector) must:
+	•	Be clickable for editing,
+	•	Show the delete (✕) button on hover,
+	•	Be fully interactive after any undo/redo, not just for the most recently edited element.
+	3.	If needed, refactor or re-sequence the undo/redo logic so event listeners are guaranteed to be re-attached after the DOM is swapped out.
+	•	You may need to re-invoke wireInlineEditor on the new DOM root after each undo/redo.
+	•	If necessary, ensure MutationObserver does not get detached or duplicate listeners.
+
+⸻
+
+Optional debugging suggestions
+	•	Add clear console logs before and after wireInlineEditor() runs post-undo/redo, showing how many elements were wired and which selectors are in use.
+	•	Make sure el.dataset.wired or similar flags are properly cleared or reset if the DOM is replaced.
+
+⸻
+
+Important
+	•	Please DO NOT change any dashboard or parent logic—only touch undo/redo and inline wiring if needed.
+	•	The goal: After any undo/redo, the inline editor should work on ALL supported elements again, exactly like on initial load.
