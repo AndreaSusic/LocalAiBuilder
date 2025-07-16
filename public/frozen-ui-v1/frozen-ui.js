@@ -141,6 +141,14 @@ function createImageOverlayButtons(imageElement) {
   deleteBtn.textContent = '✕';
   deleteBtn.style.zIndex = '2147483640';
 
+  deleteBtn.addEventListener('mouseenter', function(e) {
+    e.stopPropagation();
+  });
+  
+  deleteBtn.addEventListener('mouseleave', function(e) {
+    e.stopPropagation();
+  });
+
   deleteBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
@@ -170,6 +178,9 @@ function createImageOverlayButtons(imageElement) {
     if (window.editorBridge) {
       window.editorBridge.notifyElementDeleted(imageElement);
     }
+    
+    // Clear active element reference
+    currentActiveElement = null;
   });
 
   // Create replace button
@@ -177,6 +188,14 @@ function createImageOverlayButtons(imageElement) {
   replaceBtn.className = 'replace-btn';
   replaceBtn.textContent = '🖼️';
   replaceBtn.style.zIndex = '2147483640';
+
+  replaceBtn.addEventListener('mouseenter', function(e) {
+    e.stopPropagation();
+  });
+  
+  replaceBtn.addEventListener('mouseleave', function(e) {
+    e.stopPropagation();
+  });
 
   replaceBtn.addEventListener('click', function(e) {
     e.stopPropagation();
@@ -202,6 +221,9 @@ function createImageOverlayButtons(imageElement) {
   activeOverlayBtns.push(deleteBtn, replaceBtn);
 }
 
+// Global variable to track the currently active element
+let currentActiveElement = null;
+
 // Wire inline editor for all elements
 function wireInlineEditor(root = document) {
   const selector = 'h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder';
@@ -217,6 +239,13 @@ function wireInlineEditor(root = document) {
     let deleteButton = null;
     
     el.addEventListener('mouseenter', function() {
+      // Only clear overlays if we're entering a different element
+      if (currentActiveElement && currentActiveElement !== this) {
+        clearOverlays();
+      }
+      
+      currentActiveElement = this;
+      
       this.style.outline = '2px dotted #ff0000';
       this.style.cursor = 'pointer';
       this.style.position = 'relative';
@@ -251,11 +280,13 @@ function wireInlineEditor(root = document) {
             transition: opacity 0.2s;
           `;
           
-          deleteButton.addEventListener('mouseenter', function() {
+          deleteButton.addEventListener('mouseenter', function(e) {
+            e.stopPropagation();
             this.style.opacity = '0.9';
           });
           
-          deleteButton.addEventListener('mouseleave', function() {
+          deleteButton.addEventListener('mouseleave', function(e) {
+            e.stopPropagation();
             this.style.opacity = '0.6';
           });
           
@@ -276,6 +307,9 @@ function wireInlineEditor(root = document) {
             
             // Save state after deletion
             saveToHistory();
+            
+            // Clear active element reference
+            currentActiveElement = null;
           });
           
           this.appendChild(deleteButton);
@@ -286,13 +320,41 @@ function wireInlineEditor(root = document) {
       }
     });
     
-    el.addEventListener('mouseleave', function() {
+    el.addEventListener('mouseleave', function(e) {
+      // Only clear styles, don't clear overlays immediately
       this.style.outline = 'none';
       this.style.zIndex = '';
-      // Clear overlays on mouseleave after a small delay to prevent flicker
+      
+      // Check if mouse is moving to a related element (overlay button)
+      const relatedTarget = e.relatedTarget;
+      if (relatedTarget && (
+        relatedTarget.classList.contains('delete-btn') ||
+        relatedTarget.classList.contains('replace-btn') ||
+        this.contains(relatedTarget)
+      )) {
+        // Don't clear overlays if moving to overlay buttons
+        return;
+      }
+      
+      // Clear overlays with a delay to allow for button interaction
       setTimeout(() => {
-        clearOverlays();
-      }, 100);
+        // Only clear if we're not over the current element or its buttons
+        if (currentActiveElement !== this) {
+          const buttons = this.querySelectorAll('.delete-btn, .replace-btn');
+          let mouseOverButton = false;
+          buttons.forEach(btn => {
+            if (btn.matches(':hover')) {
+              mouseOverButton = true;
+            }
+          });
+          
+          if (!mouseOverButton && !this.matches(':hover')) {
+            if (currentActiveElement === this) {
+              currentActiveElement = null;
+            }
+          }
+        }
+      }, 150);
     });
     
     el.addEventListener('click', function() {
@@ -426,13 +488,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Global click handler to clear image selections when clicking outside
+  // Global click handler to clear overlays when clicking outside editable elements
   document.addEventListener('click', function(e) {
-    // Check if click is on an image, placeholder, or its buttons
-    if (e.target.tagName.toLowerCase() !== 'img' && 
-        !e.target.classList.contains('img-placeholder') &&
-        !e.target.classList.contains('delete-btn') && 
-        !e.target.classList.contains('replace-btn')) {
+    const target = e.target;
+    const isOverlayButton = target.classList.contains('delete-btn') || target.classList.contains('replace-btn');
+    const isEditableElement = target.matches('h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder');
+    
+    // If clicking outside any editable element or overlay button, clear everything
+    if (!isOverlayButton && !isEditableElement) {
       // Clear all selected images and placeholders
       document.querySelectorAll('img.image-selected, .img-placeholder.image-selected').forEach(el => {
         el.classList.remove('image-selected');
@@ -441,6 +504,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
       // Clear all overlay buttons
       clearOverlays();
+      currentActiveElement = null;
     }
   });
 
