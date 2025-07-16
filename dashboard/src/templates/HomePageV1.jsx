@@ -1,6 +1,7 @@
 // dashboard/src/templates/homepage/v1/HomePageV1.jsx
 import React, { useState } from "react";
 import { SiteDataContext } from "../context/SiteDataContext.js"; // <- adjust path if needed
+import { SiteDataProvider } from "../../context/SiteDataProvider.jsx"; // <- new undo/redo provider
 
 // Sections
 import HeroSection from "../sections/HeroSection.jsx";
@@ -9,6 +10,7 @@ import AboutSection from "../sections/AboutSection.jsx";
 import GallerySection from "../sections/GallerySection.jsx";
 import ReviewsSection from "../sections/ReviewsSection.jsx";
 import ContactSection from "../sections/ContactSection.jsx";
+import UndoRedoMessageHandler from "../../components/UndoRedoMessageHandler.jsx";
 
 export default function HomePageV1({ bootstrap = {} }) {
   /* ------------------------------------------------------------------
@@ -34,7 +36,7 @@ export default function HomePageV1({ bootstrap = {} }) {
      3️⃣  RENDER — wrap everything in the context provider
   ------------------------------------------------------------------ */
   return (
-    <SiteDataContext.Provider value={processed}>
+    <SiteDataProvider initialData={processed}>
       <div
         style={{
           fontFamily: "'Roboto', sans-serif",
@@ -124,7 +126,10 @@ export default function HomePageV1({ bootstrap = {} }) {
         <ReviewsSection />
         <GallerySection />
         <ContactSection />
+        
+        {/* Message handler for undo/redo communication with dashboard */}
+        <UndoRedoMessageHandler />
       </div>
-    </SiteDataContext.Provider>
+    </SiteDataProvider>
   );
 }
