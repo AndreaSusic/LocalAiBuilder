@@ -8,11 +8,16 @@ let editHistory = [];
 let historyIndex = -1;
 const MAX_HISTORY = 50;
 let activeOverlayBtns = [];
+let currentActiveElement = null;
+let hoverTimeout = null;
 
 // ==================== HELPER FUNCTIONS ====================
 
-// Clear all active overlay buttons
-function clearOverlays() {
+// Clear all active overlay buttons with debugging
+function clearOverlays(reason = 'Unknown') {
+  if (activeOverlayBtns.length > 0) {
+    console.log(`🧹 Clearing ${activeOverlayBtns.length} overlays - Reason: ${reason}`);
+  }
   activeOverlayBtns.forEach((btn) => btn.remove());
   activeOverlayBtns = [];
 }
@@ -221,10 +226,7 @@ function createImageOverlayButtons(imageElement) {
   activeOverlayBtns.push(deleteBtn, replaceBtn);
 }
 
-// Global variable to track the currently active element
-let currentActiveElement = null;
-
-// Wire inline editor for all elements
+// Wire inline editor for all elements with robust overlay management
 function wireInlineEditor(root = document) {
   const selector = 'h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder';
   const elements = root.nodeType === 1 
@@ -235,126 +237,75 @@ function wireInlineEditor(root = document) {
     if (el.dataset.wired) return;
     el.dataset.wired = '1';
     
-    // Store reference to delete button for text elements
-    let deleteButton = null;
-    
-    el.addEventListener('mouseenter', function() {
-      // Only clear overlays if we're entering a different element
+    el.addEventListener('mouseenter', function(e) {
+      // Clear any existing hover timeout
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+        hoverTimeout = null;
+      }
+      
+      // Only clear overlays if we're entering a completely different element
       if (currentActiveElement && currentActiveElement !== this) {
-        clearOverlays();
+        clearOverlays('Switching to different element');
       }
       
       currentActiveElement = this;
       
+      // Apply hover styles
       this.style.outline = '2px dotted #ff0000';
       this.style.cursor = 'pointer';
       this.style.position = 'relative';
       this.style.zIndex = '9999';
       
-      // For images and placeholders, create overlay buttons
+      // Create overlay buttons if they don't exist
       if (this.tagName.toLowerCase() === 'img' || this.classList.contains('img-placeholder')) {
-        createImageOverlayButtons(this);
+        // For images, create image overlay buttons
+        if (!this.querySelector('.delete-btn, .replace-btn')) {
+          console.log('🖼️ Creating image overlay buttons for', this.tagName);
+          createImageOverlayButtons(this);
+        }
       } else {
-        // For text elements, create delete button only if it doesn't exist
+        // For text elements, create delete button
         if (!this.querySelector('.delete-btn')) {
-          deleteButton = document.createElement('button');
-          deleteButton.className = 'delete-btn';
-          deleteButton.innerHTML = '✕';
-          deleteButton.style.cssText = `
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 16px;
-            height: 16px;
-            background: #e53935;
-            border-radius: 50%;
-            color: #fff;
-            font-size: 12px;
-            border: none;
-            cursor: pointer;
-            opacity: 0.6;
-            z-index: 2147483640;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.2s;
-          `;
-          
-          deleteButton.addEventListener('mouseenter', function(e) {
-            e.stopPropagation();
-            this.style.opacity = '0.9';
-          });
-          
-          deleteButton.addEventListener('mouseleave', function(e) {
-            e.stopPropagation();
-            this.style.opacity = '0.6';
-          });
-          
-          deleteButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            
-            // Save to history before deletion
-            saveToHistory();
-            
-            // Notify dashboard about deletion
-            if (window.editorBridge) {
-              window.editorBridge.notifyElementDeleted(el);
-            }
-            
-            // Remove the element
-            el.remove();
-            
-            // Save state after deletion
-            saveToHistory();
-            
-            // Clear active element reference
-            currentActiveElement = null;
-          });
-          
-          this.appendChild(deleteButton);
-          // Track the text delete button
-          activeOverlayBtns.push(deleteButton);
-          console.log('🆕 delete-btn added to', this.tagName, this.textContent?.substring(0, 20) + '...');
+          console.log('📝 Creating text delete button for', this.tagName, this.textContent?.substring(0, 20) + '...');
+          createTextDeleteButton(this);
         }
       }
     });
     
     el.addEventListener('mouseleave', function(e) {
-      // Only clear styles, don't clear overlays immediately
+      // Remove hover styles immediately
       this.style.outline = 'none';
       this.style.zIndex = '';
       
-      // Check if mouse is moving to a related element (overlay button)
+      // Check if mouse is moving to a related element (overlay button or child)
       const relatedTarget = e.relatedTarget;
-      if (relatedTarget && (
+      const isMovingToOverlay = relatedTarget && (
         relatedTarget.classList.contains('delete-btn') ||
         relatedTarget.classList.contains('replace-btn') ||
         this.contains(relatedTarget)
-      )) {
+      );
+      
+      if (isMovingToOverlay) {
         // Don't clear overlays if moving to overlay buttons
+        console.log('🔄 Mouse moving to overlay button, keeping overlays');
         return;
       }
       
-      // Clear overlays with a delay to allow for button interaction
-      setTimeout(() => {
-        // Only clear if we're not over the current element or its buttons
-        if (currentActiveElement !== this) {
-          const buttons = this.querySelectorAll('.delete-btn, .replace-btn');
-          let mouseOverButton = false;
-          buttons.forEach(btn => {
-            if (btn.matches(':hover')) {
-              mouseOverButton = true;
-            }
-          });
-          
-          if (!mouseOverButton && !this.matches(':hover')) {
-            if (currentActiveElement === this) {
-              currentActiveElement = null;
-            }
+      // Set a timeout to clear overlays, but only if we're not hovering over the element or its buttons
+      hoverTimeout = setTimeout(() => {
+        // Double-check if we're still not over the element or its buttons
+        const isOverElement = this.matches(':hover');
+        const isOverButton = Array.from(this.querySelectorAll('.delete-btn, .replace-btn')).some(btn => btn.matches(':hover'));
+        
+        if (!isOverElement && !isOverButton) {
+          console.log('⏰ Timeout expired, clearing overlays');
+          clearOverlays('Mouse left element and timeout expired');
+          if (currentActiveElement === this) {
+            currentActiveElement = null;
           }
         }
-      }, 150);
+      }, 100);
     });
     
     el.addEventListener('click', function() {
