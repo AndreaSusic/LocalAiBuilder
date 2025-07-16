@@ -217,9 +217,6 @@ function wireInlineEditor(root = document) {
     let deleteButton = null;
     
     el.addEventListener('mouseenter', function() {
-      // Clear any existing overlay buttons first
-      clearOverlays();
-      
       this.style.outline = '2px dotted #ff0000';
       this.style.cursor = 'pointer';
       this.style.position = 'relative';
@@ -229,68 +226,73 @@ function wireInlineEditor(root = document) {
       if (this.tagName.toLowerCase() === 'img' || this.classList.contains('img-placeholder')) {
         createImageOverlayButtons(this);
       } else {
-        // For text elements, create delete button
-        deleteButton = document.createElement('button');
-        deleteButton.className = 'delete-btn';
-        deleteButton.innerHTML = '✕';
-        deleteButton.style.cssText = `
-          position: absolute;
-          top: -8px;
-          right: -8px;
-          width: 16px;
-          height: 16px;
-          background: #e53935;
-          border-radius: 50%;
-          color: #fff;
-          font-size: 12px;
-          border: none;
-          cursor: pointer;
-          opacity: 0.6;
-          z-index: 2147483640;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: opacity 0.2s;
-        `;
-        
-        deleteButton.addEventListener('mouseenter', function() {
-          this.style.opacity = '0.9';
-        });
-        
-        deleteButton.addEventListener('mouseleave', function() {
-          this.style.opacity = '0.6';
-        });
-        
-        deleteButton.addEventListener('click', function(e) {
-          e.stopPropagation();
-          e.preventDefault();
+        // For text elements, create delete button only if it doesn't exist
+        if (!this.querySelector('.delete-btn')) {
+          deleteButton = document.createElement('button');
+          deleteButton.className = 'delete-btn';
+          deleteButton.innerHTML = '✕';
+          deleteButton.style.cssText = `
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 16px;
+            height: 16px;
+            background: #e53935;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            opacity: 0.6;
+            z-index: 2147483640;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+          `;
           
-          // Save to history before deletion
-          saveToHistory();
+          deleteButton.addEventListener('mouseenter', function() {
+            this.style.opacity = '0.9';
+          });
           
-          // Notify dashboard about deletion
-          if (window.editorBridge) {
-            window.editorBridge.notifyElementDeleted(el);
-          }
+          deleteButton.addEventListener('mouseleave', function() {
+            this.style.opacity = '0.6';
+          });
           
-          // Remove the element
-          el.remove();
+          deleteButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            
+            // Save to history before deletion
+            saveToHistory();
+            
+            // Notify dashboard about deletion
+            if (window.editorBridge) {
+              window.editorBridge.notifyElementDeleted(el);
+            }
+            
+            // Remove the element
+            el.remove();
+            
+            // Save state after deletion
+            saveToHistory();
+          });
           
-          // Save state after deletion
-          saveToHistory();
-        });
-        
-        this.appendChild(deleteButton);
-        // Track the text delete button
-        activeOverlayBtns.push(deleteButton);
-        console.log('🆕 delete-btn added to', this.tagName, this.textContent?.substring(0, 20) + '...');
+          this.appendChild(deleteButton);
+          // Track the text delete button
+          activeOverlayBtns.push(deleteButton);
+          console.log('🆕 delete-btn added to', this.tagName, this.textContent?.substring(0, 20) + '...');
+        }
       }
     });
     
     el.addEventListener('mouseleave', function() {
       this.style.outline = 'none';
       this.style.zIndex = '';
-      // NOTE: Do not remove deleteButton here - let clearOverlays() handle it
+      // Clear overlays on mouseleave after a small delay to prevent flicker
+      setTimeout(() => {
+        clearOverlays();
+      }, 100);
     });
     
     el.addEventListener('click', function() {
