@@ -148,15 +148,21 @@ function createImageOverlayButtons(imageElement) {
 
   deleteBtn.addEventListener('mouseenter', function(e) {
     e.stopPropagation();
+    this.style.opacity = '1';
+    console.log('🎯 Mouse entered image delete button');
   });
   
   deleteBtn.addEventListener('mouseleave', function(e) {
     e.stopPropagation();
+    this.style.opacity = '0.8';
+    console.log('🎯 Mouse left image delete button');
   });
 
   deleteBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
+
+    console.log('🗑️ Image delete button clicked for', imageElement.tagName);
 
     // Save current state before deletion
     saveToHistory();
@@ -186,6 +192,7 @@ function createImageOverlayButtons(imageElement) {
     
     // Clear active element reference
     currentActiveElement = null;
+    clearOverlays('Image deleted');
   });
 
   // Create replace button
@@ -196,15 +203,21 @@ function createImageOverlayButtons(imageElement) {
 
   replaceBtn.addEventListener('mouseenter', function(e) {
     e.stopPropagation();
+    this.style.opacity = '1';
+    console.log('🎯 Mouse entered image replace button');
   });
   
   replaceBtn.addEventListener('mouseleave', function(e) {
     e.stopPropagation();
+    this.style.opacity = '0.8';
+    console.log('🎯 Mouse left image replace button');
   });
 
   replaceBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
+
+    console.log('🔄 Image replace button clicked for', imageElement.tagName);
 
     // Save current state before potential change
     saveToHistory();
@@ -224,6 +237,74 @@ function createImageOverlayButtons(imageElement) {
   
   // Track active overlay buttons
   activeOverlayBtns.push(deleteBtn, replaceBtn);
+}
+
+// Create text delete button with proper event handling
+function createTextDeleteButton(element) {
+  const deleteButton = document.createElement('button');
+  deleteButton.className = 'delete-btn';
+  deleteButton.innerHTML = '✕';
+  deleteButton.style.cssText = `
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 16px;
+    height: 16px;
+    background: #e53935;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    z-index: 2147483640;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+    pointer-events: auto;
+  `;
+  
+  deleteButton.addEventListener('mouseenter', function(e) {
+    e.stopPropagation();
+    this.style.opacity = '1';
+    console.log('🎯 Mouse entered delete button');
+  });
+  
+  deleteButton.addEventListener('mouseleave', function(e) {
+    e.stopPropagation();
+    this.style.opacity = '0.8';
+    console.log('🎯 Mouse left delete button');
+  });
+  
+  deleteButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    console.log('🗑️ Delete button clicked for', element.tagName);
+    
+    // Save to history before deletion
+    saveToHistory();
+    
+    // Notify dashboard about deletion
+    if (window.editorBridge) {
+      window.editorBridge.notifyElementDeleted(element);
+    }
+    
+    // Remove the element
+    element.remove();
+    
+    // Save state after deletion
+    saveToHistory();
+    
+    // Clear active element reference
+    currentActiveElement = null;
+    clearOverlays('Element deleted');
+  });
+  
+  element.appendChild(deleteButton);
+  activeOverlayBtns.push(deleteButton);
+  console.log('✨ Text delete button created and added to', element.tagName);
 }
 
 // Wire inline editor for all elements with robust overlay management
@@ -447,17 +528,75 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // If clicking outside any editable element or overlay button, clear everything
     if (!isOverlayButton && !isEditableElement) {
+      console.log('🖱️ Clicked outside editable areas, clearing overlays');
+      
+      // Clear any pending hover timeout
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+        hoverTimeout = null;
+      }
+      
       // Clear all selected images and placeholders
       document.querySelectorAll('img.image-selected, .img-placeholder.image-selected').forEach(el => {
         el.classList.remove('image-selected');
         el.style.outline = "none";
         el.style.zIndex = "";
       });
+      
       // Clear all overlay buttons
-      clearOverlays();
+      clearOverlays('Clicked outside editable areas');
       currentActiveElement = null;
     }
   });
+
+  // Add CSS for overlay buttons to ensure proper display
+  const overlayStyles = document.createElement('style');
+  overlayStyles.textContent = `
+    .delete-btn, .replace-btn {
+      position: absolute !important;
+      z-index: 2147483640 !important;
+      pointer-events: auto !important;
+      opacity: 0.8 !important;
+      transition: opacity 0.2s ease !important;
+      border: none !important;
+      cursor: pointer !important;
+      user-select: none !important;
+      font-family: system-ui, -apple-system, sans-serif !important;
+    }
+    
+    .delete-btn:hover, .replace-btn:hover {
+      opacity: 1 !important;
+    }
+    
+    .delete-btn {
+      background: #e53935 !important;
+      color: white !important;
+      border-radius: 50% !important;
+      width: 16px !important;
+      height: 16px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 12px !important;
+      top: -8px !important;
+      right: -8px !important;
+    }
+    
+    .replace-btn {
+      background: #1976d2 !important;
+      color: white !important;
+      border-radius: 50% !important;
+      width: 16px !important;
+      height: 16px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 10px !important;
+      top: -8px !important;
+      left: -8px !important;
+    }
+  `;
+  document.head.appendChild(overlayStyles);
 
   // Log data hierarchy enforcement
   console.log('🔍 FROZEN UI DATA HIERARCHY SUMMARY:');
@@ -467,18 +606,28 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('📞 Contact: 065 2170293, Svetog Save bb, Osečina (Priority 2: Website/GBP)');
   console.log('⭐ Reviews: Aleksandar Popović, Jordan Jančić, Marko Pavlović (Priority 3: GBP)');
   console.log('✅ NO DUMMY DATA OR STOCK IMAGES USED');
+  console.log('🎯 Overlay management system initialized with robust debugging');
 
   // Initialize inline editor on all elements immediately
   wireInlineEditor(document);
   
-  // MutationObserver to handle dynamically added elements
+  // MutationObserver to handle dynamically added/removed elements
   const observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       if (mutation.type === 'childList') {
+        // Handle added nodes
         mutation.addedNodes.forEach(function(node) {
           if (node.nodeType === 1) { // Element node
             wireInlineEditor(node);
-            clearOverlays(); // Clear orphan overlays
+          }
+        });
+        
+        // Handle removed nodes - only clear overlays if the current active element was removed
+        mutation.removedNodes.forEach(function(node) {
+          if (node.nodeType === 1 && currentActiveElement === node) {
+            console.log('🗑️ MutationObserver: Active element was removed, clearing overlays');
+            clearOverlays('Active element removed by MutationObserver');
+            currentActiveElement = null;
           }
         });
       }
