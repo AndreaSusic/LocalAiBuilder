@@ -1,0 +1,73 @@
+ 🕵️‍♂️ SiteDataContext loaded
+ ######## I AM TP at https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/preview/assets/index-BzpavAus.js
+ 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+ BOOTSTRAP >> Object
+ Current path: /preview/
+ Root element exists: true
+ React app rendered successfully
+ App rendering with bootstrap: Object
+ Window width: 1426
+ isMobile: false
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+/api/me:1  Failed to load resource: the server responded with a status of 401 (Unauthorized)
+ 🔓 User not authenticated, using static bootstrap data
+ App rendering with bootstrap: Object
+ Window width: 1426
+ isMobile: false
+ Setting preview content to /app
+ Setting preview content to /app
+ ✅ Dashboard user auto-authenticated for editing
+ 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+ 📊 VALIDATION RESULTS: Object
+ ✅ DATA VALIDATION PASSED - Safe to render template
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ ✅ React DOM ready event dispatched
+ ✅ Iframe Editor Bridge initialized
+ 🚀 Service Image Matcher initialized
+ 🏅 ENFORCING DATA PRIORITY HIERARCHY IN FROZEN UI
+ 🥈 Using services from Priority 2 (Website Data): Array(3)
+ 🥉 Using images from Priority 3 (GBP Photos): 1 authentic photos
+ 🥈 Using contact from Priority 2 (Website/GBP): Object
+ 🥇 Using colors from Priority 1 (User Questionnaire): Array(2)
+ ✅ DATA HIERARCHY ENFORCED SUCCESSFULLY
+ 💾 Saved to history: 0/0
+ ✅ Undo/Redo toolbar initialized (hidden - buttons in dashboard header)
+ 🔍 FROZEN UI DATA HIERARCHY SUMMARY:
+ 📋 Services: Checking data hierarchy for authentic services...
+ 🎨 Colors: #ffc000, #000000 (Priority 1: User Questionnaire)
+Console.js:61 📸 Images: Authentic GBP photos (Priority 3: GBP Data)
+Console.js:61 📞 Contact: 065 2170293, Svetog Save bb, Osečina (Priority 2: Website/GBP)
+Console.js:61 ⭐ Reviews: Aleksandar Popović, Jordan Jančić, Marko Pavlović (Priority 3: GBP)
+Console.js:61 ✅ NO DUMMY DATA OR STOCK IMAGES USED
+Console.js:61 🎨 Initializing micro-interaction animations...
+Console.js:61 ✅ Micro-animations initialized successfully
+DesktopDashboard.jsx:45 History updated: Object
+DesktopDashboard.jsx:84 iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/app
+DesktopDashboard.jsx:87 ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
+Console.js:61 🆕 delete-btn added to P 
+        Proizvođači...
+Console.js:61 🆕 delete-btn added to H1 Kig✕...
+Console.js:61 🆕 delete-btn added to P 
+        Proizvođači...
+Console.js:61 🔍 Starting service photo analysis
+Console.js:61 📸 Found 6 photos to analyze
+Console.js:61 🏷️ Matching against 3 services
+DesktopDashboard.jsx:39 Element selected in iframe: Object
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+DesktopDashboard.jsx:39 Element selected in iframe: Object
+Console.js:61 💾 Saved to history: 1/1
+DesktopDashboard.jsx:45 History updated: Object
+Console.js:61 ✅ AI analysis complete
+Console.js:61 🎯 Service matches: Object
+Console.js:61 🔄 Updating service images with AI matches
+Console.js:61 📸 Updating Plastični rezervoari image
+Console.js:61 📸 Updating Cisterne image
+Console.js:61 📸 Updating Septičke jame image
+Console.js:61 💾 Saved to history: 2/2
+DesktopDashboard.jsx:45 History updated: Object
+App.jsx:95 Resize detected - Window width: 1426 isMobile: false
