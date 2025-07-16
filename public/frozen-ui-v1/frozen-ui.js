@@ -133,13 +133,20 @@ function undo() {
       '<head>' + document.head.innerHTML + '</head>' + snapshot;
     console.log(`↶ Undo to index: ${historyIndex}`);
     
-    // Reset all state variables
+    // Reset all state variables and clean up DOM
     clearOverlays('Undo operation');
     activeOverlayBtns = [];
     currentActiveElement = null;
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
       hoverTimeout = null;
+    }
+    
+    // Remove any stale overlay buttons that might be left in the DOM
+    const staleButtons = document.querySelectorAll('.delete-btn, .replace-btn');
+    staleButtons.forEach(btn => btn.remove());
+    if (staleButtons.length > 0) {
+      console.log(`🧹 Removed ${staleButtons.length} stale overlay buttons after undo`);
     }
     
     // Re-add overlay styles CSS (gets lost during DOM restoration)
@@ -175,13 +182,20 @@ function redo() {
       '<head>' + document.head.innerHTML + '</head>' + snapshot;
     console.log(`↷ Redo to index: ${historyIndex}`);
     
-    // Reset all state variables
+    // Reset all state variables and clean up DOM
     clearOverlays('Redo operation');
     activeOverlayBtns = [];
     currentActiveElement = null;
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
       hoverTimeout = null;
+    }
+    
+    // Remove any stale overlay buttons that might be left in the DOM
+    const staleButtons = document.querySelectorAll('.delete-btn, .replace-btn');
+    staleButtons.forEach(btn => btn.remove());
+    if (staleButtons.length > 0) {
+      console.log(`🧹 Removed ${staleButtons.length} stale overlay buttons after redo`);
     }
     
     // Re-add overlay styles CSS (gets lost during DOM restoration)
@@ -406,16 +420,35 @@ function wireInlineEditor(root = document, forceRewire = false) {
       return;
     }
     
+    // When force rewiring, completely clear the wired flag to ensure fresh start
+    if (forceRewire) {
+      delete el.dataset.wired;
+      console.log(`🔥 Force rewire: Clearing wired flag for ${el.tagName}`);
+      
+      // Remove existing event listeners to prevent duplicates
+      if (el._mouseenterHandler) {
+        el.removeEventListener('mouseenter', el._mouseenterHandler);
+      }
+      if (el._mouseleaveHandler) {
+        el.removeEventListener('mouseleave', el._mouseleaveHandler);
+      }
+      if (el._clickHandler) {
+        el.removeEventListener('click', el._clickHandler);
+      }
+      if (el._blurHandler) {
+        el.removeEventListener('blur', el._blurHandler);
+      }
+    }
+    
     // Mark as wired
     el.dataset.wired = '1';
     console.log(`🔗 Wiring element: ${el.tagName} (${el.textContent?.substring(0, 30) || 'image'}...)`);
     
-    // Remove existing event listeners to prevent duplicates
-    if (forceRewire) {
-      el.removeEventListener('mouseenter', el._mouseenterHandler);
-      el.removeEventListener('mouseleave', el._mouseleaveHandler);
-      el.removeEventListener('click', el._clickHandler);
-      el.removeEventListener('blur', el._blurHandler);
+    // Remove any existing overlay buttons to prevent duplicates
+    const existingButtons = el.querySelectorAll('.delete-btn, .replace-btn');
+    existingButtons.forEach(btn => btn.remove());
+    if (existingButtons.length > 0) {
+      console.log(`🧹 Removed ${existingButtons.length} existing overlay buttons from ${el.tagName}`);
     }
     
     // Store event handler references for potential removal
@@ -569,7 +602,8 @@ function wireInlineEditor(root = document, forceRewire = false) {
 
   // Log completion with detailed statistics
   const wireCount = elements.length;
-  const skippedCount = elements.filter(el => el.dataset.wired && !forceRewire).length;
+  // When force rewiring, no elements are skipped since we clear all wired flags
+  const skippedCount = forceRewire ? 0 : Array.from(elements).filter(el => el.dataset.wired).length;
   const actuallyWired = wireCount - skippedCount;
   
   console.log(`✅ wireInlineEditor completed:`);
