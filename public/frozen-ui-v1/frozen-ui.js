@@ -22,6 +22,65 @@ function clearOverlays(reason = 'Unknown') {
   activeOverlayBtns = [];
 }
 
+// Add overlay styles CSS to the document
+function addOverlayStyles() {
+  // Remove existing overlay styles first
+  const existingStyles = document.querySelector('#overlay-styles');
+  if (existingStyles) {
+    existingStyles.remove();
+  }
+  
+  const overlayStyles = document.createElement('style');
+  overlayStyles.id = 'overlay-styles';
+  overlayStyles.textContent = `
+    .delete-btn, .replace-btn {
+      position: absolute !important;
+      z-index: 2147483640 !important;
+      pointer-events: auto !important;
+      opacity: 0.8 !important;
+      transition: opacity 0.2s ease !important;
+      border: none !important;
+      cursor: pointer !important;
+      user-select: none !important;
+      font-family: system-ui, -apple-system, sans-serif !important;
+    }
+    
+    .delete-btn:hover, .replace-btn:hover {
+      opacity: 1 !important;
+    }
+    
+    .delete-btn {
+      background: #e53935 !important;
+      color: white !important;
+      border-radius: 50% !important;
+      width: 16px !important;
+      height: 16px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 12px !important;
+      top: -8px !important;
+      right: -8px !important;
+    }
+    
+    .replace-btn {
+      background: #1976d2 !important;
+      color: white !important;
+      border-radius: 50% !important;
+      width: 16px !important;
+      height: 16px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 10px !important;
+      top: -8px !important;
+      left: -8px !important;
+    }
+  `;
+  document.head.appendChild(overlayStyles);
+  console.log('✅ Overlay styles CSS re-applied');
+}
+
 // History management functions
 function saveToHistory() {
   try {
@@ -74,10 +133,22 @@ function undo() {
       '<head>' + document.head.innerHTML + '</head>' + snapshot;
     console.log(`↶ Undo to index: ${historyIndex}`);
     
-    // Clear overlays and re-wire all elements after DOM restoration
-    clearOverlays();
-    wireInlineEditor(document);
+    // Reset all state variables
+    clearOverlays('Undo operation');
     activeOverlayBtns = [];
+    currentActiveElement = null;
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = null;
+    }
+    
+    // Re-add overlay styles CSS (gets lost during DOM restoration)
+    addOverlayStyles();
+    
+    // Re-wire all elements after DOM restoration
+    console.log('🔄 Re-wiring all elements after undo...');
+    wireInlineEditor(document);
+    console.log('✅ All elements re-wired after undo');
     
     // Update toolbar buttons
     updateToolbarButtons();
@@ -104,10 +175,22 @@ function redo() {
       '<head>' + document.head.innerHTML + '</head>' + snapshot;
     console.log(`↷ Redo to index: ${historyIndex}`);
     
-    // Clear overlays and re-wire all elements after DOM restoration
-    clearOverlays();
-    wireInlineEditor(document);
+    // Reset all state variables
+    clearOverlays('Redo operation');
     activeOverlayBtns = [];
+    currentActiveElement = null;
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = null;
+    }
+    
+    // Re-add overlay styles CSS (gets lost during DOM restoration)
+    addOverlayStyles();
+    
+    // Re-wire all elements after DOM restoration
+    console.log('🔄 Re-wiring all elements after redo...');
+    wireInlineEditor(document);
+    console.log('✅ All elements re-wired after redo');
     
     // Update toolbar buttons
     updateToolbarButtons();
@@ -550,53 +633,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Add CSS for overlay buttons to ensure proper display
-  const overlayStyles = document.createElement('style');
-  overlayStyles.textContent = `
-    .delete-btn, .replace-btn {
-      position: absolute !important;
-      z-index: 2147483640 !important;
-      pointer-events: auto !important;
-      opacity: 0.8 !important;
-      transition: opacity 0.2s ease !important;
-      border: none !important;
-      cursor: pointer !important;
-      user-select: none !important;
-      font-family: system-ui, -apple-system, sans-serif !important;
-    }
-    
-    .delete-btn:hover, .replace-btn:hover {
-      opacity: 1 !important;
-    }
-    
-    .delete-btn {
-      background: #e53935 !important;
-      color: white !important;
-      border-radius: 50% !important;
-      width: 16px !important;
-      height: 16px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      font-size: 12px !important;
-      top: -8px !important;
-      right: -8px !important;
-    }
-    
-    .replace-btn {
-      background: #1976d2 !important;
-      color: white !important;
-      border-radius: 50% !important;
-      width: 16px !important;
-      height: 16px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      font-size: 10px !important;
-      top: -8px !important;
-      left: -8px !important;
-    }
-  `;
-  document.head.appendChild(overlayStyles);
+  addOverlayStyles();
 
   // Log data hierarchy enforcement
   console.log('🔍 FROZEN UI DATA HIERARCHY SUMMARY:');
