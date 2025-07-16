@@ -1,0 +1,49 @@
+I’ve run into a critical problem with the inline editor’s undo/redo logic.
+
+⸻
+
+Bug description
+
+When I delete an element and then undo that action:
+	•	Some sections of the page (the DOM nodes after the deleted/restored element) are missing/disappear.
+	•	The footer remains, but several sections below the undo-ed element are just gone.
+	•	This is repeatable for both text and image deletions.
+	•	When I reload, everything is back, so it’s just in-memory/history-related.
+
+⸻
+
+Console output and debugging details
+	•	The console shows that the undo works (the element is back and event wiring runs as expected), but many elements below it vanish after undo.
+	•	No JavaScript errors in the console.
+	•	The wiring step shows all elements are found and re-wired (59 elements), but visually, the content is truncated after undo.
+
+⸻
+
+What I think is happening
+	•	It seems that the undo logic is restoring an incomplete or broken DOM snapshot.
+	•	The saveToHistory() function is using document.body.cloneNode(true).outerHTML as a snapshot, and then undo/redo replaces the DOM’s contents with the stored outerHTML.
+	•	However, when you restore the HTML (by setting document.documentElement.innerHTML), the browser may mishandle/partially parse the HTML, or the state of the DOM is not fully consistent, causing elements after the restored node to be dropped.
+	•	This is a known pitfall: assigning to document.documentElement.innerHTML or even document.body.innerHTML for large/complex DOMs can result in missing siblings, lost event bindings, or partial rendering—especially when React or other JS frameworks are involved.
+	•	The fact that reloading the page brings everything back shows that this is only related to how undo restores the DOM from history.
+
+⸻
+
+What I need fixed
+	•	After undoing a delete, all page content should be exactly as it was before the delete—nothing should be missing or truncated.
+	•	Please update the undo/redo implementation so that no sections disappear when restoring from history.
+	•	If necessary, use a safer approach to restore the DOM, possibly by replacing only the body, or by using a framework-native state restore (if React/JSX state is involved), rather than raw .innerHTML assignment.
+	•	Double check that the DOM snapshot saved/restored includes all children/siblings, and that event wiring is done after the DOM is fully restored.
+
+⸻
+
+Extra tip:
+Many devs solve this by using a container <div id="main-content"> to snapshot and restore just the content area, not the entire document.body or document.documentElement, which reduces risk of DOM truncation.
+Or, switch from HTML string-based undo to a state-based or node-based undo if the page is complex.
+
+⸻
+
+Summary:
+	•	Undo should always restore the page 100%—no lost sections, no missing nodes.
+	•	The current approach sometimes restores an incomplete DOM, breaking the editor and page for the user.
+
+Thank you!

@@ -129,9 +129,10 @@ function undo() {
   if (historyIndex > 0) {
     historyIndex--;
     const snapshot = editHistory[historyIndex];
-    document.documentElement.innerHTML = 
-      '<head>' + document.head.innerHTML + '</head>' + snapshot;
+    
+    // SAFER DOM RESTORATION: Only replace body content, preserve head
     console.log(`↶ Undo to index: ${historyIndex}`);
+    document.body.outerHTML = snapshot;
     
     // Reset all state variables and clean up DOM
     clearOverlays('Undo operation');
@@ -178,9 +179,10 @@ function redo() {
   if (historyIndex < editHistory.length - 1) {
     historyIndex++;
     const snapshot = editHistory[historyIndex];
-    document.documentElement.innerHTML = 
-      '<head>' + document.head.innerHTML + '</head>' + snapshot;
+    
+    // SAFER DOM RESTORATION: Only replace body content, preserve head
     console.log(`↷ Redo to index: ${historyIndex}`);
+    document.body.outerHTML = snapshot;
     
     // Reset all state variables and clean up DOM
     clearOverlays('Redo operation');
