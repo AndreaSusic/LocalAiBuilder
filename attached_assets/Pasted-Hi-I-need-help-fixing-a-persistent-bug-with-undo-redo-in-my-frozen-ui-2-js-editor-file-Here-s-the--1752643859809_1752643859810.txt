@@ -1,0 +1,37 @@
+Hi,
+I need help fixing a persistent bug with undo/redo in my frozen-ui-2.js editor file. Here’s the problem and what I expect:
+
+⸻
+
+What’s happening now
+	•	When I edit or delete an element, then use undo (or redo), the previously editable elements (with x/delete buttons, red border, click-to-edit) lose their interactivity.
+	•	After undo, most or all elements can’t be edited or clicked—they no longer show the x button, can’t be selected, or aren’t editable.
+	•	Basically, the wireInlineEditor logic isn’t reapplying after undo/redo, or some event listeners are missing.
+
+⸻
+
+What should happen
+	•	After any undo/redo operation, all eligible elements should remain fully interactive and editable, just as on the initial page load.
+	•	All “editable” elements (as defined in the selector string in wireInlineEditor) should:
+	•	Show the ✕ (delete) button on hover,
+	•	Have red border when selected/edited,
+	•	Allow deleting/editing/click-to-edit after undoing or redoing any action.
+	•	The editor must always be in a state where you can click or edit any element after undo/redo, not just the most recently changed one.
+
+⸻
+
+What I need you to do
+	1.	Audit the undo/redo logic (especially where the DOM is replaced or mutated after undo).
+	2.	Ensure wireInlineEditor is re-applied to all relevant elements after DOM changes during undo/redo.
+	3.	Fix or refactor the code so event listeners and editability are restored after undo/redo for every relevant element—not just for a single element or on initial load.
+	4.	If necessary, add logs (console.log) showing when wireInlineEditor is run, so I can debug if it’s being called.
+
+⸻
+
+(optional) Reference
+
+The bug is typically caused by restoring innerHTML or outerHTML for large sections of the DOM, which removes all previous event listeners. We need to ensure the inline editor (with all its listeners/overlays) is re-initialized for all target elements after the DOM is re-rendered via undo/redo.
+
+⸻
+
+Do not change any unrelated dashboard, iframe, or dashboard header logic—only touch undo/redo and inline editor wiring if needed.
