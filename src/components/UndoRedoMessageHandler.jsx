@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 import { useSiteDataActions } from '../context/SiteDataProvider';
 
 export const UndoRedoMessageHandler = () => {
-  const { undo, redo, canUndo, canRedo, historySize, currentIndex, updateField, updateNestedField, removeService } = useSiteDataActions();
+  const { undo, redo, canUndo, canRedo, historySize, currentIndex, updateField, updateNestedField, removeService, deleteElementByPath } = useSiteDataActions();
 
   useEffect(() => {
     const handleMessage = (event) => {
@@ -28,19 +28,32 @@ export const UndoRedoMessageHandler = () => {
         case 'deleteElement':
           console.log('🗑️ Delete element request received:', event.data.elementPath);
           // Handle element deletion through React state
-          const { elementPath, elementType } = event.data;
-          if (elementPath && elementPath.includes('.')) {
-            // For nested paths like "services.0" or "quickLinks.about"
-            const [parentField, childField] = elementPath.split('.');
-            if (parentField === 'services' && !isNaN(childField)) {
-              removeService(parseInt(childField));
-            } else if (parentField === 'quickLinks') {
-              updateNestedField(parentField, childField, '');
-            }
+          const { elementPath, elementType, originalElement } = event.data;
+          
+          // Use the new deleteElementByPath function for comprehensive handling
+          deleteElementByPath(elementPath, originalElement);
+          break;
+        
+        case 'updateElement':
+          console.log('✏️ Update element request received:', event.data.elementPath);
+          // Handle element updates through React state
+          const { elementPath: updatePath, newValue, elementType: updateType } = event.data;
+          
+          if (updatePath.includes('.')) {
+            // For nested paths
+            const [parentField, childField] = updatePath.split('.');
+            updateNestedField(parentField, childField, newValue);
           } else {
             // For direct fields
-            updateField(elementPath, '');
+            updateField(updatePath, newValue);
           }
+          break;
+          
+        case 'showWarning':
+          console.warn('⚠️ Warning from inline editor:', event.data.message);
+          console.warn('Element details:', event.data.element);
+          // You could show a toast notification or modal here
+          alert(`Warning: ${event.data.message}`);
           break;
         case 'saveReactState':
           console.log('💾 Save React state request received');
