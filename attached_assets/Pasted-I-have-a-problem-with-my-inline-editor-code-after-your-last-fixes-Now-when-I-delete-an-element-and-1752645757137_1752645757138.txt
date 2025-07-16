@@ -1,0 +1,29 @@
+I have a problem with my inline editor code after your last fixes.
+Now, when I delete an element and then undo that action (so the element comes back), I can edit and delete other elements, but I cannot delete that same element again (the one I previously deleted and restored with undo).
+	•	The delete (✕) button appears for all elements, but for the restored element, it doesn’t work after undo.
+	•	Other elements are fine, but this restored element is “immune” to being deleted again until I reload the page.
+
+⸻
+
+What is likely wrong
+	•	It seems that after undoing a delete, the element is being rewired for editing, but the delete button or its event listeners are not being fully reset/attached on the restored element.
+	•	Maybe there is a residual dataset or wiring flag (el.dataset.wired) or some DOM property preventing proper re-attachment of the delete logic for that specific DOM node.
+	•	This could also be related to how wireInlineEditor is checking or setting wiring flags after DOM replacement—maybe it skips over elements thinking they are already wired, but the event listeners are lost with the undo DOM swap.
+
+⸻
+
+What I need fixed
+	•	After undoing a delete, ALL elements, including any that were previously deleted and restored, should be fully deletable again, with delete buttons and logic working as on initial load.
+	•	If the delete button appears, it should always be functional, not just present as a dead element.
+	•	Please check that after an undo, all event listeners are properly re-attached for all elements, including those that have been “revived” by undo.
+
+⸻
+
+Tips
+	•	Make sure that after DOM restoration via undo/redo, any data-* flags or JS-internal wiring aren’t skipping rewiring on previously deleted/added elements.
+	•	Consider clearing/eliminating or updating el.dataset.wired and similar logic after undo, so no element is ever skipped from a full re-wiring pass.
+	•	Double-check that no “dead” buttons or listeners are left behind for elements after being deleted/undo-ed.
+
+⸻
+
+You can use the logs in the Chrome console for debugging—delete button gets added but won’t work for previously deleted+restored elements.
