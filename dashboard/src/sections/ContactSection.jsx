@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext.js';
+import Editable from '../components/Editable.jsx';
 
 export default function ContactSection() {
   const { 
@@ -123,21 +124,23 @@ export default function ContactSection() {
           <div>
             <h4>{sectionLabel}</h4>
             {servicesList.map((service, index) => (
-              <a key={index} href={`#${service.toLowerCase().replace(/\s+/g, '-')}`}>{service}</a>
+              <Editable key={index} as="a" path={`services.${index}`} href={`#${service.toLowerCase().replace(/\s+/g, '-')}`}>
+                {service}
+              </Editable>
             ))}
           </div>
           <div>
             <h4>Quick Links</h4>
-            <a href="#about">About Us</a>
-            <a href="#contact">Contact</a>
+            <Editable as="a" path="quickLinks.about" href="#about">About Us</Editable>
+            <Editable as="a" path="quickLinks.contact" href="#contact">Contact</Editable>
             {isLandscaping ? (
               <>
-                <a href="#installation">Installation Guide</a>
-                <a href="#maintenance">Lawn Care Tips</a>
+                <Editable as="a" path="quickLinks.installation" href="#installation">Installation Guide</Editable>
+                <Editable as="a" path="quickLinks.maintenance" href="#maintenance">Lawn Care Tips</Editable>
               </>
             ) : (
               <>
-                <a href="#reviews">Reviews</a>
+                <Editable as="a" path="quickLinks.reviews" href="#reviews">Reviews</Editable>
               </>
             )}
           </div>

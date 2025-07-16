@@ -5,7 +5,7 @@
  */
 
 import React, { createContext, useContext, useCallback, useEffect } from 'react';
-import { SiteDataContext } from '../context/SiteDataContext';
+import { SiteDataContext } from '../../dashboard/src/context/SiteDataContext';
 import { useUndoRedo } from '../hooks/useUndoRedo';
 
 // Create a context for the state management functions

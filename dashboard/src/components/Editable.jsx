@@ -3,7 +3,7 @@
  * Enhanced editable component with React state-based undo/redo support
  */
 import React, { useState, useRef, useEffect } from 'react';
-import { useSiteDataActions } from '../../context/SiteDataProvider';
+import { useSiteDataActions } from '../../../src/context/SiteDataProvider';
 
 export default function Editable({
   path,
