@@ -1,7 +1,7 @@
 // dashboard/src/templates/homepage/v1/HomePageV1.jsx
 import React, { useState } from "react";
 import { SiteDataContext } from "../context/SiteDataContext.js"; // <- adjust path if needed
-import { SiteDataProvider } from "../../context/SiteDataProvider.jsx"; // <- new undo/redo provider
+import { SiteDataProvider } from "../../../src/context/SiteDataProvider.jsx"; // <- new undo/redo provider
 
 // Sections
 import HeroSection from "../sections/HeroSection.jsx";
@@ -10,7 +10,7 @@ import AboutSection from "../sections/AboutSection.jsx";
 import GallerySection from "../sections/GallerySection.jsx";
 import ReviewsSection from "../sections/ReviewsSection.jsx";
 import ContactSection from "../sections/ContactSection.jsx";
-import UndoRedoMessageHandler from "../../components/UndoRedoMessageHandler.jsx";
+import UndoRedoMessageHandler from "../../../src/components/UndoRedoMessageHandler.jsx";
 
 export default function HomePageV1({ bootstrap = {} }) {
   /* ------------------------------------------------------------------

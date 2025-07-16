@@ -65,31 +65,31 @@ export default function AboutSection() {
       {/* Features */}
       <section className="features">
         <div className="feature">
-          <div className="icon">
+          <Editable as="div" path="feature1Icon" className="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" strokeWidth="2" viewBox="0 0 24 24">
               <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
-          </div>
+          </Editable>
           <Editable as="h3" path="feature1Title">{isLandscaping ? 'Premium Quality Sod' : 'Expert Service'}</Editable>
           <Editable as="p" path="feature1Description">{isLandscaping ? 'We source the highest quality grass varieties perfect for Texas climate conditions.' : 'Our experienced team provides exceptional service tailored to your needs.'}</Editable>
         </div>
 
         <div className="feature">
-          <div className="icon">
+          <Editable as="div" path="feature2Icon" className="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" strokeWidth="2" viewBox="0 0 24 24">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
-          </div>
+          </Editable>
           <Editable as="h3" path="feature2Title">{isLandscaping ? 'Professional Installation' : 'Quality Results'}</Editable>
           <Editable as="p" path="feature2Description">{isLandscaping ? 'Expert installation services ensure your new lawn establishes quickly and thrives.' : 'We use proven methods to deliver outstanding, lasting results.'}</Editable>
         </div>
 
         <div className="feature">
-          <div className="icon">
+          <Editable as="div" path="feature3Icon" className="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="var(--primary)" strokeWidth="2" viewBox="0 0 24 24">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
-          </div>
+          </Editable>
           <Editable as="h3" path="feature3Title">{isLandscaping ? 'Customer Satisfaction' : 'Dedicated Care'}</Editable>
           <Editable as="p" path="feature3Description">{isLandscaping ? 'From consultation to completion, we ensure you love your new lawn.' : 'Our friendly team is dedicated to exceeding your expectations.'}</Editable>
         </div>

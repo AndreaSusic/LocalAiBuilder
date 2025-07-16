@@ -408,7 +408,7 @@ function createTextDeleteButton(element) {
 
 // Wire inline editor for all elements with robust overlay management
 function wireInlineEditor(root = document, forceRewire = false) {
-  const selector = 'h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder';
+  const selector = 'h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon';
   const elements = root.nodeType === 1 
     ? (root.matches && root.matches(selector) ? [root] : root.querySelectorAll(selector))
     : root.querySelectorAll(selector);
