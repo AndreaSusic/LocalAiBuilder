@@ -1,5 +1,19 @@
 import { useCallback, useRef } from 'react';
 
+// Function to notify iframe about state updates
+function notifyIframeOfStateUpdate(newState) {
+  const iframe = document.querySelector('iframe');
+  if (iframe && iframe.contentWindow) {
+    console.log('📤 Sending state update to iframe');
+    iframe.contentWindow.postMessage({
+      type: 'stateUpdate',
+      newState: newState
+    }, '*');
+  } else {
+    console.log('⚠️ No iframe found to notify about state update');
+  }
+}
+
 export function useUndoRedo(siteData, setSiteData) {
   const historyRef = useRef({
     undoStack: [],
@@ -44,6 +58,10 @@ export function useUndoRedo(siteData, setSiteData) {
     console.log(`↷ Redo stack: ${historyRef.current.redoStack.length} states available`);
     
     setSiteData(previousState);
+    
+    // Notify iframe about state update
+    notifyIframeOfStateUpdate(previousState);
+    
     return true;
   }, [siteData, setSiteData]);
 
@@ -67,6 +85,10 @@ export function useUndoRedo(siteData, setSiteData) {
     console.log(`↶ Undo stack: ${historyRef.current.undoStack.length} states available`);
     
     setSiteData(nextState);
+    
+    // Notify iframe about state update
+    notifyIframeOfStateUpdate(nextState);
+    
     return true;
   }, [siteData, setSiteData]);
 
