@@ -7,13 +7,15 @@ export default function HeroSection() {
   console.log('🎯 HeroSection is rendering!');
   
   try {
+    const { siteData } = useContext(SiteDataContext) || {};
+    
     const { 
       company_name, 
       services = [], 
       images = [], 
       google_profile = {},
       ai_customization = {} 
-    } = useContext(SiteDataContext) || {};
+    } = siteData || {};
     
     console.log('🎯 HeroSection data:', { company_name, services, images: images.length });
   

@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext.js';
-import Editable from '../components/Editable.jsx';
 
 export default function ContactSection() {
+  const { siteData } = useContext(SiteDataContext) || {};
+  
   const { 
     google_profile = {}, 
     contact = {},
@@ -11,7 +12,7 @@ export default function ContactSection() {
     services = [],
     industry = '',
     user_products = []
-  } = useContext(SiteDataContext) || {};
+  } = siteData || {};
   
   // Use contact data structure that includes authentic GBP information
   const phone = contact.phone || google_profile.formatted_phone_number || null;
@@ -124,23 +125,21 @@ export default function ContactSection() {
           <div>
             <h4>{sectionLabel}</h4>
             {servicesList.map((service, index) => (
-              <Editable key={index} as="a" path={`services.${index}`} href={`#${service.toLowerCase().replace(/\s+/g, '-')}`}>
-                {service}
-              </Editable>
+              <a key={index} href={`#${service.toLowerCase().replace(/\s+/g, '-')}`}>{service}</a>
             ))}
           </div>
           <div>
             <h4>Quick Links</h4>
-            <Editable as="a" path="quickLinks.about" href="#about">About Us</Editable>
-            <Editable as="a" path="quickLinks.contact" href="#contact">Contact</Editable>
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact</a>
             {isLandscaping ? (
               <>
-                <Editable as="a" path="quickLinks.installation" href="#installation">Installation Guide</Editable>
-                <Editable as="a" path="quickLinks.maintenance" href="#maintenance">Lawn Care Tips</Editable>
+                <a href="#installation">Installation Guide</a>
+                <a href="#maintenance">Lawn Care Tips</a>
               </>
             ) : (
               <>
-                <Editable as="a" path="quickLinks.reviews" href="#reviews">Reviews</Editable>
+                <a href="#reviews">Reviews</a>
               </>
             )}
           </div>

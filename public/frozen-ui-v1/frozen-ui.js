@@ -81,17 +81,10 @@ function addOverlayStyles() {
   console.log('✅ Overlay styles CSS re-applied');
 }
 
-// History management functions - DISABLED: React state-based system handles history
+// History management functions
 function saveToHistory() {
-  console.log('🚫 DOM-based history saving disabled - React state system handles history');
-  
-  // Notify React component to save state changes via state management
-  if (window.parent && window.parent !== window) {
-    window.parent.postMessage({
-      type: 'saveReactState',
-      reason: 'Element changed or deleted'
-    }, '*');
-  }
+  // DOM HISTORY DISABLED - All undo/redo operations now handled by React state
+  console.log('💾 DOM history disabled - using React state management');
 }
 
 // Update toolbar button states
@@ -105,26 +98,30 @@ function updateToolbarButtons() {
   }
 }
 
-// Undo function - DISABLED: React state-based system handles undo/redo
+// Undo function
 function undo() {
-  console.log('🚫 DOM-based undo disabled - React state system handles undo/redo');
+  // DOM UNDO DISABLED - All undo operations now handled by React state
+  console.log('↶ DOM undo disabled - delegating to React state management');
   
-  // Notify React component to handle undo via state management
+  // Delegate to parent window for React state undo
   if (window.parent && window.parent !== window) {
     window.parent.postMessage({
-      type: 'reactUndo'
+      type: 'undo',
+      reason: 'User pressed undo in iframe'
     }, '*');
   }
 }
 
-// Redo function - DISABLED: React state-based system handles undo/redo
+// Redo function
 function redo() {
-  console.log('🚫 DOM-based redo disabled - React state system handles undo/redo');
+  // DOM REDO DISABLED - All redo operations now handled by React state
+  console.log('↷ DOM redo disabled - delegating to React state management');
   
-  // Notify React component to handle redo via state management
+  // Delegate to parent window for React state redo
   if (window.parent && window.parent !== window) {
     window.parent.postMessage({
-      type: 'reactRedo'
+      type: 'redo',
+      reason: 'User pressed redo in iframe'
     }, '*');
   }
 }
@@ -168,52 +165,30 @@ function createImageOverlayButtons(imageElement) {
 
     console.log('🗑️ Image delete button clicked for', imageElement.tagName);
 
-    // Extract element path from data-edit attribute for React state management
-    const elementPath = imageElement.getAttribute('data-edit');
-    
-    if (elementPath) {
-      // Notify parent window to delete via React state system
-      if (window.parent && window.parent !== window) {
-        window.parent.postMessage({
-          type: 'deleteElement',
-          elementPath: elementPath,
-          elementType: 'img',
-          originalElement: imageElement.outerHTML,
-          reason: 'User clicked image delete button'
-        }, '*');
-      }
-    } else {
-      // Generate a state path for unmapped images
-      const generatedPath = generateStatePathForElement(imageElement);
-      console.log('🔧 Generated state path for unmapped image:', generatedPath);
-      
-      if (generatedPath) {
-        // Notify parent window to delete via React state system with generated path
-        if (window.parent && window.parent !== window) {
-          window.parent.postMessage({
-            type: 'deleteElement',
-            elementPath: generatedPath,
-            elementType: 'img',
-            originalElement: imageElement.outerHTML,
-            reason: 'User clicked delete button on unmapped image'
-          }, '*');
-        }
-      } else {
-        // If we can't generate a path, warn but don't delete
-        console.warn('⚠️ CRITICAL: Cannot delete image - no state mapping available');
-        console.warn('Image:', imageElement.src, imageElement.alt);
-        
-        // Show user feedback instead of silently failing
-        if (window.parent && window.parent !== window) {
-          window.parent.postMessage({
-            type: 'showWarning',
-            message: 'Cannot delete image - no undo/redo support available. Please contact support.',
-            element: imageElement.outerHTML
-          }, '*');
-        }
-        
-        return; // Don't proceed with deletion
-      }
+    // Save current state before deletion
+    saveToHistory();
+
+    // Create placeholder
+    const placeholder = document.createElement('div');
+    placeholder.className = 'img-placeholder';
+    placeholder.dataset.width = imageElement.offsetWidth || 200;
+    placeholder.dataset.height = imageElement.offsetHeight || 150;
+    placeholder.innerHTML = '<span>Click to add image</span>';
+    placeholder.style.width = placeholder.dataset.width + 'px';
+    placeholder.style.height = placeholder.dataset.height + 'px';
+
+    // Replace image with placeholder
+    imageElement.replaceWith(placeholder);
+
+    // Re-wire the placeholder
+    wireInlineEditor(placeholder);
+
+    // Save state after change
+    saveToHistory();
+
+    // Notify dashboard about deletion
+    if (window.editorBridge) {
+      window.editorBridge.notifyElementDeleted(imageElement);
     }
     
     // Clear active element reference
@@ -245,45 +220,15 @@ function createImageOverlayButtons(imageElement) {
 
     console.log('🔄 Image replace button clicked for', imageElement.tagName);
 
+    // Save current state before potential change
+    saveToHistory();
+
     // Prompt for new image URL
     const newUrl = prompt('Enter new image URL:', imageElement.src);
     if (newUrl && newUrl !== imageElement.src) {
-      // Extract element path from data-edit attribute for React state management
-      const elementPath = imageElement.getAttribute('data-edit');
-      
-      if (elementPath) {
-        // Notify parent window to update via React state system
-        if (window.parent && window.parent !== window) {
-          window.parent.postMessage({
-            type: 'updateElement',
-            elementPath: elementPath,
-            newValue: newUrl,
-            elementType: 'img',
-            reason: 'User replaced image'
-          }, '*');
-        }
-      } else {
-        // Generate a state path for unmapped images
-        const generatedPath = generateStatePathForElement(imageElement);
-        console.log('🔧 Generated state path for unmapped image update:', generatedPath);
-        
-        if (generatedPath) {
-          // Notify parent window to update via React state system with generated path
-          if (window.parent && window.parent !== window) {
-            window.parent.postMessage({
-              type: 'updateElement',
-              elementPath: generatedPath,
-              newValue: newUrl,
-              elementType: 'img',
-              reason: 'User replaced unmapped image'
-            }, '*');
-          }
-        } else {
-          // Fallback to DOM manipulation with warning
-          console.warn('⚠️ WARNING: Image update not tracked in state - undo/redo may not work');
-          imageElement.src = newUrl;
-        }
-      }
+      imageElement.src = newUrl;
+      // Save state after change
+      saveToHistory();
     }
   });
 
@@ -293,98 +238,6 @@ function createImageOverlayButtons(imageElement) {
   
   // Track active overlay buttons
   activeOverlayBtns.push(deleteBtn, replaceBtn);
-}
-
-// Generate a state path for elements without data-edit attributes
-function generateStatePathForElement(element) {
-  // Map common element types to React state paths
-  const elementMapping = {
-    // Footer links
-    'footer a': 'quickLinks.footer',
-    'footer .icon': 'quickLinks.footer',
-    'footer .icon-text': 'quickLinks.footer',
-    'footer span.icon': 'quickLinks.footer',
-    'footer div.icon': 'quickLinks.footer',
-    
-    // Navigation links
-    'nav a': 'quickLinks.nav',
-    'nav .icon': 'quickLinks.nav',
-    'nav .icon-text': 'quickLinks.nav',
-    'nav span.icon': 'quickLinks.nav',
-    'nav div.icon': 'quickLinks.nav',
-    
-    // Contact section icons and links
-    '.contact-section a': 'quickLinks.contact',
-    '.contact-section .icon': 'quickLinks.contact',
-    '.contact-section .icon-text': 'quickLinks.contact',
-    '.contact-section span.icon': 'quickLinks.contact',
-    '.contact-section div.icon': 'quickLinks.contact',
-    
-    // Social media links
-    '.social-links a': 'quickLinks.social',
-    '.social-links .icon': 'quickLinks.social',
-    '.social-links .icon-text': 'quickLinks.social',
-    '.social-links span.icon': 'quickLinks.social',
-    '.social-links div.icon': 'quickLinks.social',
-    
-    // Generic links and icons
-    'a': 'quickLinks.general',
-    '.icon': 'quickLinks.general',
-    '.icon-text': 'quickLinks.general',
-    'span.icon': 'quickLinks.general',
-    'div.icon': 'quickLinks.general',
-    
-    // Images
-    'img': 'dynamicElements.images',
-    '.gallery img': 'dynamicElements.gallery',
-    '.hero img': 'dynamicElements.hero',
-    '.service img': 'dynamicElements.services',
-    '.contact img': 'dynamicElements.contact'
-  };
-  
-  // Try to find the most specific match
-  const tagName = element.tagName.toLowerCase();
-  const className = element.className || '';
-  const parentSection = element.closest('footer, nav, .contact-section, .social-links');
-  
-  // Build potential selectors in order of specificity
-  const selectors = [];
-  
-  if (parentSection) {
-    const parentTag = parentSection.tagName.toLowerCase();
-    const parentClass = parentSection.className ? '.' + parentSection.className.split(' ')[0] : '';
-    
-    if (parentClass) {
-      selectors.push(`${parentClass} ${tagName}`);
-    }
-    selectors.push(`${parentTag} ${tagName}`);
-  }
-  
-  if (className) {
-    selectors.push(`.${className.split(' ')[0]}`);
-  }
-  
-  selectors.push(tagName);
-  
-  // Find the first matching selector
-  for (const selector of selectors) {
-    if (elementMapping[selector]) {
-      console.log(`🎯 Mapped ${tagName} to ${elementMapping[selector]} via selector: ${selector}`);
-      return elementMapping[selector];
-    }
-  }
-  
-  // If no specific mapping found, generate a generic path based on element type
-  const textContent = element.textContent?.trim();
-  if (textContent) {
-    const sanitized = textContent.replace(/[^a-zA-Z0-9]/g, '').toLowerCase().substring(0, 20);
-    const generatedPath = `dynamicElements.${tagName}_${sanitized}`;
-    console.log(`🔧 Generated dynamic path: ${generatedPath}`);
-    return generatedPath;
-  }
-  
-  console.warn(`⚠️ Cannot generate state path for element:`, element.tagName, element.className);
-  return null;
 }
 
 // Create text delete button with proper event handling
@@ -431,52 +284,19 @@ function createTextDeleteButton(element) {
     
     console.log('🗑️ Delete button clicked for', element.tagName);
     
-    // Extract element path from data-edit attribute for React state management
-    const elementPath = element.getAttribute('data-edit');
+    // Save to history before deletion
+    saveToHistory();
     
-    if (elementPath) {
-      // Notify parent window to delete via React state system
-      if (window.parent && window.parent !== window) {
-        window.parent.postMessage({
-          type: 'deleteElement',
-          elementPath: elementPath,
-          elementType: element.tagName.toLowerCase(),
-          reason: 'User clicked delete button'
-        }, '*');
-      }
-    } else {
-      // NO FALLBACK TO DOM MANIPULATION - Generate a state path for unmapped elements
-      const generatedPath = generateStatePathForElement(element);
-      console.log('🔧 Generated state path for unmapped element:', generatedPath);
-      
-      if (generatedPath) {
-        // Notify parent window to delete via React state system with generated path
-        if (window.parent && window.parent !== window) {
-          window.parent.postMessage({
-            type: 'deleteElement',
-            elementPath: generatedPath,
-            elementType: element.tagName.toLowerCase(),
-            originalElement: element.outerHTML,
-            reason: 'User clicked delete button on unmapped element'
-          }, '*');
-        }
-      } else {
-        // If we can't generate a path, warn but don't delete
-        console.warn('⚠️ CRITICAL: Cannot delete element - no state mapping available');
-        console.warn('Element:', element.tagName, element.className, element.textContent?.substring(0, 50));
-        
-        // Show user feedback instead of silently failing
-        if (window.parent && window.parent !== window) {
-          window.parent.postMessage({
-            type: 'showWarning',
-            message: `Cannot delete ${element.tagName} element - no undo/redo support available. Please contact support.`,
-            element: element.outerHTML
-          }, '*');
-        }
-        
-        return; // Don't proceed with deletion
-      }
+    // Notify dashboard about deletion
+    if (window.editorBridge) {
+      window.editorBridge.notifyElementDeleted(element);
     }
+    
+    // Remove the element
+    element.remove();
+    
+    // Save state after deletion
+    saveToHistory();
     
     // Clear active element reference
     currentActiveElement = null;
@@ -490,7 +310,7 @@ function createTextDeleteButton(element) {
 
 // Wire inline editor for all elements with robust overlay management
 function wireInlineEditor(root = document, forceRewire = false) {
-  const selector = 'h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder,a,.icon,.icon-text,span.icon,div.icon';
+  const selector = 'h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder';
   const elements = root.nodeType === 1 
     ? (root.matches && root.matches(selector) ? [root] : root.querySelectorAll(selector))
     : root.querySelectorAll(selector);
@@ -638,51 +458,18 @@ function wireInlineEditor(root = document, forceRewire = false) {
         this.style.zIndex = '9999';
         this.classList.add('image-selected');
         
+        saveToHistory();
+        
         const newUrl = prompt('Enter new image URL:', '');
         if (newUrl) {
-          // Extract element path from data-edit attribute for React state management
-          const elementPath = this.getAttribute('data-edit');
+          const newImg = document.createElement('img');
+          newImg.src = newUrl;
+          newImg.style.width = this.dataset.width + 'px';
+          newImg.style.height = this.dataset.height + 'px';
           
-          if (elementPath) {
-            // Notify parent window to update via React state system
-            if (window.parent && window.parent !== window) {
-              window.parent.postMessage({
-                type: 'updateElement',
-                elementPath: elementPath,
-                newValue: newUrl,
-                elementType: 'img',
-                reason: 'User added image to placeholder'
-              }, '*');
-            }
-          } else {
-            // Generate a state path for unmapped image placeholders
-            const generatedPath = generateStatePathForElement(this);
-            console.log('🔧 Generated state path for unmapped image placeholder:', generatedPath);
-            
-            if (generatedPath) {
-              // Notify parent window to update via React state system with generated path
-              if (window.parent && window.parent !== window) {
-                window.parent.postMessage({
-                  type: 'updateElement',
-                  elementPath: generatedPath,
-                  newValue: newUrl,
-                  elementType: 'img',
-                  reason: 'User added image to unmapped placeholder'
-                }, '*');
-              }
-            } else {
-              // Fallback to DOM manipulation with warning
-              console.warn('⚠️ WARNING: Image placeholder update not tracked in state - undo/redo may not work');
-              
-              const newImg = document.createElement('img');
-              newImg.src = newUrl;
-              newImg.style.width = this.dataset.width + 'px';
-              newImg.style.height = this.dataset.height + 'px';
-              
-              this.replaceWith(newImg);
-              wireInlineEditor(newImg);
-            }
-          }
+          this.replaceWith(newImg);
+          saveToHistory();
+          wireInlineEditor(newImg);
         }
         
         if (window.editorBridge) {
@@ -709,45 +496,7 @@ function wireInlineEditor(root = document, forceRewire = false) {
       const blurHandler = function() {
         this.style.outline = 'none';
         this.style.zIndex = '';
-        this.contentEditable = false;
-        
-        // Save text changes through React state management
-        const elementPath = this.getAttribute('data-edit');
-        const newText = this.textContent || this.innerHTML;
-        
-        if (elementPath) {
-          // Notify parent window to update via React state system
-          if (window.parent && window.parent !== window) {
-            window.parent.postMessage({
-              type: 'updateElement',
-              elementPath: elementPath,
-              newValue: newText,
-              elementType: this.tagName.toLowerCase(),
-              reason: 'User finished editing text'
-            }, '*');
-          }
-        } else {
-          // Generate a state path for unmapped text elements
-          const generatedPath = generateStatePathForElement(this);
-          console.log('🔧 Generated state path for unmapped text edit:', generatedPath);
-          
-          if (generatedPath) {
-            // Notify parent window to update via React state system with generated path
-            if (window.parent && window.parent !== window) {
-              window.parent.postMessage({
-                type: 'updateElement',
-                elementPath: generatedPath,
-                newValue: newText,
-                elementType: this.tagName.toLowerCase(),
-                reason: 'User finished editing unmapped text'
-              }, '*');
-            }
-          } else {
-            // Fallback warning - no DOM manipulation
-            console.warn('⚠️ WARNING: Text edit not tracked in state - undo/redo may not work');
-            console.warn('Element:', this.tagName, this.className, newText.substring(0, 50));
-          }
-        }
+        saveToHistory();
       };
       
       el._blurHandler = blurHandler;

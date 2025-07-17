@@ -3,7 +3,7 @@
  * Enhanced editable component with React state-based undo/redo support
  */
 import React, { useState, useRef, useEffect } from 'react';
-import { useSiteDataActions } from '../../../src/context/SiteDataProvider';
+import { useSiteData } from '../context/SiteDataContext';
 
 export default function Editable({
   path,
@@ -12,7 +12,7 @@ export default function Editable({
   children,
   ...rest
 }) {
-  const { updateField, updateNestedField } = useSiteDataActions();
+  const { siteData, setSiteData } = useSiteData();
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState('');
   const editRef = useRef(null);
@@ -24,16 +24,47 @@ export default function Editable({
     setIsEditing(true);
     setEditValue(typeof children === 'string' ? children : '');
   };
+
+  const saveState = () => {
+    // Send message to parent iframe for undo/redo system
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({
+        type: 'updateElement',
+        elementPath: path,
+        newValue: editValue,
+        elementType: 'text',
+        reason: 'user-edit'
+      }, '*');
+    }
+  };
   
   const handleBlur = () => {
     if (isEditing && editValue !== children) {
-      // Handle nested paths (e.g. "contact.phone")
-      if (path.includes('.')) {
-        const [parent, child] = path.split('.');
-        updateNestedField(parent, child, editValue);
-      } else {
-        updateField(path, editValue);
-      }
+      // Update via React state
+      setSiteData(prevData => {
+        const newData = { ...prevData };
+        
+        // Handle nested paths (e.g. "contact.phone")
+        if (path.includes('.')) {
+          const pathParts = path.split('.');
+          let current = newData;
+          
+          for (let i = 0; i < pathParts.length - 1; i++) {
+            const part = pathParts[i];
+            if (!current[part]) current[part] = {};
+            current = current[part];
+          }
+          
+          current[pathParts[pathParts.length - 1]] = editValue;
+        } else {
+          newData[path] = editValue;
+        }
+        
+        return newData;
+      });
+      
+      // Save state for undo/redo
+      saveState();
     }
     setIsEditing(false);
   };
@@ -94,12 +125,6 @@ export default function Editable({
         }
       }}
       onDoubleClick={handleDoubleClick}
-      onMouseEnter={(e) => {
-        e.target.style.borderColor = '#ff6b6b';
-      }}
-      onMouseLeave={(e) => {
-        e.target.style.borderColor = 'transparent';
-      }}
     >
       {children}
     </Tag>

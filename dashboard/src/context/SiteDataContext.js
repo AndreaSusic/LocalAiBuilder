@@ -9,7 +9,13 @@ export const useSiteData = () => {
   const context = useContext(SiteDataContext);
   if (!context) {
     console.warn('useSiteData must be used within a SiteDataProvider');
-    return {};
+    return { siteData: {}, setSiteData: () => {} };
   }
   return context;
+};
+
+// Hook for accessing siteData directly (backward compatibility)
+export const useSiteDataValue = () => {
+  const { siteData } = useSiteData();
+  return siteData;
 };

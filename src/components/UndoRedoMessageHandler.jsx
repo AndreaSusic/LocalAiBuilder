@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 import { useSiteDataActions } from '../context/SiteDataProvider';
 
 export const UndoRedoMessageHandler = () => {
-  const { undo, redo, canUndo, canRedo, historySize, currentIndex, updateField, updateNestedField, removeService, deleteElementByPath } = useSiteDataActions();
+  const { undo, redo, canUndo, canRedo, historySize, currentIndex } = useSiteDataActions();
 
   useEffect(() => {
     const handleMessage = (event) => {
@@ -16,48 +16,12 @@ export const UndoRedoMessageHandler = () => {
 
       switch (event.data.type) {
         case 'undo':
-        case 'reactUndo':
           console.log('🔄 Undo request received from dashboard');
           undo();
           break;
         case 'redo':
-        case 'reactRedo':
           console.log('🔄 Redo request received from dashboard');
           redo();
-          break;
-        case 'deleteElement':
-          console.log('🗑️ Delete element request received:', event.data.elementPath);
-          // Handle element deletion through React state
-          const { elementPath, elementType, originalElement } = event.data;
-          
-          // Use the new deleteElementByPath function for comprehensive handling
-          deleteElementByPath(elementPath, originalElement);
-          break;
-        
-        case 'updateElement':
-          console.log('✏️ Update element request received:', event.data.elementPath);
-          // Handle element updates through React state
-          const { elementPath: updatePath, newValue, elementType: updateType } = event.data;
-          
-          if (updatePath.includes('.')) {
-            // For nested paths
-            const [parentField, childField] = updatePath.split('.');
-            updateNestedField(parentField, childField, newValue);
-          } else {
-            // For direct fields
-            updateField(updatePath, newValue);
-          }
-          break;
-          
-        case 'showWarning':
-          console.warn('⚠️ Warning from inline editor:', event.data.message);
-          console.warn('Element details:', event.data.element);
-          // You could show a toast notification or modal here
-          alert(`Warning: ${event.data.message}`);
-          break;
-        case 'saveReactState':
-          console.log('💾 Save React state request received');
-          // State is automatically saved when updateField/updateNestedField is called
           break;
         case 'getHistoryStatus':
           // Send current history status to dashboard
