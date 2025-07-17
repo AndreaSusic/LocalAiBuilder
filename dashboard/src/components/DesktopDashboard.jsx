@@ -116,24 +116,23 @@ function DesktopDashboard({ bootstrap }) {
   };
 
   const handleUndo = () => {
-    console.log('🔄 Dashboard Undo button clicked');
-    console.log('[dashboard] Looking for iframe with selectors: .preview-iframe, #previewIframe');
+    console.log('[dashboard] Undo click handler invoked');
     
-    const iframe1 = document.querySelector('.preview-iframe');
-    const iframe2 = document.getElementById('previewIframe');
-    const iframe3 = document.querySelector('iframe');
+    // Step 2: Iframe lookup
+    const byClass = !!document.querySelector('.preview-iframe');
+    const byId    = !!document.getElementById('previewIframe');
+    const byTag   = document.getElementsByTagName('iframe').length > 0;
+    console.log('[dashboard] iframe selectors match →', { byClass, byId, byTag });
     
-    console.log('[dashboard] Found iframes:', { 
-      byClass: !!iframe1, 
-      byId: !!iframe2, 
-      byTag: !!iframe3 
-    });
+    // Find iframe element
+    const iframeEl = document.querySelector('.preview-iframe') || 
+                     document.getElementById('previewIframe') || 
+                     document.querySelector('iframe');
     
-    const iframe = iframe1 || iframe2 || iframe3;
-    if (iframe && iframe.contentWindow) {
-      console.log('[dashboard] posting to iframe:', { type: 'dashboardUndo' });
-      // Send undo message directly to the iframe for React state management
-      iframe.contentWindow.postMessage({ type: 'dashboardUndo' }, '*');
+    if (iframeEl && iframeEl.contentWindow) {
+      // Step 3: postMessage call
+      console.log('[dashboard] posting undo to iframe:', iframeEl, { type: 'dashboardUndo' });
+      iframeEl.contentWindow.postMessage({ type: 'dashboardUndo' }, '*');
     } else {
       console.log('[dashboard] ERROR: No iframe found for undo');
     }
