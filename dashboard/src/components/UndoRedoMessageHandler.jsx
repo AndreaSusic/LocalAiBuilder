@@ -35,7 +35,8 @@ const UndoRedoMessageHandler = () => {
 
   useEffect(() => {
     const handleMessage = (event) => {
-      if (event.origin !== window.location.origin) return;
+      // Allow messages from parent dashboard (skip origin check for now)
+      console.log(`📨 Message received from origin: ${event.origin}, type: ${event.data.type}`);
       
       const { type, elementPath, newValue, elementType, reason } = event.data;
       
