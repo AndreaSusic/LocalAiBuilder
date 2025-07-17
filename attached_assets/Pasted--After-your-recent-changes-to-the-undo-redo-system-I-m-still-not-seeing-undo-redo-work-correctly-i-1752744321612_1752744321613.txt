@@ -1,0 +1,43 @@
+
+
+After your recent changes to the undo/redo system, I’m still not seeing undo/redo work correctly in my environment.
+
+What I’m seeing:
+	•	When I delete an element (using the ✕), it is removed as expected.
+	•	However, when I press Undo, nothing happens: the deleted element does not reappear in the editor or the live preview.
+	•	I do not see errors in the console; logs indicate that messages are being received by the UndoRedoMessageHandler component and that the event types (deleteElement, undo, redo, etc.) are logged as expected.
+	•	The UI does not reflect the restored state after undo (elements stay deleted).
+
+What I’ve tried:
+	•	I verified that UndoRedoMessageHandler.jsx.js is mounting, listening for messages, and that the switch statement runs on “undo”/“redo” events.
+	•	The undo() and redo() functions from useUndoRedo() are called, but the DOM/UI doesn’t change.
+	•	React state updates don’t seem to propagate to the iframe or preview window after Undo or Redo.
+	•	There are no errors or warnings about failed updates, and the site re-renders without visibly restoring the element.
+
+Console log sample after deleting, then Undo:
+
+📝 Creating text delete button for P
+✨ Text delete button created and added to P
+...
+🗑️ Delete button clicked for P
+📍 Element path for deletion: section.hero.animate-fade-in[0] > p
+🧹 Clearing 1 overlays - Reason: Element deleted
+...
+[when pressing Undo]
+UndoRedoMessageHandler received: undo
+(no errors, no UI change)
+
+File info:
+	•	UndoRedoMessageHandler.jsx.js is attached and appears to receive the correct messages and calls the correct functions.
+	•	I also attached my DesktopDashboard-2.jsx in case context is needed.
+
+Possible cause (from my perspective):
+	•	The React state is updated when undo/redo are called, but the update is not being communicated back to the iframe or editor (the preview doesn’t refresh, or the React state isn’t syncing).
+	•	There may be a missing postMessage or similar bridge from the parent React app to the iframe/preview window after state is restored.
+
+⸻
+
+What I need help with:
+	•	Can you check if the state update after Undo is supposed to trigger a preview reload or message to the iframe/editor? Where should that be handled?
+	•	Are there any additional places (besides UndoRedoMessageHandler and useUndoRedo) where a message/event needs to be sent after Undo/Redo, to ensure the UI and iframe both update?
+	•	Can you provide an example diff or code snippet showing where/how to trigger the preview/content reload after an Undo or Redo event so the element reappears?

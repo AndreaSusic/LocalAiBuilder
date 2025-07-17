@@ -14,6 +14,25 @@ function notifyIframeOfStateUpdate(newState) {
   }
 }
 
+// Function to reload iframe with updated bootstrap data
+function reloadIframeWithNewData(newState) {
+  const iframe = document.querySelector('iframe');
+  if (iframe && newState) {
+    console.log('🔄 Reloading iframe with updated state');
+    
+    // Store the updated state in the iframe's sessionStorage before reload
+    if (iframe.contentWindow && iframe.contentWindow.sessionStorage) {
+      iframe.contentWindow.sessionStorage.setItem('undoRedoState', JSON.stringify(newState));
+    }
+    
+    // Reload the iframe with a cache-busting parameter
+    const currentSrc = iframe.src;
+    const url = new URL(currentSrc);
+    url.searchParams.set('_refresh', Date.now());
+    iframe.src = url.toString();
+  }
+}
+
 export function useUndoRedo(siteData, setSiteData) {
   const historyRef = useRef({
     undoStack: [],
@@ -59,8 +78,8 @@ export function useUndoRedo(siteData, setSiteData) {
     
     setSiteData(previousState);
     
-    // Notify iframe about state update
-    notifyIframeOfStateUpdate(previousState);
+    // Reload iframe with updated state
+    reloadIframeWithNewData(previousState);
     
     return true;
   }, [siteData, setSiteData]);
@@ -86,8 +105,8 @@ export function useUndoRedo(siteData, setSiteData) {
     
     setSiteData(nextState);
     
-    // Notify iframe about state update
-    notifyIframeOfStateUpdate(nextState);
+    // Reload iframe with updated state
+    reloadIframeWithNewData(nextState);
     
     return true;
   }, [siteData, setSiteData]);
