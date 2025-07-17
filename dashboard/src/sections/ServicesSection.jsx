@@ -3,7 +3,7 @@ import { SiteDataContext } from '../context/SiteDataContext.js';
 import Editable from '../components/Editable.jsx';
 
 export default function ServicesSection({ bootstrap }) {
-  const contextData = useContext(SiteDataContext) || {};
+  const { siteData } = useContext(SiteDataContext) || {};
   const { 
     services = [], 
     images = [], 
@@ -12,7 +12,7 @@ export default function ServicesSection({ bootstrap }) {
     ai_customization = {}, 
     safeImg,
     company_name = ''
-  } = bootstrap || contextData;
+  } = bootstrap || siteData || {};
   
   console.log('ServicesSection DEBUG - Services data:', services, typeof services);
   console.log('ServicesSection DEBUG - GBP products:', google_profile.products);

@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext.js';
 
 export default function ContactSection() {
+  const { siteData } = useContext(SiteDataContext) || {};
+  
   const { 
     google_profile = {}, 
     contact = {},
@@ -10,7 +12,7 @@ export default function ContactSection() {
     services = [],
     industry = '',
     user_products = []
-  } = useContext(SiteDataContext) || {};
+  } = siteData || {};
   
   // Use contact data structure that includes authentic GBP information
   const phone = contact.phone || google_profile.formatted_phone_number || null;

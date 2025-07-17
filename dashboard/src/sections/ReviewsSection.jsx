@@ -3,11 +3,11 @@ import { SiteDataContext } from '../context/SiteDataContext';
 import Editable from '../components/Editable.jsx';
 
 export default function ReviewsSection() {
-  const siteData = useContext(SiteDataContext) || {};
-  const { google_profile = {}, reviews = [], rating = null, ai_customization = {}, team = [] } = siteData;
+  const { siteData } = useContext(SiteDataContext) || {};
+  const { google_profile = {}, reviews = [], rating = null, ai_customization = {}, team = [] } = siteData || {};
   
   // Debug logging to understand data structure
-  console.log('🔍 ReviewsSection - Full siteData keys:', Object.keys(siteData));
+  console.log('🔍 ReviewsSection - Full siteData keys:', Object.keys(siteData || {}));
   console.log('🔍 ReviewsSection - google_profile:', google_profile);
   console.log('🔍 ReviewsSection - google_profile.reviews:', google_profile?.reviews);
   console.log('🔍 ReviewsSection - reviews prop:', reviews);
@@ -34,7 +34,7 @@ export default function ReviewsSection() {
   ];
 
   // Try multiple paths for GBP reviews data
-  const gbpReviews = google_profile?.reviews || reviews || siteData.reviews || [];
+  const gbpReviews = google_profile?.reviews || reviews || siteData?.reviews || [];
   console.log('🔍 ReviewsSection - GBP reviews found:', gbpReviews.length, 'reviews');
   console.log('🔍 ReviewsSection - First review sample:', gbpReviews[0]);
   

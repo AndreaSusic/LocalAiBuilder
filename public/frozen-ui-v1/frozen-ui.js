@@ -83,34 +83,8 @@ function addOverlayStyles() {
 
 // History management functions
 function saveToHistory() {
-  try {
-    const snapshot = document.body.cloneNode(true).outerHTML;
-    // Remove snapshots after current index (when user was in middle of history)
-    editHistory = editHistory.slice(0, historyIndex + 1);
-    editHistory.push(snapshot);
-    
-    // Limit history size
-    if (editHistory.length > MAX_HISTORY) {
-      editHistory.shift();
-    } else {
-      historyIndex++;
-    }
-    
-    updateToolbarButtons();
-    
-    // Notify dashboard about history state
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({
-        type: 'historyUpdate',
-        canUndo: historyIndex > 0,
-        canRedo: historyIndex < editHistory.length - 1
-      }, '*');
-    }
-    
-    console.log(`💾 Saved to history: ${historyIndex}/${editHistory.length - 1}`);
-  } catch (error) {
-    console.error('❌ Failed to save to history:', error);
-  }
+  // DOM HISTORY DISABLED - All undo/redo operations now handled by React state
+  console.log('💾 DOM history disabled - using React state management');
 }
 
 // Update toolbar button states
@@ -126,101 +100,29 @@ function updateToolbarButtons() {
 
 // Undo function
 function undo() {
-  if (historyIndex > 0) {
-    historyIndex--;
-    const snapshot = editHistory[historyIndex];
-    
-    // SAFER DOM RESTORATION: Only replace body content, preserve head
-    console.log(`↶ Undo to index: ${historyIndex}`);
-    document.body.outerHTML = snapshot;
-    
-    // Reset all state variables and clean up DOM
-    clearOverlays('Undo operation');
-    activeOverlayBtns = [];
-    currentActiveElement = null;
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout);
-      hoverTimeout = null;
-    }
-    
-    // Remove any stale overlay buttons that might be left in the DOM
-    const staleButtons = document.querySelectorAll('.delete-btn, .replace-btn');
-    staleButtons.forEach(btn => btn.remove());
-    if (staleButtons.length > 0) {
-      console.log(`🧹 Removed ${staleButtons.length} stale overlay buttons after undo`);
-    }
-    
-    // Re-add overlay styles CSS (gets lost during DOM restoration)
-    addOverlayStyles();
-    
-    // Re-wire all elements after DOM restoration with force rewire
-    console.log('🔄 Re-wiring all elements after undo...');
-    wireInlineEditor(document, true);
-    console.log('✅ All elements re-wired after undo');
-    
-    // Update toolbar buttons
-    updateToolbarButtons();
-    
-    // Notify dashboard about history state
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({
-        type: 'historyUpdate',
-        canUndo: historyIndex > 0,
-        canRedo: historyIndex < editHistory.length - 1
-      }, '*');
-    }
-  } else {
-    console.log('↶ Cannot undo - at beginning of history');
+  // DOM UNDO DISABLED - All undo operations now handled by React state
+  console.log('↶ DOM undo disabled - delegating to React state management');
+  
+  // Delegate to parent window for React state undo
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({
+      type: 'undo',
+      reason: 'User pressed undo in iframe'
+    }, '*');
   }
 }
 
 // Redo function
 function redo() {
-  if (historyIndex < editHistory.length - 1) {
-    historyIndex++;
-    const snapshot = editHistory[historyIndex];
-    
-    // SAFER DOM RESTORATION: Only replace body content, preserve head
-    console.log(`↷ Redo to index: ${historyIndex}`);
-    document.body.outerHTML = snapshot;
-    
-    // Reset all state variables and clean up DOM
-    clearOverlays('Redo operation');
-    activeOverlayBtns = [];
-    currentActiveElement = null;
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout);
-      hoverTimeout = null;
-    }
-    
-    // Remove any stale overlay buttons that might be left in the DOM
-    const staleButtons = document.querySelectorAll('.delete-btn, .replace-btn');
-    staleButtons.forEach(btn => btn.remove());
-    if (staleButtons.length > 0) {
-      console.log(`🧹 Removed ${staleButtons.length} stale overlay buttons after redo`);
-    }
-    
-    // Re-add overlay styles CSS (gets lost during DOM restoration)
-    addOverlayStyles();
-    
-    // Re-wire all elements after DOM restoration with force rewire
-    console.log('🔄 Re-wiring all elements after redo...');
-    wireInlineEditor(document, true);
-    console.log('✅ All elements re-wired after redo');
-    
-    // Update toolbar buttons
-    updateToolbarButtons();
-    
-    // Notify dashboard about history state
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({
-        type: 'historyUpdate',
-        canUndo: historyIndex > 0,
-        canRedo: historyIndex < editHistory.length - 1
-      }, '*');
-    }
-  } else {
-    console.log('↷ Cannot redo - at end of history');
+  // DOM REDO DISABLED - All redo operations now handled by React state
+  console.log('↷ DOM redo disabled - delegating to React state management');
+  
+  // Delegate to parent window for React state redo
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({
+      type: 'redo',
+      reason: 'User pressed redo in iframe'
+    }, '*');
   }
 }
 

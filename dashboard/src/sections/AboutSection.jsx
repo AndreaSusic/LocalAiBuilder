@@ -3,7 +3,9 @@ import { SiteDataContext } from '../context/SiteDataContext.js';
 import Editable from '../components/Editable.jsx';
 
 export default function AboutSection() {
-  const { company_name, city = [], images = [], industry = '', google_profile = {}, team = [] } = useContext(SiteDataContext) || {};
+  const { siteData } = useContext(SiteDataContext) || {};
+  
+  const { company_name, city = [], images = [], industry = '', google_profile = {}, team = [] } = siteData || {};
   
   // Debug team data to understand why dummy data appears
   console.log('AboutSection DEBUG - Team data:', team, 'Length:', team.length);
@@ -31,8 +33,7 @@ export default function AboutSection() {
   const aboutImage = availableImages[2] || availableImages[1] || availableImages[0] || septicFacilityImage;
   
   // Only treat as grass/sod landscaping if services actually mention grass or sod
-  const contextData = useContext(SiteDataContext) || {};
-  const { services = '' } = contextData;
+  const { services = '' } = siteData || {};
   const isLandscaping = industry && industry.toLowerCase().includes('landscap') && 
     (typeof services === 'string' && (services.toLowerCase().includes('grass') || services.toLowerCase().includes('sod')));
   

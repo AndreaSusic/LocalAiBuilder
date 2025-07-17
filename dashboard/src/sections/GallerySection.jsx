@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react';
 import { SiteDataContext } from '../context/SiteDataContext.js';
 
 export default function GallerySection() {
-  const { images = [], google_profile = {}, safeImg, company_name = 'Our Business' } = useContext(SiteDataContext) || {};
+  const { siteData } = useContext(SiteDataContext) || {};
+  const { images = [], google_profile = {}, safeImg, company_name = 'Our Business' } = siteData || {};
   const [selectedImage, setSelectedImage] = useState(null);
   
   // Extract image URLs properly from GBP photos and provided images
