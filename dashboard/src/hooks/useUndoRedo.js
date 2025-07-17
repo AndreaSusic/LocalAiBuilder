@@ -86,6 +86,15 @@ export function useUndoRedo(siteData, setSiteData) {
     // Update iframe with restored state
     updateIframeWithNewData(previousState);
     
+    // Notify parent about updated undo/redo state
+    if (window.parent && window.parent.postMessage) {
+      window.parent.postMessage({
+        type: 'undoRedoStateChanged',
+        canUndo: historyRef.current.undoStack.length > 1,
+        canRedo: historyRef.current.redoStack.length > 0
+      }, '*');
+    }
+    
     return true;
   }, [siteData, setSiteData]);
 
@@ -112,6 +121,15 @@ export function useUndoRedo(siteData, setSiteData) {
     
     // Update iframe with restored state
     updateIframeWithNewData(nextState);
+    
+    // Notify parent about updated undo/redo state
+    if (window.parent && window.parent.postMessage) {
+      window.parent.postMessage({
+        type: 'undoRedoStateChanged',
+        canUndo: historyRef.current.undoStack.length > 1,
+        canRedo: historyRef.current.redoStack.length > 0
+      }, '*');
+    }
     
     return true;
   }, [siteData, setSiteData]);
@@ -159,6 +177,17 @@ export function useUndoRedo(siteData, setSiteData) {
       
       return newData;
     });
+    
+    // Notify parent about updated undo/redo state after deletion
+    setTimeout(() => {
+      if (window.parent && window.parent.postMessage) {
+        window.parent.postMessage({
+          type: 'undoRedoStateChanged',
+          canUndo: historyRef.current.undoStack.length > 1,
+          canRedo: historyRef.current.redoStack.length > 0
+        }, '*');
+      }
+    }, 100);
   }, [saveState, setSiteData]);
 
   // Update element by path

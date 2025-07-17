@@ -52,9 +52,19 @@ const UndoRedoMessageHandler = () => {
           console.warn(`⚠️ ${event.data.message}`, event.data.element);
           break;
         case 'undo':
+          console.log('🔄 Undo request received');
           undo();
           break;
         case 'redo':
+          console.log('🔄 Redo request received');
+          redo();
+          break;
+        case 'dashboardUndo':
+          console.log('🔄 Dashboard Undo request received');
+          undo();
+          break;
+        case 'dashboardRedo':
+          console.log('🔄 Dashboard Redo request received');
           redo();
           break;
         default:
