@@ -835,6 +835,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Listen for undo/redo messages from dashboard
   window.addEventListener('message', function(event) {
+    console.log('[iframe] got message from parent:', event.data);
+    
+    // Allow messages from parent dashboard - removed strict origin check
+    if (event.source !== window.parent && event.origin !== window.location.origin) {
+      console.log('[iframe] blocked message from non-parent source');
+      return;
+    }
+    
     if (event.data.type === 'dashboardUndo') {
       console.log('📨 Received dashboardUndo message from dashboard');
       // Check if we're in a React template with state management

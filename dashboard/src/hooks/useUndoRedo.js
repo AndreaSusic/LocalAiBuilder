@@ -86,6 +86,18 @@ export function useUndoRedo(siteData, setSiteData) {
     // Update iframe with restored state
     updateIframeWithNewData(previousState);
     
+    // Send updated state immediately after undo
+    setTimeout(() => {
+      const iframe = document.querySelector('iframe') || document.getElementById('previewIframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ 
+          type: 'updateBootstrapData', 
+          data: previousState 
+        }, '*');
+        console.log('[dashboard] sent updateBootstrapData to iframe after undo', previousState);
+      }
+    }, 50);
+    
     // Notify parent about updated undo/redo state
     if (window.parent && window.parent.postMessage) {
       window.parent.postMessage({
@@ -121,6 +133,18 @@ export function useUndoRedo(siteData, setSiteData) {
     
     // Update iframe with restored state
     updateIframeWithNewData(nextState);
+    
+    // Send updated state immediately after redo
+    setTimeout(() => {
+      const iframe = document.querySelector('iframe') || document.getElementById('previewIframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ 
+          type: 'updateBootstrapData', 
+          data: nextState 
+        }, '*');
+        console.log('[dashboard] sent updateBootstrapData to iframe after redo', nextState);
+      }
+    }, 50);
     
     // Notify parent about updated undo/redo state
     if (window.parent && window.parent.postMessage) {
