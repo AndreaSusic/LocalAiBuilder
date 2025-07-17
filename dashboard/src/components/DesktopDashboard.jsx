@@ -117,7 +117,19 @@ function DesktopDashboard({ bootstrap }) {
 
   const handleUndo = () => {
     console.log('🔄 Dashboard Undo button clicked');
-    const iframe = document.querySelector('.preview-iframe') || document.getElementById('previewIframe');
+    console.log('[dashboard] Looking for iframe with selectors: .preview-iframe, #previewIframe');
+    
+    const iframe1 = document.querySelector('.preview-iframe');
+    const iframe2 = document.getElementById('previewIframe');
+    const iframe3 = document.querySelector('iframe');
+    
+    console.log('[dashboard] Found iframes:', { 
+      byClass: !!iframe1, 
+      byId: !!iframe2, 
+      byTag: !!iframe3 
+    });
+    
+    const iframe = iframe1 || iframe2 || iframe3;
     if (iframe && iframe.contentWindow) {
       console.log('[dashboard] posting to iframe:', { type: 'dashboardUndo' });
       // Send undo message directly to the iframe for React state management
@@ -279,7 +291,10 @@ function DesktopDashboard({ bootstrap }) {
           </button>
           <button 
             className="btn-wireframe" 
-            onClick={handleUndo} 
+            onClick={() => {
+              console.log('[dashboard] Undo button clicked - calling handleUndo');
+              handleUndo();
+            }} 
             disabled={!canUndo} 
             data-tip="Undo"
             style={{display: 'inline-block', visibility: 'visible'}}
