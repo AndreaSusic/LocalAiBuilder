@@ -87,6 +87,49 @@ function saveToHistory() {
   console.log('💾 DOM history disabled - using React state management');
 }
 
+// Generate a unique path for elements to track them in React state
+function generateElementPath(element) {
+  const path = [];
+  let current = element;
+  
+  while (current && current !== document.body) {
+    let selector = current.tagName.toLowerCase();
+    
+    // Add class names if they exist
+    if (current.className) {
+      selector += '.' + current.className.split(' ').join('.');
+    }
+    
+    // Add index if there are sibling elements with the same tag
+    if (current.parentNode) {
+      const siblings = Array.from(current.parentNode.children).filter(child => 
+        child.tagName.toLowerCase() === current.tagName.toLowerCase()
+      );
+      if (siblings.length > 1) {
+        const index = siblings.indexOf(current);
+        selector += `[${index}]`;
+      }
+    }
+    
+    path.unshift(selector);
+    current = current.parentNode;
+  }
+  
+  return path.join(' > ');
+}
+
+// Handle state updates from React
+function handleStateUpdate(newState) {
+  console.log('🔄 Processing state update from React:', newState);
+  
+  // For now, the simplest approach is to reload the iframe content
+  // In a more sophisticated version, we would selectively update DOM elements
+  setTimeout(() => {
+    console.log('🔄 Reloading iframe content due to state change');
+    window.location.reload();
+  }, 100);
+}
+
 // Update toolbar button states
 function updateToolbarButtons() {
   const undoBtn = document.getElementById('undoBtn');
@@ -284,19 +327,24 @@ function createTextDeleteButton(element) {
     
     console.log('🗑️ Delete button clicked for', element.tagName);
     
-    // Save to history before deletion
-    saveToHistory();
+    // Generate a unique path for the element
+    const elementPath = generateElementPath(element);
+    const elementType = element.tagName.toLowerCase();
     
-    // Notify dashboard about deletion
-    if (window.editorBridge) {
-      window.editorBridge.notifyElementDeleted(element);
+    console.log('📍 Element path for deletion:', elementPath);
+    
+    // Notify React state management about deletion
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({
+        type: 'deleteElement',
+        elementPath: elementPath,
+        elementType: elementType,
+        reason: 'User clicked delete button'
+      }, '*');
     }
     
-    // Remove the element
+    // Remove the element from DOM (React state will handle undo/redo)
     element.remove();
-    
-    // Save state after deletion
-    saveToHistory();
     
     // Clear active element reference
     currentActiveElement = null;
@@ -567,6 +615,10 @@ document.addEventListener('DOMContentLoaded', function() {
       undo();
     } else if (event.data.type === 'redo') {
       redo();
+    } else if (event.data.type === 'stateUpdate') {
+      // Handle React state updates - refresh iframe content
+      console.log('🔄 Received state update from React, refreshing iframe content');
+      handleStateUpdate(event.data.newState);
     }
   });
 
