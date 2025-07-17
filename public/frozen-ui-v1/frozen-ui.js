@@ -128,8 +128,8 @@ function handleStateUpdate(newState) {
     console.log('📝 Updating bootstrap data with new state');
     window.bootstrapData = { ...window.bootstrapData, ...newState };
     
-    // For text content elements, we need to actually update the DOM
-    // This is a simplified approach - in a full implementation, we'd need more sophisticated DOM updates
+    // For undo/redo operations, we need to restore deleted elements
+    // This is a simplified approach - reload the page to reflect all changes
     console.log('🔄 Performing full page reload to reflect state changes');
     
     // Store the updated data in sessionStorage to persist across reload
@@ -141,6 +141,27 @@ function handleStateUpdate(newState) {
     }, 100);
   } else {
     console.log('⚠️ No new state to update');
+  }
+}
+
+// Handle bootstrap data updates from React dashboard
+function handleBootstrapDataUpdate(newData) {
+  console.log('🔄 Handling bootstrap data update from React:', newData);
+  
+  if (newData) {
+    // Update the bootstrap data
+    window.bootstrapData = { ...window.bootstrapData, ...newData };
+    console.log('📊 Updated bootstrap data:', window.bootstrapData);
+    
+    // For element restoration after undo/redo, we need to reload
+    // This ensures deleted elements are properly restored
+    console.log('🔄 Reloading page to reflect bootstrap data changes');
+    
+    // Store the updated data and reload
+    sessionStorage.setItem('undoRedoState', JSON.stringify(newData));
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   }
 }
 
@@ -647,13 +668,47 @@ document.addEventListener('DOMContentLoaded', function() {
   // Listen for undo/redo messages from dashboard
   window.addEventListener('message', function(event) {
     if (event.data.type === 'undo') {
-      undo();
+      console.log('📨 Received undo message from dashboard');
+      // Check if we're in a React app with state management
+      if (window.parent && window.parent.postMessage) {
+        // Send undo request to React state management
+        window.parent.postMessage({
+          type: 'reactUndo',
+          source: 'iframe'
+        }, '*');
+      } else {
+        // Fallback to iframe's own undo system
+        undo();
+      }
     } else if (event.data.type === 'redo') {
-      redo();
+      console.log('📨 Received redo message from dashboard');
+      // Check if we're in a React app with state management
+      if (window.parent && window.parent.postMessage) {
+        // Send redo request to React state management
+        window.parent.postMessage({
+          type: 'reactRedo',
+          source: 'iframe'
+        }, '*');
+      } else {
+        // Fallback to iframe's own redo system
+        redo();
+      }
     } else if (event.data.type === 'stateUpdate') {
       // Handle React state updates - refresh iframe content
       console.log('🔄 Received state update from React, refreshing iframe content');
       handleStateUpdate(event.data.newState);
+    } else if (event.data.type === 'updateBootstrapData') {
+      // Handle bootstrap data updates from React dashboard
+      console.log('🔄 Received bootstrap data update from React dashboard');
+      handleBootstrapDataUpdate(event.data.newData);
+    } else if (event.data.type === 'processUndo') {
+      console.log('📨 Received processUndo message from dashboard');
+      // Use the iframe's own undo system for now
+      undo();
+    } else if (event.data.type === 'processRedo') {
+      console.log('📨 Received processRedo message from dashboard');
+      // Use the iframe's own redo system for now
+      redo();
     }
   });
 

@@ -43,6 +43,22 @@ function DesktopDashboard({ bootstrap }) {
         setCanUndo(event.data.canUndo);
         setCanRedo(event.data.canRedo);
         console.log('History updated:', event.data);
+      } else if (event.data.type === 'reactUndo') {
+        console.log('📨 Received reactUndo request from iframe');
+        // Handle React-based undo - need to trigger React state management
+        // For now, send back to iframe for processing
+        const iframe = document.querySelector('.preview-iframe');
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'processUndo' }, '*');
+        }
+      } else if (event.data.type === 'reactRedo') {
+        console.log('📨 Received reactRedo request from iframe');
+        // Handle React-based redo - need to trigger React state management
+        // For now, send back to iframe for processing
+        const iframe = document.querySelector('.preview-iframe');
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'processRedo' }, '*');
+        }
       }
     };
 
@@ -98,15 +114,19 @@ function DesktopDashboard({ bootstrap }) {
   };
 
   const handleUndo = () => {
+    console.log('🔄 Dashboard Undo button clicked');
     const iframe = document.querySelector('.preview-iframe');
     if (iframe && iframe.contentWindow) {
+      // Send undo message to the iframe which will trigger the React state management
       iframe.contentWindow.postMessage({ type: 'undo' }, '*');
     }
   };
 
   const handleRedo = () => {
+    console.log('🔄 Dashboard Redo button clicked');
     const iframe = document.querySelector('.preview-iframe');
     if (iframe && iframe.contentWindow) {
+      // Send redo message to the iframe which will trigger the React state management
       iframe.contentWindow.postMessage({ type: 'redo' }, '*');
     }
   };

@@ -14,22 +14,27 @@ function notifyIframeOfStateUpdate(newState) {
   }
 }
 
-// Function to reload iframe with updated bootstrap data
-function reloadIframeWithNewData(newState) {
+// Function to update iframe with new bootstrap data
+function updateIframeWithNewData(newState) {
   const iframe = document.querySelector('iframe');
-  if (iframe && newState) {
-    console.log('🔄 Reloading iframe with updated state');
+  if (iframe && iframe.contentWindow && newState) {
+    console.log('🔄 Updating iframe with new state:', newState);
     
-    // Store the updated state in the iframe's sessionStorage before reload
-    if (iframe.contentWindow && iframe.contentWindow.sessionStorage) {
-      iframe.contentWindow.sessionStorage.setItem('undoRedoState', JSON.stringify(newState));
+    // Send the updated state to the iframe
+    iframe.contentWindow.postMessage({
+      type: 'updateBootstrapData',
+      newData: newState
+    }, '*');
+    
+    // Also try to update the iframe's bootstrap data directly
+    try {
+      if (iframe.contentWindow.bootstrapData) {
+        iframe.contentWindow.bootstrapData = { ...iframe.contentWindow.bootstrapData, ...newState };
+        console.log('📊 Updated iframe bootstrap data directly');
+      }
+    } catch (error) {
+      console.log('⚠️ Could not access iframe bootstrap data directly:', error.message);
     }
-    
-    // Reload the iframe with a cache-busting parameter
-    const currentSrc = iframe.src;
-    const url = new URL(currentSrc);
-    url.searchParams.set('_refresh', Date.now());
-    iframe.src = url.toString();
   }
 }
 
@@ -78,8 +83,8 @@ export function useUndoRedo(siteData, setSiteData) {
     
     setSiteData(previousState);
     
-    // Reload iframe with updated state
-    reloadIframeWithNewData(previousState);
+    // Update iframe with restored state
+    updateIframeWithNewData(previousState);
     
     return true;
   }, [siteData, setSiteData]);
@@ -105,8 +110,8 @@ export function useUndoRedo(siteData, setSiteData) {
     
     setSiteData(nextState);
     
-    // Reload iframe with updated state
-    reloadIframeWithNewData(nextState);
+    // Update iframe with restored state
+    updateIframeWithNewData(nextState);
     
     return true;
   }, [siteData, setSiteData]);
