@@ -835,10 +835,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Listen for undo/redo messages from dashboard
   window.addEventListener('message', function(event) {
-    console.log('[iframe] received raw message:', event);
-    console.log('[iframe] got message from parent:', event.data);
+    // Step 4: Enhanced iframe listener logging
+    console.log('[iframe] raw message received:', event.data, 'origin:', event.origin);
     
-    // Temporarily remove origin check to debug message flow
+    // Temporarily remove origin check to see everything
     // if (event.source !== window.parent && event.origin !== window.location.origin) {
     //   console.log('[iframe] blocked message from non-parent source');
     //   return;
