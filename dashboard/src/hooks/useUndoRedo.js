@@ -90,11 +90,14 @@ export function useUndoRedo(siteData, setSiteData) {
     setTimeout(() => {
       const iframe = document.querySelector('iframe') || document.getElementById('previewIframe');
       if (iframe && iframe.contentWindow) {
+        console.log('[dashboard] posting to iframe:', { type: 'updateBootstrapData', data: previousState });
         iframe.contentWindow.postMessage({ 
           type: 'updateBootstrapData', 
           data: previousState 
         }, '*');
         console.log('[dashboard] sent updateBootstrapData to iframe after undo', previousState);
+      } else {
+        console.log('[dashboard] ERROR: No iframe found for updateBootstrapData after undo');
       }
     }, 50);
     
@@ -138,11 +141,14 @@ export function useUndoRedo(siteData, setSiteData) {
     setTimeout(() => {
       const iframe = document.querySelector('iframe') || document.getElementById('previewIframe');
       if (iframe && iframe.contentWindow) {
+        console.log('[dashboard] posting to iframe:', { type: 'updateBootstrapData', data: nextState });
         iframe.contentWindow.postMessage({ 
           type: 'updateBootstrapData', 
           data: nextState 
         }, '*');
         console.log('[dashboard] sent updateBootstrapData to iframe after redo', nextState);
+      } else {
+        console.log('[dashboard] ERROR: No iframe found for updateBootstrapData after redo');
       }
     }, 50);
     

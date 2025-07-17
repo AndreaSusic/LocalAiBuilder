@@ -117,19 +117,25 @@ function DesktopDashboard({ bootstrap }) {
 
   const handleUndo = () => {
     console.log('🔄 Dashboard Undo button clicked');
-    const iframe = document.querySelector('.preview-iframe');
+    const iframe = document.querySelector('.preview-iframe') || document.getElementById('previewIframe');
     if (iframe && iframe.contentWindow) {
+      console.log('[dashboard] posting to iframe:', { type: 'dashboardUndo' });
       // Send undo message directly to the iframe for React state management
       iframe.contentWindow.postMessage({ type: 'dashboardUndo' }, '*');
+    } else {
+      console.log('[dashboard] ERROR: No iframe found for undo');
     }
   };
 
   const handleRedo = () => {
     console.log('🔄 Dashboard Redo button clicked');
-    const iframe = document.querySelector('.preview-iframe');
+    const iframe = document.querySelector('.preview-iframe') || document.getElementById('previewIframe');
     if (iframe && iframe.contentWindow) {
+      console.log('[dashboard] posting to iframe:', { type: 'dashboardRedo' });
       // Send redo message directly to the iframe for React state management
       iframe.contentWindow.postMessage({ type: 'dashboardRedo' }, '*');
+    } else {
+      console.log('[dashboard] ERROR: No iframe found for redo');
     }
   };
 
