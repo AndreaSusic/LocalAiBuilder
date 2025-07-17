@@ -292,13 +292,14 @@ function DesktopDashboard({ bootstrap }) {
             className="btn-wireframe" 
             onClick={() => {
               console.log('[dashboard] Undo button clicked - calling handleUndo');
+              console.log('[dashboard] Current canUndo state:', canUndo);
               handleUndo();
             }} 
-            disabled={!canUndo} 
+            disabled={false} 
             data-tip="Undo"
-            style={{display: 'inline-block', visibility: 'visible'}}
+            style={{display: 'inline-block', visibility: 'visible', opacity: canUndo ? 1 : 0.5}}
           >
-            ↶ Undo
+            ↶ Undo ({canUndo ? 'enabled' : 'disabled'})
           </button>
           <button 
             className="btn-wireframe" 

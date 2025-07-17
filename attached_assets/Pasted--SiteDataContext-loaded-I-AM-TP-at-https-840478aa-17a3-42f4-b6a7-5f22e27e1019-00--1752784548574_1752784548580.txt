@@ -1,0 +1,319 @@
+ 🕵️‍♂️ SiteDataContext loaded
+ ######## I AM TP at https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/preview/assets/index-BzpavAus.js
+ 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+ BOOTSTRAP >> Object
+ Current path: /preview/
+ Root element exists: true
+ React app rendered successfully
+ App rendering with bootstrap: Object
+ Window width: 1426
+ isMobile: false
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+/api/me:1  Failed to load resource: the server responded with a status of 401 (Unauthorized)
+ 🔓 User not authenticated, using static bootstrap data
+ App rendering with bootstrap: Object
+ Window width: 1426
+ isMobile: false
+ Setting preview content to /app
+ Setting preview content to /app
+ ✅ Dashboard user auto-authenticated for editing
+ 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+ 📊 VALIDATION RESULTS: Object
+ ✅ DATA VALIDATION PASSED - Safe to render template
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ 🎨 Color Guard: Starting color enforcement...
+ ✅ Color Guard: Color enforcement complete
+ ✅ React DOM ready event dispatched
+ ✅ Iframe Editor Bridge initialized
+ 🚀 Service Image Matcher initialized
+ 🏅 ENFORCING DATA PRIORITY HIERARCHY IN FROZEN UI
+ 🥈 Using services from Priority 2 (Website Data): Array(3)
+ 🥉 Using images from Priority 3 (GBP Photos): 1 authentic photos
+ 🥈 Using contact from Priority 2 (Website/GBP): Object
+ 🥇 Using colors from Priority 1 (User Questionnaire): Array(2)
+ ✅ DATA HIERARCHY ENFORCED SUCCESSFULLY
+ 💾 DOM history disabled - using React state management
+ ✅ Undo/Redo toolbar initialized (hidden - buttons in dashboard header)
+ ✅ Overlay styles CSS re-applied
+ 🔍 FROZEN UI DATA HIERARCHY SUMMARY:
+ 📋 Services: Checking data hierarchy for authentic services...
+ 🎨 Colors: #ffc000, #000000 (Priority 1: User Questionnaire)
+ 📸 Images: Authentic GBP photos (Priority 3: GBP Data)
+ 📞 Contact: 065 2170293, Svetog Save bb, Osečina (Priority 2: Website/GBP)
+ ⭐ Reviews: Aleksandar Popović, Jordan Jančić, Marko Pavlović (Priority 3: GBP)
+ ✅ NO DUMMY DATA OR STOCK IMAGES USED
+ 🎯 Overlay management system initialized with robust debugging
+ 🔌 Wire inline editor called with 59 elements (forceRewire: false)
+ 🔗 Wiring element: NAV (
+      Kigen Plastika
+      
+ ...)
+ 🔗 Wiring element: A (Kigen Plastika...)
+ 🔗 Wiring element: A (Početna...)
+ 🔗 Wiring element: A (Usluge...)
+ 🔗 Wiring element: A (Plastični rezervoari...)
+ 🔗 Wiring element: A (Cisterne...)
+ 🔗 Wiring element: A (Septičke jame...)
+ 🔗 Wiring element: A (O nama...)
+ 🔗 Wiring element: A (Kontakt...)
+ 🔗 Wiring element: DIV (📞 065 2170293...)
+ 🔗 Wiring element: BUTTON (Kontaktirajte Nas...)
+ 🔗 Wiring element: H1 (Kigen Plastika...)
+ 🔗 Wiring element: P (
+        Proizvođači plastični...)
+ 🔗 Wiring element: BUTTON (Kontaktirajte Nas...)
+ 🔗 Wiring element: IMG (image...)
+ 🔗 Wiring element: H2 (Lokacija i Stručnost...)
+ 🔗 Wiring element: P (
+            Kigen Plastika je...)
+ 🔗 Wiring element: P (
+            Strateški smešten...)
+ 🔗 Wiring element: P (
+            Naš tim čine isku...)
+ 🔗 Wiring element: P (
+            Posebno se ponosi...)
+ 🔗 Wiring element: H3 (Vrhunski Kvalitet...)
+ 🔗 Wiring element: P (
+          Naši plastični reze...)
+ 🔗 Wiring element: H3 (Brza Isporuka...)
+ 🔗 Wiring element: P (
+          Zahvaljujući optimi...)
+ 🔗 Wiring element: H3 (Prilagođena Rešenja...)
+ 🔗 Wiring element: P (
+          Svaki projekat je j...)
+ 🔗 Wiring element: H2 (Naše Usluge...)
+ 🔗 Wiring element: IMG (image...)
+ 🔗 Wiring element: H4 (Plastični Rezervoari...)
+ 🔗 Wiring element: P (
+            Kvalitetni plasti...)
+ 🔗 Wiring element: IMG (image...)
+ 🔗 Wiring element: H4 (Cisterne...)
+ 🔗 Wiring element: P (
+            Pouzdane cisterne...)
+ 🔗 Wiring element: IMG (image...)
+ 🔗 Wiring element: H4 (Septičke Jame...)
+ 🔗 Wiring element: P (
+            Kompletni sistemi...)
+ 🔗 Wiring element: H2 (Mišljenja Klijenata...)
+ 🔗 Wiring element: P ("Brza i odlična saradnja... 10...)
+ 🔗 Wiring element: P (
+            "Kvalitetni proiz...)
+ 🔗 Wiring element: P (
+            "Odličan rad i pr...)
+ 🔗 Wiring element: H2 (Galerija...)
+ 🔗 Wiring element: IMG (image...)
+ 🔗 Wiring element: IMG (image...)
+ 🔗 Wiring element: IMG (image...)
+ 🔗 Wiring element: IMG (image...)
+ 🔗 Wiring element: IMG (image...)
+ 🔗 Wiring element: IMG (image...)
+ 🔗 Wiring element: H2 (Spremni za Saradnju?...)
+ 🔗 Wiring element: P (
+        Kontaktirajte nas dan...)
+ 🔗 Wiring element: BUTTON (Pozovite Nas...)
+ 🔗 Wiring element: H2 (Kontaktirajte Nas...)
+ 🔗 Wiring element: FOOTER (
+      
+        
+          Kon...)
+ 🔗 Wiring element: H4 (Kontakt...)
+ 🔗 Wiring element: P (Telefon: 065 2170293...)
+ 🔗 Wiring element: P (Email: info@kigen-plastika.rs...)
+ 🔗 Wiring element: P (Adresa: Svetog Save bb, Osečin...)
+ 🔗 Wiring element: H4 (Usluge...)
+ 🔗 Wiring element: H4 (O nama...)
+ 🔗 Wiring element: H4 (Pratite nas...)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 59
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 59
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ 🎨 Initializing micro-interaction animations...
+ ✅ Micro-animations initialized successfully
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ iframe loaded: https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/app
+ ✅ DesktopDashboard: WorkingInlineEditor will handle delete buttons
+ 📝 Creating text delete button for P 
+        Proizvođači...
+ ✨ Text delete button created and added to P
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ ⏰ Timeout expired, clearing overlays
+ 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+ 📝 Creating text delete button for H1 K...
+ ✨ Text delete button created and added to H1
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ ⏰ Timeout expired, clearing overlays
+ 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+ 📝 Creating text delete button for H1 K✕igen Plas...
+ ✨ Text delete button created and added to H1
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ 🔍 Starting service photo analysis
+ 📸 Found 6 photos to analyze
+ 🏷️ Matching against 3 services
+ ⏰ Timeout expired, clearing overlays
+ 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+ 📝 Creating text delete button for H1 K✕igen Plas✕tika...
+ ✨ Text delete button created and added to H1
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ 🎯 Mouse entered delete button
+ 🎯 Mouse left delete button
+ 🎯 Mouse entered delete button
+ 🎯 Mouse left delete button
+ 🎯 Mouse entered delete button
+ 🎯 Mouse left delete button
+ 🎯 Mouse entered delete button
+ 🗑️ Delete button clicked for H1
+ 📍 Element path for deletion: section.hero.animate-fade-in[0] > h1
+ 🧹 Clearing 1 overlays - Reason: Element deleted
+ 📝 Creating text delete button for NAV 
+      Kigen Plastik...
+ ✨ Text delete button created and added to NAV
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ 🧹 Clearing 1 overlays - Reason: Switching to different element
+ 📝 Creating text delete button for A Usluge...
+ ✨ Text delete button created and added to A
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ ⏰ Timeout expired, clearing overlays
+ 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+ ⏰ Timeout expired, clearing overlays
+ ✅ AI analysis complete
+ 🎯 Service matches: Object
+ 🔄 Updating service images with AI matches
+ 📸 Updating Plastični rezervoari image
+ 📸 Updating Cisterne image
+ 📸 Updating Septičke jame image
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ 📝 Creating text delete button for NAV 
+      Kigen Plastik...
+ ✨ Text delete button created and added to NAV
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ 🧹 Clearing 1 overlays - Reason: Switching to different element
+ 📝 Creating text delete button for A Usluge...
+ ✨ Text delete button created and added to A
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ 🧹 Clearing 1 overlays - Reason: Switching to different element
+ 📝 Creating text delete button for A Plastični rezervoari...
+ ✨ Text delete button created and added to A
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ ⏰ Timeout expired, clearing overlays
+ 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+ 📝 Creating text delete button for A Cisterne...
+ ✨ Text delete button created and added to A
+ 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+ ✅ wireInlineEditor completed:
+    📊 Total elements found: 0
+    🔗 Actually wired: 0
+    ⏭️ Skipped (already wired): 0
+    🔄 Force rewire mode: false
+    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+ 🎯 Mouse entered delete button
+ 🎯 Mouse left delete button
+ 🧹 Clearing 1 overlays - Reason: Switching to different element
+ 📝 Creating text delete button for P 
+        Proizvođači...
+Console.js:61 ✨ Text delete button created and added to P
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 📝 Creating text delete button for BUTTON Kontaktirajte Nas...
+Console.js:61 ✨ Text delete button created and added to BUTTON
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
+Console.js:61 ⏰ Timeout expired, clearing overlays
+Console.js:61 🧹 Clearing 1 overlays - Reason: Mouse left element and timeout expired
+App.jsx:95 Resize detected - Window width: 1426 isMobile: false
+Console.js:61 🔌 Wire inline editor called with 0 elements (forceRewire: false)
+Console.js:61 ✅ wireInlineEditor completed:
+Console.js:61    📊 Total elements found: 0
+Console.js:61    🔗 Actually wired: 0
+Console.js:61    ⏭️ Skipped (already wired): 0
+Console.js:61    🔄 Force rewire mode: false
+Console.js:61    🎯 Selector used: h1,h2,h3,h4,p,nav,.contact-phone,.cta,.btn-primary,.btn-accent,footer,.nav-links li a,.logo,img,.img-placeholder
