@@ -1,0 +1,68 @@
+
+
+Bug: Dashboard Undo button shows in the UI but no
+[dashboard] Undo button clicked – calling handleUndo log ever appears.
+
+Goal: Prove that the visible button is wired to the handleUndo function, or fix the mismatch.
+
+⸻
+
+1  Add a throw-away test id
+
+In dashboard/src/components/DesktopDashboard.jsx, give the Undo button a unique id so we can grab it from DevTools:
+
+<button
+  id="dbg-undo"
+  className="undoBtn"
+  onClick={handleUndo}
+>
+  ↶ Undo
+</button>
+
+2  Mount-time sanity log
+
+Still in the component, inside useEffect that runs once on mount, add:
+
+console.log(
+  '[dashboard] Undo button element at mount:',
+  document.getElementById('dbg-undo')
+);
+
+We want to see this log exactly once after hot-reload.
+
+3  Direct DOM listener (temporary)
+
+Right after that, attach a raw DOM listener to prove clicks bubble:
+
+const raw = () => console.log('[dashboard] native click bubbled!');
+document.getElementById('dbg-undo')?.addEventListener('click', raw);
+
+(Remember to clean it up on unmount, but for now it’s fine.)
+
+4  Hot-reload, then in the Dashboard console:
+	1.	Confirm you see
+[dashboard] Undo button element at mount: <button …>
+	2.	Click the Undo button.
+	•	Expect two logs:
+[dashboard] native click bubbled!
+[dashboard] Undo button clicked – calling handleUndo
+
+5  If the DOM listener logs but the React log doesn’t…
+
+That means the element you click is NOT the one React rendered (likely duplicated by some other layout wrapper).
+	•	Search the compiled HTML for a second element with the text “↶ Undo”.
+	•	Track down the component that renders that copy and wire it to handleUndo.
+
+6  If even the raw listener never logs…
+
+The click is being swallowed by CSS (pointer-events:none, overlay div, etc.).
+	•	Inspect the element in DevTools → “Event Listeners” → verify click exists.
+	•	Look for any overlay sitting on top (opacity 0, z-index 9999) and remove it.
+
+Deliverable: Either:
+	•	Both logs appear → proceed to postMessage debugging, or
+	•	A commit that rewires the button so the logs appear.
+
+🚨 Do not move on to postMessage work until these two logs show every click. 🚨
+
+Thanks!

@@ -261,6 +261,18 @@ function DesktopDashboard({ bootstrap }) {
     };
 
     checkAuth();
+    
+    // Mount-time sanity log
+    setTimeout(() => {
+      console.log(
+        '[dashboard] Undo button element at mount:',
+        document.getElementById('dbg-undo')
+      );
+      
+      // Direct DOM listener (temporary)
+      const raw = () => console.log('[dashboard] native click bubbled!');
+      document.getElementById('dbg-undo')?.addEventListener('click', raw);
+    }, 100);
   }, [bootstrap]);
 
   if (loading) {
@@ -289,7 +301,8 @@ function DesktopDashboard({ bootstrap }) {
             Save
           </button>
           <button 
-            className="btn-wireframe" 
+            id="dbg-undo"
+            className="btn-wireframe undoBtn" 
             onClick={() => {
               console.log('[dashboard] Undo button clicked - calling handleUndo');
               console.log('[dashboard] Current canUndo state:', canUndo);
