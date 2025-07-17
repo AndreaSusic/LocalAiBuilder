@@ -153,15 +153,183 @@ function handleBootstrapDataUpdate(newData) {
     window.bootstrapData = { ...window.bootstrapData, ...newData };
     console.log('📊 Updated bootstrap data:', window.bootstrapData);
     
-    // For element restoration after undo/redo, we need to reload
-    // This ensures deleted elements are properly restored
-    console.log('🔄 Reloading page to reflect bootstrap data changes');
+    // Clear all overlays before rebuilding
+    clearOverlays('Bootstrap data update');
     
-    // Store the updated data and reload
-    sessionStorage.setItem('undoRedoState', JSON.stringify(newData));
+    // Rebuild the DOM from the new data without full page reload
+    rebuildDOMFromBootstrapData(newData);
+    
+    // Re-initialize the editor on the rebuilt content
     setTimeout(() => {
-      window.location.reload();
+      wireInlineEditor(document);
+      console.log('✅ DOM rebuilt and editor re-initialized');
     }, 100);
+  }
+}
+
+function rebuildDOMFromBootstrapData(data) {
+  console.log('🔧 Rebuilding DOM from bootstrap data:', data);
+  
+  try {
+    // Update text content
+    updateTextContent(data);
+    
+    // Update images
+    updateImages(data);
+    
+    // Update contact information
+    updateContactInfo(data);
+    
+    // Update services/products
+    updateServices(data);
+    
+    // Update reviews
+    updateReviews(data);
+    
+    // Update gallery
+    updateGallery(data);
+    
+    console.log('✅ DOM rebuild completed');
+  } catch (error) {
+    console.error('❌ Error rebuilding DOM:', error);
+    // Fallback to page reload only if rebuilding fails
+    console.log('🔄 Fallback: Reloading page due to rebuild error');
+    window.location.reload();
+  }
+}
+
+function updateTextContent(data) {
+  // Update company name
+  if (data.company_name) {
+    document.querySelectorAll('h1, .company-name').forEach(el => {
+      if (el.textContent.includes('Kigen Plastika') || el.textContent.includes('Your Company')) {
+        el.textContent = el.textContent.replace(/Kigen Plastika|Your Company/g, data.company_name);
+      }
+    });
+  }
+  
+  // Update hero title
+  if (data.hero_title) {
+    document.querySelectorAll('.hero h1, .hero-title').forEach(el => {
+      el.textContent = data.hero_title;
+    });
+  }
+  
+  // Update hero subtitle
+  if (data.hero_subtitle) {
+    document.querySelectorAll('.hero p, .hero-subtitle').forEach(el => {
+      el.textContent = data.hero_subtitle;
+    });
+  }
+}
+
+function updateImages(data) {
+  if (data.images && Array.isArray(data.images)) {
+    // Update hero image
+    const heroImg = document.querySelector('.hero img, .hero-image');
+    if (heroImg && data.images[0]) {
+      heroImg.src = data.images[0];
+    }
+    
+    // Update gallery images
+    const galleryImages = document.querySelectorAll('.gallery img, .gallery-image');
+    galleryImages.forEach((img, index) => {
+      if (data.images[index]) {
+        img.src = data.images[index];
+      }
+    });
+  }
+}
+
+function updateContactInfo(data) {
+  // Update phone number
+  if (data.phone) {
+    document.querySelectorAll('.contact-phone, .phone').forEach(el => {
+      el.textContent = data.phone;
+      if (el.tagName === 'A') {
+        el.href = `tel:${data.phone}`;
+      }
+    });
+  }
+  
+  // Update address
+  if (data.address) {
+    document.querySelectorAll('.address, .contact-address').forEach(el => {
+      el.textContent = data.address;
+    });
+  }
+  
+  // Update email
+  if (data.email) {
+    document.querySelectorAll('.email, .contact-email').forEach(el => {
+      el.textContent = data.email;
+      if (el.tagName === 'A') {
+        el.href = `mailto:${data.email}`;
+      }
+    });
+  }
+}
+
+function updateServices(data) {
+  if (data.services && Array.isArray(data.services)) {
+    // Update services section
+    const servicesContainer = document.querySelector('.services-grid, .services-container');
+    if (servicesContainer) {
+      // Clear existing services
+      servicesContainer.innerHTML = '';
+      
+      // Add new services
+      data.services.forEach(service => {
+        const serviceEl = document.createElement('div');
+        serviceEl.className = 'service-item';
+        serviceEl.innerHTML = `
+          <h3>${service.title || service}</h3>
+          <p>${service.description || ''}</p>
+        `;
+        servicesContainer.appendChild(serviceEl);
+      });
+    }
+  }
+}
+
+function updateReviews(data) {
+  if (data.reviews && Array.isArray(data.reviews)) {
+    const reviewsContainer = document.querySelector('.reviews-grid, .reviews-container');
+    if (reviewsContainer) {
+      // Clear existing reviews
+      reviewsContainer.innerHTML = '';
+      
+      // Add new reviews
+      data.reviews.forEach(review => {
+        const reviewEl = document.createElement('div');
+        reviewEl.className = 'review-item';
+        reviewEl.innerHTML = `
+          <div class="review-author">${review.author_name || review.name}</div>
+          <div class="review-rating">⭐⭐⭐⭐⭐</div>
+          <div class="review-text">${review.text}</div>
+        `;
+        reviewsContainer.appendChild(reviewEl);
+      });
+    }
+  }
+}
+
+function updateGallery(data) {
+  if (data.images && Array.isArray(data.images)) {
+    const galleryContainer = document.querySelector('.gallery-grid, .gallery-container');
+    if (galleryContainer) {
+      // Clear existing gallery
+      galleryContainer.innerHTML = '';
+      
+      // Add new gallery images
+      data.images.forEach((imageUrl, index) => {
+        const imgEl = document.createElement('img');
+        imgEl.src = imageUrl;
+        imgEl.alt = `Gallery image ${index + 1}`;
+        imgEl.className = 'gallery-image';
+        galleryContainer.appendChild(imgEl);
+      });
+    }
   }
 }
 
@@ -667,32 +835,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Listen for undo/redo messages from dashboard
   window.addEventListener('message', function(event) {
-    if (event.data.type === 'undo') {
-      console.log('📨 Received undo message from dashboard');
-      // Check if we're in a React app with state management
-      if (window.parent && window.parent.postMessage) {
-        // Send undo request to React state management
-        window.parent.postMessage({
-          type: 'reactUndo',
-          source: 'iframe'
-        }, '*');
+    if (event.data.type === 'dashboardUndo') {
+      console.log('📨 Received dashboardUndo message from dashboard');
+      // Check if we're in a React template with state management
+      if (typeof window.handleReactUndo === 'function') {
+        console.log('🔄 Using React state management for undo');
+        window.handleReactUndo();
       } else {
-        // Fallback to iframe's own undo system
+        console.log('🔄 Fallback to iframe undo system');
         undo();
       }
-    } else if (event.data.type === 'redo') {
-      console.log('📨 Received redo message from dashboard');
-      // Check if we're in a React app with state management
-      if (window.parent && window.parent.postMessage) {
-        // Send redo request to React state management
-        window.parent.postMessage({
-          type: 'reactRedo',
-          source: 'iframe'
-        }, '*');
+    } else if (event.data.type === 'dashboardRedo') {
+      console.log('📨 Received dashboardRedo message from dashboard');
+      // Check if we're in a React template with state management
+      if (typeof window.handleReactRedo === 'function') {
+        console.log('🔄 Using React state management for redo');
+        window.handleReactRedo();
       } else {
-        // Fallback to iframe's own redo system
+        console.log('🔄 Fallback to iframe redo system');
         redo();
       }
+    } else if (event.data.type === 'undo') {
+      console.log('📨 Received undo message from dashboard');
+      // Fallback to iframe's own undo system
+      undo();
+    } else if (event.data.type === 'redo') {
+      console.log('📨 Received redo message from dashboard');
+      // Fallback to iframe's own redo system
+      redo();
     } else if (event.data.type === 'stateUpdate') {
       // Handle React state updates - refresh iframe content
       console.log('🔄 Received state update from React, refreshing iframe content');

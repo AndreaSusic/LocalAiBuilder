@@ -1,5 +1,5 @@
 // dashboard/src/templates/homepage/v1/HomePageV1.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { SiteDataContext } from "../context/SiteDataContext.js"; // <- adjust path if needed
 import { SiteDataProvider } from "../context/SiteDataProvider.jsx"; // <- new undo/redo provider
 
@@ -31,6 +31,45 @@ export default function HomePageV1({ bootstrap = {} }) {
   ------------------------------------------------------------------ */
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  
+  // Create a ref to store the React state management functions
+  const reactStateRef = useRef({});
+
+  /* ------------------------------------------------------------------
+     3️⃣  BRIDGE FUNCTIONS for iframe communication
+  ------------------------------------------------------------------ */
+  useEffect(() => {
+    // Expose bridge functions to iframe
+    window.handleReactUndo = () => {
+      console.log('🔄 Bridge: handleReactUndo called');
+      if (reactStateRef.current.undo) {
+        reactStateRef.current.undo();
+      } else {
+        console.log('❌ Bridge: No undo function available');
+      }
+    };
+
+    window.handleReactRedo = () => {
+      console.log('🔄 Bridge: handleReactRedo called');
+      if (reactStateRef.current.redo) {
+        reactStateRef.current.redo();
+      } else {
+        console.log('❌ Bridge: No redo function available');
+      }
+    };
+
+    // Store bridge functions reference
+    window.reactStateRef = reactStateRef;
+
+    console.log('✅ Bridge functions exposed to iframe');
+
+    // Cleanup on unmount
+    return () => {
+      delete window.handleReactUndo;
+      delete window.handleReactRedo;
+      delete window.reactStateRef;
+    };
+  }, []);
 
   /* ------------------------------------------------------------------
      3️⃣  RENDER — wrap everything in the context provider
