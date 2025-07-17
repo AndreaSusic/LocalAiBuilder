@@ -121,13 +121,27 @@ function generateElementPath(element) {
 // Handle state updates from React
 function handleStateUpdate(newState) {
   console.log('🔄 Processing state update from React:', newState);
+  console.log('📊 Current window.bootstrapData:', window.bootstrapData);
   
-  // For now, the simplest approach is to reload the iframe content
-  // In a more sophisticated version, we would selectively update DOM elements
-  setTimeout(() => {
-    console.log('🔄 Reloading iframe content due to state change');
-    window.location.reload();
-  }, 100);
+  // Update window.bootstrapData with new state
+  if (newState) {
+    console.log('📝 Updating bootstrap data with new state');
+    window.bootstrapData = { ...window.bootstrapData, ...newState };
+    
+    // For text content elements, we need to actually update the DOM
+    // This is a simplified approach - in a full implementation, we'd need more sophisticated DOM updates
+    console.log('🔄 Performing full page reload to reflect state changes');
+    
+    // Store the updated data in sessionStorage to persist across reload
+    sessionStorage.setItem('undoRedoState', JSON.stringify(newState));
+    
+    // Reload the page to reflect the changes
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  } else {
+    console.log('⚠️ No new state to update');
+  }
 }
 
 // Update toolbar button states
@@ -601,6 +615,27 @@ document.addEventListener('DOMContentLoaded', function() {
     ham.addEventListener('click', () => {
       menu.classList.toggle('open');
     });
+  }
+
+  // Check for stored undo/redo state and merge with bootstrap data
+  const storedState = sessionStorage.getItem('undoRedoState');
+  if (storedState) {
+    try {
+      const parsedState = JSON.parse(storedState);
+      console.log('🔄 Restoring state from undo/redo:', parsedState);
+      
+      // Merge with existing bootstrap data
+      if (window.bootstrapData) {
+        window.bootstrapData = { ...window.bootstrapData, ...parsedState };
+        console.log('📊 Updated bootstrap data:', window.bootstrapData);
+      }
+      
+      // Clear the stored state
+      sessionStorage.removeItem('undoRedoState');
+    } catch (error) {
+      console.error('Error parsing stored undo/redo state:', error);
+      sessionStorage.removeItem('undoRedoState');
+    }
   }
 
   // Initialize history with current state
