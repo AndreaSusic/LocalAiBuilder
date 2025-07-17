@@ -4,12 +4,34 @@ import { useUndoRedo } from '../hooks/useUndoRedo';
 
 const UndoRedoMessageHandler = () => {
   const { siteData, setSiteData } = useContext(SiteDataContext);
-  const { undo, redo, deleteElementByPath, updateElementByPath, initializeHistory } = useUndoRedo(siteData, setSiteData);
+  const { undo, redo, deleteElementByPath, updateElementByPath, initializeHistory, canUndo, canRedo } = useUndoRedo(siteData, setSiteData);
 
   // Initialize history on component mount
   useEffect(() => {
     initializeHistory();
   }, [initializeHistory]);
+
+  // Register undo/redo functions with the bridge
+  useEffect(() => {
+    if (window.reactStateRef) {
+      window.reactStateRef.current = {
+        undo,
+        redo,
+        canUndo,
+        canRedo
+      };
+      console.log('✅ UndoRedoMessageHandler: Functions registered with bridge');
+    }
+
+    // Notify parent dashboard about undo/redo state changes
+    if (window.parent && window.parent.postMessage) {
+      window.parent.postMessage({
+        type: 'undoRedoStateChanged',
+        canUndo: canUndo,
+        canRedo: canRedo
+      }, '*');
+    }
+  }, [undo, redo, canUndo, canRedo]);
 
   useEffect(() => {
     const handleMessage = (event) => {
