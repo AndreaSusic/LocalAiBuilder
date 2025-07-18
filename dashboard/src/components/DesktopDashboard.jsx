@@ -242,6 +242,9 @@ function DesktopDashboard({ bootstrap }) {
   };
 
   useEffect(() => {
+    console.log('[dashboard] useEffect running - bootstrap:', !!bootstrap);
+    console.log('[dashboard] Current route:', window.location.pathname);
+    
     showTemplatePreview();
     
     const checkAuth = async () => {
@@ -264,6 +267,7 @@ function DesktopDashboard({ bootstrap }) {
     
     // Mount-time sanity log - increased timeout to ensure DOM is ready
     setTimeout(() => {
+      console.log('[dashboard] Debugging timeout executing on route:', window.location.pathname);
       const undoBtn = document.getElementById('dbg-undo');
       console.log(
         '[dashboard] Undo button element at mount:',
@@ -277,6 +281,7 @@ function DesktopDashboard({ bootstrap }) {
         console.log('[dashboard] DOM listener attached to undo button');
       } else {
         console.log('[dashboard] ERROR: Undo button not found in DOM');
+        console.log('[dashboard] Available buttons:', document.querySelectorAll('button').length);
       }
     }, 500);
   }, [bootstrap]);
