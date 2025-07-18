@@ -66,3 +66,18 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* --- preview layout fix --- */
+.dashboard-preview-wrapper {
+  display: flex;          /* flex-container so iframe can stretch   */
+  flex-direction: column; /* toolbar/header stays on top            */
+  height: 100vh;          /* give the wrapper a height              */
+  min-height: 0;          /* allow children to shrink if necessary  */
+}
+
+.preview-iframe {
+  flex: 1 1 0;            /* make iframe fill remaining space       */
+  width: 100%;
+  display: block;
+  border: 0;
+}
