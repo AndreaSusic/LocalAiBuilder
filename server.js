@@ -2533,6 +2533,13 @@ app.get('/test-editor', (req, res) => {
   res.sendFile(path.join(__dirname, 'test-editor.html'));
 });
 
+// Add /app route to serve React app
+app.use('/app', express.static(path.join(__dirname, 'dashboard', 'dist')));
+app.get('/app', (req, res) => {
+  console.log('📂 Serving /app route from React SPA');
+  res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+});
+
 // Template preview routes - serve React app for /t/v1/:id paths (duplicate route - already handled above)
 
 // API endpoint to retrieve cached preview data
