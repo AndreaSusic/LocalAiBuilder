@@ -262,17 +262,23 @@ function DesktopDashboard({ bootstrap }) {
 
     checkAuth();
     
-    // Mount-time sanity log
+    // Mount-time sanity log - increased timeout to ensure DOM is ready
     setTimeout(() => {
+      const undoBtn = document.getElementById('dbg-undo');
       console.log(
         '[dashboard] Undo button element at mount:',
-        document.getElementById('dbg-undo')
+        undoBtn
       );
       
-      // Direct DOM listener (temporary)
-      const raw = () => console.log('[dashboard] native click bubbled!');
-      document.getElementById('dbg-undo')?.addEventListener('click', raw);
-    }, 100);
+      if (undoBtn) {
+        // Direct DOM listener (temporary)
+        const raw = () => console.log('[dashboard] native click bubbled!');
+        undoBtn.addEventListener('click', raw);
+        console.log('[dashboard] DOM listener attached to undo button');
+      } else {
+        console.log('[dashboard] ERROR: Undo button not found in DOM');
+      }
+    }, 500);
   }, [bootstrap]);
 
   if (loading) {
