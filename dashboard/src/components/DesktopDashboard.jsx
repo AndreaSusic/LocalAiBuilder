@@ -300,7 +300,10 @@ function DesktopDashboard({ bootstrap }) {
     );
   }
 
+  console.log('[dashboard] previewSrc going to iframe:', previewContent);
+
   return (
+    <div className="dashboard-preview-wrapper">
     <div className="dashboard-wireframe">
       {/* Header */}
       <div className="header-wireframe">
@@ -457,6 +460,7 @@ function DesktopDashboard({ bootstrap }) {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
