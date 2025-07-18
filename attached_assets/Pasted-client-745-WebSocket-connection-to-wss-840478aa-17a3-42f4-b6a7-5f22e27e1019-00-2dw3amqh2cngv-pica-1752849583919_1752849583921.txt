@@ -1,0 +1,61 @@
+client:745 WebSocket connection to 'wss://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev/?token=DOUQPC7V5tQM' failed: 
+createConnection @ client:745
+connect @ client:412
+connect @ client:751
+connect @ client:290
+connect @ client:374
+(anonymous) @ client:822
+client:772 [vite] failed to connect to websocket (Error: WebSocket closed without opened.). 
+connect @ client:772
+await in connect
+connect @ client:290
+connect @ client:374
+(anonymous) @ client:822
+client:424 Uncaught (in promise) Error: WebSocket closed without opened.
+    at WebSocket.<anonymous> (client:424:30)
+(anonymous) @ client:424
+react-dom_client.js?v=075bdc91:17987 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+SiteDataContext.js:3 🕵️‍♂️ SiteDataContext loaded
+TemplatePreview.jsx:10 ######## I AM TP at https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:8008/src/components/TemplatePreview.jsx
+main.jsx:91 🔄 Loaded authentic Kigen Plastika data: Kigen Plastika
+main.jsx:171 BOOTSTRAP >> {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+main.jsx:172 Current path: /app
+main.jsx:173 Root element exists: true
+main.jsx:187 React app rendered successfully
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 1426
+App.jsx:26 isMobile: false
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+App.jsx:35  GET https://840478aa-17a3-42f4-b6a7-5f22e27e1019-00-2dw3amqh2cngv.picard.replit.dev:8008/api/me 401 (Unauthorized)
+loadUserData @ App.jsx:35
+(anonymous) @ App.jsx:88
+react-stack-bottom-frame @ react-dom_client.js?v=075bdc91:17478
+runWithFiberInDEV @ react-dom_client.js?v=075bdc91:1485
+commitHookEffectListMount @ react-dom_client.js?v=075bdc91:8460
+commitHookPassiveMountEffects @ react-dom_client.js?v=075bdc91:8518
+commitPassiveMountOnFiber @ react-dom_client.js?v=075bdc91:9887
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=075bdc91:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=075bdc91:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=075bdc91:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=075bdc91:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=075bdc91:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=075bdc91:9899
+flushPassiveEffects @ react-dom_client.js?v=075bdc91:11302
+(anonymous) @ react-dom_client.js?v=075bdc91:11060
+performWorkUntilDeadline @ react-dom_client.js?v=075bdc91:36
+<App>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=075bdc91:250
+(anonymous) @ main.jsx:184
+Promise.then
+(anonymous) @ main.jsx:169
+App.jsx:77 🔓 User not authenticated, using static bootstrap data
+App.jsx:24 App rendering with bootstrap: {city: Array(1), images: Array(10), social: {…}, colours: Array(2), industry: 'Septic Tanks', …}
+App.jsx:25 Window width: 1426
+App.jsx:26 isMobile: false
+dataValidation.js:734 🔍 DATA VALIDATION CHECKPOINT - Starting validation for: Kigen Plastika
+dataValidation.js:738 📊 VALIDATION RESULTS: {passed: true, checkpoints: Array(15), errors: Array(0), warnings: Array(1)}
+dataValidation.js:754 ✅ DATA VALIDATION PASSED - Safe to render template
+colorGuard.js:7 🎨 Color Guard: Starting color enforcement...
+colorGuard.js:50 ✅ Color Guard: Color enforcement complete
+main.jsx:193 ✅ React DOM ready event dispatched
